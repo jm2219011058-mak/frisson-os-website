@@ -74,7 +74,7 @@
 
     connectedCallback() {
       this.render();
-      this._io = new IntersectionObserver((es) => { this._vis = es[0].isIntersecting; this._vis ? this.start() : this.stop(); }, { threshold: 0 });
+      this._io = new IntersectionObserver((es) => { this._vis = es[0].isIntersecting; if (this._vis) this.start(); }, { threshold: 0 }); // don't stop on scroll (avoids strobe under sticky/transform)
       this._io.observe(this);
       this._mq = window.matchMedia("(prefers-reduced-motion: reduce)");
       this._reduce = this._mq.matches;
