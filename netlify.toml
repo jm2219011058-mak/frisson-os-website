@@ -1,0 +1,14 @@
+# Netlify config — static site, no build step.
+[build]
+  publish = "."
+
+# Long-cache the logo component; HTML stays fresh.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

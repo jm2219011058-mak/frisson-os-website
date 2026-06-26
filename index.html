@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frisson — Signature · White</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<script src="assets/frisson-logo-animated.js"></script>
+<style>
+  html,body{margin:0;height:100%;background:#ffffff;overflow:hidden;}
+  #fit{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
+  #stage{width:1080px;height:1080px;display:flex;align-items:center;justify-content:center;background:#ffffff;transform-origin:center;}
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+  <frisson-logo-animated size="840" variant="outline" lockup="embed"></frisson-logo-animated>
+</div></div>
+<script>
+  var W=1080,H=1080,s=document.getElementById('stage');
+  function fit(){var k=Math.min(innerWidth/W,innerHeight/H);s.style.transform='scale('+k+')';}
+  addEventListener('resize',fit);fit();
+</script>
+</body>
+</html>
