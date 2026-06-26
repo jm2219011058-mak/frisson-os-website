@@ -15,9 +15,9 @@
     --bg:#ffffff;
     --ink:#2b1d12;
     --ink-soft:#5b4a3b;
-    --accent:#e07b3c;       /* logo orange */
     --hair:rgba(43,29,18,.16);
     --serif:"Playfair Display",Georgia,serif;
+    --sans:-apple-system,"Helvetica Neue","Segoe UI",Arial,sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -70,8 +70,8 @@
   .stack{display:flex;flex-direction:column;gap:clamp(14px,3.4vh,30px);align-items:center;}
   .stack p{font-size:clamp(21px,3.5vw,33px);font-weight:400;font-style:normal;line-height:1.26;margin:0;}
   .stack p.world{max-width:18ch;}
-  .resume-cta{ /* small, faint, just below "And Beyond…" — same on mobile & desktop */
-    margin-top:clamp(20px,4vh,40px);
+  .resume-cta{ /* small, faint, centered between "And Beyond…" and the bottom edge */
+    position:absolute;left:50%;top:80%;transform:translate(-50%,-50%);
     font-family:var(--serif);font-size:clamp(12px,1.4vw,14px);letter-spacing:.02em;
     color:var(--ink);opacity:.38;text-decoration:none;
     display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
@@ -102,16 +102,17 @@
   }
   .conch-cap{z-index:3;
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font-family:-apple-system,"Helvetica Neue","Segoe UI",Arial,sans-serif; /* original sans-serif, not the serif */
+    font-family:var(--sans); /* original sans-serif, not the serif */
     color:#fff;font-weight:500;font-size:clamp(17px,3.2vw,28px);letter-spacing:.01em;line-height:1.22;
     text-shadow:0 2px 24px rgba(0,0,0,.62);padding:0 28px;margin:0;text-align:center;
   }
   .meta{display:flex;flex-direction:column;gap:clamp(16px,3vh,28px);}
   .meta .label{font-size:clamp(19px,3.2vw,28px);font-weight:600;margin:0;}
-  .meta .items{display:flex;justify-content:center;align-items:center;gap:clamp(18px,2.6vw,40px);flex-wrap:nowrap;}
-  .meta .item{font-size:clamp(16px,2.4vw,23px);font-weight:400;font-style:italic;margin:0;color:var(--ink-soft);}
+  .meta .items{display:flex;justify-content:center;align-items:center;gap:clamp(18px,2.6vw,40px);flex-wrap:wrap;}
+  .meta .item{font-family:var(--sans);font-size:clamp(15px,2.2vw,21px);font-weight:400;font-style:normal;margin:0;color:var(--ink-soft);}
   .meta .items .item+.item{border-left:1px solid var(--hair);padding-left:clamp(18px,2.6vw,40px);}
-  @media (max-width:640px){
+  /* stack vertically until there's enough width for the long middle item */
+  @media (max-width:1024px){
     .meta .items{flex-direction:column;gap:clamp(12px,2.6vh,22px);}
     .meta .items .item+.item{border-left:0;padding-left:0;}
   }
@@ -165,7 +166,6 @@
   <!-- organic logo-shape clip paths (driven by JS) -->
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none;">
     <defs>
-      <clipPath id="heroBlob" clipPathUnits="objectBoundingBox"><path id="heroBlobPath" d="M0.5 0.5"></path></clipPath>
       <clipPath id="conchBlob" clipPathUnits="objectBoundingBox"><path id="conchBlobPath" d="M0.5 0.5"></path></clipPath>
     </defs>
   </svg>
@@ -265,8 +265,6 @@
     }
     return d+' Z';
   }
-  function easeInOut(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; } // accel + decel
-
   /* Hero · fit the signature logo to the viewport (static) */
   (function(){
     var fit=document.getElementById('logoFit'), BASE=460;
