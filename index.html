@@ -5,10 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>FRISSON</title>
 <meta name="description" content="FRISSON — a soulful living hospitality. Rebuilt the respect for human.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/conch-blur.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=block" rel="stylesheet">
 <script src="assets/frisson-logo-animated.js"></script>
 <style>
   :root{
@@ -87,16 +92,15 @@
   }
   .conch{ /* organic logo-shape blob (mask set in JS) — matches the image's 16:9 */
     position:relative;width:min(600px,88vw);aspect-ratio:16/9;margin:0 auto;
-    isolation:isolate;
+    isolation:isolate;background:#15110d;       /* dark base: never a flash of white/empty */
     -webkit-clip-path:url(#conchBlob);clip-path:url(#conchBlob);
   }
+  /* the image is pre-blurred at the asset level, so it can never render sharp */
   .conch-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
-  .conch-frost{ /* light frost — image stays faintly visible (若隐若现) */
-    position:absolute;inset:0;z-index:1;
-    backdrop-filter:blur(11px) saturate(1.1);
-    -webkit-backdrop-filter:blur(11px) saturate(1.1);
+  .conch-scrim{ /* gradient only (no backdrop-filter) — caption legibility + sheen */
+    position:absolute;inset:0;z-index:1;pointer-events:none;
     background:
-      radial-gradient(120% 100% at 50% 50%,rgba(0,0,0,.16),rgba(0,0,0,0) 72%), /* gentle scrim for caption */
+      radial-gradient(120% 100% at 50% 50%,rgba(0,0,0,.18),rgba(0,0,0,0) 72%), /* gentle scrim for caption */
       linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 42%);    /* top sheen */
     box-shadow:inset 0 1px 1px rgba(255,255,255,.22);
   }
@@ -220,8 +224,8 @@
   <section class="section" id="finale">
     <div class="reveal finale">
       <div class="conch">
-        <img class="conch-img" src="assets/WechatIMG925.png" alt="Frisson Magic Conch">
-        <div class="conch-frost"></div>
+        <img class="conch-img" src="assets/conch-blur.jpg" alt="Frisson Magic Conch" decoding="async">
+        <div class="conch-scrim"></div>
         <p class="conch-cap">The Mask comes off<br>January 2027</p>
       </div>
       <div class="meta">
