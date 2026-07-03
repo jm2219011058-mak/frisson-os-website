@@ -24,7 +24,7 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  html{scroll-snap-type:y proximity;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  html{scroll-snap-type:y mandatory;-webkit-text-size-adjust:100%;}
   body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
   a{color:inherit;}
 
@@ -47,13 +47,13 @@
   @media (max-width:680px){ .nav .links a.sec{display:none;} .nav .links{gap:16px;} }
 
   /* section shell */
-  .section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+  .section{min-height:100svh;scroll-snap-align:start;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:max(10svh,80px) clamp(18px,5vw,64px) max(6svh,48px);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
-  /* sections 2 & 3 are not forced to a single screen */
-  #s2,#s3{scroll-snap-align:none;scroll-snap-stop:normal;height:auto;}
+  /* sections 2 & 3 only: content-height, not forced to a full screen (still reachable) */
+  #s2,#s3{min-height:auto;}
 
   /* 1 · hero */
   .orb{position:relative;width:min(40vh,300px);aspect-ratio:1;border-radius:50%;overflow:hidden;margin-bottom:28px;
@@ -146,8 +146,18 @@
   .s7-p{font-size:clamp(15px,2.1vw,20px);line-height:2;color:var(--ink);max-width:32ch;margin:0 auto;letter-spacing:.04em;}
   .s7-p + .s7-p{margin-top:1.6em;color:var(--ink-dim);}
 
+  /* mobile: tighten spacing so sections (esp. 4) don't feel cramped */
+  @media (max-width:720px){
+    .section{padding:max(9svh,68px) 18px max(5svh,30px);}
+    #s4 .card{height:min(40vh,360px);}
+    .hgal{padding:clamp(12px,3vh,22px) 0;}
+    .s4-sub{font-size:clamp(15px,4.2vw,18px);margin-bottom:8px;}
+    .s4-foot{margin-top:clamp(8px,2vh,16px);}
+    .capsule{padding:10px 14px;margin-top:clamp(8px,1.6vh,14px);}
+    .s5-wrap{transform:none;gap:22px;}
+  }
+
   @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto;}
     .reveal{transition:none;opacity:1;transform:none;}
   }
 </style>
