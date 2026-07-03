@@ -2,11 +2,11 @@
 [build]
   publish = "."
 
-# Long-cache the logo component; HTML stays fresh.
+# Assets: cache but revalidate, so updates at the same filename still propagate.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
 [[headers]]
   for = "/*.html"

@@ -202,13 +202,13 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a class="sec" href="cities.html">More than human cities</a>
+      <a class="sec" href="cities.html">More-Than-Human Cities</a>
       <a href="sona.html" class="cur">Sona AI</a>
       <a href="advocater.html">Advocater Program</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">More than human cities</a>
+      <a href="cities.html">More-Than-Human Cities</a>
       <a href="sona.html">Sona AI</a>
       <a href="advocater.html">Advocater Program</a>
     </div>
@@ -318,7 +318,7 @@
       sheetImg=document.getElementById('sheetImg'),
       sheetName=document.getElementById('sheetName'),
       sheetText=document.getElementById('sheetText');
-  function openSheet(s){ sheetImg.src=s.img; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
+  function openSheet(s){ sheetImg.src=s.img+'?v=2'; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
   function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
@@ -326,7 +326,7 @@
   var gal2=document.getElementById('gal2');
   SCENES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'" alt="'+s.name+'" loading="lazy" draggable="false">'+
+    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.name+'" loading="lazy" draggable="false">'+
                 '<span class="name">'+s.name+'</span>'+
                 '<div class="scrim"><p class="sn">'+s.name+'</p><p class="st"></p></div>'+
                 '<button class="plus" type="button" aria-label="'+s.name+'">+</button>';
@@ -342,7 +342,7 @@
   var gal4=document.getElementById('gal4');
   SENSES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
+    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
     gal4.appendChild(c);
   });
 
