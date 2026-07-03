@@ -12,7 +12,7 @@
 <script src="assets/frisson-logo-animated.js"></script>
 <style>
   :root{
-    --bg:#0a0a0c;
+    --bg:#000000;
     --panel:#141417;
     --ink:#f4ecdc;
     --ink-dim:rgba(244,236,220,.62);
@@ -24,7 +24,7 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  html{scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  html{scroll-snap-type:y proximity;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
   a{color:inherit;}
 
@@ -52,9 +52,11 @@
     text-align:center;padding:max(10svh,80px) clamp(18px,5vw,64px) max(6svh,48px);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
+  /* sections 2 & 3 are not forced to a single screen */
+  #s2,#s3{scroll-snap-align:none;scroll-snap-stop:normal;height:auto;}
 
   /* 1 · hero */
-  .orb{position:relative;width:min(54vh,400px);aspect-ratio:1;border-radius:50%;overflow:hidden;margin-bottom:28px;
+  .orb{position:relative;width:min(40vh,300px);aspect-ratio:1;border-radius:50%;overflow:hidden;margin-bottom:28px;
     -webkit-mask:radial-gradient(circle at 50% 50%,#000 62%,transparent 100%);mask:radial-gradient(circle at 50% 50%,#000 62%,transparent 100%);}
   .orb video{width:100%;height:100%;object-fit:cover;display:block;}
   .orb-cap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
@@ -82,10 +84,21 @@
   .card .label{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 16px;text-align:center;
     font-size:clamp(13px,1.7vw,16px);color:var(--ink);z-index:2;
     background:linear-gradient(180deg,transparent,rgba(0,0,0,.7));text-shadow:0 1px 10px rgba(0,0,0,.7);}
-  .plus{position:absolute;right:15px;bottom:15px;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer;z-index:3;
-    background:var(--accent);color:#fff;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;
-    box-shadow:0 4px 16px rgba(224,123,60,.5);transition:transform .3s;font-family:var(--sans);}
-  .card.open .plus{transform:rotate(45deg);}          /* + becomes × */
+  .plus{position:absolute;right:10px;bottom:4px;z-index:3;border:0;background:transparent;box-shadow:none;cursor:pointer;
+    color:var(--accent);font-family:var(--sans);font-weight:400;font-size:clamp(40px,6vw,52px);line-height:1;padding:8px 12px;transition:transform .3s;}
+  .card.open .plus{transform:rotate(45deg);}          /* + becomes × (desktop) */
+
+  /* mobile expand sheet — image slides up, text fills the rest of the screen */
+  .sheet{position:fixed;inset:0;z-index:120;background:#000;display:flex;flex-direction:column;
+    transform:translateY(100%);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .sheet.open{transform:none;}
+  .sheet-img{width:100%;height:44vh;object-fit:cover;flex:0 0 auto;}
+  .sheet-body{flex:1 1 auto;overflow:auto;padding:28px 26px 46px;text-align:left;}
+  .sheet-name{font-size:26px;font-weight:500;margin:0 0 16px;color:var(--ink);}
+  .sheet-text{font-size:16px;line-height:1.78;color:var(--ink);margin:0;}
+  .sheet-close{position:absolute;top:14px;right:16px;z-index:2;width:40px;height:40px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.35);color:#fff;font-size:22px;line-height:1;cursor:pointer;font-family:var(--sans);}
+  @media (min-width:721px){ .sheet{display:none!important;} }
   /* click + -> image darkens, text appears on the image */
   .card .scrim{position:absolute;inset:0;z-index:1;background:rgba(8,8,10,.9);opacity:0;transition:opacity .55s ease;
     pointer-events:none;overflow:auto;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;justify-content:flex-start;text-align:left;}
@@ -111,12 +124,14 @@
   .s4-foot{flex:0 0 auto;font-style:italic;color:var(--ink-dim);font-size:clamp(16px,2.2vw,22px);margin-top:clamp(12px,2.4vh,22px);}
 
   /* 5 · guide — horizontal */
-  .s5-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:clamp(30px,6vw,90px);max-width:1100px;flex-wrap:wrap;}
+  .s5-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:clamp(30px,6vw,90px);max-width:1100px;flex-wrap:wrap;transform:translateY(-5vh);}
   .s5-text{text-align:left;max-width:520px;}
-  .s5-head{margin:0 0 22px;}
-  .s5-stats{display:flex;gap:clamp(24px,4vw,56px);margin:0 0 22px;flex-wrap:wrap;}
-  .s5-stats .num{font-family:var(--serif);font-weight:500;font-size:clamp(26px,4.2vw,42px);line-height:1;}
-  .s5-stats .cap{margin-top:8px;max-width:18ch;}
+  .s5-head{margin:0 0 24px;color:var(--accent);}                 /* orange */
+  .s5-stats{display:flex;gap:clamp(24px,4vw,56px);margin:0 0 24px;flex-wrap:wrap;}
+  .s5-stats .num{font-family:var(--serif);font-weight:500;font-size:clamp(26px,4.2vw,42px);line-height:1.05;color:var(--ink);}
+  .s5-stats .wk{font-size:.42em;color:var(--ink-dim);}
+  .s5-stats .cap{margin-top:10px;max-width:20ch;font-size:13px;letter-spacing:.03em;color:rgba(244,236,220,.85);}  /* higher contrast */
+  .s5-note{font-size:clamp(15px,1.8vw,18px);line-height:1.6;color:rgba(244,236,220,.82);max-width:42ch;}
   .s5-ring{flex:0 0 auto;display:grid;place-items:center;}
 
   /* 6 · data sovereign */
@@ -138,6 +153,13 @@
 </style>
 </head>
 <body>
+
+  <!-- mobile: image slides up, text fills the rest -->
+  <div class="sheet" id="sheet">
+    <button class="sheet-close" id="sheetClose" aria-label="Close">&times;</button>
+    <img class="sheet-img" id="sheetImg" alt="">
+    <div class="sheet-body"><h3 class="sheet-name" id="sheetName"></h3><p class="sheet-text" id="sheetText"></p></div>
+  </div>
 
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
@@ -193,10 +215,10 @@
       <div class="s5-text">
         <h2 class="t2 s5-head">Sona guide you what next</h2>
         <div class="s5-stats">
-          <div><div class="num">130&nbsp;/&nbsp;168 hours</div><div class="cap caption">Average times in live spent at home</div></div>
-          <div><div class="num">200 Tops<span style="color:var(--accent);">+</span></div><div class="cap caption">local private AI computes power</div></div>
+          <div><div class="num">130&nbsp;/&nbsp;168 hours <span class="wk">(One week)</span></div><div class="cap">Averagely times we spent at home in live</div></div>
+          <div><div class="num">200 Tops<span style="color:var(--accent);">+</span></div><div class="cap">local private AI computes power</div></div>
         </div>
-        <p class="body" style="max-width:42ch;">Sona design atmosphere and guide your hormone level with continues experiments</p>
+        <p class="s5-note">Sona design atmosphere and guide your hormone level with continues experiments</p>
       </div>
       <div class="s5-ring">
         <frisson-logo-animated size="300" variant="outline" lockup="none"></frisson-logo-animated>
@@ -209,7 +231,7 @@
     <div class="bg"><img src="assets/sona/s6-privacy.jpg" alt="" loading="lazy"></div>
     <div class="inner reveal">
       <p class="eyebrow" style="color:#fff;opacity:.85;">Data Sovereign</p>
-      <h2 class="t1">What happens in Frisson Stays in Frisson</h2>
+      <h2 class="t1">What happens in Frisson<br>Stays in Frisson</h2>
     </div>
   </section>
 
@@ -246,7 +268,16 @@
     {img:"assets/sona/s4-5-air.jpg", label:"air composition"}
   ];
 
-  // build section 2 gallery — click + darkens image & shows text on it
+  // mobile detection + slide-up sheet
+  var MQ_MOBILE=matchMedia('(max-width:720px)');
+  var sheet=document.getElementById('sheet'),
+      sheetImg=document.getElementById('sheetImg'),
+      sheetName=document.getElementById('sheetName'),
+      sheetText=document.getElementById('sheetText');
+  function openSheet(s){ sheetImg.src=s.img; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); }
+  document.getElementById('sheetClose').addEventListener('click',function(){ sheet.classList.remove('open'); });
+
+  // build section 2 gallery — desktop: darken image + text on it; mobile: slide-up sheet
   var gal2=document.getElementById('gal2');
   SCENES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
@@ -255,7 +286,10 @@
                 '<div class="scrim"><p class="sn">'+s.name+'</p><p class="st"></p></div>'+
                 '<button class="plus" type="button" aria-label="'+s.name+'">+</button>';
     c.querySelector('.st').textContent=s.text;
-    c.querySelector('.plus').addEventListener('click',function(ev){ ev.stopPropagation(); c.classList.toggle('open'); });
+    c.querySelector('.plus').addEventListener('click',function(ev){
+      ev.stopPropagation();
+      if(MQ_MOBILE.matches){ openSheet(s); } else { c.classList.toggle('open'); }
+    });
     gal2.appendChild(c);
   });
 
