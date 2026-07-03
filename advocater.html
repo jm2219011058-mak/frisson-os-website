@@ -30,7 +30,15 @@
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
   .nav .links a{font-size:clamp(14px,1.5vw,18px);color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
-  @media (max-width:680px){ .nav .links a.sec{display:none;} .nav .links{gap:16px;} }
+  /* mobile hamburger + pill menu */
+  .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
+  .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
+  .menu{display:none;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;}
+  .menu.open{display:flex;}
+  .menu a{background:var(--accent);color:#fff;text-decoration:none;text-align:center;padding:12px 24px;border-radius:999px;font-size:15px;white-space:nowrap;box-shadow:0 10px 26px rgba(224,123,60,.35);}
+  @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   .section{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:max(12svh,90px) 28px max(6svh,48px);position:relative;}
@@ -80,6 +88,12 @@
       <a class="sec" href="cities.html">More than human cities</a>
       <a href="sona.html">Sona AI</a>
       <a href="advocater.html" class="cur">Advocater Program</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+    <div class="menu" id="menu">
+      <a href="cities.html">More than human cities</a>
+      <a href="sona.html">Sona AI</a>
+      <a href="advocater.html">Advocater Program</a>
     </div>
   </nav>
 
@@ -135,6 +149,13 @@
         .then(function(){ form.innerHTML='<p class="done">Thank you — we will keep you informed.</p>'; })
         .catch(function(){ form.innerHTML='<p class="done">Thank you.</p>'; });
     });
+  })();
+  /* mobile hamburger menu */
+  (function(){
+    var b=document.getElementById('menuBtn'), m=document.getElementById('menu');
+    if(!b||!m) return;
+    b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
+    m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
   })();
 </script>
 </body>
