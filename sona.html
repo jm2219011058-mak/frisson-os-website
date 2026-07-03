@@ -64,9 +64,9 @@
 
   /* 2 & 4 · horizontal galleries */
   .gal-head{flex:0 0 auto;}
-  .hgal{flex:1 1 auto;display:flex;gap:clamp(14px,2vw,26px);align-items:center;
+  .hgal{flex:0 0 auto;display:flex;gap:clamp(14px,2vw,26px);align-items:center;
     width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
-    padding:clamp(14px,3vh,28px) 0;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;}
+    padding:clamp(20px,4vh,44px) 0;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;}
   .hgal::-webkit-scrollbar{display:none;}
   .hgal.drag{cursor:grabbing;scroll-snap-type:none;}
   .card{position:relative;flex:0 0 auto;border-radius:18px;overflow:hidden;scroll-snap-align:center;
@@ -74,8 +74,8 @@
   .card img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
   /* landscape scenario cards (sized by width -> mobile friendly) */
   #s2 .card{width:min(80vw,640px);aspect-ratio:16/9;}
-  /* portrait sense cards */
-  #s4 .card{width:min(56vw,300px);aspect-ratio:9/16;}
+  /* portrait sense cards — sized by height so the row fits one screen */
+  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;}
 
   .card .name{position:absolute;left:18px;bottom:15px;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em;
     text-shadow:0 2px 14px rgba(0,0,0,.7);pointer-events:none;z-index:2;}
