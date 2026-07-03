@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Advocater Program — FRISSON</title>
+<meta name="description" content="FRISSON Advocater Program — Frisson Magic Conch. The mask comes off January 2027.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/conch-blur.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=block" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.16);
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:-apple-system,"Helvetica Neue","Segoe UI",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
+
+  /* top nav (always visible on this page) */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid rgba(43,29,18,.06);font-family:var(--serif);}
+  .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav .brand .o{color:var(--accent);}
+  .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
+  .nav .links a{font-size:clamp(14px,1.5vw,18px);color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
+  @media (max-width:680px){ .nav .links a.sec{display:none;} .nav .links{gap:16px;} }
+
+  .section{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:max(12svh,90px) 28px max(6svh,48px);position:relative;}
+  .finale{display:flex;flex-direction:column;align-items:center;gap:clamp(22px,5vh,46px);width:100%;}
+
+  .conch{position:relative;width:min(600px,88vw);aspect-ratio:16/9;margin:0 auto;isolation:isolate;background:#15110d;
+    -webkit-clip-path:url(#conchBlob);clip-path:url(#conchBlob);}
+  .conch-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+  .conch-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(120% 100% at 50% 50%,rgba(0,0,0,.18),rgba(0,0,0,0) 72%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 42%);
+    box-shadow:inset 0 1px 1px rgba(255,255,255,.22);}
+  .conch-cap{z-index:3;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--sans);color:#fff;font-weight:500;font-size:clamp(17px,3.2vw,28px);letter-spacing:.01em;line-height:1.22;
+    text-shadow:0 2px 24px rgba(0,0,0,.62);padding:0 28px;margin:0;text-align:center;}
+
+  .meta{display:flex;flex-direction:column;gap:clamp(16px,3vh,28px);}
+  .meta .label{font-size:clamp(19px,3.2vw,28px);font-weight:600;margin:0;}
+  .meta .items{display:flex;justify-content:center;align-items:center;gap:clamp(18px,2.6vw,40px);flex-wrap:wrap;}
+  .meta .item{font-family:var(--sans);font-size:clamp(15px,2.2vw,21px);font-weight:400;margin:0;color:var(--ink-soft);}
+  .meta .items .item+.item{border-left:1px solid var(--hair);padding-left:clamp(18px,2.6vw,40px);}
+  @media (max-width:1024px){ .meta .items{flex-direction:column;gap:clamp(12px,2.6vh,22px);} .meta .items .item+.item{border-left:0;padding-left:0;} }
+
+  .signup{display:flex;align-items:stretch;gap:12px;width:min(560px,92vw);margin:0 auto;}
+  .glass{position:relative;border-radius:999px;overflow:hidden;
+    background:linear-gradient(135deg,rgba(224,123,60,.05),rgba(224,123,60,0) 55%),rgba(255,255,255,.22);
+    backdrop-filter:blur(20px) saturate(1.7);-webkit-backdrop-filter:blur(20px) saturate(1.7);
+    border:1px solid rgba(255,255,255,.5);
+    box-shadow:0 8px 24px rgba(43,29,18,.09),inset 0 1px 1px rgba(255,255,255,.75),inset 0 -8px 18px rgba(224,123,60,.05);}
+  .glass::before{content:"";position:absolute;left:0;right:0;top:0;height:46%;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));border-radius:inherit;pointer-events:none;}
+  .signup .field{flex:1 1 240px;min-width:0;}
+  .signup input[type=email]{position:relative;z-index:1;width:100%;font-family:var(--serif);font-size:clamp(14px,2.2vw,17px);padding:16px 26px;border:0;background:transparent;color:var(--ink);outline:none;}
+  .signup input[type=email]::placeholder{color:var(--ink-soft);opacity:.85;}
+  .signup .submit{flex:0 0 auto;}
+  .signup button{position:relative;z-index:1;cursor:pointer;font-family:var(--serif);font-size:clamp(14px,2.2vw,17px);color:var(--ink);padding:16px 30px;border:0;background:transparent;}
+  .signup .done{flex:1 1 100%;text-align:center;font-style:italic;color:var(--ink-soft);font-size:clamp(15px,2.4vw,19px);}
+</style>
+</head>
+<body>
+
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none;">
+    <defs><clipPath id="conchBlob" clipPathUnits="objectBoundingBox"><path id="conchBlobPath" d="M0.5 0.5"></path></clipPath></defs>
+  </svg>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
+    <div class="links">
+      <a class="sec" href="#">More than human cities</a>
+      <a href="sona.html">Sona AI</a>
+      <a href="advocater.html" class="cur">Advocater Program</a>
+    </div>
+  </nav>
+
+  <section class="section" id="finale">
+    <div class="finale">
+      <div class="conch">
+        <img class="conch-img" src="assets/conch-blur.jpg" alt="Frisson Magic Conch" decoding="async">
+        <div class="conch-scrim"></div>
+        <p class="conch-cap">The Mask comes off<br>January 2027</p>
+      </div>
+      <div class="meta">
+        <p class="label">Frisson Magic Conch :</p>
+        <div class="items">
+          <p class="item">Palazzo Pitti</p>
+          <p class="item">Proactive Hormone-AI OS Intervention</p>
+          <p class="item">Global Residence Networks</p>
+        </div>
+      </div>
+      <form name="frisson-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="signup" id="signupForm">
+        <input type="hidden" name="form-name" value="frisson-signup">
+        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+        <span class="field glass"><input type="email" name="email" placeholder="Your email address" aria-label="Your email address" required></span>
+        <span class="submit glass"><button type="submit">Keep me informed</button></span>
+      </form>
+    </div>
+  </section>
+
+<script>
+  var REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var HARM=[{k:2,a:.07,w:.85,p:.5},{k:3,a:.05,w:-.6,p:2.0},{k:5,a:.03,w:1.0,p:.3}];
+  function blobPath(cx,cy,R0,t,amp,sx,sy){
+    sx=sx==null?1:sx; sy=sy==null?1:sy; var N=64, pts=[], i, j;
+    for(i=0;i<N;i++){ var th=(i/N)*Math.PI*2, rr=1; for(j=0;j<HARM.length;j++){var h=HARM[j];rr+=h.a*amp*Math.sin(h.k*th+h.w*t+h.p);} var r=R0*rr; pts.push([cx+r*Math.cos(th)*sx, cy+r*Math.sin(th)*sy]); }
+    var d='M '+pts[0][0].toFixed(4)+' '+pts[0][1].toFixed(4);
+    for(var k=0;k<N;k++){ var p0=pts[(k-1+N)%N],p1=pts[k],p2=pts[(k+1)%N],p3=pts[(k+2)%N];
+      var c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6, c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+      d+=' C '+c1x.toFixed(4)+' '+c1y.toFixed(4)+' '+c2x.toFixed(4)+' '+c2y.toFixed(4)+' '+p2[0].toFixed(4)+' '+p2[1].toFixed(4); }
+    return d+' Z';
+  }
+  (function(){
+    var path=document.getElementById('conchBlobPath'), conch=document.querySelector('.conch');
+    if(!path||!conch) return;
+    if(REDUCE){ path.setAttribute('d', blobPath(0.5,0.5,0.43,0,1,1,1)); return; }
+    function frame(now){ var t=now/1000, R=0.43*(1+0.018*Math.sin(t*1.15)); path.setAttribute('d', blobPath(0.5,0.5,R,t*0.9,1,1,1)); requestAnimationFrame(frame); }
+    requestAnimationFrame(frame);
+  })();
+  (function(){
+    var form=document.getElementById('signupForm');
+    form.addEventListener('submit',function(ev){
+      ev.preventDefault();
+      var data=new URLSearchParams(new FormData(form)).toString();
+      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
+        .then(function(){ form.innerHTML='<p class="done">Thank you — we will keep you informed.</p>'; })
+        .catch(function(){ form.innerHTML='<p class="done">Thank you.</p>'; });
+    });
+  })();
+</script>
+</body>
+</html>
