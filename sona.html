@@ -65,7 +65,11 @@
 
   /* 2 & 4 · horizontal galleries */
   .gal-head{flex:0 0 auto;}
-  #s2 .gal-head{margin-top:-7vh;}   /* lift the title a little */
+  /* section 2 — Apple-style carousel: title top-left, card centred with breathing room */
+  #s2{justify-content:flex-start;align-items:stretch;text-align:left;}
+  #s2 .gal-head{margin:0 0 clamp(12px,2.4vh,26px);}
+  #s2 .hgal{flex:1 1 auto;gap:clamp(20px,2.6vw,40px);}
+  #s2 .capsule{align-self:center;}
   .hgal{flex:0 0 auto;display:flex;gap:clamp(14px,2vw,26px);align-items:center;
     width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
     padding:clamp(20px,4vh,44px) 0;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;}
@@ -75,7 +79,7 @@
     background:var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.45);}
   .card img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
   /* landscape scenario cards (sized by width -> mobile friendly) */
-  #s2 .card{width:min(80vw,640px);aspect-ratio:16/9;}
+  #s2 .card{width:min(70vw,800px);aspect-ratio:16/9;border-radius:26px;}
   /* portrait sense cards — sized by height so the row fits one screen */
   #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;}
 
