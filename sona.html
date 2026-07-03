@@ -154,6 +154,10 @@
   /* mobile: tighten spacing so sections (esp. 4) don't feel cramped */
   @media (max-width:720px){
     .section{padding:max(9svh,68px) 18px max(5svh,30px);}
+    /* section 2: narrow, tall portrait card that fills the screen (Apple-style) */
+    #s2{justify-content:center;}
+    #s2 .hgal{flex:0 0 auto;}
+    #s2 .card{width:min(84vw,420px);aspect-ratio:3/4;}
     #s4 .card{height:min(40vh,360px);}
     .hgal{padding:clamp(12px,3vh,22px) 0;}
     .s4-sub{font-size:clamp(15px,4.2vw,18px);margin-bottom:8px;}
