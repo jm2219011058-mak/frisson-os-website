@@ -47,13 +47,11 @@
   @media (max-width:680px){ .nav .links a.sec{display:none;} .nav .links{gap:16px;} }
 
   /* section shell */
-  .section{min-height:100svh;scroll-snap-align:start;position:relative;
+  .section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:max(10svh,80px) clamp(18px,5vw,64px) max(6svh,48px);}
+    text-align:center;padding:max(84px,10svh) clamp(18px,5vw,64px) max(48px,7svh);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
-  /* sections 2 & 3 only: content-height, not forced to a full screen (still reachable) */
-  #s2,#s3{min-height:auto;}
 
   /* 1 · hero */
   .orb{position:relative;width:min(40vh,300px);aspect-ratio:1;border-radius:50%;overflow:hidden;margin-bottom:28px;
@@ -115,9 +113,9 @@
   /* 3 · sensing — left-aligned composition (per mockup) */
   #s3{justify-content:center;text-align:left;}
   .s3-inner{width:100%;max-width:1180px;margin:0 auto;}
-  .s3-quote{font-style:italic;font-weight:500;font-size:clamp(28px,4.5vw,50px);line-height:1.2;margin:0;max-width:22ch;}
-  .s3-body{margin:clamp(16px,2.6vh,26px) 0 0;max-width:62ch;}
-  .s3-img{width:100%;border-radius:20px;box-shadow:0 30px 70px rgba(0,0,0,.5);display:block;margin:clamp(24px,4vh,44px) 0 0;}
+  .s3-quote{font-style:italic;font-weight:500;font-size:clamp(26px,4.2vw,46px);line-height:1.2;margin:0;max-width:22ch;}
+  .s3-body{margin:clamp(14px,2.2vh,22px) 0 0;max-width:62ch;}
+  .s3-img{width:auto;max-width:100%;max-height:48vh;border-radius:20px;box-shadow:0 30px 70px rgba(0,0,0,.5);display:block;margin:clamp(18px,3vh,32px) 0 0;}
 
   /* 4 · the most exquisite */
   .s4-sub{max-width:34ch;margin:0 auto 12px;color:var(--ink);}    /* two lines */
@@ -284,8 +282,9 @@
       sheetImg=document.getElementById('sheetImg'),
       sheetName=document.getElementById('sheetName'),
       sheetText=document.getElementById('sheetText');
-  function openSheet(s){ sheetImg.src=s.img; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); }
-  document.getElementById('sheetClose').addEventListener('click',function(){ sheet.classList.remove('open'); });
+  function openSheet(s){ sheetImg.src=s.img; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
+  function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
+  document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
   // build section 2 gallery — desktop: darken image + text on it; mobile: slide-up sheet
   var gal2=document.getElementById('gal2');
@@ -337,11 +336,11 @@
     addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,120); setTimeout(layout,600);
     // drag to scroll (mouse) without stealing button clicks
     var down=false,sx=0,sl=0,drag=false;
-    g.addEventListener('pointerdown',function(e){ if(e.target.closest('.plus')) return; down=true;drag=false;sx=e.clientX;sl=g.scrollLeft; });
+    g.addEventListener('pointerdown',function(e){ drag=false; if(e.target.closest('.plus')) return; down=true;sx=e.clientX;sl=g.scrollLeft; });
     g.addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
     function up(){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); }
     addEventListener('pointerup',up); addEventListener('pointercancel',up);
-    g.addEventListener('click',function(e){ if(drag){ e.preventDefault(); e.stopPropagation(); } },true);
+    g.addEventListener('click',function(e){ if(drag){ e.preventDefault(); e.stopPropagation(); drag=false; } },true);
   }
   initGallery(gal2, document.getElementById('cap2'));
   initGallery(gal4, document.getElementById('cap4'));
