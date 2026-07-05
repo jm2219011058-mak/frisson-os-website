@@ -77,7 +77,7 @@
   .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-size:clamp(14px,1.5vw,18px);color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
   .nav .links a:hover{color:var(--accent);}
   /* mobile hamburger + pill menu */
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
@@ -88,7 +88,7 @@
     opacity:0;pointer-events:none;transform:translateY(-10px);
     transition:opacity .25s ease, transform .4s cubic-bezier(.34,1.56,.64,1);}
   .menu.open{opacity:1;pointer-events:auto;transform:none;}
-  .menu a{background:var(--accent);color:#fff;text-decoration:none;text-align:center;padding:12px 24px;border-radius:999px;font-size:15px;white-space:nowrap;box-shadow:0 10px 26px rgba(224,123,60,.35);
+  .menu a{background:var(--accent);color:#fff;text-decoration:none;text-align:center;padding:12px 24px;border-radius:999px;font-family:var(--sans);font-weight:500;font-size:15px;letter-spacing:.01em;white-space:nowrap;box-shadow:0 10px 26px rgba(224,123,60,.35);
     opacity:0;transform:translateX(26px);transition:opacity .3s ease, transform .45s cubic-bezier(.34,1.56,.64,1);}
   .menu.open a{opacity:1;transform:none;}
   .menu.open a:nth-child(1){transition-delay:.04s;}
