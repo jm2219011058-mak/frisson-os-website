@@ -187,15 +187,14 @@
     .s5-wrap{transform:none;gap:22px;}
   }
 
-  /* Ponch hero on portrait: show the video at its native ratio, full width.
-     The hero is only as tall as the video — the space below simply reveals the next section. */
+  /* Ponch hero on portrait: hero owns a full screen (like the rest).
+     Video at its true ratio, full width, centred on black — its top & bottom edges melt into black. */
   @media (orientation:portrait){
-    #hero{min-height:0;justify-content:flex-start;}
-    .hero-media{position:relative;height:auto;aspect-ratio:1168/1494;}
     .hero-bg{display:none;}
-    .hero-fg{position:relative;width:100%;height:100%;aspect-ratio:1168/1494;object-fit:fill;}
-    .hero-scrim{background:radial-gradient(140% 92% at 50% 44%,transparent 52%,rgba(0,0,0,.42) 100%);}
-    .hero-cap{position:absolute;inset:0;}
+    .hero-fg{object-fit:contain;}
+    .hero-scrim{background:
+      linear-gradient(180deg,#000 13%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 70%,#000 87%),
+      radial-gradient(125% 62% at 50% 50%,transparent 56%,rgba(0,0,0,.32) 100%);}
   }
 
   @media (prefers-reduced-motion:reduce){
