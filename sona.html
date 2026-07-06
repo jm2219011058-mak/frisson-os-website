@@ -69,15 +69,17 @@
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
 
-  /* 1 · hero */
-  .orb{position:relative;width:min(40vh,300px);aspect-ratio:1;border-radius:50%;overflow:hidden;margin-bottom:28px;
-    container-type:inline-size;   /* lock title size to a % of the orb, not the viewport */
-    -webkit-mask:radial-gradient(circle at 50% 50%,#000 62%,transparent 100%);mask:radial-gradient(circle at 50% 50%,#000 62%,transparent 100%);}
-  .orb video{width:100%;height:100%;object-fit:cover;display:block;}
-  .orb-cap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4cqw;}
-  .orb-title{font-family:var(--sans);font-weight:800;font-size:17cqw;letter-spacing:.01em;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.5);}
-  .orb-os{font-family:var(--sans);font-weight:700;font-size:4cqw;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.9);text-shadow:0 2px 20px rgba(0,0,0,.6);}
-  .hero-tag{max-width:24ch;color:var(--ink);}
+  /* 1 · hero — full-screen Ponch video with a soft blurred fill (no hard black edges) */
+  #hero{padding:0;overflow:hidden;background:#000;}
+  .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000;}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);
+    filter:blur(40px) brightness(.5) saturate(1.15);}   /* the surround = a soft, dark, blurred copy of the video */
+  .hero-fg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}   /* the whole video, sharp, centred */
+  .hero-scrim{position:absolute;inset:0;background:radial-gradient(130% 85% at 50% 44%,transparent 42%,rgba(0,0,0,.6) 100%);}
+  .hero-cap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 28px;}
+  .hero-title{font-family:var(--sans);font-weight:800;font-size:clamp(52px,11vw,120px);letter-spacing:.01em;color:#fff;margin:0;text-shadow:0 2px 40px rgba(0,0,0,.55);}
+  .hero-os{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.7vw,15px);letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.92);margin:0;text-shadow:0 2px 24px rgba(0,0,0,.7);}
+  .hero-tag{max-width:24ch;color:#fff;margin:16px 0 0;text-shadow:0 2px 24px rgba(0,0,0,.6);}
 
   /* 2 & 4 · horizontal galleries */
   .gal-head{flex:0 0 auto;}
@@ -216,14 +218,16 @@
 
   <!-- 1 · HERO -->
   <section class="section" id="hero">
-    <div class="orb">
-      <video src="assets/sona/s1-jellyfish.mp4" autoplay muted loop playsinline></video>
-      <div class="orb-cap">
-        <span class="orb-title">Sona</span>
-        <span class="orb-os">Frisson BIO-AI OS</span>
-      </div>
+    <div class="hero-media">
+      <video class="hero-bg" src="assets/sona/ponch.mp4" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+      <video class="hero-fg" src="assets/sona/ponch.mp4" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+      <div class="hero-scrim"></div>
     </div>
-    <p class="hero-tag lead">The Heart-Pounding Magic of Tuning Your Body.</p>
+    <div class="hero-cap">
+      <h1 class="hero-title">Sona</h1>
+      <p class="hero-os">Frisson BIO-AI OS</p>
+      <p class="hero-tag lead">The Heart-Pounding Magic of Tuning Your Body.</p>
+    </div>
   </section>
 
   <!-- 2 · SPACE THAT SENSE YOUR BODY -->
