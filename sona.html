@@ -185,14 +185,17 @@
     .s4-foot{margin-top:clamp(8px,2vh,16px);}
     .capsule{padding:10px 14px;margin-top:clamp(8px,1.6vh,14px);}
     .s5-wrap{transform:none;gap:22px;}
-    .s5-ring{display:none;}   /* drop the decorative ring on mobile — it left an empty gap below the text */
   }
 
-  /* Ponch hero: on portrait screens fill the frame with the video itself (crop, no blurred bars) */
+  /* Ponch hero on portrait: show the video at its native ratio, full width.
+     The hero is only as tall as the video — the space below simply reveals the next section. */
   @media (orientation:portrait){
-    .hero-fg{object-fit:cover;}
+    #hero{min-height:0;justify-content:flex-start;}
+    .hero-media{position:relative;height:auto;}
     .hero-bg{display:none;}
-    .hero-scrim{background:radial-gradient(140% 92% at 50% 46%,transparent 48%,rgba(0,0,0,.5) 100%);}
+    .hero-fg{position:relative;width:100%;height:auto;object-fit:fill;}
+    .hero-scrim{background:radial-gradient(140% 92% at 50% 44%,transparent 52%,rgba(0,0,0,.42) 100%);}
+    .hero-cap{position:absolute;inset:0;}
   }
 
   @media (prefers-reduced-motion:reduce){
