@@ -63,7 +63,7 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* section shell */
-  .section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+  .section{min-height:100svh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:max(84px,10svh) clamp(18px,5vw,64px) max(48px,7svh);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
@@ -185,6 +185,14 @@
     .s4-foot{margin-top:clamp(8px,2vh,16px);}
     .capsule{padding:10px 14px;margin-top:clamp(8px,1.6vh,14px);}
     .s5-wrap{transform:none;gap:22px;}
+    .s5-ring{display:none;}   /* drop the decorative ring on mobile — it left an empty gap below the text */
+  }
+
+  /* Ponch hero: on portrait screens fill the frame with the video itself (crop, no blurred bars) */
+  @media (orientation:portrait){
+    .hero-fg{object-fit:cover;}
+    .hero-bg{display:none;}
+    .hero-scrim{background:radial-gradient(140% 92% at 50% 46%,transparent 48%,rgba(0,0,0,.5) 100%);}
   }
 
   @media (prefers-reduced-motion:reduce){
