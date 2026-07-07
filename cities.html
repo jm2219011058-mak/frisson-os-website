@@ -136,10 +136,29 @@
   .mf-fig.empty::after{content:attr(data-ph);position:absolute;color:var(--ink-soft);opacity:.7;
     font-family:var(--sans);font-size:12px;letter-spacing:.1em;text-align:center;padding:0 24px;line-height:1.6;}
 
-  /* dark Sona band — full-width tonal shift echoing the Sona page */
-  .mf-dark{width:100%;background:#0b0b0d;color:#f4ecdc;padding:clamp(72px,14vh,160px) 0;margin-top:clamp(50px,10vh,120px);}
+  /* dark Sona band — background handled exactly like the Sona AI hero (Ponch video) */
+  .mf-dark{position:relative;overflow:hidden;width:100%;min-height:100vh;min-height:100dvh;background:#000;color:#f4ecdc;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:clamp(72px,14vh,160px) 0;margin-top:clamp(50px,10vh,120px);}
+  .mf-dark .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000;}
+  .mf-dark .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:blur(40px) brightness(.42) saturate(1.15);}
+  .mf-dark .hero-fg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+  .mf-dark .hero-scrim{position:absolute;inset:0;background:radial-gradient(130% 85% at 50% 44%,rgba(0,0,0,.34) 0,rgba(0,0,0,.74) 100%);}
+  .mf-dark .mf-dark-in{position:relative;z-index:2;width:100%;}
+  .mf-dark .sc-cap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 28px;}
+  .mf-dark .sc-title{font-family:var(--sans);font-weight:800;font-size:clamp(52px,11vw,120px);letter-spacing:.01em;line-height:1;color:#fff;margin:0;text-shadow:0 2px 40px rgba(0,0,0,.55);}
+  .mf-dark .sc-os{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.7vw,15px);letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.92);margin:0;text-shadow:0 2px 24px rgba(0,0,0,.7);}
+  .mf-dark .sc-tag{max-width:24ch;margin:16px 0 0;color:#fff;font-weight:400;font-size:clamp(18px,2.2vw,24px);line-height:1.3;text-shadow:0 2px 24px rgba(0,0,0,.6);}
+  .mf-dark .mf-link{margin-top:clamp(30px,5vh,48px);text-shadow:0 2px 20px rgba(0,0,0,.6);}
   .mf-dark .mf-lead{color:#fff;}
-  .mf-dark .mf-p{color:rgba(244,236,220,.9);}
+  .mf-dark .mf-p{color:rgba(244,236,220,.92);}
+  @media (orientation:portrait){
+    .mf-dark .hero-bg{display:none;}
+    .mf-dark .hero-fg{object-fit:contain;}
+    .mf-dark .hero-scrim{background:
+      linear-gradient(180deg,#000 12%,rgba(0,0,0,.15) 32%,rgba(0,0,0,.35) 68%,#000 88%),
+      radial-gradient(130% 60% at 50% 50%,rgba(0,0,0,.25) 45%,rgba(0,0,0,.6) 100%);}
+  }
   .mf-finale{max-width:min(21em,calc(100% - 48px));margin:clamp(46px,9vh,96px) auto 0;text-align:center;
     font-weight:500;font-size:clamp(23px,3.7vw,42px);line-height:1.55;letter-spacing:.05em;color:#fff;}
   .mf-link{display:block;text-align:center;margin:clamp(34px,6vh,54px) auto 0;
@@ -197,7 +216,7 @@
   <section class="mf">
 
     <div class="mf-open reveal">
-      <p class="mf-eyebrow">关于我们 · More than Human City</p>
+      <p class="mf-eyebrow">Frisson Manifesto</p>
     </div>
 
     <!-- 一 · 收藏整个地球的梦境 -->
@@ -266,20 +285,39 @@
       </div>
     </div>
 
-    <!-- dark band · Sona -->
+    <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
     <div class="mf-dark">
-      <div class="mf-rule reveal"></div>
-      <p class="mf-lead reveal">More than Human City,搭载 Sona——Frisson Bio AI OS,这座城如生命般起搏的神经与心。</p>
-      <div class="mf-col reveal">
-        <p class="mf-p">Sona 是一种情绪共情的空间智能。她拨动光、声、温度与空间,如拨动琴弦，每一次流转,都是对你此刻心境的一次应和。她读得懂你的倦怠,你的欣悦,你藏在沉默里、连自己都未曾察觉的渴望。破晓时,她让天光循你苏醒的节律,轻轻漫入;向晚时,她将满室喧嚣,收束成一段恰如其分的静默。</p>
+      <div class="hero-media">
+        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+        <div class="hero-scrim"></div>
       </div>
-      <p class="mf-finale reveal">而这旋律所要抵达的彼岸,正是:极致之美掠过脊背时,那一阵无从言说的战栗。</p>
-      <a class="mf-link reveal" href="sona.html">进入 Sona &rsaquo;</a>
+      <div class="mf-dark-in">
+        <div class="sc-cap reveal">
+          <h2 class="sc-title">Sona</h2>
+          <p class="sc-os">Frisson BIO-AI OS</p>
+          <p class="sc-tag">The Heart-Pounding Magic of Tuning Your Body.</p>
+          <a class="mf-link" href="sona.html">进入 Sona &rsaquo;</a>
+        </div>
+      </div>
     </div>
 
   </section>
 
 <script>
+  /* Sona-band video: muted inline autoplay; fall back to poster if blocked (e.g. Low Power Mode) */
+  (function(){
+    document.querySelectorAll('.mf-dark video').forEach(function(v){
+      v.muted=true; v.defaultMuted=true; v.playsInline=true;
+      function fb(){ if(v.dataset.fb) return; v.dataset.fb='1';
+        var img=document.createElement('img'); img.src=v.getAttribute('poster'); img.className=v.className;
+        img.setAttribute('aria-hidden','true'); img.alt=''; v.parentNode.insertBefore(img,v); v.style.display='none'; }
+      function tp(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+      tp(); setTimeout(function(){ if(v.paused) fb(); },600);
+      document.addEventListener('touchstart',tp,{once:true,passive:true});
+    });
+  })();
+
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
