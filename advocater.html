@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/conch-blur.jpg">
+<link rel="preload" as="image" href="assets/conch.jpg">
 <link rel="preload" as="image" href="assets/advocater/trial-bg.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=block" rel="stylesheet">
 <style>
@@ -117,6 +117,14 @@
   @keyframes nfIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .nf-form.reveal-open{animation:nfIn .45s ease both;}
   .apply-trigger{margin-top:clamp(20px,3.5vh,30px);}
+  /* tier 1 & 2: intro <-> apply toggle */
+  .tier-intro[hidden],.tier-apply[hidden]{display:none;}
+  .tier-apply{max-width:640px;margin:0 auto;}
+  .tier-apply.reveal-open{animation:nfIn .45s ease both;}
+  .tier-apply .nf-form{margin-top:clamp(18px,3vh,26px);}
+  .back-btn{display:block;width:fit-content;margin:0 auto clamp(16px,3vh,22px) 0;background:transparent;border:0;cursor:pointer;
+    font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.72);padding:0;transition:color .25s;}
+  .back-btn:hover{color:#fff;}
 
   /* essay */
   .beat{padding:clamp(46px,9vh,100px) clamp(24px,6vw,60px);}
@@ -175,29 +183,32 @@
     <div class="tier-bg"><img src="assets/advocater/trial-bg.jpg" alt="" loading="lazy"></div>
     <div class="tier-scrim" style="background:linear-gradient(90deg,rgba(8,6,5,.82) 0%,rgba(8,6,5,.5) 55%,rgba(8,6,5,.32) 100%);"></div>
     <div class="tier-inner">
-      <div class="t-split">
+      <div class="t-split tier-intro" id="trialIntro">
         <div class="reveal">
           <h2 class="t-title">Be the first to sleep inside the Magic Conch.</h2>
-          <p class="t-copy">For its first edition, we are inviting a rare few to spend the first nights inside the Frisson Magic Conch — and to feel, first-hand, what a home can give back to a human life.</p>
-          <button type="button" class="apply apply-trigger" data-form="trialForm">Request to experience <span class="arw">&rsaquo;</span></button>
-          <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form" id="trialForm" hidden>
-            <input type="hidden" name="form-name" value="trial-sleep">
-            <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-            <div class="field"><label class="lbl" for="t-name">Full name</label><input id="t-name" type="text" name="name" placeholder="Your name" required></div>
-            <div class="field"><label class="lbl" for="t-email">Email</label><input id="t-email" type="email" name="email" placeholder="you@email.com" required></div>
-            <div class="field"><label class="lbl" for="t-about">A line about you <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="t-about" type="text" name="about" placeholder="Who you are"></div>
-            <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about this experience.</label>
-            <button type="submit" class="apply">Request to experience <span class="arw">&rsaquo;</span></button>
-            <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-          </form>
+          <button type="button" class="apply" data-open="trial">Enquire <span class="arw">&rsaquo;</span></button>
         </div>
         <div class="reveal">
           <div class="conch">
-            <img class="conch-img" src="assets/conch-blur.jpg" alt="Frisson Magic Conch" decoding="async">
+            <img class="conch-img" src="assets/conch.jpg" alt="Frisson Magic Conch" decoding="async">
             <div class="conch-scrim"></div>
             <p class="conch-cap">The Mask comes off<br>January 2027</p>
           </div>
         </div>
+      </div>
+      <div class="tier-apply" id="trialApply" style="margin:0;max-width:560px;" hidden>
+        <button type="button" class="back-btn" data-back="trial">&lsaquo; Back</button>
+        <p class="t-copy">For its first edition, we are inviting a rare few to spend the first nights inside the Frisson Magic Conch — and to feel, first-hand, what a home can give back to a human life.</p>
+        <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form" id="trialForm">
+          <input type="hidden" name="form-name" value="trial-sleep">
+          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+          <div class="field"><label class="lbl" for="t-name">Full name</label><input id="t-name" type="text" name="name" placeholder="Your name" required></div>
+          <div class="field"><label class="lbl" for="t-email">Email</label><input id="t-email" type="email" name="email" placeholder="you@email.com" required></div>
+          <div class="field"><label class="lbl" for="t-about">A line about you <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="t-about" type="text" name="about" placeholder="Who you are"></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about this experience.</label>
+          <button type="submit" class="apply">Request to experience <span class="arw">&rsaquo;</span></button>
+          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+        </form>
       </div>
     </div>
   </section>
@@ -207,46 +218,50 @@
     <div class="tier-bg"><img src="assets/advocater/advocater-bg.jpg" alt="" loading="lazy"></div>
     <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(6,10,18,.6),rgba(6,10,18,.72));"></div>
     <div class="tier-inner">
-      <div class="reveal">
-        <h2 class="t-title" style="margin:0 auto;max-width:20ch;">Help us shape a more-than-human city.</h2>
-        <p class="t-copy" style="margin-left:auto;margin-right:auto;">We are gathering a circle of advocater to advise on the development of our <a href="cities.html">More-Than-Human Cities</a> properties, to refine how they are lived in, and to help decide what comes next.</p>
-      </div>
-      <p class="t-label reveal" style="justify-content:center;margin-top:clamp(40px,6vh,60px);color:var(--accent);letter-spacing:.28em;">If you are</p>
-      <div class="roles6 reveal">
-        <p class="r">The Athlete</p>
-        <p class="r">The Racing Driver</p>
-        <p class="r">The Investor</p>
-        <p class="r">The Singer</p>
-        <p class="r">The Founder</p>
-        <p class="r">The Artist</p>
-      </div>
-      <p class="t-copy reveal" style="margin-left:auto;margin-right:auto;font-style:italic;max-width:40ch;">— and your life is spent in pursuit of what is right, we invite you to join the Advocater Program.</p>
-
-      <button type="button" class="apply apply-trigger reveal" data-form="advocaterForm">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
-      <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm" hidden>
-        <input type="hidden" name="form-name" value="advocater-circle">
-        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-        <div class="field"><label class="lbl" for="a-role">I am a</label>
-          <select id="a-role" name="role" required>
-            <option value="" disabled selected>Select one</option>
-            <option>The Athlete</option>
-            <option>The Racing Driver</option>
-            <option>The Investor</option>
-            <option>The Singer</option>
-            <option>The Founder</option>
-            <option>The Artist</option>
-            <option>Other</option>
-          </select>
+      <div class="tier-intro" id="advIntro">
+        <div class="reveal">
+          <h2 class="t-title" style="margin:0 auto;max-width:20ch;">Help us shape a more-than-human city.</h2>
         </div>
-        <div class="f-row">
-          <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
-          <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
+        <p class="t-label reveal" style="justify-content:center;margin-top:clamp(40px,6vh,60px);color:var(--accent);letter-spacing:.28em;">If you are</p>
+        <div class="roles6 reveal">
+          <p class="r">The Athlete</p>
+          <p class="r">The Racing Driver</p>
+          <p class="r">The Investor</p>
+          <p class="r">The Singer</p>
+          <p class="r">The Founder</p>
+          <p class="r">The Artist</p>
         </div>
-        <div class="field"><label class="lbl" for="a-why">Why you — what you would bring</label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
-        <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
-        <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
-        <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-      </form>
+        <p class="t-copy reveal" style="margin-left:auto;margin-right:auto;font-style:italic;max-width:40ch;">— and your life is spent in pursuit of what is right, we invite you to join the Advocater Program.</p>
+        <button type="button" class="apply reveal" data-open="adv">Enquire <span class="arw">&rsaquo;</span></button>
+      </div>
+      <div class="tier-apply" id="advApply" hidden>
+        <button type="button" class="back-btn" data-back="adv">&lsaquo; Back</button>
+        <p class="t-copy" style="margin:0 auto clamp(20px,3.5vh,28px);">We are gathering a circle of advocater to advise on the development of our <a href="cities.html">More-Than-Human Cities</a> properties, to refine how they are lived in, and to help decide what comes next.</p>
+        <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm">
+          <input type="hidden" name="form-name" value="advocater-circle">
+          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+          <div class="field"><label class="lbl" for="a-role">I am a</label>
+            <select id="a-role" name="role" required>
+              <option value="" disabled selected>Select one</option>
+              <option>The Athlete</option>
+              <option>The Racing Driver</option>
+              <option>The Investor</option>
+              <option>The Singer</option>
+              <option>The Founder</option>
+              <option>The Artist</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="f-row">
+            <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
+            <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
+          </div>
+          <div class="field"><label class="lbl" for="a-why">Why you — what you would bring</label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
+          <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
+          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -283,7 +298,7 @@
         <h2 class="join-title">JOIN FRISSON</h2>
         <p class="t-copy" style="margin-left:auto;margin-right:auto;">If reading this stirred something — come build it with us.</p>
       </div>
-      <button type="button" class="apply apply-trigger reveal" data-form="joinForm">Apply to build Frisson <span class="arw">&rsaquo;</span></button>
+      <button type="button" class="apply apply-trigger reveal" data-form="joinForm">Enquire <span class="arw">&rsaquo;</span></button>
       <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
         <input type="hidden" name="form-name" value="join-frisson">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -293,7 +308,7 @@
         </div>
         <div class="field"><label class="lbl" for="j-mission">What have you built · your mission</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
         <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
-        <button type="submit" class="apply">Apply to build Frisson <span class="arw">&rsaquo;</span></button>
+        <button type="submit" class="apply">Enquire <span class="arw">&rsaquo;</span></button>
         <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
       </form>
     </div>
@@ -330,7 +345,32 @@
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   })();
 
-  /* click a CTA -> reveal its form in place */
+  /* tier 1 & 2: click CTA -> collapse the intro, show only that tier's copy + form */
+  (function(){
+    document.querySelectorAll('[data-open]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var base=btn.getAttribute('data-open');
+        var intro=document.getElementById(base+'Intro'), apply=document.getElementById(base+'Apply');
+        if(!apply) return;
+        if(intro) intro.hidden=true;
+        apply.hidden=false; apply.classList.add('reveal-open');
+        var first=apply.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
+        if(first) setTimeout(function(){ try{first.focus({preventScroll:true});}catch(e){} },60);
+      });
+    });
+    /* Back -> collapse apply, restore the intro */
+    document.querySelectorAll('[data-back]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var base=btn.getAttribute('data-back');
+        var intro=document.getElementById(base+'Intro'), apply=document.getElementById(base+'Apply');
+        if(!apply) return;
+        apply.hidden=true; apply.classList.remove('reveal-open');
+        if(intro){ intro.hidden=false; intro.scrollIntoView({block:'nearest'}); }
+      });
+    });
+  })();
+
+  /* tier 3 (cofounder): click CTA -> reveal its form in place */
   (function(){
     document.querySelectorAll('.apply-trigger').forEach(function(btn){
       btn.addEventListener('click',function(){
