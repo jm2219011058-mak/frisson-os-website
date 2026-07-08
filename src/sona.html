@@ -180,6 +180,9 @@
   /* Chinese keeps the justified body + tighter finale measure it was tuned for */
   html[lang="zh"] .city-body{text-align:justify;line-height:2.05;}
   html[lang="zh"] .city-finale{max-width:22ch;line-height:1.55;}
+  /* Chinese fixes: Latin "Frisson" is wide, so 16ch is too tight for the s6 title; enlarge the eyebrow */
+  html[lang="zh"] #s6 .t1{max-width:22ch;}
+  html[lang="zh"] .eyebrow{font-size:15px;letter-spacing:.28em;}
 
   /* mobile: tighten spacing so sections (esp. 4) don't feel cramped */
   @media (max-width:720px){
