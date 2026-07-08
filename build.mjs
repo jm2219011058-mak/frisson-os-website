@@ -56,6 +56,10 @@ const SWITCH_CSS = `<style>
 .ls-menu a{padding:9px 14px;border-radius:7px;color:#2b1d12;text-decoration:none;opacity:.68;white-space:nowrap;transition:background .2s,opacity .2s;}
 .ls-menu a:hover{background:rgba(43,29,18,.05);opacity:1;}
 .ls-menu a.cur{opacity:1;color:var(--accent,#e07b3c);}
+@media (max-width:680px){
+  .langsel{order:2;}
+  .nav .menu-btn{order:3;margin-left:clamp(14px,4vw,22px);}
+}
 </style>`;
 
 function hreflang(page) {
