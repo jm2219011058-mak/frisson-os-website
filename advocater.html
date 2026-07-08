@@ -112,6 +112,11 @@
   .legal{font-family:var(--sans);font-size:12px;line-height:1.5;color:rgba(255,255,255,.72);margin:14px 0 0;}
   .legal a{color:rgba(255,255,255,.92);text-underline-offset:2px;}
   .nf-form .done{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,20px);color:#fff;text-align:center;margin:0;}
+  /* click-to-open forms */
+  .nf-form[hidden]{display:none;}
+  @keyframes nfIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .nf-form.reveal-open{animation:nfIn .45s ease both;}
+  .apply-trigger{margin-top:clamp(20px,3.5vh,30px);}
 
   /* essay */
   .beat{padding:clamp(46px,9vh,100px) clamp(24px,6vw,60px);}
@@ -163,7 +168,6 @@
   <header class="rec">
     <p class="rec-eyebrow">Advocater Recruitment Program</p>
     <h1 class="rec-title">Where will you choose<br>to devote your life?</h1>
-    <p class="rec-sub">Experience it &nbsp;·&nbsp; Shape it &nbsp;·&nbsp; Build it</p>
   </header>
 
   <!-- TIER 1 · TRIAL SLEEP -->
@@ -176,7 +180,8 @@
           <p class="t-label"><b>01</b>First Sleep</p>
           <h2 class="t-title">Be the first to sleep inside the Magic Conch.</h2>
           <p class="t-copy">For its first edition, we are inviting a rare few to spend the first nights inside the Frisson Magic Conch — and to feel, first-hand, what a home can give back to a human life.</p>
-          <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form" id="trialForm">
+          <button type="button" class="apply apply-trigger" data-form="trialForm">Request to experience <span class="arw">&rsaquo;</span></button>
+          <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form" id="trialForm" hidden>
             <input type="hidden" name="form-name" value="trial-sleep">
             <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
             <div class="field"><label class="lbl" for="t-name">Full name</label><input id="t-name" type="text" name="name" placeholder="Your name" required></div>
@@ -219,7 +224,8 @@
       </div>
       <p class="t-copy reveal" style="margin-left:auto;margin-right:auto;font-style:italic;max-width:40ch;">— and your life is spent in pursuit of what is right, we invite you to join the Advocater Program.</p>
 
-      <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center reveal" id="advocaterForm">
+      <button type="button" class="apply apply-trigger reveal" data-form="advocaterForm">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
+      <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm" hidden>
         <input type="hidden" name="form-name" value="advocater-circle">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
         <div class="field"><label class="lbl" for="a-role">I am a</label>
@@ -280,7 +286,8 @@
         <h2 class="join-title">JOIN FRISSON</h2>
         <p class="t-copy" style="margin-left:auto;margin-right:auto;">If reading this stirred something — if you are a person of extraordinary talent in search of a noble cause — come build it with us.</p>
       </div>
-      <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center reveal" id="joinForm">
+      <button type="button" class="apply apply-trigger reveal" data-form="joinForm">Apply to build Frisson <span class="arw">&rsaquo;</span></button>
+      <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
         <input type="hidden" name="form-name" value="join-frisson">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
         <div class="f-row">
@@ -324,6 +331,19 @@
   (function(){
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  })();
+
+  /* click a CTA -> reveal its form in place */
+  (function(){
+    document.querySelectorAll('.apply-trigger').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var form=document.getElementById(btn.getAttribute('data-form'));
+        if(!form) return;
+        form.hidden=false; form.classList.add('reveal-open'); btn.style.display='none';
+        var first=form.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
+        if(first) setTimeout(function(){ try{first.focus({preventScroll:true});}catch(e){} },60);
+      });
+    });
   })();
 
   /* Netlify forms — AJAX submit (select by class; the data-netlify attr is stripped at deploy) */
