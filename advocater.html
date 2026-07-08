@@ -127,7 +127,7 @@
   .back-btn:hover{color:#fff;}
 
   /* essay */
-  .beat{padding:clamp(46px,9vh,100px) clamp(24px,6vw,60px);}
+  .beat{padding:clamp(22px,3.6vh,44px) clamp(24px,6vw,60px);}
   .rd{max-width:640px;margin:0 auto;}
   .rd-p{font-size:clamp(16px,1.7vw,19px);line-height:1.85;color:var(--ink-soft);margin:0 0 1.4em;text-align:left;}
   .rd-p:last-child{margin-bottom:0;}
@@ -240,23 +240,11 @@
         <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm">
           <input type="hidden" name="form-name" value="advocater-circle">
           <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-          <div class="field"><label class="lbl" for="a-role">I am a</label>
-            <select id="a-role" name="role" required>
-              <option value="" disabled selected>Select one</option>
-              <option>The Athlete</option>
-              <option>The Racing Driver</option>
-              <option>The Investor</option>
-              <option>The Singer</option>
-              <option>The Founder</option>
-              <option>The Artist</option>
-              <option>Other</option>
-            </select>
-          </div>
           <div class="f-row">
             <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
             <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
           </div>
-          <div class="field"><label class="lbl" for="a-why">Why you — what you would bring</label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
+          <div class="field"><label class="lbl" for="a-why">Why you — what you would bring <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
           <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
           <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
           <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
