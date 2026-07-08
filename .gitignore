@@ -6,3 +6,5 @@ Thumbs.db
 
 # Netlify
 .netlify/
+dist/
+node_modules/

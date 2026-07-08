@@ -1,6 +1,12 @@
-# Netlify config — static site, no build step.
+# Netlify config — multilingual static build.
+# The build machine turns src/ templates + the translation table into
+# EN (root) and ZH (/zh/) pages, output to /dist which Netlify publishes.
 [build]
-  publish = "."
+  command = "node gen-i18n.mjs && node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
 
 # Assets: cache but revalidate, so updates at the same filename still propagate.
 [[headers]]

@@ -168,34 +168,36 @@
 
   @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} html{scroll-behavior:auto;} }
 </style>
+<!--HREFLANG-->
 </head>
 <body>
 
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a href="cities.html" class="cur">More-Than-Human Cities</a>
-      <a href="sona.html">Sona AI</a>
-      <a href="advocater.html">Advocater Program</a>
+      <a href="cities.html" class="cur">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html">{{nav.advocater}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">More-Than-Human Cities</a>
-      <a href="sona.html">Sona AI</a>
-      <a href="advocater.html">Advocater Program</a>
+      <a href="cities.html">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html">{{nav.advocater}}</a>
     </div>
+    <!--LANGNAV-->
   </nav>
 
   <header class="hero">
     <img src="assets/city/hero.jpg?v=2" alt="Conquest of Paradise — a residence on a mountain ridge">
-    <p class="hero-top">A world of your own to forge.<br>What will it become?</p>
-    <h1 class="hero-title">Conquest of Paradise</h1>
+    <p class="hero-top">{{2.1}}</p>
+    <h1 class="hero-title">{{2.2}}</h1>
   </header>
 
   <section class="intro reveal">
     <div class="intro-in">
-      <h2>A Place Where You Belong...</h2>
-      <p>Space sensing your body,<br>Space healing your body,<br>Soulful living,</p>
+      <h2>{{2.3}}</h2>
+      <p>{{2.4}}</p>
     </div>
   </section>
 
@@ -204,8 +206,8 @@
       <img src="assets/city/big.jpg" alt="A residence carved into a desert canyon" loading="lazy">
     </div>
     <div class="ed-right reveal">
-      <blockquote class="ed-quote">"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."</blockquote>
-      <p class="ed-attr">— The Aleph</p>
+      <blockquote class="ed-quote">{{2.5}}</blockquote>
+      <p class="ed-attr">{{2.6}}</p>
       <div class="ed-smalls">
         <img src="assets/city/small-1.jpg" alt="A bather in a travertine sanctuary" loading="lazy">
         <img src="assets/city/small-2.jpg" alt="Living branches in soft smoke" loading="lazy">
@@ -217,56 +219,56 @@
   <section class="mf">
 
     <div class="mf-open reveal">
-      <p class="mf-eyebrow">Frisson Manifesto</p>
+      <p class="mf-eyebrow">{{2.7}}</p>
     </div>
 
     <!-- 一 · 收藏整个地球的梦境 -->
     <div class="mf-ch">
       <div class="reveal">
         <div class="mf-rule"></div>
-        <h2 class="mf-title">收藏整个地球的梦境</h2>
+        <h2 class="mf-title">{{2.8}}</h2>
       </div>
-      <p class="mf-lead reveal">伟大城市，从来不是因为聚集了最多的建筑，而是因为美在走了五百年之后，选择了这里——为那些最具创造力的人，重新开始。</p>
+      <p class="mf-lead reveal">{{2.9}}</p>
 
       <figure class="mf-fig full ar32 reveal" data-ph="CHAPTER I · 美的迁徙 — Florence / a vista or Renaissance masterwork">
         <img src="assets/city/about-migration.jpg" alt="美的迁徙" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
       </figure>
 
       <div class="mf-col reveal">
-        <p class="mf-p">我们相信'美' 本身具有迁徙的能力。</p>
-        <p class="mf-p">它穿越地理、战争与文明的更替,在极少数时刻停留下来，我们向它停留过的地方致敬。</p>
-        <p class="mf-p">佛罗伦萨曾是它的驿站,德文郡的原野、里斯本的第七座山丘、法兰西岛的森林,也都曾是。</p>
-        <p class="mf-p">我们植入欧洲文艺复兴四大家族Medici、Cavendish、Palmela、Montmorency的美学基因,并把它们转译为当代的建造语言。</p>
+        <p class="mf-p">{{2.10}}</p>
+        <p class="mf-p">{{2.11}}</p>
+        <p class="mf-p">{{2.12}}</p>
+        <p class="mf-p">{{2.13}}</p>
       </div>
 
       <div class="mf-cat reveal">
-        <div class="item"><p class="mf-p"><b class="pl">佛罗伦萨</b>,是 Brunelleschi 的比例、pietra serena 的青灰石、Raphael 的湿壁画,和 Boboli 花园里 Buontalenti 的人工岩窟(grotto)</p></div>
-        <div class="item"><p class="mf-p"><b class="pl">查茨沃斯</b>是一部从未写完的书,从 William Kent 的座椅、Paxton 的温室,到 Lucian Freud 的肖像</p></div>
-        <div class="item"><p class="mf-p"><b class="pl">帕尔梅拉宫</b>藏着 Anatole Calmels 的赫姆柱(herm)、trompe-l'œil 的错视、chinoiserie 的东方纹样,和 azulejos 蓝白釉瓷的温润光泽</p></div>
-        <div class="item"><p class="mf-p"><b class="pl">Montmorency Écouen</b> 是一座会呼吸的要塞,集结了整个时代最好的手-Jean Bullant 的敞廊(loggia)、Jean Goujon 的雕刻、Léonard Limosin 的利摩日珐琅、Bernard Palissy 与 Masséot Abaquesne 的陶。</p></div>
+        <div class="item"><p class="mf-p">{{2.14a}}</p></div>
+        <div class="item"><p class="mf-p">{{2.14b}}</p></div>
+        <div class="item"><p class="mf-p">{{2.14c}}</p></div>
+        <div class="item"><p class="mf-p">{{2.14d}}</p></div>
       </div>
 
       <figure class="mf-fig narrow ar45 reveal" data-ph="CHAPTER I · 一处细节 — azulejos / grotto / pietra serena">
         <img src="assets/city/about-detail.jpg" alt="一处细节" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
       </figure>
 
-      <p class="mf-lead reveal">我们的最终目标是重建一样更恒久、也更珍贵的东西——对人的尊重。</p>
+      <p class="mf-lead reveal">{{2.15}}</p>
     </div>
 
     <!-- 二 · 超越画布 -->
     <div class="mf-ch">
       <div class="reveal">
         <div class="mf-rule"></div>
-        <h2 class="mf-title">超越画布</h2>
+        <h2 class="mf-title">{{2.16}}</h2>
       </div>
-      <p class="mf-lead reveal">让艺术离开画布,进入建筑、进入光、进入身体,最终进入人的内心。</p>
+      <p class="mf-lead reveal">{{2.17}}</p>
 
       <figure class="mf-fig wide ar169 reveal">
         <img src="assets/city/beyond-canvas.jpg?v=2" alt="Beyond the canvas" loading="lazy">
       </figure>
 
       <div class="mf-col reveal">
-        <p class="mf-p">我们将当代艺术家的设计灵感注入建筑细节并由计算设计和3D墙体打印带给世界，如Jesperish的作品通过对远古未来世界的感知，探索身份、情感和符号系统，他运用象征手法，唤起人们的直觉，探索建筑、文化和环境如何塑造人类的内心世界。</p>
+        <p class="mf-p">{{2.18}}</p>
       </div>
 
     </div>
@@ -275,12 +277,12 @@
     <div class="mf-ch">
       <div class="reveal">
         <div class="mf-rule"></div>
-        <h2 class="mf-title">不是关于"超越人类"的狂想</h2>
+        <h2 class="mf-title">{{2.19}}</h2>
       </div>
-      <p class="mf-lead reveal">真正的"更多",不是超越人,而是更深地懂得人、尊重人。</p>
+      <p class="mf-lead reveal">{{2.20}}</p>
       <div class="mf-col reveal">
-        <p class="mf-p">因为它是一种为人的感知而作的精密编排。</p>
-        <p class="mf-p">我们所超越的,是那种把人当作数据、把居所当作机器的贫乏想象。二十世纪的城市曾迷信一个隐喻:住宅是"居住的机器"。于是我们得到了高效却冷漠的空间,人成了流程里的一个变量。而我们要造的,是一个懂得感知的居所。</p>
+        <p class="mf-p">{{2.21}}</p>
+        <p class="mf-p">{{2.22}}</p>
       </div>
     </div>
 
@@ -295,8 +297,8 @@
         <div class="sc-cap reveal">
           <h2 class="sc-title">Sona</h2>
           <p class="sc-os">Frisson BIO-AI OS</p>
-          <p class="sc-tag">The Heart-Pounding Magic of Tuning Your Body.</p>
-          <a class="mf-link" href="sona.html">进入 Sona &rsaquo;</a>
+          <p class="sc-tag">{{2.23.tag}}</p>
+          <a class="mf-link" href="sona.html">{{2.24}}</a>
         </div>
       </div>
     </div>

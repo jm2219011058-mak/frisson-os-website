@@ -153,6 +153,7 @@
   .reveal.in{opacity:1;transform:none;}
   @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} html{scroll-behavior:auto;} }
 </style>
+<!--HREFLANG-->
 </head>
 <body>
 
@@ -163,16 +164,17 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a href="cities.html">More-Than-Human Cities</a>
-      <a href="sona.html">Sona AI</a>
-      <a href="advocater.html" class="cur">Advocater Program</a>
+      <a href="cities.html">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html" class="cur">{{nav.advocater}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">More-Than-Human Cities</a>
-      <a href="sona.html">Sona AI</a>
-      <a href="advocater.html">Advocater Program</a>
+      <a href="cities.html">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html">{{nav.advocater}}</a>
     </div>
+    <!--LANGNAV-->
   </nav>
 
   <!-- HERO -->
@@ -237,7 +239,7 @@
       </div>
       <div class="tier-apply" id="advApply" hidden>
         <button type="button" class="back-btn" data-back="adv">&lsaquo; Back</button>
-        <p class="t-copy" style="margin:0 auto clamp(20px,3.5vh,28px);">We are gathering a circle of advocaters to advise on the development of our <a href="cities.html">More-Than-Human Cities</a> properties, to refine how they are lived in, and to help decide what comes next.</p>
+        <p class="t-copy" style="margin:0 auto clamp(20px,3.5vh,28px);">We are gathering a circle of advocaters to advise on the development of our <a href="cities.html">{{nav.cities}}</a> properties, to refine how they are lived in, and to help decide what comes next.</p>
         <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm">
           <input type="hidden" name="form-name" value="advocater-circle">
           <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
