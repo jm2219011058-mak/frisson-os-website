@@ -181,22 +181,20 @@
   <!-- TIER 1 · TRIAL SLEEP -->
   <section class="tier" id="trial">
     <div class="tier-bg"><img src="assets/advocater/trial-bg.jpg" alt="" loading="lazy"></div>
-    <div class="tier-scrim" style="background:linear-gradient(90deg,rgba(8,6,5,.82) 0%,rgba(8,6,5,.5) 55%,rgba(8,6,5,.32) 100%);"></div>
+    <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(8,6,5,.5) 0%,rgba(8,6,5,.66) 100%),radial-gradient(120% 90% at 50% 46%,rgba(0,0,0,0) 40%,rgba(0,0,0,.42) 100%);"></div>
     <div class="tier-inner">
-      <div class="t-split tier-intro" id="trialIntro">
+      <div class="tier-intro" id="trialIntro" style="text-align:center;">
         <div class="reveal">
-          <h2 class="t-title">Be the first to sleep inside the Magic Conch.</h2>
-          <button type="button" class="apply" data-open="trial">Enquire <span class="arw">&rsaquo;</span></button>
-        </div>
-        <div class="reveal">
-          <div class="conch">
+          <h2 class="t-title" style="margin:0 auto;max-width:15ch;">Be the first to sleep inside the Magic Conch.</h2>
+          <div class="conch" style="margin:clamp(30px,5.5vh,52px) auto;">
             <img class="conch-img" src="assets/conch.jpg" alt="Frisson Magic Conch" decoding="async">
             <div class="conch-scrim"></div>
             <p class="conch-cap">The Mask comes off<br>January 2027</p>
           </div>
+          <button type="button" class="apply" data-open="trial" style="margin-top:0;">Enquire <span class="arw">&rsaquo;</span></button>
         </div>
       </div>
-      <div class="tier-apply" id="trialApply" style="margin:0;max-width:560px;" hidden>
+      <div class="tier-apply" id="trialApply" hidden>
         <button type="button" class="back-btn" data-back="trial">&lsaquo; Back</button>
         <p class="t-copy">For its first edition, we are inviting a rare few to spend the first nights inside the Frisson Magic Conch — and to feel, first-hand, what a home can give back to a human life.</p>
         <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form" id="trialForm">
