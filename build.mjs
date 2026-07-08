@@ -79,8 +79,9 @@ for (const page of pages) {
     out = out.replace(/<!--LANGNAV-->/g, switcher(L.code, page));
     out = out.replace('</head>', SWITCH_CSS + '\n</head>');
     if (L.base) {
-      // pages served from /zh/ reach assets one level up (works on server and local file://)
-      out = out.replace(/(src|href|poster)="assets\//g, '$1="../assets/');
+      // pages served from /zh/ reach assets one level up (works on server and local file://).
+      // Broad match so JS-built paths like  img:"assets/..."  are rewritten too.
+      out = out.replace(/(["'])assets\//g, '$1../assets/');
       out = out.replace(/url\(assets\//g, 'url(../assets/');
     }
     const outDir = path.join(DIST, L.base);
