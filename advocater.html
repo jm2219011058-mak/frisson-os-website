@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Advocater Program — FRISSON</title>
-<meta name="description" content="FRISSON Advocater Program — Frisson Magic Conch. The mask comes off January 2027.">
+<meta name="description" content="FRISSON Advocater Recruitment Program — where will you choose to devote your life? The mask comes off January 2027.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,6 +82,47 @@
   .signup .submit{flex:0 0 auto;}
   .signup button{position:relative;z-index:1;cursor:pointer;font-family:var(--serif);font-size:clamp(14px,2.2vw,17px);color:var(--ink);padding:16px 30px;border:0;background:transparent;}
   .signup .done{flex:1 1 100%;text-align:center;font-style:italic;color:var(--ink-soft);font-size:clamp(15px,2.4vw,19px);}
+
+  /* ===== recruitment long-read ===== */
+  .rec{max-width:900px;margin:0 auto;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    padding:clamp(110px,18vh,200px) clamp(24px,6vw,60px) clamp(50px,9vh,90px);}
+  .rec-eyebrow{font-family:var(--sans);font-size:clamp(11px,1.4vw,14px);letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(26px,5vh,44px);}
+  .rec-title{font-weight:600;font-size:clamp(34px,6.4vw,74px);line-height:1.12;letter-spacing:.01em;margin:0;color:var(--ink);}
+
+  .beat{padding:clamp(40px,8vh,92px) clamp(24px,6vw,60px);}
+  .rd{max-width:640px;margin:0 auto;}
+  .rd-p{font-size:clamp(16px,1.7vw,19px);line-height:1.85;color:var(--ink-soft);margin:0 0 1.4em;text-align:left;}
+  .rd-p:last-child{margin-bottom:0;}
+  .rd-h{font-weight:600;font-size:clamp(28px,4.6vw,52px);line-height:1.18;color:var(--ink);text-align:center;max-width:18ch;margin:0 auto;}
+  .rd-quote{font-weight:500;font-style:italic;font-size:clamp(21px,3.2vw,34px);line-height:1.42;color:var(--ink);text-align:center;max-width:22ch;margin:0 auto;}
+  .rd-close{font-weight:500;font-size:clamp(23px,3.6vw,42px);line-height:1.4;color:var(--ink);text-align:center;max-width:20ch;margin:0 auto;}
+  .rd-close .em{color:var(--accent);}
+
+  /* invitation */
+  .invite{padding:clamp(50px,10vh,120px) clamp(24px,6vw,60px) clamp(30px,5vh,50px);text-align:center;}
+  .invite-lead{font-weight:600;font-size:clamp(26px,4vw,46px);line-height:1.2;color:var(--ink);margin:0 auto;max-width:18ch;}
+  .invite-sub{font-size:clamp(16px,1.9vw,20px);line-height:1.7;color:var(--ink-soft);max-width:42ch;margin:clamp(20px,3.5vh,32px) auto 0;}
+  .invite-if{font-family:var(--sans);font-size:clamp(12px,1.4vw,14px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:clamp(44px,7vh,70px) 0 0;}
+  .roles6{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px);max-width:760px;margin:clamp(22px,3.6vh,36px) auto 0;}
+  .roles6 .r{border-top:2px solid var(--accent);padding-top:14px;font-family:var(--serif);font-weight:500;font-size:clamp(16px,1.9vw,21px);color:var(--ink);text-align:left;}
+  @media (max-width:640px){ .roles6{grid-template-columns:repeat(2,1fr);} }
+  .invite-close{font-size:clamp(17px,2vw,22px);line-height:1.6;color:var(--ink);max-width:34ch;margin:clamp(40px,6.5vh,64px) auto 0;font-style:italic;}
+
+  /* apply CTA */
+  .apply-form{display:flex;flex-direction:column;align-items:center;gap:16px;width:min(460px,92vw);margin:0 auto;}
+  .apply-note{font-family:var(--sans);font-size:clamp(12px,1.4vw,14px);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);}
+  .apply-form .field.glass{width:100%;}
+  .apply-form input[type=email]{position:relative;z-index:1;width:100%;font-family:var(--serif);font-size:clamp(14px,2.2vw,17px);padding:16px 26px;border:0;background:transparent;color:var(--ink);outline:none;text-align:center;}
+  .apply-form input[type=email]::placeholder{color:var(--ink-soft);opacity:.85;}
+  .apply-form .done{font-style:italic;color:var(--ink-soft);font-size:clamp(15px,2.4vw,19px);text-align:center;}
+  .apply{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:600;font-size:clamp(15px,2vw,18px);letter-spacing:.02em;color:#fff;background:var(--accent);padding:18px 42px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;box-shadow:0 14px 34px rgba(224,123,60,.34);transition:transform .3s,box-shadow .3s;}
+  .apply:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(224,123,60,.44);}
+  .apply .arw{font-size:1.15em;line-height:1;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} }
 </style>
 </head>
 <body>
@@ -105,6 +146,29 @@
     </div>
   </nav>
 
+  <!-- HERO — the question -->
+  <header class="rec">
+    <p class="rec-eyebrow">Advocater Recruitment Program</p>
+    <h1 class="rec-title">Where will you choose<br>to devote your life?</h1>
+  </header>
+
+  <!-- INVITATION -->
+  <section class="invite">
+    <h2 class="invite-lead reveal">We are calling our first Advocaters.</h2>
+    <p class="invite-sub reveal">To spend the first nights inside the first Frisson Magic Conch — and to help us prove what a home can give back to a human life.</p>
+    <p class="invite-if reveal">If you are</p>
+    <div class="roles6 reveal">
+      <p class="r">The Athlete</p>
+      <p class="r">The Racing Driver</p>
+      <p class="r">The Investor</p>
+      <p class="r">The Singer</p>
+      <p class="r">The Founder</p>
+      <p class="r">The Artist</p>
+    </div>
+    <p class="invite-close reveal">— and your life is spent in pursuit of what is right, we invite you to join the Advocater Program.</p>
+  </section>
+
+  <!-- CONCH + APPLY -->
   <section class="section" id="finale">
     <div class="finale">
       <div class="conch">
@@ -112,21 +176,55 @@
         <div class="conch-scrim"></div>
         <p class="conch-cap">The Mask comes off<br>January 2027</p>
       </div>
-      <div class="meta">
-        <p class="label">Frisson Magic Conch :</p>
-        <div class="items">
-          <p class="item">Palazzo Pitti</p>
-          <p class="item">Proactive Hormone-AI OS Intervention</p>
-          <p class="item">Global Residence Networks</p>
-        </div>
-      </div>
-      <form name="frisson-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="signup" id="signupForm">
-        <input type="hidden" name="form-name" value="frisson-signup">
+      <form name="advocater-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="apply-form reveal" id="applyForm">
+        <input type="hidden" name="form-name" value="advocater-application">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-        <span class="field glass"><input type="email" name="email" placeholder="Your email address" aria-label="Your email address" required></span>
-        <span class="submit glass"><button type="submit">Keep me informed</button></span>
+        <label class="apply-note" for="applyEmail">Enter your email to apply</label>
+        <span class="field glass"><input id="applyEmail" type="email" name="email" placeholder="Your email address" aria-label="Your email address" required></span>
+        <button type="submit" class="apply">Apply to become an Advocater <span class="arw">&rsaquo;</span></button>
       </form>
     </div>
+  </section>
+
+  <!-- ESSAY -->
+  <section class="beat">
+    <div class="rd reveal">
+      <p class="rd-p">In the early 20th century, the Wright brothers set out on the journey to build the first controllable aircraft. Half a century later, NASA embarked on the mission to put humans on the moon. Combustion, penicillin, nuclear fission; the discovery of the Americas, the drafting of the Constitution, the Normandy landings—history is written by heroic figures in pursuit of what is right.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <h2 class="rd-h reveal">What is your mission?</h2>
+  </section>
+
+  <section class="beat">
+    <div class="rd reveal">
+      <p class="rd-p">We often think of our life's purpose as a mission. Your mission might be to reach a specific milestone: to become a senator, to publish a book, to make a million dollars. But not every mission has an endpoint. You might be working to maximize your net worth, or to lift more weight in the gym than anyone else. Maybe you simply want to enjoy life to the fullest before you die. That's a far cry from the refrigerator or running water, but it's still a good life.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <p class="rd-quote reveal">As you may already have realized, not all missions are created equal.</p>
+  </section>
+
+  <section class="beat">
+    <div class="rd reveal">
+      <p class="rd-p">Put simply: a good adventure makes the future better than the world we have today, while a bad adventure does nothing to improve the world at all—or even makes it worse.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <h2 class="rd-h reveal">Today, we find ourselves in a crisis.</h2>
+  </section>
+
+  <section class="beat">
+    <div class="rd reveal">
+      <p class="rd-p">Silicon Valley's elite—the top operators, the founders with successful exits, and the most influential investors—are almost all walking down the wrong path. After exiting your first startup, turning to venture capital to fight your peers for a share of the hot deals is in itself the wrong choice. Pontificating about philosophy on Twitter is also the wrong choice. Retiring at 35 to lounge on a yacht and answer emails is an even more egregiously wrong choice. Even among the exceptional talents who do choose to build companies, most opt for safe, incremental bets—another SaaS company, another point-and-click consumer startup, another digital version of the Beanie Baby. Pursuits like these not only fail to push the world forward; they squander the opportunity. Humanity faces many important challenges, some of them matters of life and death, and yet they go unaddressed.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <p class="rd-close reveal">In other words, if you are a person of extraordinary talent, giving up the pursuit of a noble cause is not a trivial matter—<span class="em">it is a loss for humanity.</span></p>
   </section>
 
 <script>
@@ -149,12 +247,18 @@
     requestAnimationFrame(frame);
   })();
   (function(){
-    var form=document.getElementById('signupForm');
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.14});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  })();
+  /* Advocater application — capture email via Netlify Forms */
+  (function(){
+    var form=document.getElementById('applyForm');
+    if(!form) return;
     form.addEventListener('submit',function(ev){
       ev.preventDefault();
       var data=new URLSearchParams(new FormData(form)).toString();
       fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
-        .then(function(){ form.innerHTML='<p class="done">Thank you — we will keep you informed.</p>'; })
+        .then(function(){ form.innerHTML='<p class="done">Thank you — we’ll be in touch.</p>'; })
         .catch(function(){ form.innerHTML='<p class="done">Thank you.</p>'; });
     });
   })();
