@@ -304,12 +304,15 @@
     .prop-hero{display:block;}
     .prop-hero-left{min-width:0;max-width:min(720px,100%);}
     .prop-badge{margin:0 0 clamp(16px,2.6vh,22px);}
+    .prop-launch{font-family:var(--sans);font-weight:700;font-size:clamp(34px,7vw,86px);letter-spacing:.01em;line-height:.98;color:#fff;margin:0 0 clamp(34px,6vh,64px);}
+    .prop-head{display:flex;align-items:center;gap:clamp(14px,2vw,22px);flex-wrap:wrap;margin:0 0 clamp(18px,3vh,26px);}
+    .coll-lead{font-family:var(--serif);font-size:clamp(18px,2.1vw,26px);line-height:1.5;color:rgba(244,236,220,.9);max-width:34ch;margin:0 0 clamp(36px,6vh,64px);text-wrap:pretty;}
     .prop-tagline{font-family:var(--serif);font-size:clamp(17px,1.95vw,23px);line-height:1.6;color:rgba(244,236,220,.82);max-width:46ch;margin:0 0 clamp(30px,4.6vh,48px);text-wrap:pretty;}
     .prop-eyebrow{font-size:clamp(11px,1.25vw,13.5px);letter-spacing:.26em;text-transform:uppercase;color:rgba(244,236,220,.5);margin:0 0 10px;}
-    .prop-loc{font-size:clamp(12px,1.35vw,15px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(18px,3vh,26px);}
+    .prop-loc{font-size:clamp(12px,1.35vw,15px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0;}
     .prop-name{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,74px);line-height:1.02;letter-spacing:.005em;color:#fff;margin:0 0 clamp(34px,6vh,58px);}
     .prop-stats{display:flex;flex-direction:column;gap:clamp(22px,3.6vh,38px);margin:0 0 clamp(34px,5vh,50px);}
-    .stat{display:flex;flex-direction:column;gap:8px;}
+    .stat{display:flex;flex-direction:row;align-items:baseline;gap:clamp(10px,1.4vw,16px);}
     .stat-num{font-weight:200;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:.005em;color:#fff;}
     .stat-cap{font-size:clamp(12.5px,1.4vw,15.5px);letter-spacing:.02em;color:rgba(244,236,220,.5);}
     .learn{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.03em;color:rgba(244,236,220,.75);background:transparent;border:0;padding:0;cursor:pointer;transition:color .25s;}
@@ -318,7 +321,8 @@
     .learn:hover i{transform:translateX(3px);}
     .prop-render{margin:0;display:flex;align-items:center;justify-content:center;}
     .prop-render img{display:block;width:100%;max-width:420px;height:auto;max-height:clamp(420px,64vh,650px);object-fit:contain;}
-    .prop-collhead{margin:clamp(52px,9vh,104px) 0 clamp(20px,3.4vh,30px);}
+    .coll-launch{margin-top:clamp(72px,13vh,150px);}
+    .prop-collhead{margin:clamp(16px,2.6vh,24px) 0 clamp(16px,2.6vh,22px);}
     .pill{display:inline-flex;align-items:center;font-family:var(--sans);font-weight:500;font-size:clamp(10.5px,1.15vw,12.5px);letter-spacing:.18em;text-transform:uppercase;color:rgba(244,236,220,.82);border:1px solid rgba(255,255,255,.24);border-radius:999px;padding:8px 18px;}
     .prop-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,22px);}
     .prop-card{position:relative;overflow:hidden;display:block;width:100%;min-height:clamp(280px,40vh,380px);padding:0;border:1px solid rgba(255,255,255,.14);border-radius:14px;cursor:pointer;text-align:left;background:linear-gradient(165deg,#141210,#0a0908);transition:transform .3s,border-color .3s;}
@@ -350,54 +354,53 @@
     <div class="props">
      <div class="grain" aria-hidden="true"></div>
      <div class="props-in">
+      <h2 class="prop-launch reveal">LAUNCHING FIRST</h2>
       <div class="prop-hero reveal">
         <div class="prop-hero-left">
-          <div class="prop-badge"><span class="pill">{{prop.eyebrow}}</span></div>
-          <p class="prop-loc">{{grotto.loc}}</p>
+          <div class="prop-head"><span class="pill">{{prop.eyebrow}}</span><span class="prop-loc">{{grotto.loc}}</span></div>
           <h2 class="prop-name">{{grotto.name}}</h2>
           <p class="prop-tagline">{{grotto.tagline}}</p>
           <div class="prop-stats">
             <div class="stat"><span class="stat-num">~200</span><span class="stat-cap">{{grotto.s2}}</span></div>
           </div>
-          <div class="prop-marquee">
-    <div class="recovery-bar">
-      <div class="recovery-track">
-        <figure class="rc" tabindex="0"><img src="assets/city/Cold.png" alt="{{rec.cold.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
-        <figure class="rc" tabindex="0"><img src="assets/city/infrared.jpg" alt="{{rec.red.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
-        <figure class="rc" tabindex="0"><img src="assets/city/Herb.png" alt="{{rec.herb.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
-        <figure class="rc" tabindex="0"><img src="assets/city/Skyswim.jpeg" alt="{{rec.sky.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
-        <figure class="rc" tabindex="0"><img src="assets/city/Light%20Theraphy.jpeg" alt="{{rec.light.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
-        <figure class="rc" aria-hidden="true"><img src="assets/city/Cold.png" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
-        <figure class="rc" aria-hidden="true"><img src="assets/city/infrared.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
-        <figure class="rc" aria-hidden="true"><img src="assets/city/Herb.png" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
-        <figure class="rc" aria-hidden="true"><img src="assets/city/Skyswim.jpeg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
-        <figure class="rc" aria-hidden="true"><img src="assets/city/Light%20Theraphy.jpeg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
-      </div>
-    </div>
-    <div class="recovery-cap" aria-live="polite">
-      <span class="rc-cap-name"></span>
-      <span class="rc-cap-text"></span>
-    </div>
-          </div>
-          <button type="button" class="learn" data-vm="vm-grotto">{{prop.learn}} <i aria-hidden="true">&rsaquo;</i></button>
         </div>
+        <div class="prop-marquee">
+          <div class="recovery-bar">
+            <div class="recovery-track">
+              <figure class="rc"><img src="assets/city/Cold.png" alt="{{rec.cold.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
+              <figure class="rc"><img src="assets/city/infrared.jpg" alt="{{rec.red.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
+              <figure class="rc"><img src="assets/city/Herb.png" alt="{{rec.herb.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
+              <figure class="rc"><img src="assets/city/Skyswim.jpeg" alt="{{rec.sky.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
+              <figure class="rc"><img src="assets/city/Light%20Theraphy.jpeg" alt="{{rec.light.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
+              <figure class="rc" aria-hidden="true"><img src="assets/city/Cold.png" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
+              <figure class="rc" aria-hidden="true"><img src="assets/city/infrared.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
+              <figure class="rc" aria-hidden="true"><img src="assets/city/Herb.png" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
+              <figure class="rc" aria-hidden="true"><img src="assets/city/Skyswim.jpeg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
+              <figure class="rc" aria-hidden="true"><img src="assets/city/Light%20Theraphy.jpeg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
+            </div>
+          </div>
+          <div class="recovery-cap show" aria-live="polite">
+            <span class="rc-cap-name"></span>
+            <span class="rc-cap-text"></span>
+          </div>
+        </div>
+        <button type="button" class="learn" data-vm="vm-grotto">{{prop.learn}} <i aria-hidden="true">&rsaquo;</i></button>
       </div>
 
-      <div class="prop-collhead"><span class="pill">Collection Residence</span></div>
+      <h2 class="prop-launch coll-launch reveal">VISION 2035</h2>
+      <div class="prop-collhead"><span class="pill">Collection Castle</span></div>
+      <p class="coll-lead reveal">{{coll.lead}}</p>
       <div class="prop-cards">
         <button type="button" class="prop-card" data-vm="vm-deer">
           <img class="pc-bg" src="assets/city/Garden1.png" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-tag">{{prop.v2035}}</span>
           <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-hill">
           <img class="pc-bg" src="assets/city/Garden2.png" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-tag">{{prop.v2035}}</span>
           <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-fortress">
           <img class="pc-bg" src="assets/city/Garden3.png" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-tag">{{prop.v2035}}</span>
           <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
       </div>
@@ -451,9 +454,16 @@
     @media(max-width:680px){.recovery-cap{min-height:8em;}}
     /* marquee embedded inside the dark Commercial Residence featured */
     .prop-marquee{margin:clamp(30px,5vh,50px) 0;}
-    .prop-marquee .recovery-bar{margin-top:0;}
-    .prop-marquee .rc{background:#1a1714;}
-    .prop-marquee .recovery-cap{max-width:none;margin:clamp(22px,3.4vh,32px) 0 0;padding:0;text-align:left;min-height:5.4em;}
+    .prop-marquee .recovery-bar{margin-top:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab;
+      -webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);
+      mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);}
+    .prop-marquee .recovery-bar::-webkit-scrollbar{display:none;}
+    .prop-marquee .recovery-track{animation:none;padding-inline:0;}
+    .prop-marquee .rc{background:#1a1714;filter:brightness(.45);transition:filter .5s ease;}
+    .prop-marquee .rc.is-active{filter:none;}
+    .prop-marquee .rc img{filter:none;transition:none;}
+    .prop-marquee .recovery-cap{max-width:none;margin:clamp(24px,3.8vh,36px) 0 0;padding:0;text-align:left;min-height:5.4em;}
+    .prop-marquee .rc-cap-name,.prop-marquee .rc-cap-text{opacity:1;}
     .prop-marquee .rc-cap-text{color:rgba(244,236,220,.82);}
   </style>
 
@@ -514,25 +524,53 @@
     m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
   })();
 
-  /* recovery marquee — reveal an elegant caption below when a tile is hovered/focused */
+  /* recovery gallery — endless auto-scroll you can also drag/scroll by hand; caption follows the centred tile */
   (function(){
-    var sec=document.querySelector('.prop-marquee'); if(!sec) return;
-    var cap=sec.querySelector('.recovery-cap'),
+    var wrap=document.querySelector('.prop-marquee'); if(!wrap) return;
+    var bar=wrap.querySelector('.recovery-bar'),
+        track=wrap.querySelector('.recovery-track'),
+        cap=wrap.querySelector('.recovery-cap'),
         nm=cap.querySelector('.rc-cap-name'),
         tx=cap.querySelector('.rc-cap-text'),
-        track=sec.querySelector('.recovery-track');
-    sec.querySelectorAll('.rc').forEach(function(c){
-      function show(){
-        nm.textContent=c.querySelector('.rc-name').textContent;
-        tx.textContent=c.querySelector('.rc-text').textContent;
+        cards=[].slice.call(wrap.querySelectorAll('.rc'));
+    if(!cards.length) return;
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SPEED=0.45;            // px/frame — slow drift
+    var pauseUntil=0, down=false, hovering=false, sx=0, sl=0, cur=-1;
+    function setW(){ return track.scrollWidth/2; }   // width of one (duplicated) set
+    function pause(){ pauseUntil=performance.now()+2600; }   // touch: resume 2.6s later
+    function centre(){
+      var br=bar.getBoundingClientRect(), cx=br.left+br.width/2, best=1e9, bi=0;
+      cards.forEach(function(c,i){ var r=c.getBoundingClientRect(), d=Math.abs(r.left+r.width/2-cx); if(d<best){best=d;bi=i;} });
+      if(bi!==cur){ cur=bi;
+        nm.textContent=cards[bi].querySelector('.rc-name').textContent;
+        tx.textContent=cards[bi].querySelector('.rc-text').textContent;
         cap.classList.add('show');
+        cards.forEach(function(x){ x.classList.remove('is-active'); });
+        cards[bi].classList.add('is-active');
       }
-      c.addEventListener('mouseenter',show);
-      c.addEventListener('focus',show);
-    });
-    function hide(){ cap.classList.remove('show'); }
-    track.addEventListener('mouseleave',hide);
-    track.addEventListener('focusout',hide);
+    }
+    function loop(now){
+      var w=setW();
+      if(!down){
+        if(!hovering && !reduce && now>pauseUntil) bar.scrollLeft+=SPEED;   // mouse hover OR touch-timer pauses it
+        if(w>0){ if(bar.scrollLeft>=w) bar.scrollLeft-=w; else if(bar.scrollLeft<0) bar.scrollLeft+=w; }
+      }
+      centre();
+      requestAnimationFrame(loop);
+    }
+    /* desktop mouse: pause while pointer is over the strip, resume the moment it leaves */
+    bar.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') hovering=true; });
+    bar.addEventListener('pointerleave',function(e){ if(e.pointerType==='mouse'){ hovering=false; if(down){ down=false; bar.style.cursor='grab'; } } });
+    /* touch / trackpad: timed pause */
+    bar.addEventListener('wheel',pause,{passive:true});
+    bar.addEventListener('touchstart',pause,{passive:true});
+    /* drag to scroll (both) */
+    bar.addEventListener('pointerdown',function(e){ down=true; sx=e.clientX; sl=bar.scrollLeft; bar.style.cursor='grabbing'; });
+    addEventListener('pointermove',function(e){ if(down) bar.scrollLeft=sl-(e.clientX-sx); });
+    addEventListener('pointerup',function(e){ if(down){ down=false; bar.style.cursor='grab'; if(e.pointerType!=='mouse') pause(); } });
+    addEventListener('pointercancel',function(e){ if(down){ down=false; if(e.pointerType!=='mouse') pause(); } });
+    requestAnimationFrame(loop);
   })();
 
 </script>

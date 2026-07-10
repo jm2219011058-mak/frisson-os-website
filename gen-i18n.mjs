@@ -59,6 +59,7 @@ const O = {
   'rec.light.cap': [`Profound serenity through immersive Sound & Light Therapy — chromotherapy and healing frequencies woven into a tranquil setting, inspired by the visionary art of Alex Grey.`, `在沉浸式声与光中抵达深层宁静——色彩疗法与疗愈频率交织于静谧之境，灵感源自 Alex Grey 的幻视艺术。`],
   'prop.eyebrow': [`Commercial Residence`, `Commercial Residence`],
   'prop.v2035': [`Vision 2035`, `Vision 2035`],
+  'coll.lead': [`Living on the edge — we make our home in more-than-human beauty, at the world's most epic edge locations.`, `栖居于边界之上——在地球最壮阔的边缘之地,居于超越人类的美之中。`],
   'prop.learn': [`Learn more`, `了解更多`],
   'grotto.loc': [`OMAN / QATAR / DUBAI`, `OMAN / QATAR / DUBAI`],
   'grotto.name': [`Medici Sky Atelier`, `Medici Sky Atelier`],
