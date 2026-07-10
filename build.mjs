@@ -70,7 +70,10 @@ function hreflang(page) {
   return rows.join('\n');
 }
 
-fs.rmSync(DIST, { recursive: true, force: true });
+// Clean dist resiliently — cloud-sync (iCloud/Dropbox) can leave locked "assets 2"
+// duplicate folders that make a plain recursive rm throw; remove what we can and go on.
+try { fs.rmSync(DIST, { recursive: true, force: true }); }
+catch { for (const e of fs.readdirSync(DIST)) { try { fs.rmSync(path.join(DIST, e), { recursive: true, force: true }); } catch {} } }
 fs.mkdirSync(DIST, { recursive: true });
 
 const pages = fs.readdirSync(SRC).filter(f => f.endsWith('.html'));

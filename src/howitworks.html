@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How It Works — FRISSON</title>
+<meta name="description" content="More than ownership — a residence you hold, a network you inhabit, and an intelligence that travels with your body.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4ecdc;--ink-soft:rgba(244,236,220,.62);--accent:#e07b3c;--hair:rgba(255,255,255,.12);
+    --serif:"Playfair Display",Georgia,serif;
+    --cjk:"Playfair Display","Noto Serif SC","Songti SC","Noto Serif CJK SC",serif;
+    --sans:-apple-system,"Helvetica Neue","Segoe UI",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;}
+  body{background:#0b0a08;color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
+
+  /* nav — white bar, sticky (matches the rest of the site) */
+  .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid rgba(43,29,18,.12);}
+  .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#2b1d12;text-decoration:none;font-weight:500;}
+  .nav .brand .o{color:var(--accent);}
+  .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:#2b1d12;text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a:hover{color:var(--accent);}
+  .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
+  .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
+  .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
+    opacity:0;pointer-events:none;transform:translateY(-10px);transition:opacity .25s ease, transform .4s cubic-bezier(.34,1.56,.64,1);}
+  .menu.open{opacity:1;pointer-events:auto;transform:none;}
+  .menu a{background:var(--accent);color:#fff;text-decoration:none;text-align:center;padding:12px 24px;border-radius:999px;font-family:var(--sans);font-weight:500;font-size:15px;letter-spacing:.01em;white-space:nowrap;box-shadow:0 10px 26px rgba(224,123,60,.35);
+    opacity:0;transform:translateX(26px);transition:opacity .3s ease, transform .45s cubic-bezier(.34,1.56,.64,1);}
+  .menu.open a{opacity:1;transform:none;}
+  @media(min-width:681px){.menu{display:none;}}
+  @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  main{display:block;}
+  .hiw-in{max-width:900px;margin:0 auto;padding:0 clamp(24px,6vw,40px);}
+
+  /* hero */
+  .hiw-hero{text-align:center;padding:clamp(80px,17vh,190px) 0 clamp(24px,5vh,50px);}
+  .hiw-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(18px,3vw,34px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0;}
+  .hiw-lead{font-family:var(--serif);font-weight:400;font-size:clamp(24px,4vw,48px);line-height:1.32;letter-spacing:.005em;color:#fff;margin:0 auto;max-width:20ch;text-wrap:balance;}
+  html[lang="zh"] .hiw-lead{font-family:var(--cjk);max-width:24ch;line-height:1.5;}
+
+  /* chapters */
+  .hiw-ch{text-align:center;padding:clamp(60px,11vh,120px) 0;border-top:1px solid var(--hair);}
+  .hiw-num{font-family:var(--sans);font-weight:200;font-size:clamp(56px,11vw,132px);line-height:1;color:rgba(244,236,220,.14);margin:0 0 clamp(18px,3vh,26px);letter-spacing:.02em;}
+  .hiw-label{font-family:var(--sans);font-weight:600;font-size:clamp(11px,1.3vw,13.5px);letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(16px,2.6vh,22px);}
+  .hiw-ctitle{font-family:var(--serif);font-weight:500;font-size:clamp(26px,4vw,44px);line-height:1.18;color:#fff;margin:0 auto clamp(24px,4vh,36px);max-width:18ch;text-wrap:balance;}
+  html[lang="zh"] .hiw-ctitle{font-family:var(--cjk);max-width:20ch;}
+  .hiw-body{font-family:var(--serif);font-size:clamp(16px,1.7vw,19px);line-height:1.85;color:var(--ink-soft);margin:0 auto;max-width:52ch;text-wrap:pretty;}
+  html[lang="zh"] .hiw-body{font-family:var(--cjk);line-height:2.05;text-align:justify;max-width:40ch;}
+
+  /* service row */
+  .hiw-svc{text-align:center;padding:clamp(46px,8vh,90px) 0;border-top:1px solid var(--hair);
+    font-family:var(--sans);font-weight:500;font-size:clamp(12px,1.5vw,16px);letter-spacing:.14em;text-transform:uppercase;color:rgba(244,236,220,.8);}
+  .hiw-svc span{max-width:30ch;margin:0 auto;display:inline-block;line-height:2;}
+
+  /* closing */
+  .hiw-close{text-align:center;padding:clamp(70px,14vh,150px) 0 clamp(90px,18vh,200px);border-top:1px solid var(--hair);}
+  .hiw-closeline{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.6vw,42px);line-height:1.3;color:#fff;margin:0 auto clamp(38px,6vh,58px);max-width:22ch;text-wrap:balance;}
+  html[lang="zh"] .hiw-closeline{font-family:var(--cjk);}
+  .hiw-cta{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:clamp(14px,1.6vw,16px);letter-spacing:.03em;color:#fff;background:var(--accent);text-decoration:none;padding:15px 34px;border-radius:999px;box-shadow:0 12px 30px rgba(224,123,60,.34);transition:transform .25s,box-shadow .25s;}
+  .hiw-cta:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(224,123,60,.44);}
+
+  @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} html{scroll-behavior:auto;} }
+</style>
+<!--HREFLANG-->
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
+    <div class="links">
+      <a href="cities.html">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html">{{nav.advocater}}</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+    <div class="menu" id="menu">
+      <a href="cities.html">{{nav.cities}}</a>
+      <a href="sona.html">{{nav.sona}}</a>
+      <a href="advocater.html">{{nav.advocater}}</a>
+    </div>
+    <!--LANGNAV-->
+  </nav>
+
+  <main class="hiw">
+    <header class="hiw-hero hiw-in">
+      <h1 class="hiw-eyebrow reveal">{{hiw.eyebrow}}</h1>
+    </header>
+
+    <section class="hiw-ch">
+      <div class="hiw-in reveal">
+        <div class="hiw-num">01</div>
+        <h2 class="hiw-ctitle">{{hiw.p2}}</h2>
+        <p class="hiw-body">{{hiw.c2.body}}</p>
+      </div>
+    </section>
+
+    <section class="hiw-ch">
+      <div class="hiw-in reveal">
+        <div class="hiw-num">02</div>
+        <h2 class="hiw-ctitle">{{hiw.p1}}</h2>
+        <p class="hiw-body">{{hiw.c1.body}}</p>
+      </div>
+    </section>
+
+    <section class="hiw-ch">
+      <div class="hiw-in reveal">
+        <div class="hiw-num">03</div>
+        <h2 class="hiw-ctitle">{{hiw.p3}}</h2>
+        <p class="hiw-body">{{hiw.c3.body}}</p>
+      </div>
+    </section>
+
+  </main>
+
+<script>
+  (function(){
+    var b=document.getElementById('menuBtn'), m=document.getElementById('menu');
+    if(b&&m){ b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
+      m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); }); }
+  })();
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
