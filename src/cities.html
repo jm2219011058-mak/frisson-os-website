@@ -93,13 +93,13 @@
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
   /* ===== About / manifesto — 美的迁徙 ===== */
-  .mf{font-family:var(--cjk);padding:clamp(64px,11vh,140px) 0 clamp(80px,13vh,150px);counter-reset:mfch;}
-  .mf-open{text-align:center;margin:0 0 clamp(56px,11vh,124px);}
+  .mf{font-family:var(--cjk);padding:clamp(44px,8vh,100px) 0 clamp(70px,12vh,140px);counter-reset:mfch;}
+  .mf-open{text-align:center;margin:0 0 clamp(26px,5vh,56px);}
   .mf-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(28px,5vw,54px);line-height:1.12;letter-spacing:.02em;color:var(--accent);margin:0;}
 
   .mf-ch{margin:0 0 clamp(72px,13vh,160px);counter-increment:mfch;}
   .mf-rule{display:none;}
-  .mf-title{max-width:min(24em,calc(100% - 48px));margin:0 auto clamp(34px,6vh,64px);text-align:center;
+  .mf-title{max-width:min(24em,calc(100% - 48px));margin:0 auto clamp(20px,3.8vh,40px);text-align:center;
     font-weight:600;font-size:clamp(27px,4.3vw,46px);line-height:1.34;letter-spacing:.015em;color:var(--ink);}
 
   .mf-lead{max-width:min(26em,calc(100% - 48px));margin:0 auto;text-align:center;
@@ -293,7 +293,7 @@
 
     <!-- ============ Sky Mansion series ============ -->
     <style>
-    .props{position:relative;background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.06),rgba(255,255,255,0) 55%),#000;color:#f4ecdc;font-family:var(--sans);padding:clamp(56px,11vh,132px) 0;margin:0;}
+    .props{position:relative;background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.06),rgba(255,255,255,0) 55%),#000;color:#f4ecdc;font-family:var(--sans);padding:0 0 clamp(56px,11vh,132px);margin:0;}
     .props-in{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:0 clamp(24px,6vw,72px);}
     /* film grain — kills the cheap "dead black" */
     .grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
@@ -303,14 +303,14 @@
     .prop-hero-left{min-width:0;max-width:min(720px,100%);}
     .prop-badge{margin:0 0 clamp(16px,2.6vh,22px);}
     .prop-launch{font-family:var(--sans);font-weight:700;font-size:clamp(34px,7vw,86px);letter-spacing:.01em;line-height:.98;color:#fff;margin:0 0 clamp(34px,6vh,64px);}
-    .prop-head{display:flex;align-items:center;gap:clamp(14px,2vw,22px);flex-wrap:wrap;margin:0 0 clamp(18px,3vh,26px);}
+    .prop-head{display:flex;align-items:center;gap:clamp(14px,2vw,22px);flex-wrap:wrap;margin:0 0 clamp(12px,2vh,18px);}
     .prop-hero-left .learn{margin-top:clamp(6px,1.4vh,12px);}
     .gallery-title{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.3vw,28px);line-height:1.25;color:#fff;margin:clamp(34px,5.5vh,56px) 0 clamp(20px,3.2vh,28px);}
     .coll-lead{font-family:var(--serif);font-size:clamp(18px,2.1vw,26px);line-height:1.5;color:rgba(244,236,220,.9);max-width:34ch;margin:0 0 clamp(36px,6vh,64px);text-wrap:pretty;}
     .prop-tagline{font-family:var(--serif);font-size:clamp(17px,1.95vw,23px);line-height:1.6;color:rgba(244,236,220,.82);max-width:46ch;margin:0 0 clamp(30px,4.6vh,48px);text-wrap:pretty;}
     .prop-eyebrow{font-size:clamp(11px,1.25vw,13.5px);letter-spacing:.26em;text-transform:uppercase;color:rgba(244,236,220,.5);margin:0 0 10px;}
     .prop-loc{font-size:clamp(12px,1.35vw,15px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0;}
-    .prop-name{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,74px);line-height:1.02;letter-spacing:.005em;color:#fff;margin:0 0 clamp(18px,3vh,26px);}
+    .prop-name{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,74px);line-height:1.02;letter-spacing:.005em;color:#fff;margin:0 0 clamp(12px,2.2vh,18px);}
     .prop-stats{display:flex;flex-direction:column;gap:clamp(22px,3.6vh,38px);margin:0 0 clamp(34px,5vh,50px);}
     .stat{display:flex;flex-direction:row;align-items:baseline;gap:clamp(10px,1.4vw,16px);}
     .stat-num{font-weight:200;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:.005em;color:#fff;}
@@ -351,22 +351,21 @@
     html[lang="en"] .vision-body p{line-height:1.85;text-align:left;text-wrap:pretty;}
     .vision-body p:last-child{margin-bottom:0;}
     </style>
-    <div class="props">
-     <div class="grain" aria-hidden="true"></div>
+    <!-- WHITE · Zahir Sky Atelier intro -->
+    <section class="zres reveal">
      <div class="props-in">
-      <h2 class="prop-launch reveal">LAUNCHING FIRST</h2>
-      <div class="prop-hero reveal">
-        <div class="prop-hero-left">
-          <h2 class="prop-name">{{grotto.name}}</h2>
-          <div class="prop-head"><span class="pill">{{prop.eyebrow}}</span><span class="prop-loc">{{grotto.loc}}</span></div>
-        </div>
+      <h2 class="prop-launch reveal">Prepare to launch</h2>
+      <div class="prop-hero-left">
+        <h2 class="prop-name">{{grotto.name}}</h2>
+        <div class="prop-head"><span class="pill">{{prop.eyebrow}}</span><span class="prop-loc">{{grotto.loc}}</span></div>
+      </div>
       <!-- Zahir editorial -->
       <style>
-      .zahir{margin:clamp(58px,10vh,120px) 0 0;font-family:var(--sans);}
+      .zahir{margin:clamp(22px,3.8vh,42px) 0 0;font-family:var(--sans);}
       .zahir-story{max-width:760px;margin:0 auto;text-align:center;}
       .zahir-lead{font-family:var(--serif);font-size:clamp(18px,2vw,24px)!important;line-height:1.6!important;color:#fff!important;margin:0!important;}
       html[lang="zh"] .zahir-lead{font-family:var(--cjk);}
-      .zahir-story .learn{margin-top:clamp(26px,4vh,38px);}
+      .zahir-story .learn{margin-top:clamp(18px,3vh,28px);}
       .vqt em{font-style:italic;color:#fff;}
       .zahir-quote{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(20px,2.6vw,32px);line-height:1.32;color:#fff;margin:0 0 clamp(26px,5vh,42px);text-align:center;}
       .zahir-quote cite{display:block;margin-top:14px;font-family:var(--sans);font-style:normal;font-size:clamp(12.5px,1.4vw,15px);letter-spacing:.1em;color:var(--accent);}
@@ -374,10 +373,10 @@
       html[lang="zh"] .zahir-story p,html[lang="zh"] .zahir-quote{font-family:var(--cjk);}
       html[lang="zh"] .zahir-quote{font-style:normal;}
       .zahir-climax{color:#fff !important;font-weight:500;font-size:clamp(19px,2.1vw,25px) !important;line-height:1.4 !important;margin-top:1.4em !important;text-align:center;}
-      .zahir-spec{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,60px);align-items:stretch;margin-top:clamp(56px,9vh,116px);width:100vw;margin-inline:calc(50% - 50vw);}
-      .zs-table{padding-left:calc((100vw - min(1180px,100vw))/2 + clamp(24px,6vw,72px));}
-      .zs-fig{margin:0;overflow:hidden;background:#0d0b0a;}
-      .zs-fig img{width:100%;height:100%;min-height:100%;object-fit:cover;display:block;filter:grayscale(1);}
+      .zahir-spec{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);align-items:start;margin-top:clamp(56px,9vh,116px);}
+      .zs-gallery{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,16px);}
+      .zs-gallery figure{margin:0;border-radius:12px;overflow:hidden;aspect-ratio:16/11;background:#eee;}
+      .zs-gallery img{width:100%;height:100%;object-fit:cover;display:block;}
       .zs-title{font-family:var(--sans);font-weight:700;font-size:clamp(19px,2.6vw,32px);letter-spacing:.06em;text-transform:uppercase;color:#fff;margin:0 0 clamp(15px,2.4vh,22px);}
       .zs-intro{font-family:var(--serif);font-size:clamp(15px,1.6vw,18px);line-height:1.7;color:rgba(244,236,220,.8);margin:0 0 clamp(22px,3.6vh,34px);max-width:48ch;}
       html[lang="zh"] .zs-intro{font-family:var(--cjk);}
@@ -387,12 +386,26 @@
       .zs-row dt{margin:0;flex:0 0 auto;font-family:var(--sans);font-weight:600;font-size:clamp(11px,1.3vw,13.5px);letter-spacing:.14em;text-transform:uppercase;color:rgba(244,236,220,.58);}
       .zs-row dd{margin:0;text-align:right;font-family:var(--serif);font-size:clamp(15px,1.55vw,19px);line-height:1.3;color:#fff;}
       html[lang="zh"] .zs-row dd{font-family:var(--cjk);}
-      @media(max-width:860px){.zahir-spec{grid-template-columns:1fr;gap:clamp(22px,5vh,34px);}.zs-fig{aspect-ratio:4/5;order:-1;}.zs-table{padding:0 clamp(20px,6vw,40px);}}
+      @media(max-width:860px){.zahir-spec{grid-template-columns:1fr;gap:clamp(22px,5vh,34px);}}
+      /* white background — Zahir Sky Atelier intro */
+      .zres{background:#fff;padding:clamp(56px,10vh,120px) 0 clamp(60px,11vh,130px);}
+      .zres .prop-launch{font-size:clamp(13px,1.7vw,18px);font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(12px,2.2vh,18px);line-height:1.3;}
+      .zres .prop-name{color:var(--ink);}
+      .zres .pill{color:var(--ink-soft);border-color:var(--hair);}
+      .zres .learn{color:var(--ink-soft);}
+      .zres .learn:hover{color:var(--accent);}
+      .zres .zahir-lead{color:var(--ink)!important;}
+      .zres .zs-title{color:var(--ink);}
+      .zres .zs-intro{color:var(--ink-soft);}
+      .zres .zs-row{border-bottom-color:var(--hair);}
+      .zres .zs-row:first-child{border-top-color:var(--hair);}
+      .zres .zs-row dt{color:var(--ink-soft);}
+      .zres .zs-row dd{color:var(--ink);}
       </style>
       <section class="zahir reveal">
         <div class="zahir-story">
           <p class="zahir-lead">{{zahir.p5}}</p>
-          <button type="button" class="learn" data-vm="vm-grotto">{{prop.learn}} <i aria-hidden="true">&rsaquo;</i></button>
+          <button type="button" class="learn" data-vm="vm-grotto">{{zahir.story}} <i aria-hidden="true">&rsaquo;</i></button>
         </div>
         <div class="zahir-spec">
           <div class="zs-table">
@@ -406,9 +419,29 @@
               <div class="zs-row"><dt>{{zahir.f6.k}}</dt><dd>{{zahir.f6.v}}</dd></div>
             </dl>
           </div>
-          <figure class="zs-fig"><img src="assets/city/Zahir.jpeg" alt="Zahir Sky Atelier" loading="lazy"></figure>
+          <div class="zs-gallery">
+            <figure><img src="assets/city/zahir-a.jpg" alt="" loading="lazy"></figure>
+            <figure><img src="assets/city/zahir-b.jpg" alt="" loading="lazy"></figure>
+          </div>
         </div>
       </section>
+     </div>
+    </section>
+
+    <!-- WHITE · Space healing — heartbeat-ripple grid -->
+    <style>
+    .healing{position:relative;background:#fff;padding:clamp(60px,10vh,120px) 0;overflow:hidden;}
+    .healing .hb-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;}
+    .healing .props-in{position:relative;z-index:1;}
+    .healing .gallery-title{color:var(--ink);}
+    .healing .rc-cap-text{color:var(--ink-soft)!important;}
+    .healing .rc-cap-name{color:var(--accent);}
+    </style>
+    <section class="healing reveal">
+      <canvas class="hb-canvas" aria-hidden="true"></canvas>
+      <div class="props-in">
+      <div class="prop-hero reveal">
+
         <p class="gallery-title">{{gallery.title}}</p>
         <div class="prop-marquee">
           <div class="recovery-bar">
@@ -431,12 +464,15 @@
           </div>
         </div>
       </div>
+      </div>
+    </section>
 
-
-
+    <div class="props">
+     <div class="grain" aria-hidden="true"></div>
+     <div class="props-in">
       <!-- edge hero · Antarctica -->
       <style>
-      .edge-hero{position:relative;width:100vw;margin-inline:calc(50% - 50vw);height:min(88vh,860px);overflow:hidden;background:#0a1622;margin-top:clamp(64px,11vh,130px);}
+      .edge-hero{position:relative;width:100vw;margin-inline:calc(50% - 50vw);height:min(88vh,860px);overflow:hidden;background:#0a1622;margin-top:0;}
       .edge-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
       .edge-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,0) 38%,rgba(0,0,0,.5));}
       .edge-title{position:absolute;z-index:2;right:clamp(22px,6vw,80px);bottom:clamp(28px,7vh,76px);margin:0;max-width:14ch;text-align:right;
@@ -653,7 +689,7 @@
         tx.textContent=cards[bi].querySelector('.rc-text').textContent;
         cap.classList.add('show');
         cards.forEach(function(x){ x.classList.remove('is-active'); });
-        cards[bi].classList.add('is-active');
+        cards[bi].classList.add('is-active'); window.__healActive=bi%5;
       }
     }
     function loop(now){
@@ -679,6 +715,32 @@
     requestAnimationFrame(loop);
   })();
 
+  /* Space-healing — grid heartbeat ripple, tinted by the centred tile's dominant colour */
+  (function(){
+    var sec=document.querySelector('.healing'); if(!sec) return;
+    var cv=sec.querySelector('.hb-canvas'); if(!cv) return;
+    var ctx=cv.getContext('2d');
+    var CELL=52,WAVE_V=280,HALF_W=78,ATTACK=0.30,CYCLE=1.15,MAX_HIST=4;
+    var BEATS=[{o:0.0,s:1.0},{o:0.28,s:0.45}];
+    var COLORS=[[0,209,255],[250,62,4],[247,121,12],[0,68,111],[10,153,187]];
+    var w=0,h=0,dpr=Math.min(2,window.devicePixelRatio||1),mx=-1e4,my=-1e4,inside=false,t0=performance.now();
+    function resize(){var r=sec.getBoundingClientRect();w=r.width;h=r.height;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+"px";cv.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);}
+    function kB(p){if(p<=0||p>=1)return 0;if(p<ATTACK){var n=p/ATTACK;return n*(2-n);}var m=(p-ATTACK)/(1-ATTACK);return 1-m*m;}
+    function gAt(d,t){var b=0,r0=40,MR=Math.max(w,h)*1.25;for(var i=0;i<BEATS.length;i++){var be=BEATS[i],el=t-be.o;if(el<0)continue;var la=Math.floor(el/CYCLE),ol=Math.max(0,la-MAX_HIST+1);for(var c=la;c>=ol;c--){var age=el-c*CYCLE,rad=age*WAVE_V;if(rad>MR)break;var de=d-rad;if(Math.abs(de)>HALF_W)continue;var ph=(HALF_W-de)/(2*HALF_W);b+=kB(ph)*Math.sqrt(r0/Math.max(r0,rad))*be.s;}}return Math.min(1,b);}
+    function fade(x,y){var dx=(x-w/2)/(w/2),dy=(y-h/2)/(h/2),d=Math.sqrt(dx*dx+dy*dy);return Math.max(0,1-Math.max(0,(d-0.55)/0.45));}
+    function frame(now){
+      var t=(now-t0)/1000; ctx.clearRect(0,0,w,h);
+      var col=COLORS[(window.__healActive||0)%COLORS.length];
+      var gi="rgba(20,15,10,", ri="rgba("+col[0]+","+col[1]+","+col[2]+",";
+      for(var gx=CELL/2;gx<w;gx+=CELL) for(var y=0;y<h;y+=CELL){var f=fade(gx,y+CELL/2);if(f<=0)continue;ctx.strokeStyle=gi+(0.05*f)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx,y+CELL);ctx.stroke();if(inside){var g=gAt(Math.hypot(gx-mx,y+CELL/2-my),t);if(g>0.015){ctx.strokeStyle=ri+(0.5*g*f)+")";ctx.lineWidth=1+1.6*g;ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx,y+CELL);ctx.stroke();}}}
+      for(var gy=CELL/2;gy<h;gy+=CELL) for(var x=0;x<w;x+=CELL){var f2=fade(x+CELL/2,gy);if(f2<=0)continue;ctx.strokeStyle=gi+(0.05*f2)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,gy);ctx.lineTo(x+CELL,gy);ctx.stroke();if(inside){var g2=gAt(Math.hypot(x+CELL/2-mx,gy-my),t);if(g2>0.015){ctx.strokeStyle=ri+(0.5*g2*f2)+")";ctx.lineWidth=1+1.6*g2;ctx.beginPath();ctx.moveTo(x,gy);ctx.lineTo(x+CELL,gy);ctx.stroke();}}}
+      requestAnimationFrame(frame);
+    }
+    sec.addEventListener('pointermove',function(e){var r=sec.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;inside=true;},{passive:true});
+    sec.addEventListener('pointerleave',function(){inside=false;});
+    window.addEventListener('resize',resize,{passive:true});
+    resize(); requestAnimationFrame(frame);
+  })();
 </script>
 </body>
 </html>
