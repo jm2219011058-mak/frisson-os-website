@@ -74,18 +74,18 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 |---|---|---|
 | 3.1 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
 | 3.2 EN | More-Than-Human City properties, powered by Sona. | More-Than-Human Cities 房产,搭载 Sona。 |
-| 3.3 ZH | Sona is a spatial intelligence attuned to what you feel. She plays light and sound, temperature and space as a hand moves across strings — and every shift she makes is an answer to the mood of your moment. She reads your weariness and your quiet delight, and the longing you have folded into silence and not yet noticed in yourself. | Sona 是一种情绪共情的空间智能。她拨动光、声、温度与空间,如拨动琴弦，每一次流转,都是对你此刻心境的一次应和。她读得懂你的倦怠,你的欣悦,你藏在沉默里、连自己都未曾察觉的渴望。破晓时,她让天光循你苏醒的节律,轻轻漫入;向晚时,她将满室喧嚣,收束成一段恰如其分的静默。 |
+| 3.3 ZH | Sona is a spatial intelligence attuned to what you feel. She plays light and sound, temperature and space as a hand moves across strings — and every shift she makes is an answer to the mood of your moment. She reads your weariness and your quiet delight, and the longing you have folded into silence and not yet noticed in yourself. | Sona拥有敏锐的空间智能，能够感知你的情绪。她操控着光与声、温度与空间，如同手在琴弦上移动——她的每一次变换都契合着你当下的情绪。她能读懂你的疲惫与静谧的喜悦，以及你深藏于心、尚未察觉的渴望。 |
 | 3.4 ZH | And the far shore this melody reaches for is exactly this: the frisson beyond words — that shiver down the spine as beauty, at its very utmost, brushes past. | 而这旋律所要抵达的彼岸,正是:极致之美掠过脊背时,那一阵无从言说的战栗。 |
 | 3.5 EN | Space that senses your body | 感知你身体的空间 |
 | 3.6 EN | "what is essential is invisible to the eye." | "真正重要的东西无法由肉眼可见。" |
-| 3.7 EN | Built around the human, Sona understands how residents live and how their bodies feel — accumulating a lasting personal living-health asset, and acting on it with proactive insight and recommendations. | 以人为中心,Sona 读懂住户如何生活、身体如何感受——为你累积一份持久的个人人居健康资产,并主动执行前瞻性的洞察和建议。 |
+| 3.7 EN | Built around the human, Sona understands how residents live and how their bodies feel — accumulating a lasting personal living-health asset, and acting on it with proactive insight and recommendations. | Sona 以人为本，了解居民的生活方式和身体感受，从而积累持久的个人生活健康资产，并积极主动地提供洞察和建议。 |
 | 3.8 EN | Frisson property's interior advances biological measurements to calibrate | Frisson 居所以室内的人体生理状况,调控出 |
 | 3.9 EN | the most exquisite | 最精微的 |
 | 3.10 EN | adapt your body's physiological rhythm 24/7 | 全天候顺应你身体的生理节律 |
 | 3.13 EN | Sona guides you to what's next | Sona 指引你身心健康的下一步 |
 | 3.14 EN | 130 / 168 hours (One week) — Average time we spend at home in life | 130 / 168 小时（一周）— 我们一生待在家中的平均时长 |
 | 3.15 EN | 200 TOPS+ — local private AI compute power | 200 TOPS+ — 本地私有 AI 算力 |
-| 3.16 EN | Sona designs atmosphere and guides your hormone level with continuous experiments | Sona 调谐氛围，以持续的环境试验引导你的激素水平 |
+| 3.16 EN | Sona designs atmosphere and guides your hormone level with continuous experiments | Sona 通过持续的实验来营造氛围并引导您的荷尔蒙水平。 |
 | 3.17 EN | Data Sovereign — What happens in Frisson Stays in Frisson | 数据主权 — 发生在 Frisson 的一切，留在 Frisson |
 | 3.18 ZH | Through spatial computing and artificial intelligence, we seem able to find a graceful path — one that fuses beauty with function, art with the health of human dwelling, and the physical world with the world of the spirit. | 透过空间计算和人工智能,我们似乎可以找到一条融合审美与功能、艺术与人居健康、现实环境与精神世界的美好路径。 |
 | 3.19 ZH | This path may carry us into a new stage of the global village — until we are able to build gracious homes even in the most extreme environments, and upon the surface of Earth-like planets. | 这条路径也许能带我们进入地球村的新阶段,直到我们有能力在极端环境和类地行星的地表建造宜人的家。 |
