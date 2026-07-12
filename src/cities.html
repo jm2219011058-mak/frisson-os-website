@@ -382,8 +382,14 @@
       html[lang="zh"] .zahir-story p,html[lang="zh"] .zahir-quote{font-family:var(--cjk);}
       html[lang="zh"] .zahir-quote{font-style:normal;}
       .zahir-climax{color:#fff !important;font-weight:500;font-size:clamp(19px,2.1vw,25px) !important;line-height:1.4 !important;margin-top:1.4em !important;text-align:center;}
-      .zahir-spec{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);align-items:start;margin-top:clamp(56px,9vh,116px);}
-      .zs-gallery{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,16px);}
+      .zahir-spec{display:flex;flex-direction:column;gap:clamp(30px,5vh,54px);margin-top:clamp(56px,9vh,116px);}
+      .zs-gallery{display:flex;flex-direction:row;gap:clamp(12px,1.6vw,22px);}
+      .zs-gallery figure{flex:1;}
+      .zs-feats{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(15px,1.55vw,18px);line-height:1.55;color:#4a4a4a;}
+      html[lang="zh"] .zs-feats{font-family:var(--cjk);}
+      .zs-feat b{font-family:var(--sans);font-weight:600;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;color:#4a4a4a;margin-right:6px;}
+      .zs-sep{color:#c7c7c7;}
+      @media(max-width:560px){.zs-gallery{flex-direction:column;}}
       .zs-gallery figure{margin:0;border-radius:12px;overflow:hidden;aspect-ratio:16/11;background:#eee;}
       .zs-gallery img{width:100%;height:100%;object-fit:cover;display:block;}
       .zs-title{font-family:var(--sans);font-weight:700;font-size:clamp(19px,2.6vw,32px);letter-spacing:.06em;text-transform:uppercase;color:#fff;margin:0 0 clamp(15px,2.4vh,22px);}
@@ -418,20 +424,20 @@
           <button type="button" class="learn" data-vm="vm-grotto">{{zahir.story}} <i aria-hidden="true">&rsaquo;</i></button>
         </div>
         <div class="zahir-spec">
-          <div class="zs-table">
-            <h3 class="zs-title">{{zahir.spec.title}}</h3>
-            <p class="zs-intro">{{zahir.spec.intro}}</p>
-            <dl class="zs-rows">
-              <div class="zs-row"><dt>{{zahir.f1.k}}</dt><dd>{{zahir.f1.v}}</dd></div>
-              <div class="zs-row"><dt>{{zahir.f3.k}}</dt><dd>{{zahir.f3.v}}</dd></div>
-              <div class="zs-row"><dt>{{zahir.f4.k}}</dt><dd>{{zahir.f4.v}}</dd></div>
-              <div class="zs-row"><dt>{{zahir.f5.k}}</dt><dd>{{zahir.f5.v}}</dd></div>
-              <div class="zs-row"><dt>{{zahir.f6.k}}</dt><dd>{{zahir.f6.v}}</dd></div>
-            </dl>
-          </div>
           <div class="zs-gallery">
             <figure><img src="assets/city/zahir-a.jpg" alt="" loading="lazy"></figure>
             <figure><img src="assets/city/zahir-b.jpg" alt="" loading="lazy"></figure>
+          </div>
+          <div class="zs-table">
+            <h3 class="zs-title">{{zahir.spec.title}}</h3>
+            <p class="zs-intro">{{zahir.spec.intro}}</p>
+            <p class="zs-feats">
+              <span class="zs-feat"><b>{{zahir.f1.k}}</b> {{zahir.f1.v}}</span><span class="zs-sep">|</span>
+              <span class="zs-feat"><b>{{zahir.f3.k}}</b> {{zahir.f3.v}}</span><span class="zs-sep">|</span>
+              <span class="zs-feat"><b>{{zahir.f4.k}}</b> {{zahir.f4.v}}</span><span class="zs-sep">|</span>
+              <span class="zs-feat"><b>{{zahir.f5.k}}</b> {{zahir.f5.v}}</span><span class="zs-sep">|</span>
+              <span class="zs-feat"><b>{{zahir.f6.k}}</b> {{zahir.f6.v}}</span>
+            </p>
           </div>
         </div>
       </section>
