@@ -69,7 +69,7 @@
   }
 
   class FrissonLogoAnimated extends HTMLElement {
-    static get observedAttributes() { return ["size", "variant", "lockup", "shape", "speed", "wobble", "stretch", "halo", "wordcolor"]; }
+    static get observedAttributes() { return ["size", "variant", "lockup", "shape", "speed", "wobble", "stretch", "halo", "wordcolor", "strokecolor", "strokewidth"]; }
     constructor() { super(); this._id = ++uid; this.attachShadow({ mode: "open" }); }
 
     connectedCallback() {
@@ -112,7 +112,7 @@
       if (this._glow) this._glow.setAttribute("d", d);
     }
 
-    markHTML(S, id, halo, variant) {
+    markHTML(S, id, halo, variant, sc, sw) {
       var defs =
         '<radialGradient id="g' + id + '" gradientUnits="userSpaceOnUse" cx="200" cy="144" r="272">' +
           '<stop offset="0%" stop-color="#FFF4DD"/><stop offset="58%" stop-color="#FFC878"/><stop offset="100%" stop-color="#EE7E37"/>' +
@@ -127,7 +127,7 @@
         svgStyle += "filter:drop-shadow(0 " + (S * 0.045).toFixed(1) + "px " + (S * 0.09).toFixed(1) + "px rgba(232,111,44,.30));";
         paths = '<path class="main" d="" fill="url(#s' + id + ')"/>';
       } else if (variant === "outline") {
-        paths = '<path class="main" d="" fill="none" stroke="#EE7E37" stroke-width="7" stroke-linejoin="round"/>';
+        paths = '<path class="main" d="" fill="none" stroke="' + (sc || "#EE7E37") + '" stroke-width="' + (sw || "7") + '" stroke-linejoin="round"/>';
       } else { // glow
         if (halo) haloEl = '<div style="position:absolute;left:50%;top:50%;width:86%;height:86%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 50% 52%,rgba(255,176,92,.5),rgba(255,140,70,0) 62%);filter:blur(' + (S * 0.05).toFixed(1) + 'px);animation:flp 5s ease-in-out infinite;"></div>';
         paths = '<path class="glow" d="" fill="url(#g' + id + ')" filter="url(#b' + id + ')" opacity="0.7"/>' +
@@ -155,7 +155,9 @@
       var defWord = variant === "glow" ? "#F4ECDC" : "#241608";
       var wc = this.getAttribute("wordcolor") || defWord;
       var id = this._id;
-      var mark = this.markHTML(S, id, halo, variant);
+      var sc = this.getAttribute("strokecolor") || "#EE7E37";
+      var sw = this.getAttribute("strokewidth") || "7";
+      var mark = this.markHTML(S, id, halo, variant, sc, sw);
       var serif = "'Playfair Display',Georgia,serif";
       var content, wrap = "display:inline-flex;align-items:center;";
 
