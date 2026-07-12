@@ -103,12 +103,12 @@
     font-weight:600;font-size:clamp(24px,3.8vw,40px);line-height:1.28;letter-spacing:.015em;color:var(--ink);}
 
   .mf-lead{max-width:min(26em,calc(100% - 48px));margin:0 auto;text-align:center;
-    font-weight:500;font-size:clamp(18px,2vw,23px);line-height:1.3;letter-spacing:.01em;color:var(--ink);}
+    font-weight:500;font-size:clamp(18px,2vw,23px);line-height:1.6;letter-spacing:.01em;color:var(--ink);}
   .mf-col{max-width:min(36em,calc(100% - 48px));margin:clamp(34px,6vh,60px) auto 0;}
-  .mf-p{font-weight:400;font-size:clamp(16px,1.6vw,19px);line-height:1.85;letter-spacing:.02em;color:var(--ink);margin:0 0 1.4em;text-align:justify;}
+  .mf-p{font-weight:400;font-size:clamp(16px,1.6vw,19px);line-height:2.05;letter-spacing:.02em;color:var(--ink);margin:0 0 1.4em;text-align:justify;}
   .mf-p:last-child{margin-bottom:0;}
   /* English: left-aligned (no justified rivers), tighter leading, no tracking, balanced leads */
-  html[lang="en"] .mf-p{text-align:left;line-height:1.6;letter-spacing:0;text-wrap:pretty;}
+  html[lang="en"] .mf-p{text-align:left;line-height:1.9;letter-spacing:0;text-wrap:pretty;}
   html[lang="en"] .mf-lead{text-wrap:balance;}
 
   .mf-note{max-width:min(40em,calc(100% - 44px));margin:clamp(34px,6vh,56px) auto 0;
@@ -188,12 +188,14 @@
       <a href="cities.html" class="cur">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="howitworks.html">{{nav.ownership}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
       <a href="cities.html">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="howitworks.html">{{nav.ownership}}</a>
     </div>
     <!--LANGNAV-->
   </nav>
@@ -328,8 +330,10 @@
     .pc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;}
     .prop-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1) 40%,rgba(0,0,0,.72) 100%);z-index:1;}
     .pc-tag{position:absolute;top:clamp(16px,2vw,22px);right:clamp(16px,2vw,22px);z-index:2;font-size:clamp(10px,1.1vw,12px);letter-spacing:.2em;text-transform:uppercase;color:rgba(244,236,220,.55);}
-    .pc-in{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:clamp(20px,2.6vw,30px);}
-    .pc-name{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.6vw,32px);line-height:1.1;color:#fff;}
+    .pc-in{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;padding:clamp(20px,2.6vw,30px);}
+    .pc-name{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2vw,25px);line-height:1.15;color:#fff;min-height:2.45em;display:flex;align-items:flex-end;}
+    .pc-loc{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-weight:400;font-size:clamp(9.5px,1vw,11px);letter-spacing:.03em;color:var(--accent);}
+    .pc-loc .pc-pin{width:10px;height:10px;flex:0 0 auto;}
     .pc-learn{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.03em;color:rgba(244,236,220,.75);transition:color .25s;}
     .prop-card:hover .pc-learn{color:var(--accent);}
     @media(max-width:860px){.prop-hero{grid-template-columns:1.35fr .65fr;gap:clamp(16px,4vw,34px);}.prop-render img{max-width:230px;max-height:46vh;}}
@@ -385,7 +389,7 @@
       .zahir-spec{display:flex;flex-direction:column;gap:clamp(30px,5vh,54px);margin-top:clamp(56px,9vh,116px);}
       .zs-gallery{display:flex;flex-direction:row;gap:clamp(12px,1.6vw,22px);width:min(1600px,calc(100vw - 40px));max-width:none;margin-left:50%;transform:translateX(-50%);}
       .zs-gallery figure{flex:1;}
-      .zs-feats{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(18px,2vw,24px);line-height:1.3;font-weight:600;color:#4a4a4a;}
+      .zs-feats{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 14px;margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(13px,1.35vw,16px);line-height:1.3;font-weight:600;color:#4a4a4a;}
       html[lang="zh"] .zs-feats{font-family:var(--cjk);}
       .zs-feat b{font-family:var(--sans);font-weight:600;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;color:#4a4a4a;margin-right:6px;}
       .zs-sep{color:#c7c7c7;}
@@ -430,8 +434,6 @@
             <figure><img src="assets/city/zahir-b.jpg" alt="" loading="lazy"></figure>
           </div>
           <div class="zs-table">
-            <h3 class="zs-title">{{zahir.spec.title}}</h3>
-            <p class="zs-intro">{{zahir.spec.intro}}</p>
             <p class="zs-feats">
               <span class="zs-feat">{{zahir.f1.v}}</span><span class="zs-sep">|</span>
               <span class="zs-feat">{{zahir.f3.v}}</span><span class="zs-sep">|</span>
@@ -447,10 +449,10 @@
 
     <!-- WHITE · Space healing — heartbeat-ripple grid -->
     <style>
-    .healing{position:relative;background:#fff;padding:clamp(4px,1vh,14px) 0 clamp(56px,9vh,110px);overflow:hidden;}
+    .healing{position:relative;background:#fff;padding:clamp(56px,10vh,120px) 0 clamp(56px,9vh,110px);overflow:hidden;}
     .healing .hb-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;}
     .healing .props-in{position:relative;z-index:1;}
-    .healing .gallery-title{color:var(--ink);}
+    .healing .gallery-title{color:var(--accent);font-weight:700;font-size:clamp(28px,3.8vw,50px);margin:0 0 clamp(36px,6vh,64px);}
     .healing .rc-cap-text{color:var(--ink-soft)!important;}
     .healing .rc-cap-name{color:var(--accent);}
     .healing .prop-marquee .rc img{filter:grayscale(1);}
@@ -529,19 +531,19 @@
       <div class="prop-cards">
         <button type="button" class="prop-card" data-vm="vm-hill">
           <img class="pc-bg" src="assets/city/chile.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{hill.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-fortress">
           <img class="pc-bg" src="assets/city/iceland.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{fortress.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-deer">
           <img class="pc-bg" src="assets/city/polynesia.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{deer.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-gg">
           <img class="pc-bg" src="assets/city/oman.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{gg.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{gg.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{gg.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
       </div>
 
