@@ -391,7 +391,7 @@
       html[lang="zh"] .zs-row dd{font-family:var(--cjk);}
       @media(max-width:860px){.zahir-spec{grid-template-columns:1fr;gap:clamp(22px,5vh,34px);}}
       /* white background — Zahir Sky Atelier intro */
-      .zres{background:#fff;padding:clamp(56px,10vh,120px) 0 clamp(60px,11vh,130px);}
+      .zres{background:#fff;padding:clamp(56px,10vh,120px) 0 clamp(16px,3vh,38px);}
       .zres .prop-launch{font-size:clamp(13px,1.7vw,18px);font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(12px,2.2vh,18px);line-height:1.3;}
       .zres .prop-name{color:var(--ink);}
       .zres .pill{color:var(--ink-soft);border-color:var(--hair);}
@@ -433,13 +433,13 @@
 
     <!-- WHITE · Space healing — heartbeat-ripple grid -->
     <style>
-    .healing{position:relative;background:#fff;padding:clamp(26px,4.5vh,54px) 0 clamp(56px,9vh,110px);overflow:hidden;}
+    .healing{position:relative;background:#fff;padding:clamp(4px,1vh,14px) 0 clamp(56px,9vh,110px);overflow:hidden;}
     .healing .hb-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;}
     .healing .props-in{position:relative;z-index:1;}
     .healing .gallery-title{color:var(--ink);}
     .healing .rc-cap-text{color:var(--ink-soft)!important;}
     .healing .rc-cap-name{color:var(--accent);}
-    .healing .rc img{filter:grayscale(1);}
+    .healing .prop-marquee .rc img{filter:grayscale(1);}
     </style>
     <section class="healing reveal">
       <canvas class="hb-canvas" aria-hidden="true"></canvas>
@@ -470,6 +470,23 @@
       </div>
       </div>
     </section>
+
+    <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
+    <div class="mf-dark">
+      <div class="hero-media">
+        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+        <div class="hero-scrim"></div>
+      </div>
+      <div class="mf-dark-in">
+        <div class="sc-cap reveal">
+          <h2 class="sc-title">Sona</h2>
+          <p class="sc-os">Frisson BIO-AI OS</p>
+          <p class="sc-tag">{{2.23.tag}}</p>
+          <a class="mf-link" href="sona.html">{{2.24}}</a>
+        </div>
+      </div>
+    </div>
 
     <div class="props">
      <div class="grain" aria-hidden="true"></div>
@@ -592,23 +609,6 @@
 
 
 
-
-    <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
-    <div class="mf-dark">
-      <div class="hero-media">
-        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
-        <div class="hero-scrim"></div>
-      </div>
-      <div class="mf-dark-in">
-        <div class="sc-cap reveal">
-          <h2 class="sc-title">Sona</h2>
-          <p class="sc-os">Frisson BIO-AI OS</p>
-          <p class="sc-tag">{{2.23.tag}}</p>
-          <a class="mf-link" href="sona.html">{{2.24}}</a>
-        </div>
-      </div>
-    </div>
 
     <!-- ============ How It Works — entry teaser ============ -->
     <style>
