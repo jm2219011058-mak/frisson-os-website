@@ -270,15 +270,6 @@
     <div class="capsule" id="cap2" aria-hidden="true"></div>
   </section>
 
-  <!-- 3 · SENSING -->
-  <section class="section" id="s3">
-    <div class="s3-inner reveal">
-      <p class="s3-quote">{{3.6}}</p>
-      <img class="s3-img" src="assets/sona/s3-sleep.jpg" alt="Sona real-time biological readout" loading="lazy">
-      <p class="s3-body">{{3.7}}</p>
-    </div>
-  </section>
-
   <!-- 4 · THE MOST EXQUISITE -->
   <section class="section" id="s4">
     <div class="gal-head reveal">
@@ -288,6 +279,15 @@
     <div class="hgal" id="gal4"></div>
     <div class="capsule" id="cap4" aria-hidden="true"></div>
     <p class="s4-foot reveal">{{3.10}}</p>
+  </section>
+
+  <!-- 3 · SENSING -->
+  <section class="section" id="s3">
+    <div class="s3-inner reveal">
+      <p class="s3-quote">{{3.6}}</p>
+      <img class="s3-img" src="assets/sona/s3-sleep.jpg" alt="Sona real-time biological readout" loading="lazy">
+      <p class="s3-body">{{3.7}}</p>
+    </div>
   </section>
 
   <!-- 5 · GUIDE -->
@@ -306,6 +306,94 @@
       </div>
     </div>
   </section>
+
+  <!-- 5.5 · LONGEVITY SCORE -->
+  <style>
+    #s-longevity{position:relative;overflow:hidden;background:#060608;display:block;text-align:left;padding:0;}
+    .lv-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;}
+    .lv-top{position:absolute;z-index:2;top:clamp(102px,16vh,196px);left:clamp(24px,6vw,90px);right:clamp(24px,10vw,90px);max-width:660px;pointer-events:none;}
+    .lv-title{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6.4vw,76px);line-height:1.02;letter-spacing:.005em;color:var(--ink);margin:0;}
+    .lv-lead{font-family:var(--sans);font-weight:400;font-size:clamp(16px,1.95vw,21px);line-height:1.55;color:var(--ink-dim);margin:clamp(18px,2.8vh,26px) 0 0;max-width:46ch;}
+    .lv-foot{position:absolute;z-index:2;left:clamp(24px,6vw,90px);right:clamp(24px,6vw,90px);bottom:clamp(42px,7vh,74px);
+      display:flex;gap:clamp(30px,6vw,96px);flex-wrap:wrap;pointer-events:none;}
+    .lv-iv{font-family:var(--sans);font-weight:600;font-size:clamp(17px,2vw,22px);letter-spacing:.02em;margin:0;
+      background:linear-gradient(94deg,#eba24e,#e07b3c 52%,#3f9070);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .lv-ic{font-family:var(--sans);font-weight:400;font-size:clamp(12.5px,1.4vw,14.5px);color:var(--ink-dim);margin:8px 0 0;line-height:1.4;max-width:22ch;}
+    @media(max-width:640px){.lv-foot{gap:16px 26px;bottom:clamp(30px,5vh,52px);}.lv-item{flex:1 1 40%;}}
+  </style>
+  <section class="section" id="s-longevity">
+    <canvas class="lv-canvas" aria-hidden="true"></canvas>
+    <div class="lv-top reveal">
+      <h2 class="lv-title">Longevity Score</h2>
+      <p class="lv-lead">The way you eat, move, and rest leaves a trace in every room. Radar and chemistry read it as your biological age &mdash; and the space works, quietly and without pause, to turn it younger.</p>
+    </div>
+    <div class="lv-foot reveal">
+      <div class="lv-item"><p class="lv-iv">Read</p><p class="lv-ic">Ambient radar and chemistry sense how you live.</p></div>
+      <div class="lv-item"><p class="lv-iv">Reason</p><p class="lv-ic">It traces the cause behind every shift.</p></div>
+      <div class="lv-item"><p class="lv-iv">Retune</p><p class="lv-ic">The space adapts to what your body answers.</p></div>
+    </div>
+  </section>
+  <script>
+  (function(){
+    var sec=document.getElementById('s-longevity'); if(!sec) return;
+    var cv=sec.querySelector('.lv-canvas'), ctx=cv.getContext('2d');
+    var dpr=Math.min(2,window.devicePixelRatio||1), W=0,H=0;
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ============== TUNE ME — every dial lives here ============== */
+    var CFG = {
+      lines:    130,           // strand count  — higher = denser & brighter
+      alpha:    0.22,          // per-strand opacity 0-1 — MASTER BRIGHTNESS dial
+      nodeX:    0.30,          // pinch-node horizontal pos (0 left … 1 right)
+      spineY:   0.57,          // ribbon vertical centre  (0 top … 1 bottom)
+      spreadR:  0.50,          // fan width to the RIGHT (x section height)
+      spreadL:  0.06,          // fan width to the LEFT
+      speed:    1.0,           // float speed multiplier
+      green:  '64,170,120',    // left colour  r,g,b
+      orange: '236,140,66',    // right colour r,g,b
+      nodeMute:'150,150,110',  // node tint (dim, so it never blows out)
+      mouseAmp: 30,            // cursor push strength (px)
+      mouseRad: 95             // cursor influence radius (px)
+    };
+    /* ============================================================ */
+
+    var mx=-1e5,my=-1e5,inf=0,tInf=0;
+    function sm(v){v=v<0?0:v>1?1:v;return v*v*(3-2*v);}
+    function resize(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+    function draw(t){
+      inf+=(tInf-inf)*0.08;
+      ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation='lighter'; ctx.lineWidth=1;
+      var xn=W*(CFG.nodeX+0.02*Math.sin(t*0.10)), SR=H*CFG.spreadR, SL=H*CFG.spreadL, N=CFG.lines;
+      var g=ctx.createLinearGradient(0,0,W,0);
+      g.addColorStop(0,'rgba('+CFG.green+',0)');
+      g.addColorStop(.12,'rgba('+CFG.green+',.8)');
+      g.addColorStop(CFG.nodeX,'rgba('+CFG.nodeMute+',.35)');
+      g.addColorStop(.56,'rgba('+CFG.orange+',.92)');
+      g.addColorStop(.86,'rgba('+CFG.orange+',.8)');
+      g.addColorStop(1,'rgba('+CFG.orange+',0)');
+      ctx.strokeStyle=g; var step=Math.max(4,W/320);
+      var RAD2=2*CFG.mouseRad*CFG.mouseRad, AMP=CFG.mouseAmp*inf, useM=inf>0.01;
+      for(var i=0;i<N;i++){
+        var u=(i/(N-1))*2-1; ctx.globalAlpha=CFG.alpha; ctx.beginPath();
+        for(var x=0;x<=W;x+=step){
+          var d=x-xn, sp=d>=0?SR*sm(d/(W-xn)):SL*sm(-d/xn);
+          var spine=H*CFG.spineY+H*0.045*Math.sin(x*0.0055+t*0.5*CFG.speed)+H*0.026*Math.sin(x*0.012-t*0.8*CFG.speed);
+          var y=spine+u*sp+Math.sin(x*0.02+i*0.3+t*0.7*CFG.speed)*1.2;
+          if(useM){var ax=x-mx; if(ax<260&&ax>-260){var ay=y-my; if(ay<260&&ay>-260){ y-=AMP*Math.exp(-(ax*ax+ay*ay)/RAD2);}}}
+          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
+    }
+    var t0=performance.now();
+    function frame(now){ draw(reduce?6:(now-t0)/1000); if(!reduce) requestAnimationFrame(frame); }
+    sec.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;tInf=1;},{passive:true});
+    sec.addEventListener('pointerleave',function(){tInf=0;});
+    window.addEventListener('resize',resize,{passive:true});
+    resize(); requestAnimationFrame(frame);
+  })();
+  </script>
 
   <!-- 6 · DATA SOVEREIGN -->
   <section class="section" id="s6">
