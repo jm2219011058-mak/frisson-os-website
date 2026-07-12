@@ -343,11 +343,10 @@
     .pf{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(9px,1.5vh,15px);}
     .pf-ic{width:clamp(38px,7vw,54px);height:clamp(38px,7vw,54px);color:rgba(244,236,220,.9);}
     .pf-ic svg{width:100%;height:100%;display:block;}
-    .pf-ic .orb{fill:var(--accent);stroke:none;transform-origin:24px 24px;animation:sonaorb 4.5s linear infinite;}
-    .sona-ring{transform-origin:center;}
-    @keyframes sonaorb{to{transform:rotate(360deg);}}
+    .sona-ring{transform-origin:center;animation:sonabreath 14s linear infinite;}
+    @keyframes sonabreath{0%{transform:rotate(0deg) scale(1);}25%{transform:rotate(90deg) scale(1.07);}50%{transform:rotate(180deg) scale(1);}75%{transform:rotate(270deg) scale(1.07);}100%{transform:rotate(360deg) scale(1);}}
     .pf-lb{font-family:var(--sans);font-weight:500;font-size:clamp(11.5px,1.5vw,14.5px);letter-spacing:.08em;text-transform:uppercase;color:rgba(244,236,220,.82);line-height:1.35;}
-    @media(prefers-reduced-motion:reduce){.pf-ic .orb{animation:none;}}
+    @media(prefers-reduced-motion:reduce){.sona-ring{animation:none;}}
     @media(max-width:560px){.prop-feats{gap:8px;}.pf-lb{font-size:clamp(10.5px,3vw,13px);letter-spacing:.04em;}}
     .vision{max-width:min(660px,92vw);width:100%;border:0;border-radius:16px;padding:clamp(30px,5vw,54px);background:#0d0b0a;color:#f4ecdc;box-shadow:0 40px 110px rgba(0,0,0,.65);}
     .vision::backdrop{background:rgba(0,0,0,.66);backdrop-filter:blur(4px);}
@@ -546,11 +545,11 @@
         <div class="pf">
           <span class="pf-ic">
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="4" y="18" width="12" height="12" rx="1"></rect><line x1="10" y1="18" x2="10" y2="30"></line>
-              <rect x="32" y="18" width="12" height="12" rx="1"></rect><line x1="38" y1="18" x2="38" y2="30"></line>
-              <rect x="19.5" y="19.5" width="9" height="9" rx="1.5"></rect>
-              <line x1="16" y1="24" x2="19.5" y2="24"></line><line x1="28.5" y1="24" x2="32" y2="24"></line>
-              <path d="M31 12a10 10 0 0 1 7 7"></path>
+              <path d="M8 18 L33 9 L44 13 L19 22 Z"></path>
+              <line x1="27" y1="20" x2="27" y2="35"></line>
+              <path d="M27 35 L13 40"></path>
+              <path d="M27 35 L41 39"></path>
+              <path d="M27 35 L26 43"></path>
             </svg>
           </span>
           <span class="pf-lb">Starlink Covered</span>
@@ -568,10 +567,8 @@
         </div>
         <div class="pf">
           <span class="pf-ic">
-            <svg class="sona-ring" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="24" cy="24" r="14.5"></circle>
-              <circle cx="24" cy="24" r="8" stroke-opacity=".4"></circle>
-              <circle class="orb" cx="24" cy="9.5" r="2.6"></circle>
+            <svg class="sona-ring" viewBox="60 69 276 276" fill="none" stroke="currentColor" stroke-width="11" stroke-linejoin="round" aria-hidden="true">
+              <path d="M 319.11 200.00 C 319.47 203.88 319.58 207.85 319.39 211.76 C 319.21 215.67 318.72 219.61 318.00 223.47 C 317.28 227.33 316.26 231.16 315.08 234.91 C 313.90 238.65 312.45 242.33 310.91 245.94 C 309.37 249.55 307.63 253.08 305.83 256.57 C 304.03 260.06 302.10 263.48 300.11 266.89 C 298.11 270.30 296.03 273.67 293.85 277.02 C 291.67 280.38 289.42 283.73 287.01 287.01 C 284.60 290.29 282.10 293.59 279.38 296.73 C 276.67 299.86 273.81 302.99 270.72 305.84 C 267.63 308.69 264.34 311.45 260.84 313.83 C 257.35 316.21 253.62 318.39 249.75 320.11 C 245.89 321.83 241.79 323.23 237.66 324.14 C 233.53 325.06 229.22 325.55 224.98 325.60 C 220.75 325.64 216.42 325.21 212.26 324.43 C 208.09 323.66 203.94 322.40 200.00 320.96 C 196.06 319.51 192.23 317.65 188.60 315.74 C 184.97 313.83 181.52 311.63 178.22 309.50 C 174.91 307.37 171.81 305.09 168.77 302.94 C 165.73 300.79 162.86 298.64 159.98 296.61 C 157.10 294.57 154.33 292.63 151.49 290.75 C 148.66 288.87 145.85 287.11 142.98 285.33 C 140.11 283.56 137.21 281.87 134.28 280.08 C 131.35 278.29 128.36 276.52 125.42 274.58 C 122.47 272.64 119.49 270.64 116.62 268.43 C 113.76 266.22 110.90 263.87 108.23 261.32 C 105.56 258.77 102.97 256.03 100.60 253.13 C 98.23 250.23 96.00 247.13 93.99 243.91 C 91.98 240.69 90.17 237.29 88.54 233.81 C 86.90 230.33 85.48 226.71 84.20 223.03 C 82.92 219.35 81.83 215.57 80.88 211.73 C 79.92 207.89 79.11 203.98 78.45 200.00 C 77.79 196.02 77.25 191.97 76.90 187.88 C 76.56 183.78 76.33 179.60 76.37 175.41 C 76.40 171.22 76.59 166.94 77.11 162.72 C 77.63 158.50 78.37 154.22 79.48 150.08 C 80.59 145.94 82.00 141.79 83.79 137.89 C 85.58 133.98 87.74 130.15 90.22 126.65 C 92.71 123.15 95.59 119.82 98.70 116.87 C 101.82 113.91 105.31 111.24 108.93 108.93 C 112.54 106.61 116.46 104.65 120.38 102.98 C 124.30 101.31 128.42 100.02 132.46 98.92 C 136.50 97.81 140.61 97.05 144.60 96.36 C 148.59 95.66 152.56 95.22 156.41 94.76 C 160.26 94.30 164.02 93.98 167.72 93.58 C 171.42 93.19 175.01 92.83 178.60 92.40 C 182.19 91.98 185.70 91.50 189.27 91.04 C 192.84 90.57 196.38 90.04 200.00 89.61 C 203.62 89.19 207.28 88.73 210.98 88.50 C 214.69 88.26 218.47 88.08 222.24 88.20 C 226.01 88.32 229.85 88.61 233.60 89.24 C 237.35 89.86 241.13 90.75 244.75 91.97 C 248.37 93.18 251.94 94.72 255.31 96.52 C 258.68 98.32 261.93 100.46 264.97 102.76 C 268.01 105.07 270.87 107.68 273.56 110.37 C 276.24 113.06 278.72 115.97 281.09 118.91 C 283.45 121.85 285.62 124.92 287.74 128.00 C 289.85 131.07 291.82 134.20 293.76 137.35 C 295.71 140.49 297.57 143.66 299.39 146.87 C 301.22 150.09 303.01 153.31 304.72 156.62 C 306.43 159.93 308.12 163.29 309.65 166.74 C 311.19 170.19 312.68 173.72 313.94 177.34 C 315.20 180.96 316.35 184.68 317.21 188.46 C 318.07 192.23 318.74 196.12 319.11 200.00 Z"></path>
             </svg>
           </span>
           <span class="pf-lb">Sona Bio-AI OS</span>
