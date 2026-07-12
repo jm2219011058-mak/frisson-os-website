@@ -280,19 +280,19 @@
     .lv-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;}
     .lv-top{position:absolute;z-index:2;top:clamp(102px,16vh,196px);left:clamp(24px,6vw,90px);right:clamp(24px,10vw,90px);max-width:660px;pointer-events:none;}
     .lv-title{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6.4vw,76px);line-height:1.02;letter-spacing:.005em;color:var(--ink);margin:0;}
-    .lv-lead{font-family:var(--sans);font-weight:400;font-size:clamp(16px,1.95vw,21px);line-height:1.55;color:var(--ink-dim);margin:clamp(18px,2.8vh,26px) 0 0;max-width:46ch;}
+    .lv-lead{font-family:var(--serif);font-weight:400;font-size:clamp(17px,2.1vw,23px);line-height:1.5;color:var(--ink-dim);margin:clamp(18px,2.8vh,26px) 0 0;max-width:44ch;}
     .lv-foot{position:absolute;z-index:2;left:clamp(24px,6vw,90px);right:clamp(24px,6vw,90px);bottom:clamp(42px,7vh,74px);
       display:flex;gap:clamp(30px,6vw,96px);flex-wrap:wrap;pointer-events:none;}
-    .lv-iv{font-family:var(--sans);font-weight:600;font-size:clamp(17px,2vw,22px);letter-spacing:.02em;margin:0;
+    .lv-iv{font-family:var(--serif);font-weight:600;font-size:clamp(19px,2.2vw,25px);letter-spacing:.005em;margin:0;
       background:linear-gradient(94deg,#eba24e,#e07b3c 52%,#3f9070);-webkit-background-clip:text;background-clip:text;color:transparent;}
-    .lv-ic{font-family:var(--sans);font-weight:400;font-size:clamp(12.5px,1.4vw,14.5px);color:var(--ink-dim);margin:8px 0 0;line-height:1.4;max-width:22ch;}
+    .lv-ic{font-family:var(--serif);font-weight:400;font-size:clamp(13.5px,1.55vw,16px);color:var(--ink-dim);margin:9px 0 0;line-height:1.5;max-width:22ch;}
     @media(max-width:640px){.lv-foot{gap:16px 26px;bottom:clamp(30px,5vh,52px);}.lv-item{flex:1 1 40%;}}
   </style>
   <section class="section" id="s-longevity">
     <canvas class="lv-canvas" aria-hidden="true"></canvas>
     <div class="lv-top reveal">
       <h2 class="lv-title">Longevity Score</h2>
-      <p class="lv-lead">The way you eat, move, and rest leaves a trace in every room. Radar and chemistry read it as your biological age &mdash; and the space works, quietly and without pause, to turn it younger.</p>
+      <p class="lv-lead">The way you eat, move and rest leaves a trace in every room. Radar and chemistry read it as your biological age &mdash; and the space works quietly and without pause to turn it younger.</p>
     </div>
     <div class="lv-foot reveal">
       <div class="lv-item"><p class="lv-iv">Read</p><p class="lv-ic">Ambient radar and chemistry sense how you live.</p></div>
@@ -443,7 +443,7 @@
   })();
 
   var SCENES=[
-    {img:"assets/sona/s2-1-arrival.jpg", name:"Arrival",
+    {img:"assets/sona/s2-1-arrival.jpg?v=2", name:"Arrival",
      text:"{{Arrival}}"},
     {img:"assets/sona/s2-2-unwind.jpg", name:"Unwind",
      text:"{{Unwind}}"},
