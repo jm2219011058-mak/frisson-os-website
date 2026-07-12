@@ -57,7 +57,7 @@ const O = {
   'rec.sky.cap': [`Weightless calm in a pool suspended against the sky — where water and horizon dissolve into one.`, `悬于天际的一池静水，水面与地平线在此融为一体，让人失重般安宁。`],
   'rec.light.name': [`Sound & Light Therapy`, `声光氛围恢复空间`],
   'rec.light.cap': [`Profound serenity through immersive Sound & Light Therapy — chromotherapy and healing frequencies woven into a tranquil setting, inspired by the visionary art of Alex Grey.`, `在沉浸式声与光中抵达深层宁静——色彩疗法与疗愈频率交织于静谧之境，灵感源自 Alex Grey 的幻视艺术。`],
-  'prop.eyebrow': [`Commercial Residence`, `Commercial Residence`],
+  'prop.eyebrow': [`More than Residence`, `More than Residence`],
   'prop.v2035': [`Vision 2035`, `Vision 2035`],
   'coll.lead': [`We build your climate-sealed castle in more-than-human beauty — at the world's most epic edge locations on Earth.`, `为你筑一座气候封闭的城堡,置于超越人类的美之中——在地球最壮阔的边缘之地。`],
   // --- Zahir editorial (Commercial Residence section) ---
