@@ -328,8 +328,10 @@
     .pc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;}
     .prop-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1) 40%,rgba(0,0,0,.72) 100%);z-index:1;}
     .pc-tag{position:absolute;top:clamp(16px,2vw,22px);right:clamp(16px,2vw,22px);z-index:2;font-size:clamp(10px,1.1vw,12px);letter-spacing:.2em;text-transform:uppercase;color:rgba(244,236,220,.55);}
-    .pc-in{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:clamp(20px,2.6vw,30px);}
-    .pc-name{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.6vw,32px);line-height:1.1;color:#fff;}
+    .pc-in{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;padding:clamp(20px,2.6vw,30px);}
+    .pc-name{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2vw,25px);line-height:1.1;color:#fff;}
+    .pc-loc{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-weight:600;font-size:clamp(11px,1.15vw,13px);letter-spacing:.04em;color:var(--accent);}
+    .pc-loc .pc-pin{width:11px;height:11px;flex:0 0 auto;}
     .pc-learn{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.03em;color:rgba(244,236,220,.75);transition:color .25s;}
     .prop-card:hover .pc-learn{color:var(--accent);}
     @media(max-width:860px){.prop-hero{grid-template-columns:1.35fr .65fr;gap:clamp(16px,4vw,34px);}.prop-render img{max-width:230px;max-height:46vh;}}
@@ -527,19 +529,19 @@
       <div class="prop-cards">
         <button type="button" class="prop-card" data-vm="vm-hill">
           <img class="pc-bg" src="assets/city/chile.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{hill.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-fortress">
           <img class="pc-bg" src="assets/city/iceland.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{fortress.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-deer">
           <img class="pc-bg" src="assets/city/polynesia.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{deer.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
         <button type="button" class="prop-card" data-vm="vm-gg">
           <img class="pc-bg" src="assets/city/oman.jpg" alt="" loading="lazy" onerror="this.remove()">
-          <span class="pc-in"><span class="pc-name">{{gg.name}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+          <span class="pc-in"><span class="pc-name">{{gg.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{gg.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
         </button>
       </div>
 
