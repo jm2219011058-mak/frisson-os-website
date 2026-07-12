@@ -100,7 +100,7 @@ const O = {
   'prop.learn': [`Learn more`, `了解更多`],
   'grotto.loc': [`OMAN / QATAR / DUBAI`, `OMAN / QATAR / DUBAI`],
   'grotto.name': [`Zahir Sky Atelier`, `Zahir Sky Atelier`],
-  'gallery.title': [`Space healing your body`, `疗愈你身体的空间`],
+  'gallery.title': [`Human Experience of Space – Inevitably Multisensory`, `疗愈你身体的空间`],
   'grotto.tagline': [`Create what people truly want; listen to what technology makes possible.`, `创造人们真正想要的,倾听科技所能成就的。`],
   'grotto.s1': [`m² per residence`, `平米 · 每户`],
   'grotto.s2': [`residences`, `户`],
