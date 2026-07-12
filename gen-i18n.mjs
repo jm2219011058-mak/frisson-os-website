@@ -26,6 +26,7 @@ const O = {
   'nav.cities': ['More-Than-Human Cities', 'More-Than-Human Cities'],
   'nav.sona': ['Sona AI', 'Sona AI'],
   'nav.advocater': ['Advocater Program', 'Advocater Program'],
+  'nav.ownership': ['Ownership', 'Ownership'],
   '2.1': [`A world of your own to forge.<br>What will it become?`, `A world of your own to forge.<br>What will it become?`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
   '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹不朽者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
