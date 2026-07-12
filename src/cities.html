@@ -385,7 +385,7 @@
       .zahir-spec{display:flex;flex-direction:column;gap:clamp(30px,5vh,54px);margin-top:clamp(56px,9vh,116px);}
       .zs-gallery{display:flex;flex-direction:row;gap:clamp(12px,1.6vw,22px);width:min(1600px,calc(100vw - 40px));max-width:none;margin-left:50%;transform:translateX(-50%);}
       .zs-gallery figure{flex:1;}
-      .zs-feats{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(18px,2vw,24px);line-height:1.3;font-weight:600;color:#4a4a4a;}
+      .zs-feats{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 14px;margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(13px,1.35vw,16px);line-height:1.3;font-weight:600;color:#4a4a4a;}
       html[lang="zh"] .zs-feats{font-family:var(--cjk);}
       .zs-feat b{font-family:var(--sans);font-weight:600;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;color:#4a4a4a;margin-right:6px;}
       .zs-sep{color:#c7c7c7;}
@@ -430,8 +430,6 @@
             <figure><img src="assets/city/zahir-b.jpg" alt="" loading="lazy"></figure>
           </div>
           <div class="zs-table">
-            <h3 class="zs-title">{{zahir.spec.title}}</h3>
-            <p class="zs-intro">{{zahir.spec.intro}}</p>
             <p class="zs-feats">
               <span class="zs-feat">{{zahir.f1.v}}</span><span class="zs-sep">|</span>
               <span class="zs-feat">{{zahir.f3.v}}</span><span class="zs-sep">|</span>
