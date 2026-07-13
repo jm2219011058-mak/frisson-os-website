@@ -1,8 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home -->
   <url>
     <loc>https://frisson-os.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://frisson-os.com/zh/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- More-Than-Human Cities -->
+  <url>
+    <loc>https://frisson-os.com/cities.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/cities.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/cities.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/cities.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://frisson-os.com/zh/cities.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/cities.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/cities.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/cities.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Sona AI -->
+  <url>
+    <loc>https://frisson-os.com/sona.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/sona.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/sona.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/sona.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://frisson-os.com/zh/sona.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/sona.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/sona.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/sona.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Ownership / How it works -->
+  <url>
+    <loc>https://frisson-os.com/howitworks.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/howitworks.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/howitworks.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/howitworks.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frisson-os.com/zh/howitworks.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/howitworks.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/howitworks.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/howitworks.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Advocater Program -->
+  <url>
+    <loc>https://frisson-os.com/advocater.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/advocater.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/advocater.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/advocater.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frisson-os.com/zh/advocater.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://frisson-os.com/advocater.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/advocater.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://frisson-os.com/advocater.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
