@@ -671,14 +671,14 @@
       var target=(visible && soundCentred())?1:0;
       k+=(target-k)*0.045;
       if(k>0.012){
-        var t=(now-t0)/1000, maxR=Math.hypot(W,H)*1.04, RINGS=10;
+        var t=(now-t0)/1000, maxR=Math.hypot(W,H)*1.04, RINGS=5;
         ctx.globalCompositeOperation='source-over';
         ctx.fillStyle='rgba(5,5,6,0.11)'; ctx.fillRect(0,0,W,H);   // trail: fade previous frame instead of clearing
         ctx.globalCompositeOperation='lighter';
         var cs=[[0,0,0,Math.PI/2,0],[W,0,Math.PI/2,Math.PI,0.27],[W,H,Math.PI,1.5*Math.PI,0.53],[0,H,1.5*Math.PI,2*Math.PI,0.8]];
         for(var ci=0;ci<4;ci++){ var C=cs[ci];
           for(var i=0;i<RINGS;i++){ var ph=t*0.075+i/RINGS+C[4]; ph-=Math.floor(ph); var r=ph*maxR; if(r<10)continue;
-            var edge=Math.min(1,r/70)*(1-ph), alpha=0.34*edge*k; if(alpha<0.004)continue;
+            var edge=Math.min(1,r/70)*Math.pow(1-ph,2.0), alpha=0.38*edge*k; if(alpha<0.004)continue;
             var col=mix(mix(CREAM,ORANGE,Math.min(1,ph*1.3)),GREEN,0.1*Math.sin(t*0.3+ci*1.7));
             ctx.beginPath(); var N=90;
             for(var j=0;j<=N;j++){ var a=C[2]+(C[3]-C[2])*(j/N);
