@@ -580,6 +580,11 @@
     g.addEventListener('click',function(e){ if(drag){ e.preventDefault(); e.stopPropagation(); drag=false; } },true);
   }
   // #s2 behaviour — endless auto-scroll (drift) + centred card highlighted; name + full text below follow the centred card
+  /* ⑤ wrap sensor data + key technical terms so they glow warm against the dim serif */
+  function s2hl(str){
+    var esc=String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return esc.replace(/(\bANC\b|\bSTC\b|\bHRV\b|\bCO2\b|\bVOC\b|\bTOPS\b|\d+(?:\.\d+)?(?:\s?(?:°C|°F|°|%|dB|nits|Hz|lux|nm))?)/g,'<span class="s2hl">$1</span>');
+  }
   function initS2(g, cap){
     var name=cap.querySelector('.s2cap-name'), text=cap.querySelector('.s2cap-text'), cur=-1, lastBest=-1;
     var N=SCENES.length, SPEED=0.4, pauseUntil=0, down=false, hovering=false, sx=0, sl=0, pos=0, drag=false;
@@ -602,7 +607,7 @@
       var si=best%N;
       if(si!==cur){ cur=si; var s=SCENES[si]; if(!s) return;
         cap.classList.remove('show');
-        setTimeout(function(){ name.textContent=s.name; text.textContent=s.text; cap.classList.add('show'); },150);
+        setTimeout(function(){ name.textContent=s.name; text.innerHTML=s2hl(s.text); cap.classList.add('show'); },150);
       }
     }
     function loop(now){
@@ -615,6 +620,11 @@
           else if(drifting){ g.scrollLeft=pos; }
         } else if(drifting){ g.scrollLeft=pos; }
         centre();
+        if(centers.length){                                       /* ④ subtle image parallax: cards drift opposite to their offset from centre */
+          var mid2=pos+halfW, kk=g.children;
+          for(var pi=0;pi<kk.length;pi++){ var d=(centers[pi]-mid2)/(halfW||1); if(d<-1.3)d=-1.3; else if(d>1.3)d=1.3;
+            var im=kk[pi].firstElementChild; if(im&&im.tagName==='IMG') im.style.transform='translate3d('+(d*-16).toFixed(1)+'px,0,0) scale(1.09)'; }
+        }
       }
       requestAnimationFrame(loop);
     }
@@ -659,24 +669,26 @@
     function mix(a,b,f){return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f];}
     function rgba(c,a){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+a+')';}
     var gl=glc&&(glc.getContext('webgl')||glc.getContext('experimental-webgl'));
-    var prog,uRes,uT,uMx,uK,glOK=false, mx=0.5, tmx=0.5;
+    var prog,uRes,uT,uMx,uK,uLo,glOK=false, mx=0.5, tmx=0.5, stars=null;
     function initGL(){
       if(!gl) return;
       var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
-      var fs='precision highp float;uniform vec2 u_res;uniform float u_t;uniform float u_mx;uniform float u_k;'
+      var fs='precision highp float;uniform vec2 u_res;uniform float u_t;uniform float u_mx;uniform float u_k;uniform float u_lo;'
         +'void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;float asp=u_res.x/u_res.y;vec2 p=uv;p.x+=(u_mx-0.5)*0.5;'
         +'vec2 q=vec2(p.x*asp,p.y)*6.6;float t=u_t*0.42;'
         +'for(int i=0;i<3;i++){float fi=float(i);q+=vec2(sin(q.y*1.6+t*1.15+fi*1.7),cos(q.x*1.4-t*0.95+fi*1.3))*0.55;}'
         +'float v=0.5+0.5*sin(q.x+q.y+t*1.4);float caust=pow(v,7.0);'
         +'float dx=abs(uv.x-u_mx);float focus=smoothstep(0.52,0.02,dx);'
-        +'float edge=smoothstep(0.0,0.16,uv.y)*smoothstep(0.0,0.16,1.0-uv.y);'
+        +'float eFull=smoothstep(0.0,0.16,uv.y)*smoothstep(0.0,0.16,1.0-uv.y);'          /* mode 1: full-height water */
+        +'float eLo=smoothstep(0.0,0.10,uv.y)*smoothstep(0.54,0.20,uv.y);'               /* mode 2: water confined to lower band */
+        +'float edge=mix(eFull,eLo,u_lo);'
         +'float a=caust*focus*edge*0.16*u_k;gl_FragColor=vec4(1.0,0.92,0.80,a);}';
       function sh(ty,src){var s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);return s;}
       prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
       if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
       var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
       var loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-      uRes=gl.getUniformLocation(prog,'u_res');uT=gl.getUniformLocation(prog,'u_t');uMx=gl.getUniformLocation(prog,'u_mx');uK=gl.getUniformLocation(prog,'u_k');
+      uRes=gl.getUniformLocation(prog,'u_res');uT=gl.getUniformLocation(prog,'u_t');uMx=gl.getUniformLocation(prog,'u_mx');uK=gl.getUniformLocation(prog,'u_k');uLo=gl.getUniformLocation(prog,'u_lo');
       gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.clearColor(0,0,0,0);glOK=true;
     }
     initGL();
@@ -704,10 +716,19 @@
       }
       ctx.globalCompositeOperation='source-over';
     }
-    function drawWater(t){ if(!glOK) return; mx+=(tmx-mx)*0.08;
+    function drawWater(t,lo){ if(!glOK) return; mx+=(tmx-mx)*0.08;
       gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(prog);
-      gl.uniform2f(uRes,glc.width,glc.height); gl.uniform1f(uT,t); gl.uniform1f(uMx,mx); gl.uniform1f(uK,k); gl.drawArrays(gl.TRIANGLES,0,3); }
-    var HAS={0:1,1:1};
+      gl.uniform2f(uRes,glc.width,glc.height); gl.uniform1f(uT,t); gl.uniform1f(uMx,mx); gl.uniform1f(uK,k); gl.uniform1f(uLo,lo?1:0); gl.drawArrays(gl.TRIANGLES,0,3); }
+    function drawStars(t){   /* temperature · upper night sky — cool twinkling points (over the warm lower water) */
+      if(!stars || stars._w!==W){ var n=Math.max(40,Math.min(150,Math.round(W*H/15000))); stars=[]; stars._w=W;
+        for(var s=0;s<n;s++){ stars.push({x:Math.random()*W, y:Math.random()*H*0.60, r:0.5+Math.random()*1.5, p:Math.random()*6.2832, sp:0.5+Math.random()*1.6, b:0.4+Math.random()*0.6}); } }
+      ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation='lighter';
+      for(var i=0;i<stars.length;i++){ var st=stars[i], tw=0.35+0.65*(0.5+0.5*Math.sin(t*st.sp+st.p)), a=st.b*tw*k*0.9; if(a<0.01) continue;
+        ctx.beginPath(); ctx.arc(st.x,st.y,st.r,0,6.2832); ctx.fillStyle='rgba(205,222,255,'+a.toFixed(3)+')'; ctx.fill();
+        if(st.r>1.1){ ctx.beginPath(); ctx.arc(st.x,st.y,st.r*2.6,0,6.2832); ctx.fillStyle='rgba(180,205,255,'+(a*0.18).toFixed(3)+')'; ctx.fill(); } }
+      ctx.globalCompositeOperation='source-over';
+    }
+    var HAS={0:1,1:1,2:1};
     function loop(now){
       var want=centred(), target;
       if(want!==mode){ target=0; if(k<0.02){ mode=want; ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); } }  /* switching cards: fade the current effect OUT, then commit + fade the new one IN */
@@ -715,8 +736,9 @@
       k+=(target-k)*0.07;
       var t=(now-t0)/1000;
       if(k>0.012 && HAS[mode]){
-        if(mode===1){ ctx.clearRect(0,0,W,H); drawWater(t); }
-        else if(mode===0){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawSound(t); }
+        if(mode===0){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawSound(t); }
+        else if(mode===1){ ctx.clearRect(0,0,W,H); drawWater(t,0); }
+        else if(mode===2){ drawStars(t); drawWater(t,1); }   /* temperature: cool stars above (2D) + warm water below (GL) */
       } else { ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); }
       requestAnimationFrame(loop);
     }
@@ -744,8 +766,16 @@
         trigger:sectionSel, start:"top 78%", end:"center 58%", scrub:0.6   /* fully lit by mid-screen */
       }});
     }
+    function lineReveal(sel, sectionSel){   /* ③ heading rises out of a line mask; reverses when you scroll back up */
+      if(!document.querySelector(sel)) return;
+      gsap.set(sel,{opacity:1});
+      var sp=SplitText.create(sel,{type:"lines",mask:"lines"});
+      gsap.from(sp.lines,{yPercent:110, duration:0.9, ease:"silk", stagger:0.1, scrollTrigger:{
+        trigger:sectionSel, start:"top 70%", toggleActions:"play none none reverse" }});
+    }
     function run(){
-      gsap.set("#s-city .citywrap, #s7 .reveal", {opacity:1, y:0});   /* word-scrub is the reveal here */
+      gsap.set("#s-city .citywrap, #s7 .reveal, #s2 .gal-head", {opacity:1, y:0});   /* let the custom reveals take over */
+      lineReveal("#s2 .gal-head .t2", "#s2");
       scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city");
       scrubWords("#s7 .s7-p", "#s7");
       ScrollTrigger.refresh();
