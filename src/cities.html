@@ -97,6 +97,7 @@
   .mf{font-family:var(--cjk);padding:clamp(44px,8vh,100px) 0 clamp(70px,12vh,140px);counter-reset:mfch;}
   .mf-open{text-align:center;margin:0 0 clamp(26px,5vh,56px);}
   .mf-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.9vw,21px);line-height:1.2;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0;}
+  .cat-eyebrow{text-align:center;font-size:clamp(12px,1.3vw,15px);letter-spacing:.14em;margin:clamp(28px,5vh,52px) 0 .6em;}
 
   .mf-ch{margin:0 0 clamp(72px,13vh,160px);counter-increment:mfch;}
   .mf-rule{display:none;}
@@ -122,8 +123,8 @@
   /* horizontal catalogue — 四大家族名录 */
   .mf-catwrap{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,7vh,80px);
     background-size:cover;background-position:center;overflow:hidden;
-    padding:clamp(64px,11vh,140px) clamp(24px,6vw,64px);}
-  .mf-catwrap::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.68);z-index:0;}
+    padding:clamp(80px,13vh,168px) clamp(24px,6vw,64px);}
+  .mf-catwrap::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.69);z-index:0;}
   .mf-catwrap .mf-cat{position:relative;z-index:1;margin-top:0;}
   .mf-cat{max-width:min(1120px,calc(100% - 48px));margin:clamp(34px,6vh,60px) auto 0;
     display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,34px);text-align:left;}
@@ -253,6 +254,7 @@
         <p class="mf-p mf-p-strong">{{2.10}}</p>
         <p class="mf-p">{{2.11}}</p>
         <p class="mf-p">{{2.12}}</p>
+        <p class="mf-eyebrow cat-eyebrow">{{2.13.eyebrow}}</p>
         <p class="mf-p">{{2.13}}</p>
       </div>
 
