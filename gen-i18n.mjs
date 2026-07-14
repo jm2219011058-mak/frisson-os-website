@@ -150,6 +150,7 @@ const O = {
 };
 for (const [k, [e, z]] of Object.entries(O)) { en[k] = e; zh[k] = z; }
 
+fs.mkdirSync('i18n', { recursive: true }); // i18n/*.json are build artifacts (gitignored); ensure the dir exists on a fresh checkout
 fs.writeFileSync('i18n/en.json', JSON.stringify(en, null, 2));
 fs.writeFileSync('i18n/zh.json', JSON.stringify(zh, null, 2));
 console.log('en keys:', Object.keys(en).length, ' zh keys:', Object.keys(zh).length);

@@ -1,0 +1,2 @@
+# Keeps the i18n/ folder in git. en.json and zh.json are generated build
+# artifacts (see .gitignore) — edit content-inventory.md or gen-i18n.mjs instead.

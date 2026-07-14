@@ -9,6 +9,11 @@ Thumbs.db
 dist/
 node_modules/
 
+# Generated translation output — source of truth is content-inventory.md + gen-i18n.mjs.
+# Do NOT edit these by hand; they are rebuilt by `node gen-i18n.mjs`.
+i18n/en.json
+i18n/zh.json
+
 # iCloud copy-conflict duplicates (e.g. "dist 3", "assets 2")
 *[0-9] [0-9]
 * [0-9]
