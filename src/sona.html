@@ -363,12 +363,25 @@
       }
       ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
     }
-    var t0=performance.now();
-    function frame(now){ draw(reduce?6:(now-t0)/1000); if(!reduce) requestAnimationFrame(frame); }
-    sec.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;tInf=1;},{passive:true});
-    sec.addEventListener('pointerleave',function(){tInf=0;});
+    // full desktop-identical effect (all strands, 60fps) — the ONLY saving is a hard stop when off-screen
+    var t0=performance.now(), onscreen=false, running=false;
+    function frame(now){
+      if(!onscreen){ running=false; return; }                 // scrolled off-screen → stop completely
+      draw((now-t0)/1000);
+      requestAnimationFrame(frame);
+    }
+    function start(){ if(reduce){ draw(6); return; } if(!running){ running=true; requestAnimationFrame(frame); } }
+    // disturbance: mouse (desktop) + finger tap & swipe (mobile)
+    function poke(x,y){ var r=cv.getBoundingClientRect(); mx=x-r.left; my=y-r.top; tInf=1; }
+    sec.addEventListener('pointermove',function(e){ if(e.pointerType==='mouse') poke(e.clientX,e.clientY); },{passive:true});
+    sec.addEventListener('pointerleave',function(e){ if(e.pointerType==='mouse') tInf=0; });
+    sec.addEventListener('touchstart',function(e){ var t=e.touches[0]; if(t) poke(t.clientX,t.clientY); },{passive:true});
+    sec.addEventListener('touchmove',function(e){ var t=e.touches[0]; if(t) poke(t.clientX,t.clientY); },{passive:true});
+    sec.addEventListener('touchend',function(){ tInf=0; },{passive:true});
     window.addEventListener('resize',resize,{passive:true});
-    resize(); requestAnimationFrame(frame);
+    resize();
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ onscreen=es[0].isIntersecting; if(onscreen) start(); },{rootMargin:'100px'}).observe(sec); }
+    else { onscreen=true; start(); }
   })();
   </script>
 
@@ -450,6 +463,14 @@
       // resume on first user interaction if the browser allowed it later
       document.addEventListener('touchstart',tryPlay,{once:true,passive:true});
     });
+    // pause the hero video(s) when scrolled off-screen — two looping decodes + a heavy blur cook mobile/iPad
+    var hero=document.getElementById('hero');
+    if(hero && 'IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        var on=es[0].isIntersecting;
+        vids.forEach(function(v){ if(v.dataset.fb) return; if(on){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); } else { v.pause(); } });
+      },{rootMargin:'80px'}).observe(hero);
+    }
   })();
 
   var SCENES=[
@@ -539,13 +560,23 @@
   }
   // #s2 behaviour — endless auto-scroll (drift) + centred card highlighted; name + full text below follow the centred card
   function initS2(g, cap){
-    var name=cap.querySelector('.s2cap-name'), text=cap.querySelector('.s2cap-text'), cur=-1;
+    var name=cap.querySelector('.s2cap-name'), text=cap.querySelector('.s2cap-text'), cur=-1, lastBest=-1;
     var N=SCENES.length, SPEED=0.4, pauseUntil=0, down=false, hovering=false, sx=0, sl=0, pos=0, drag=false;
-    function oneSet(){ var k=g.children; return k.length>N ? (k[N].offsetLeft-k[0].offsetLeft) : g.scrollWidth/2; }
+    var centers=[], setW=0, halfW=0, visible=true;
+    function measure(){                                // cache geometry — only changes on resize, never per frame
+      var k=g.children; centers=[];
+      for(var i=0;i<k.length;i++){ centers[i]=k[i].offsetLeft+k[i].offsetWidth/2; }
+      setW = k.length>N ? (k[N].offsetLeft-k[0].offsetLeft) : g.scrollWidth/2;
+      halfW = g.clientWidth/2;
+    }
     function pause(){ pauseUntil=performance.now()+2600; }
     function centre(){
-      var mid=g.scrollLeft+g.clientWidth/2, best=0, bd=1e9, k=g.children, i;
-      for(i=0;i<k.length;i++){ var cc=k[i].offsetLeft+k[i].offsetWidth/2, dd=Math.abs(cc-mid); if(dd<bd){bd=dd;best=i;} }
+      if(!centers.length) return;
+      var mid=pos+halfW, best=0, bd=1e9, i;                     // uses cached centers + pos — no forced layout
+      for(i=0;i<centers.length;i++){ var dd=Math.abs(centers[i]-mid); if(dd<bd){bd=dd;best=i;} }
+      if(best===lastBest) return;                              // only touch the DOM when the centred card actually changes
+      lastBest=best;
+      var k=g.children;
       for(i=0;i<k.length;i++){ k[i].classList.toggle('is-active',i===best); }
       var si=best%N;
       if(si!==cur){ cur=si; var s=SCENES[si]; if(!s) return;
@@ -554,14 +585,15 @@
       }
     }
     function loop(now){
-      var w=oneSet();
-      var drifting=(!down && !hovering && now>pauseUntil);
-      if(drifting){
-        pos+=SPEED;                                   // float accumulator — mobile scrollLeft is integer-only
-        if(w>0){ if(pos>=w) pos-=w; else if(pos<0) pos+=w; }
-        g.scrollLeft=pos;
-      } else { pos=g.scrollLeft; }
-      centre();
+      if(visible){
+        var drifting=(!down && !hovering && now>pauseUntil);
+        if(drifting){
+          pos+=SPEED;                                 // float accumulator — mobile scrollLeft is integer-only
+          if(setW>0){ if(pos>=setW) pos-=setW; else if(pos<0) pos+=setW; }
+          g.scrollLeft=pos;
+        } else { pos=g.scrollLeft; }
+        centre();
+      }
       requestAnimationFrame(loop);
     }
     g.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') hovering=true; });
@@ -583,7 +615,8 @@
       cap.style.minHeight=maxH+'px';
       name.textContent=pn; text.textContent=pt;
     }
-    function layout(){ reserve(); centre(); }
+    function layout(){ reserve(); measure(); lastBest=-1; centre(); }
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(g); }
     addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,300); setTimeout(layout,900);
     requestAnimationFrame(loop);
   }
