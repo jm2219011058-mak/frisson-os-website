@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sona — Frisson BIO-AI OS</title>
 <meta name="description" content="Sona · Frisson BIO-AI OS — the heart-pounding magic of tuning your body.">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=block" rel="stylesheet">
-<script src="assets/frisson-logo-animated.js"></script>
+<script src="../assets/frisson-logo-animated.js"></script>
 <style>
   :root{
     --bg:#000000;
@@ -228,7 +228,28 @@
     .reveal{transition:none;opacity:1;transform:none;}
   }
 </style>
-<!--HREFLANG-->
+<link rel="alternate" hreflang="en" href="https://frisson-os.com/sona.html">
+<link rel="alternate" hreflang="zh" href="https://frisson-os.com/zh/sona.html">
+<link rel="alternate" hreflang="x-default" href="https://frisson-os.com/sona.html">
+<style>
+.nav{justify-content:flex-start;}
+.nav .brand{margin-right:auto;}
+.langsel{position:relative;display:inline-flex;align-items:center;margin-left:clamp(14px,2.5vw,30px);font-family:var(--sans,-apple-system,Arial,sans-serif);font-size:13px;letter-spacing:.04em;line-height:1;color:#2b1d12;}
+.langsel>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;line-height:1;opacity:.78;transition:opacity .2s;white-space:nowrap;}
+.langsel>summary::-webkit-details-marker{display:none;}
+.langsel>summary:hover{opacity:1;}
+.ls-globe{display:block;width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.ls-chev{display:block;width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.7;transition:transform .25s;}
+.langsel[open]>summary .ls-chev{transform:rotate(180deg);}
+.ls-menu{position:absolute;top:calc(100% + 12px);right:0;background:#fff;border:1px solid rgba(43,29,18,.12);border-radius:10px;box-shadow:0 12px 30px rgba(43,29,18,.14);padding:6px;min-width:132px;display:flex;flex-direction:column;gap:2px;z-index:90;}
+.ls-menu a{padding:9px 14px;border-radius:7px;color:#2b1d12;text-decoration:none;opacity:.68;white-space:nowrap;transition:background .2s,opacity .2s;}
+.ls-menu a:hover{background:rgba(43,29,18,.05);opacity:1;}
+.ls-menu a.cur{opacity:1;color:var(--accent,#e07b3c);}
+@media (max-width:680px){
+  .langsel{order:2;}
+  .nav .menu-btn{order:3;margin-left:clamp(14px,4vw,22px);}
+}
+</style>
 </head>
 <body>
 
@@ -242,50 +263,50 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a class="sec" href="cities.html">{{nav.cities}}</a>
-      <a href="sona.html" class="cur">{{nav.sona}}</a>
-      <a href="howitworks.html">{{nav.ownership}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a class="sec" href="cities.html">More-Than-Human Cities</a>
+      <a href="sona.html" class="cur">Sona AI</a>
+      <a href="howitworks.html">Ownership</a>
+      <a href="advocater.html">Founding Residences</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">{{nav.cities}}</a>
-      <a href="sona.html">{{nav.sona}}</a>
-      <a href="howitworks.html">{{nav.ownership}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="cities.html">More-Than-Human Cities</a>
+      <a href="sona.html">Sona AI</a>
+      <a href="howitworks.html">Ownership</a>
+      <a href="advocater.html">Founding Residences</a>
     </div>
-    <!--LANGNAV-->
+    <details class="langsel"><summary aria-label="Language"><svg class="ls-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span class="ls-cur">EN</span><svg class="ls-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></summary><div class="ls-menu"><a href="/sona.html" class="cur" aria-current="true">English</a><a href="/zh/sona.html">中文</a></div></details>
   </nav>
 
   <!-- 1 · HERO -->
   <section class="section" id="hero">
     <div class="hero-media">
-      <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-      <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+      <video class="hero-bg" src="../assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="../assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+      <video class="hero-fg" src="../assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="../assets/sona/ponch-poster.jpg"></video>
       <div class="hero-scrim"></div>
     </div>
     <div class="hero-cap">
       <h1 class="hero-title">Sona</h1>
       <p class="hero-os">Frisson BIO-AI OS</p>
-      <p class="hero-tag lead">{{2.23.tag}}</p>
+      <p class="hero-tag lead">The Heart-Pounding Magic of Tuning Your Body.</p>
     </div>
   </section>
 
   <!-- 1b · MORE THAN HUMAN CITY → SONA -->
   <section class="section" id="s-city">
     <div class="citywrap reveal">
-      <p class="city-kicker">{{3.2}}</p>
-      <p class="city-body">{{3.3}}</p>
-      <p class="city-finale">{{3.4}}</p>
+      <p class="city-kicker">More-Than-Human City properties, powered by Sona.</p>
+      <p class="city-body">Sona is a spatial intelligence attuned to what you feel. She plays light and sound, temperature and space as a hand moves across strings — and every shift she makes is an answer to the mood of your moment. She reads your weariness and your quiet delight, and the longing you have folded into silence and not yet noticed in yourself.</p>
+      <p class="city-finale">And the far shore this melody reaches for is exactly this: the frisson beyond words — that shiver down the spine as beauty, at its very utmost, brushes past.</p>
     </div>
   </section>
 
   <!-- 3 · SENSING -->
   <section class="section" id="s3">
     <div class="s3-inner reveal">
-      <p class="s3-quote">{{3.6}}</p>
-      <img class="s3-img" src="assets/sona/s3-sleep.jpg" alt="Sona real-time biological readout" loading="lazy">
-      <p class="s3-body">{{3.7}}</p>
+      <p class="s3-quote">"what is essential is invisible to the eye."</p>
+      <img class="s3-img" src="../assets/sona/s3-sleep.jpg" alt="Sona real-time biological readout" loading="lazy">
+      <p class="s3-body">Built around the human, Sona understands how residents live and how their bodies feel — accumulating a lasting personal living-health asset, and acting on it with proactive insight and recommendations.</p>
     </div>
   </section>
 
@@ -309,13 +330,13 @@
   <section class="section" id="s-longevity">
     <canvas class="lv-canvas" aria-hidden="true"></canvas>
     <div class="lv-top reveal">
-      <h2 class="lv-title">{{lv.title}}</h2>
-      <p class="lv-lead">{{lv.lead}}</p>
+      <h2 class="lv-title">Longevity Score</h2>
+      <p class="lv-lead">The way you eat, move and rest leaves a trace in every room. Sona AI reads it as your biological age &mdash; and the space works quietly and without pause to turn it younger.</p>
     </div>
     <div class="lv-foot reveal">
-      <div class="lv-item"><p class="lv-iv">{{lv.read.k}}</p><p class="lv-ic">{{lv.read.v}}</p></div>
-      <div class="lv-item"><p class="lv-iv">{{lv.reason.k}}</p><p class="lv-ic">{{lv.reason.v}}</p></div>
-      <div class="lv-item"><p class="lv-iv">{{lv.retune.k}}</p><p class="lv-ic">{{lv.retune.v}}</p></div>
+      <div class="lv-item"><p class="lv-iv">Read</p><p class="lv-ic">Ambient millimeter-wave radar and chemical sensing read how you live.</p></div>
+      <div class="lv-item"><p class="lv-iv">Reason</p><p class="lv-ic">It traces the cause behind every shift.</p></div>
+      <div class="lv-item"><p class="lv-iv">Retune</p><p class="lv-ic">The space adapts to what your body answers.</p></div>
     </div>
   </section>
   <script>
@@ -395,7 +416,7 @@
 
   <!-- 2 · SPACE THAT SENSE YOUR BODY -->
   <section class="section" id="s2">
-    <div class="gal-head reveal"><h2 class="t2">{{3.5}}</h2></div>
+    <div class="gal-head reveal"><h2 class="t2">Space that senses your body</h2></div>
     <div class="hgal" id="gal2"></div>
     <div class="s2cap" id="cap2" aria-live="polite"><span class="s2cap-name"></span><p class="s2cap-text"></p></div>
   </section>
@@ -404,24 +425,24 @@
   <section class="section" id="s4">
     <canvas class="s4fx" id="s4fx" aria-hidden="true"></canvas>
     <div class="gal-head reveal">
-      <p class="s4-sub lead">{{3.8}}</p>
-      <h2 class="t2">{{3.9}}</h2>
+      <p class="s4-sub lead">Frisson property's interior advances biological measurements to calibrate</p>
+      <h2 class="t2">the most exquisite</h2>
     </div>
     <div class="hgal" id="gal4"></div>
     <div class="capsule" id="cap4" aria-hidden="true"></div>
-    <p class="s4-foot reveal">{{3.10}}</p>
+    <p class="s4-foot reveal">adapt your body's physiological rhythm 24/7</p>
   </section>
 
   <!-- 5 · GUIDE -->
   <section class="section" id="s5">
     <div class="s5-wrap reveal">
       <div class="s5-text">
-        <h2 class="t2 s5-head">{{3.13}}</h2>
+        <h2 class="t2 s5-head">Sona guides you to what's next</h2>
         <div class="s5-stats">
-          <div><div class="num">{{3.14.num}}</div><div class="cap">{{3.14.cap}}</div></div>
-          <div><div class="num">200 TOPS<span style="color:var(--accent);">+</span></div><div class="cap">{{3.15.cap}}</div></div>
+          <div><div class="num">130&nbsp;/&nbsp;168 hours <span class="wk">(One week)</span></div><div class="cap">Average time we spend at home in life</div></div>
+          <div><div class="num">200 TOPS<span style="color:var(--accent);">+</span></div><div class="cap">local private AI compute power</div></div>
         </div>
-        <p class="s5-note">{{3.16}}</p>
+        <p class="s5-note">Sona designs atmosphere and guides your hormone level with continuous experiments</p>
       </div>
       <div class="s5-ring">
         <frisson-logo-animated size="300" variant="outline" lockup="none"></frisson-logo-animated>
@@ -431,18 +452,18 @@
 
   <!-- 6 · DATA SOVEREIGN -->
   <section class="section" id="s6">
-    <div class="bg"><img src="assets/sona/s6-privacy.jpg" alt="" loading="lazy"></div>
+    <div class="bg"><img src="../assets/sona/s6-privacy.jpg" alt="" loading="lazy"></div>
     <div class="inner reveal">
-      <p class="eyebrow" style="color:#fff;opacity:.85;">{{3.17.eyebrow}}</p>
-      <h2 class="t1">{{3.17.title}}</h2>
+      <p class="eyebrow" style="color:#fff;opacity:.85;">Data Sovereign</p>
+      <h2 class="t1">What happens in Frisson<br>Stays in Frisson</h2>
     </div>
   </section>
 
   <!-- 7 · PHILOSOPHY -->
   <section class="section" id="s7">
     <div class="reveal">
-      <p class="s7-p">{{3.18}}</p>
-      <p class="s7-p">{{3.19}}</p>
+      <p class="s7-p">Through spatial computing and artificial intelligence, we seem able to find a graceful path — one that fuses beauty with function, art with the health of human dwelling, and the physical world with the world of the spirit.</p>
+      <p class="s7-p">This path may carry us into a new stage of the global village — until we are able to build gracious homes even in the most extreme environments, and upon the surface of Earth-like planets.</p>
     </div>
   </section>
 
@@ -483,27 +504,27 @@
   })();
 
   var SCENES=[
-    {img:"assets/sona/s2-1-arrival.jpg", name:"Arrival",
-     text:"{{Arrival}}"},
-    {img:"assets/sona/s2-2-unwind.jpg", name:"Unwind",
-     text:"{{Unwind}}"},
-    {img:"assets/sona/s2-3-nourish.jpg", name:"Nourish",
-     text:"{{Nourish}}"},
-    {img:"assets/sona/s2-4-bathe.jpg", name:"Bathe",
-     text:"{{Bathe}}"},
-    {img:"assets/sona/s2-5-descent.jpg", name:"Descent",
-     text:"{{Descent}}"},
-    {img:"assets/sona/s2-6-repair.jpg", name:"Repair",
-     text:"{{Repair}}"},
-    {img:"assets/sona/s2-7-dawn.jpg", name:"Dawn",
-     text:"{{Dawn}}"}
+    {img:"../assets/sona/s2-1-arrival.jpg", name:"Arrival",
+     text:"You're still on your way home, and from your ring the OS already knows today's HRV and stress. Fresh air has ramped up early; the purifier has PM2.5 in single digits; the formaldehyde module works on. The house has cleaned itself. The door camera recognizes you—and the parrot on your shoulder—and the entry light turns 90° toward you and rises: 1800K, just enough to find the shoe cabinet. The panel shifts load from battery to off-peak power. Everything's ready."},
+    {img:"../assets/sona/s2-2-unwind.jpg", name:"Unwind",
+     text:"The living room sinks to amber. The heat pump warms the floor to 26°C, soft underfoot. ANC kills the street's low hum, the windows hold STC past 45, panels eat the reverb, speakers breathe ambient music into the quiet. A degree cooler than daytime—it saw you were restless and brought it down. Humidity at 50%. A thread of cedar from the diffuser; in the corner, a grow box glows, giving off oxygen and the feeling of something alive in the room."},
+    {img:"../assets/sona/s2-3-nourish.jpg", name:"Nourish",
+     text:"The oven has picked tonight's recipe from your ingredients; the camera above quietly logs what you eat. Preheated. The hood goes silent—ANC in the duct—so you hear only the food. Water's at temperature. After cooking, purification waits for the readings to drop; a touch of citrus covers what lingers. And the dishes aren't your problem."},
+    {img:"../assets/sona/s2-4-bathe.jpg", name:"Bathe",
+     text:"In the bathroom, the mirror wakes. Thirty seconds of facial blood-flow analysis logs a checkup. The toilet reads each use—glucose, protein, ketones, pH—and speaks only when something's wrong. The tub is filled to 39°C. Light is warm white; two hours from sleep, the blue is already gone."},
+    {img:"../assets/sona/s2-5-descent.jpg", name:"Descent",
+     text:"The bedroom has guessed your rhythm. Glass blacks out, curtains close. Light fades amber to deep red to nothing—one last thread. The mattress cools to 19°C. The bladders read today's body and shift: you sat too long, so they ease the lumbar load and lift your feet. Lavender. Brown noise, barely there. If you wore the EEG buds, they wait for your alpha waves and press them down with phase-locked sound."},
+    {img:"../assets/sona/s2-6-repair.jpg", name:"Repair",
+     text:"You may be deep asleep. Your space is not. CO₂ never tops 600; the cool mattress coaxes out growth hormone; you turn, and the bladders answer in 200 ms. Humidity 45%, ions scrubbing the air. The heat pump moves three degrees of heat per degree of power, spending the day's banked electricity—and topping up the car. In the dark, security keeps watch like a sentinel that never sleeps."},
+    {img:"../assets/sona/s2-7-dawn.jpg", name:"Dawn",
+     text:"Thirty minutes before the alarm, light climbs red, orange, warm white—a sunrise. The glass clears; daylight seeps in. The mattress warms to 22°C. Citrus and mint. Your chosen wake-up, or just birdsong. The laundry robot dried and folded last night's clothes. Cortisol rises on its curve. Waking feels like your own idea."}
   ];
   var SENSES=[
-    {img:"assets/sona/s4-1-sound.jpg", label:"{{sense.sound}}"},
-    {img:"assets/sona/s4-2-lighting.jpg", label:"{{sense.light}}"},
-    {img:"assets/sona/s4-3-temperature.jpg?v=4", label:"{{sense.temp}}"},
-    {img:"assets/sona/s4-4-scent.jpg", label:"{{sense.scent}}"},
-    {img:"assets/sona/s4-5-air.jpg", label:"{{sense.air}}"}
+    {img:"../assets/sona/s4-1-sound.jpg", label:"cinematic sound design"},
+    {img:"../assets/sona/s4-2-lighting.jpg", label:"dynamic lighting"},
+    {img:"../assets/sona/s4-3-temperature.jpg?v=4", label:"temperature haptic"},
+    {img:"../assets/sona/s4-4-scent.jpg", label:"environment scent"},
+    {img:"../assets/sona/s4-5-air.jpg", label:"air composition"}
   ];
 
   // mobile detection + slide-up sheet
