@@ -145,11 +145,13 @@
 
   /* #s2 redesign — cities-style: centred card highlighted (sides dimmed), name + full text below */
   #s2 .hgal{flex:0 0 auto;scroll-snap-type:none;}
-  #s2 .card{filter:brightness(.4);transition:filter .55s ease;}
-  #s2 .card.is-active{filter:none;}
-  .s2cap{align-self:center;max-width:64ch;margin:clamp(18px,3vh,34px) auto 0;padding:0 clamp(20px,5vw,40px);text-align:center;}
+  #s2 .card{filter:brightness(.4);transform:scale(.94);transition:filter .55s ease,transform .55s cubic-bezier(.16,1,.3,1);}
+  #s2 .card.is-active{filter:none;transform:scale(1);}          /* ④ centred card pops forward */
+  #s2 .card img{will-change:transform;}                          /* ④ image parallax (set in JS loop) */
+  .s2cap{align-self:center;max-width:52ch;margin:clamp(18px,3vh,34px) auto 0;padding:0 clamp(20px,5vw,40px);text-align:left;}   /* ① left-aligned measure — long prose reads far better than centred */
   .s2cap-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(10px,1.6vh,14px);opacity:0;transition:opacity .35s ease;}
   .s2cap-text{margin:0;font-family:var(--serif);font-size:clamp(14px,1.55vw,18px);line-height:1.72;color:var(--ink-dim);text-wrap:pretty;opacity:0;transition:opacity .35s ease;}
+  .s2cap-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}   /* ⑤ sensor data / key terms glow warm */
   .s2cap.show .s2cap-name,.s2cap.show .s2cap-text{opacity:1;}
 
   /* #s4 sense-effect background layer (cinematic sound design waves, etc.) */
