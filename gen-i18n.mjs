@@ -101,9 +101,9 @@ const O = {
   'hiw.cta': [`Enter Sona`, `进入 Sona`],
   // --- Longevity Score (sona page) ---
   'lv.title': [`Longevity Score`, `长寿评分`],
-  'lv.lead': [`The way you eat, move and rest leaves a trace in every room. Radar and chemistry read it as your biological age &mdash; and the space works quietly and without pause to turn it younger.`, `你的饮食、行动与睡眠，都会在每个空间留下痕迹。Sona AI 将它读作你的生物年龄——空间安静且不间断地运作，让它逐渐变得更年轻。`],
+  'lv.lead': [`The way you eat, move and rest leaves a trace in every room. Sona AI reads it as your biological age &mdash; and the space works quietly and without pause to turn it younger.`, `你的饮食、行动与睡眠，都会在每个空间留下痕迹。Sona AI 将它读作你的生物年龄——空间安静且不间断地运作，让它逐渐变得更年轻。`],
   'lv.read.k': [`Read`, `共情`],
-  'lv.read.v': [`Ambient radar and chemistry sense how you live.`, `环境毫米波雷达与化学感知，读懂你如何生活。`],
+  'lv.read.v': [`Ambient millimeter-wave radar and chemical sensing read how you live.`, `环境毫米波雷达与化学感知，读懂你如何生活。`],
   'lv.reason.k': [`Reason`, `溯因`],
   'lv.reason.v': [`It traces the cause behind every shift.`, `它追溯每一次变化背后的成因。`],
   'lv.retune.k': [`Retune`, `调谐`],

@@ -809,11 +809,16 @@
         cards[bi].classList.add('is-active'); window.__healActive=bi%5;
       }
     }
+    var pos=0;
     function loop(now){
       var w=setW();
-      if(!down){
-        if(!hovering && now>pauseUntil) bar.scrollLeft+=SPEED;   // mouse hover OR touch-timer pauses it (drift runs regardless of reduce-motion — it's a brand element)
-        if(w>0){ if(bar.scrollLeft>=w) bar.scrollLeft-=w; else if(bar.scrollLeft<0) bar.scrollLeft+=w; }
+      var drifting=(!down && !hovering && now>pauseUntil);   // hover / touch-timer / drag pause it
+      if(drifting){
+        pos+=SPEED;                                          // accumulate as float — mobile scrollLeft is integer-only, so += SPEED on scrollLeft never moves
+        if(w>0){ if(pos>=w) pos-=w; else if(pos<0) pos+=w; }
+        bar.scrollLeft=pos;
+      } else {
+        pos=bar.scrollLeft;                                  // follow drag / native touch scroll so drift resumes from here
       }
       centre();
       requestAnimationFrame(loop);
