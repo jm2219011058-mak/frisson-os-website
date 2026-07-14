@@ -10,6 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=block" rel="stylesheet">
+<script src="assets/vendor/gsap/gsap.min.js"></script>
+<script src="assets/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/gsap/SplitText.min.js"></script>
+<script src="assets/vendor/gsap/CustomEase.min.js"></script>
 <script src="assets/frisson-logo-animated.js"></script>
 <style>
   :root{
@@ -68,7 +72,7 @@
   .section{min-height:100svh;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:max(84px,10svh) clamp(18px,5vw,64px) max(48px,7svh);}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);}   /* silk ease */
   .reveal.in{opacity:1;transform:none;}
 
   /* 1 · hero — full-screen Ponch video with a soft blurred fill (no hard black edges) */
@@ -189,6 +193,11 @@
 
   /* 1b · More than Human City → Sona */
   #s-city .citywrap{max-width:min(760px,calc(100% - 12px));margin:0 auto;}
+  @media(max-width:640px){
+    #s-city,#s7{padding-left:30px;padding-right:30px;}
+    #s-city .citywrap{max-width:100%;}
+    .city-body,.city-finale,.s7-p{max-width:100%;}
+  }
   .city-kicker{font-family:var(--sans);font-weight:700;font-size:clamp(14px,1.9vw,19px);letter-spacing:.06em;color:var(--ink);margin:0 0 clamp(26px,4.5vh,44px);}
   .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,2vw,20px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:34em;margin:0 auto;text-align:left;text-wrap:pretty;}
   .city-finale{font-family:var(--serif);font-weight:500;font-size:clamp(20px,3vw,30px);line-height:1.5;letter-spacing:.03em;color:var(--ink);max-width:min(30ch,calc(100% - 40px));text-wrap:balance;margin:clamp(34px,6vh,60px) auto 0;}
@@ -403,6 +412,7 @@
   <!-- 4 · THE MOST EXQUISITE -->
   <section class="section" id="s4">
     <canvas class="s4fx" id="s4fx" aria-hidden="true"></canvas>
+    <canvas class="s4fx" id="s4gl" aria-hidden="true"></canvas>
     <div class="gal-head reveal">
       <p class="s4-sub lead">{{3.8}}</p>
       <h2 class="t2">{{3.9}}</h2>
@@ -633,41 +643,79 @@
   initS2(gal2, document.getElementById('cap2'));
   initGallery(gal4, document.getElementById('cap4'));
 
-  /* #s4 · cinematic sound design — waves rushing in from 4 corners, with sweeping trails.
-     Appears only while the "sound" card (SENSES[0]) is the centred one AND the section is on-screen. */
+  /* ===== #s4 SENSE-EFFECT ENGINE — mode = centred card =====
+       0 cinematic sound design · 4-corner waves + trails
+       1 dynamic lighting        · WebGL water-surface refraction (warm white), tracks pointer X
+     Runs only while its card is centred AND the section is on-screen (fades out on leave, replays on return).
+     Works with mouse AND finger (pointer events). */
   (function(){
-    var sec=document.getElementById('s4'), cv=document.getElementById('s4fx'), g=gal4;
+    var sec=document.getElementById('s4'), cv=document.getElementById('s4fx'), glc=document.getElementById('s4gl'), g=gal4;
     if(!sec||!cv||!g) return;
     var ctx=cv.getContext('2d'), dpr=Math.min(2,window.devicePixelRatio||1), W=0,H=0;
-    var SOUND=0, visible=false, k=0, t0=performance.now();
+    var visible=false, k=0, t0=performance.now(), mode=-1;
     var CREAM=[248,240,224], ORANGE=[224,123,60], GREEN=[80,180,130];
     function mix(a,b,f){return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f];}
-    function resize(){ var r=sec.getBoundingClientRect(); W=r.width;H=r.height; cv.width=W*dpr;cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H); }
+    function rgba(c,a){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+a+')';}
+    var gl=glc&&(glc.getContext('webgl')||glc.getContext('experimental-webgl'));
+    var prog,uRes,uT,uMx,uK,glOK=false, mx=0.5, tmx=0.5;
+    function initGL(){
+      if(!gl) return;
+      var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+      var fs='precision highp float;uniform vec2 u_res;uniform float u_t;uniform float u_mx;uniform float u_k;'
+        +'void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;float asp=u_res.x/u_res.y;vec2 p=uv;p.x+=(u_mx-0.5)*0.5;'
+        +'vec2 q=vec2(p.x*asp,p.y)*6.6;float t=u_t*0.42;'
+        +'for(int i=0;i<3;i++){float fi=float(i);q+=vec2(sin(q.y*1.6+t*1.15+fi*1.7),cos(q.x*1.4-t*0.95+fi*1.3))*0.55;}'
+        +'float v=0.5+0.5*sin(q.x+q.y+t*1.4);float caust=pow(v,7.0);'
+        +'float dx=abs(uv.x-u_mx);float focus=smoothstep(0.52,0.02,dx);'
+        +'float edge=smoothstep(0.0,0.16,uv.y)*smoothstep(0.0,0.16,1.0-uv.y);'
+        +'float a=caust*focus*edge*0.16*u_k;gl_FragColor=vec4(1.0,0.92,0.80,a);}';
+      function sh(ty,src){var s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+      prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
+      var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+      var loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+      uRes=gl.getUniformLocation(prog,'u_res');uT=gl.getUniformLocation(prog,'u_t');uMx=gl.getUniformLocation(prog,'u_mx');uK=gl.getUniformLocation(prog,'u_k');
+      gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.clearColor(0,0,0,0);glOK=true;
+    }
+    initGL();
+    function resize(){ var r=sec.getBoundingClientRect(); W=r.width;H=r.height; cv.width=W*dpr;cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+      if(gl){ glc.width=Math.round(W*dpr); glc.height=Math.round(H*dpr); gl.viewport(0,0,glc.width,glc.height); } }
     resize(); addEventListener('resize',resize);
     if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(sec); } else visible=true;
-    function soundCentred(){ var mid=g.scrollLeft+g.clientWidth/2,best=0,bd=1e9,c=g.children; for(var i=0;i<c.length;i++){var cc=c[i].offsetLeft+c[i].offsetWidth/2,d=Math.abs(cc-mid);if(d<bd){bd=d;best=i;}} return best===SOUND; }
-    function loop(now){
-      var target=(visible && soundCentred())?1:0;
-      k+=(target-k)*0.045;
-      if(k>0.012){
-        var t=(now-t0)/1000, maxR=Math.hypot(W,H)*1.04, RINGS=5;
-        ctx.globalCompositeOperation='source-over';
-        ctx.fillStyle='rgba(5,5,6,0.11)'; ctx.fillRect(0,0,W,H);   // trail: fade previous frame instead of clearing
-        ctx.globalCompositeOperation='lighter';
-        var cs=[[0,0,0,Math.PI/2,0],[W,0,Math.PI/2,Math.PI,0.27],[W,H,Math.PI,1.5*Math.PI,0.53],[0,H,1.5*Math.PI,2*Math.PI,0.8]];
-        for(var ci=0;ci<4;ci++){ var C=cs[ci];
-          for(var i=0;i<RINGS;i++){ var ph=t*0.075+i/RINGS+C[4]; ph-=Math.floor(ph); var r=ph*maxR; if(r<10)continue;
-            var edge=Math.min(1,r/70)*Math.pow(1-ph,2.0), alpha=0.38*edge*k; if(alpha<0.004)continue;
-            var col=mix(mix(CREAM,ORANGE,Math.min(1,ph*1.3)),GREEN,0.1*Math.sin(t*0.3+ci*1.7));
-            ctx.beginPath(); var N=90;
-            for(var j=0;j<=N;j++){ var a=C[2]+(C[3]-C[2])*(j/N);
-              var m=1+0.05*Math.sin(7*(a-C[2])+t*1.6-r*0.011)+0.03*Math.sin(4*(a-C[2])-t*1.05+r*0.02);
-              var rr=r*m, x=C[0]+Math.cos(a)*rr, y=C[1]+Math.sin(a)*rr; j===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
-            ctx.strokeStyle='rgba('+(col[0]|0)+','+(col[1]|0)+','+(col[2]|0)+','+alpha+')'; ctx.lineWidth=1.3; ctx.stroke();
-          }
+    function centred(){ var mid=g.scrollLeft+g.clientWidth/2,best=0,bd=1e9,c=g.children; for(var i=0;i<c.length;i++){var cc=c[i].offsetLeft+c[i].offsetWidth/2,d=Math.abs(cc-mid);if(d<bd){bd=d;best=i;}} return best; }
+    sec.addEventListener('pointermove',function(e){ var r=sec.getBoundingClientRect(); tmx=(e.clientX-r.left)/Math.max(1,r.width); },{passive:true});   /* mouse + finger */
+    function drawSound(t){
+      ctx.globalCompositeOperation='source-over'; ctx.fillStyle=rgba([5,5,6],0.11); ctx.fillRect(0,0,W,H);
+      ctx.globalCompositeOperation='lighter';
+      var maxR=Math.hypot(W,H)*1.04, RINGS=5;
+      var cs=[[0,0,0,Math.PI/2,0],[W,0,Math.PI/2,Math.PI,0.27],[W,H,Math.PI,1.5*Math.PI,0.53],[0,H,1.5*Math.PI,2*Math.PI,0.8]];
+      for(var ci=0;ci<4;ci++){ var C=cs[ci];
+        for(var i=0;i<RINGS;i++){ var ph=t*0.075+i/RINGS+C[4]; ph-=Math.floor(ph); var r=ph*maxR; if(r<10)continue;
+          var edge=Math.min(1,r/70)*Math.pow(1-ph,2.0), alpha=0.38*edge*k; if(alpha<0.004)continue;
+          var col=mix(mix(CREAM,ORANGE,Math.min(1,ph*1.3)),GREEN,0.1*Math.sin(t*0.3+ci*1.7));
+          ctx.beginPath(); var N=90;
+          for(var j=0;j<=N;j++){ var a=C[2]+(C[3]-C[2])*(j/N);
+            var m=1+0.05*Math.sin(7*(a-C[2])+t*1.6-r*0.011)+0.03*Math.sin(4*(a-C[2])-t*1.05+r*0.02);
+            var rr=r*m, x=C[0]+Math.cos(a)*rr, y=C[1]+Math.sin(a)*rr; j===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+          ctx.strokeStyle=rgba(col,alpha); ctx.lineWidth=1.3; ctx.stroke();
         }
-        ctx.globalCompositeOperation='source-over';
-      } else if(k<=0.012 && (cv.width>0)){ ctx.clearRect(0,0,W,H); }
+      }
+      ctx.globalCompositeOperation='source-over';
+    }
+    function drawWater(t){ if(!glOK) return; mx+=(tmx-mx)*0.08;
+      gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(prog);
+      gl.uniform2f(uRes,glc.width,glc.height); gl.uniform1f(uT,t); gl.uniform1f(uMx,mx); gl.uniform1f(uK,k); gl.drawArrays(gl.TRIANGLES,0,3); }
+    var HAS={0:1,1:1};
+    function loop(now){
+      var want=centred(), target;
+      if(want!==mode){ target=0; if(k<0.02){ mode=want; ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); } }  /* switching cards: fade the current effect OUT, then commit + fade the new one IN */
+      else { target=(visible && HAS[mode])?1:0; }                                                                          /* scroll away → fade out; return → fade back in */
+      k+=(target-k)*0.07;
+      var t=(now-t0)/1000;
+      if(k>0.012 && HAS[mode]){
+        if(mode===1){ ctx.clearRect(0,0,W,H); drawWater(t); }
+        else if(mode===0){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawSound(t); }
+      } else { ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); }
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -675,8 +723,32 @@
 
   // reveal on enter
   (function(){
-    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.14});
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.target.classList.toggle('in', e.isIntersecting); }); },{threshold:0.14});   /* reversible: fades out on leave, replays on return */
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  })();
+
+  /* GSAP · CustomEase "silk" + ScrollTrigger scrub-words for the prose blocks.
+     Words light up as you scroll and are FULLY revealed by the time the block reaches screen centre;
+     scroll back up to replay (scrub is reversible). */
+  (function(){
+    if(!window.gsap||!window.ScrollTrigger||!window.SplitText||!window.CustomEase) return;
+    gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
+    CustomEase.create("silk","M0,0 C0.16,1 0.3,1 1,1");
+    function scrubWords(wordsSel, sectionSel){
+      if(!document.querySelector(wordsSel)) return;
+      var sp=SplitText.create(wordsSel,{type:"words"});
+      gsap.set(sp.words,{opacity:0.14});
+      gsap.to(sp.words,{opacity:1, ease:"none", stagger:0.5, scrollTrigger:{
+        trigger:sectionSel, start:"top 78%", end:"center 58%", scrub:0.6   /* fully lit by mid-screen */
+      }});
+    }
+    function run(){
+      gsap.set("#s-city .citywrap, #s7 .reveal", {opacity:1, y:0});   /* word-scrub is the reveal here */
+      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city");
+      scrubWords("#s7 .s7-p", "#s7");
+      ScrollTrigger.refresh();
+    }
+    (document.fonts && document.fonts.ready) ? document.fonts.ready.then(run) : run();
   })();
 
   // mobile hamburger menu
