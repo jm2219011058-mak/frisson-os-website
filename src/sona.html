@@ -24,7 +24,7 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  html{scroll-snap-type:y mandatory;-webkit-text-size-adjust:100%;}
+  html{-webkit-text-size-adjust:100%;}
   body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
   a{color:inherit;}
 
@@ -64,7 +64,7 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* section shell */
-  .section{min-height:100svh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+  .section{min-height:100svh;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:max(84px,10svh) clamp(18px,5vw,64px) max(48px,7svh);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
@@ -137,6 +137,16 @@
     padding:12px 18px;border-radius:999px;background:rgba(244,236,220,.07);border:1px solid var(--hair);}
   .capsule i{width:8px;height:8px;border-radius:999px;background:var(--ink-faint);transition:width .35s,background .35s;cursor:pointer;}
   .capsule i.on{width:30px;background:var(--ink);}
+
+  /* #s2 redesign — cities-style: centred card highlighted (sides dimmed), name + full text below */
+  #s2{justify-content:center;}
+  #s2 .hgal{flex:0 0 auto;}
+  #s2 .card{filter:brightness(.4);transition:filter .55s ease;}
+  #s2 .card.is-active{filter:none;}
+  .s2cap{align-self:center;max-width:64ch;margin:clamp(18px,3vh,34px) auto 0;padding:0 clamp(20px,5vw,40px);text-align:center;}
+  .s2cap-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(10px,1.6vh,14px);opacity:0;transition:opacity .35s ease;}
+  .s2cap-text{margin:0;font-family:var(--serif);font-size:clamp(14px,1.55vw,18px);line-height:1.72;color:var(--ink-dim);text-wrap:pretty;opacity:0;transition:opacity .35s ease;}
+  .s2cap.show .s2cap-name,.s2cap.show .s2cap-text{opacity:1;}
 
   /* 3 · sensing — left-aligned composition (per mockup) */
   /* centered, editorial — image as hero (Apple-style) */
@@ -367,7 +377,7 @@
   <section class="section" id="s2">
     <div class="gal-head reveal"><h2 class="t2">{{3.5}}</h2></div>
     <div class="hgal" id="gal2"></div>
-    <div class="capsule" id="cap2" aria-hidden="true"></div>
+    <div class="s2cap" id="cap2" aria-live="polite"><span class="s2cap-name"></span><p class="s2cap-text"></p></div>
   </section>
 
   <!-- 4 · THE MOST EXQUISITE -->
@@ -444,7 +454,7 @@
   })();
 
   var SCENES=[
-    {img:"assets/sona/s2-1-arrival.jpg?v=2", name:"Arrival",
+    {img:"assets/sona/s2-1-arrival.png", name:"Arrival",
      text:"{{Arrival}}"},
     {img:"assets/sona/s2-2-unwind.jpg", name:"Unwind",
      text:"{{Unwind}}"},
@@ -481,15 +491,7 @@
   var gal2=document.getElementById('gal2');
   SCENES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.name+'" loading="lazy" draggable="false">'+
-                '<span class="name">'+s.name+'</span>'+
-                '<div class="scrim"><p class="sn">'+s.name+'</p><p class="st"></p></div>'+
-                '<button class="plus" type="button" aria-label="'+s.name+'">+</button>';
-    c.querySelector('.st').textContent=s.text;
-    c.querySelector('.plus').addEventListener('click',function(ev){
-      ev.stopPropagation();
-      if(MQ_MOBILE.matches){ openSheet(s); } else { c.classList.toggle('open'); }
-    });
+    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.name+'" loading="lazy" draggable="false">';
     gal2.appendChild(c);
   });
 
@@ -533,7 +535,33 @@
     addEventListener('pointerup',up); addEventListener('pointercancel',up);
     g.addEventListener('click',function(e){ if(drag){ e.preventDefault(); e.stopPropagation(); drag=false; } },true);
   }
-  initGallery(gal2, document.getElementById('cap2'));
+  // #s2 behaviour — centred card highlighted, name + full text below follow the centred card
+  function initS2(g, cap){
+    var name=cap.querySelector('.s2cap-name'), text=cap.querySelector('.s2cap-text'), cur=-1;
+    function padEnds(){
+      var card=g.querySelector('.card'); if(!card) return;
+      var pad=Math.max(0,(g.clientWidth-card.getBoundingClientRect().width)/2);
+      g.style.paddingLeft=g.style.paddingRight=pad+'px';
+    }
+    function centre(){
+      var mid=g.scrollLeft+g.clientWidth/2, best=0, bd=1e9;
+      Array.prototype.forEach.call(g.children,function(ch,i){ var cc=ch.offsetLeft+ch.offsetWidth/2, dd=Math.abs(cc-mid); if(dd<bd){bd=dd;best=i;} });
+      Array.prototype.forEach.call(g.children,function(ch,i){ ch.classList.toggle('is-active',i===best); });
+      if(best!==cur){ cur=best; var s=SCENES[best]; if(!s) return;
+        cap.classList.remove('show');
+        setTimeout(function(){ name.textContent=s.name; text.textContent=s.text; cap.classList.add('show'); },150);
+      }
+    }
+    g.addEventListener('scroll',centre,{passive:true});
+    function layout(){ padEnds(); centre(); }
+    addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,120); setTimeout(layout,600);
+    var down=false,sx=0,sl=0,drag=false;
+    g.addEventListener('pointerdown',function(e){ drag=false; down=true;sx=e.clientX;sl=g.scrollLeft; });
+    g.addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
+    function up(){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); }
+    addEventListener('pointerup',up); addEventListener('pointercancel',up);
+  }
+  initS2(gal2, document.getElementById('cap2'));
   initGallery(gal4, document.getElementById('cap4'));
 
   // reveal on enter
