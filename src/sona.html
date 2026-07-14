@@ -139,7 +139,6 @@
   .capsule i.on{width:30px;background:var(--ink);}
 
   /* #s2 redesign — cities-style: centred card highlighted (sides dimmed), name + full text below */
-  #s2{justify-content:center;}
   #s2 .hgal{flex:0 0 auto;scroll-snap-type:none;}
   #s2 .card{filter:brightness(.4);transition:filter .55s ease;}
   #s2 .card.is-active{filter:none;}
@@ -199,7 +198,7 @@
   @media (max-width:720px){
     .section{padding:max(9svh,68px) 18px max(5svh,30px);}
     /* section 2: narrow portrait card, next card peeks (Apple-style carousel) */
-    #s2{justify-content:center;}
+    #s2{justify-content:flex-start;}
     #s2 .hgal{flex:0 0 auto;}
     #s2 .card{width:min(74vw,340px);aspect-ratio:3/4;}
     #s4 .card{height:min(40vh,360px);}
@@ -576,7 +575,16 @@
     addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
     function up(){ if(down){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); } }
     addEventListener('pointerup',up); addEventListener('pointercancel',up);
-    addEventListener('resize',centre); addEventListener('load',centre); setTimeout(centre,300);
+    // reserve height of the tallest caption so switching scenes never reflows the page (kills vertical jump)
+    function reserve(){
+      var pn=name.textContent, pt=text.textContent, maxH=0, i;
+      cap.style.minHeight='0px';
+      for(i=0;i<N;i++){ name.textContent=SCENES[i].name; text.textContent=SCENES[i].text; var h=cap.getBoundingClientRect().height; if(h>maxH) maxH=h; }
+      cap.style.minHeight=maxH+'px';
+      name.textContent=pn; text.textContent=pt;
+    }
+    function layout(){ reserve(); centre(); }
+    addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,300); setTimeout(layout,900);
     requestAnimationFrame(loop);
   }
   initS2(gal2, document.getElementById('cap2'));
