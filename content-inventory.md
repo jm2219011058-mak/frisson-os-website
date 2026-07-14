@@ -118,7 +118,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 
 | 母版 | EN | ZH |
 |---|---|---|
-| 4.1 EN | Advocater Recruitment Program |  |
+| 4.1 EN | Founding Residences Program |  |
 | 4.2 EN | Where will you choose to devote your life? |  |
 | 4.3 EN | Be the first to sleep inside the Magic Conch. |  |
 | 4.4 EN | The Mask comes off January 2027 |  |

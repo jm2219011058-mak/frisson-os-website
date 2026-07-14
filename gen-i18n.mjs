@@ -25,7 +25,7 @@ for (const line of md.split('\n')) {
 const O = {
   'nav.cities': ['More-Than-Human Cities', 'More-Than-Human Cities'],
   'nav.sona': ['Sona AI', 'Sona AI'],
-  'nav.advocater': ['Advocater Program', 'Advocater Program'],
+  'nav.advocater': ['Founding Residences', 'Founding Residences'],
   'nav.ownership': ['Ownership', 'Ownership'],
   '2.1': [`A world of your own to forge.<br>What will it become?`, `A world of your own to forge.<br>What will it become?`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
