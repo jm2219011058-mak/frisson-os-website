@@ -568,10 +568,13 @@
     g.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') hovering=true; });
     g.addEventListener('pointerleave',function(e){ if(e.pointerType==='mouse') hovering=false; });
     g.addEventListener('wheel',pause,{passive:true});
+    // touch: let the browser handle horizontal scroll natively AND vertical page scroll — JS just pauses the drift
     g.addEventListener('touchstart',pause,{passive:true});
-    g.addEventListener('pointerdown',function(e){ down=true;drag=false;sx=e.clientX;sl=g.scrollLeft; });
+    g.addEventListener('touchmove',pause,{passive:true});
+    // custom drag is MOUSE-ONLY, so a finger swipe (esp. vertical) is never hijacked
+    g.addEventListener('pointerdown',function(e){ if(e.pointerType!=='mouse'){ pause(); return; } down=true;drag=false;sx=e.clientX;sl=g.scrollLeft; });
     addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
-    function up(e){ if(down){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); if(e&&e.pointerType&&e.pointerType!=='mouse') pause(); } }
+    function up(){ if(down){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); } }
     addEventListener('pointerup',up); addEventListener('pointercancel',up);
     addEventListener('resize',centre); addEventListener('load',centre); setTimeout(centre,300);
     requestAnimationFrame(loop);
