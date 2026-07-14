@@ -474,7 +474,7 @@
   })();
 
   var SCENES=[
-    {img:"assets/sona/s2-1-arrival.png", name:"Arrival",
+    {img:"assets/sona/s2-1-arrival.jpg", name:"Arrival",
      text:"{{Arrival}}"},
     {img:"assets/sona/s2-2-unwind.jpg", name:"Unwind",
      text:"{{Unwind}}"},
@@ -492,7 +492,7 @@
   var SENSES=[
     {img:"assets/sona/s4-1-sound.jpg", label:"{{sense.sound}}"},
     {img:"assets/sona/s4-2-lighting.jpg", label:"{{sense.light}}"},
-    {img:"assets/sona/s4-3-temperature.jpg", label:"{{sense.temp}}"},
+    {img:"assets/sona/s4-3-temperature.jpg?v=3", label:"{{sense.temp}}"},
     {img:"assets/sona/s4-4-scent.jpg", label:"{{sense.scent}}"},
     {img:"assets/sona/s4-5-air.jpg", label:"{{sense.air}}"}
   ];
@@ -516,7 +516,8 @@
     gal2.appendChild(c);
   }
   SCENES.forEach(function(s){ s2card(s,false); });   // set 1
-  SCENES.forEach(function(s){ s2card(s,true); });    // set 2 (duplicate, for seamless loop)
+  SCENES.forEach(function(s){ s2card(s,true); });    // set 2
+  SCENES.forEach(function(s){ s2card(s,true); });    // set 3 — 3 sets so we can sit on the MIDDLE one and loop seamlessly both ways
 
   // build section 4 gallery — labels
   var gal4=document.getElementById('gal4');
@@ -587,11 +588,12 @@
     function loop(now){
       if(visible){
         var drifting=(!down && !hovering && now>pauseUntil);
-        if(drifting){
-          pos+=SPEED;                                 // float accumulator — mobile scrollLeft is integer-only
-          if(setW>0){ if(pos>=setW) pos-=setW; else if(pos<0) pos+=setW; }
-          g.scrollLeft=pos;
-        } else { pos=g.scrollLeft; }
+        if(drifting){ pos+=SPEED; } else { pos=g.scrollLeft; }   // float accumulator — mobile scrollLeft is integer-only
+        if(setW>0){                                              // keep within the MIDDLE set → infinite both ways (auto + manual)
+          if(pos>=2*setW){ pos-=setW; g.scrollLeft=pos; }
+          else if(pos<setW){ pos+=setW; g.scrollLeft=pos; }
+          else if(drifting){ g.scrollLeft=pos; }
+        } else if(drifting){ g.scrollLeft=pos; }
         centre();
       }
       requestAnimationFrame(loop);
@@ -615,7 +617,7 @@
       cap.style.minHeight=maxH+'px';
       name.textContent=pn; text.textContent=pt;
     }
-    function layout(){ reserve(); measure(); lastBest=-1; centre(); }
+    function layout(){ reserve(); measure(); if(setW>0){ pos=setW; g.scrollLeft=setW; } lastBest=-1; centre(); }   // start centred on the middle set
     if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(g); }
     addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,300); setTimeout(layout,900);
     requestAnimationFrame(loop);
