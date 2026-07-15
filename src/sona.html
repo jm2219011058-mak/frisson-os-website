@@ -160,7 +160,7 @@
   .s4lib.on{opacity:1;}
   #s4stars{top:0;height:62%;}
   #s4waves{bottom:0;height:58%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%);}
-  #s4waves.on{pointer-events:auto;}   /* let the 3D water react to mouse + touch (only while active) */
+  #s4waves.on{pointer-events:auto;opacity:.5;}   /* 3D water at 50% — reacts to mouse + touch, but blends into the scene */
   #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
   #s4 .gal-head,#s4 .hgal,#s4 .capsule,#s4 .s4-foot{position:relative;z-index:1;}
 
@@ -209,7 +209,7 @@
     .city-body,.city-finale,.s7-p{max-width:100%;}
   }
   .city-kicker{font-family:var(--sans);font-weight:700;font-size:clamp(14px,1.9vw,19px);letter-spacing:.06em;color:var(--ink);margin:0 0 clamp(26px,4.5vh,44px);}
-  .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,2vw,20px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:34em;margin:0 auto;text-align:left;text-wrap:pretty;}
+  .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,2vw,20px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:34em;margin:0 auto;text-align:center;text-wrap:pretty;}
   .city-finale{font-family:var(--serif);font-weight:500;font-size:clamp(20px,3vw,30px);line-height:1.5;letter-spacing:.03em;color:var(--ink);max-width:min(30ch,calc(100% - 40px));text-wrap:balance;margin:clamp(34px,6vh,60px) auto 0;}
   /* Chinese keeps the justified body + tighter finale measure it was tuned for */
   html[lang="zh"] .city-body{text-align:justify;line-height:2.05;}
