@@ -29,8 +29,8 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  html{-webkit-text-size-adjust:100%;}
-  body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  html{-webkit-text-size-adjust:100%;overflow-x:clip;overscroll-behavior-x:none;}   /* iOS: body-only x-lock is ignored — lock html too (clip avoids scroll-container side effects) */
+  body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:clip;overscroll-behavior-x:none;}
   a{color:inherit;}
 
   /* ---- global type scale ---- */
@@ -669,26 +669,27 @@
     function mix(a,b,f){return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f];}
     function rgba(c,a){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+a+')';}
     var gl=glc&&(glc.getContext('webgl')||glc.getContext('experimental-webgl'));
-    var prog,uRes,uT,uMx,uK,uLo,glOK=false, mx=0.5, tmx=0.5, stars=null;
+    var prog,uRes,uT,uMx,uK,uLo,uCtr,uCol,uInt,glOK=false, mx=0.5, tmx=0.5, stars=null, clouds=null, air=null;
     function initGL(){
       if(!gl) return;
       var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
-      var fs='precision highp float;uniform vec2 u_res;uniform float u_t;uniform float u_mx;uniform float u_k;uniform float u_lo;'
+      var fs='precision highp float;uniform vec2 u_res;uniform float u_t;uniform float u_mx;uniform float u_k;uniform float u_lo;uniform float u_ctr;uniform vec3 u_col;uniform float u_int;'
         +'void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;float asp=u_res.x/u_res.y;vec2 p=uv;p.x+=(u_mx-0.5)*0.5;'
         +'vec2 q=vec2(p.x*asp,p.y)*6.6;float t=u_t*0.42;'
         +'for(int i=0;i<3;i++){float fi=float(i);q+=vec2(sin(q.y*1.6+t*1.15+fi*1.7),cos(q.x*1.4-t*0.95+fi*1.3))*0.55;}'
         +'float v=0.5+0.5*sin(q.x+q.y+t*1.4);float caust=pow(v,7.0);'
         +'float dx=abs(uv.x-u_mx);float focus=smoothstep(0.52,0.02,dx);'
-        +'float eFull=smoothstep(0.0,0.16,uv.y)*smoothstep(0.0,0.16,1.0-uv.y);'          /* mode 1: full-height water */
-        +'float eLo=smoothstep(0.0,0.10,uv.y)*smoothstep(0.54,0.20,uv.y);'               /* mode 2: water confined to lower band */
-        +'float edge=mix(eFull,eLo,u_lo);'
-        +'float a=caust*focus*edge*0.16*u_k;gl_FragColor=vec4(1.0,0.92,0.80,a);}';
+        +'float eFull=smoothstep(0.0,0.16,uv.y)*smoothstep(0.0,0.16,1.0-uv.y);'          /* full-height water */
+        +'float eLo=smoothstep(0.0,0.10,uv.y)*smoothstep(0.54,0.20,uv.y);'               /* lower-band water */
+        +'float dc=distance(uv,vec2(0.5,0.5));float eCtr=smoothstep(0.60,0.05,dc);'      /* soft radial from centre (scent) */
+        +'float edge=mix(mix(eFull,eLo,u_lo),eCtr,u_ctr);float foc=mix(focus,1.0,u_ctr);'
+        +'float a=caust*foc*edge*0.16*u_k*u_int;gl_FragColor=vec4(u_col,a);}';
       function sh(ty,src){var s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);return s;}
       prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
       if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
       var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
       var loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-      uRes=gl.getUniformLocation(prog,'u_res');uT=gl.getUniformLocation(prog,'u_t');uMx=gl.getUniformLocation(prog,'u_mx');uK=gl.getUniformLocation(prog,'u_k');uLo=gl.getUniformLocation(prog,'u_lo');
+      uRes=gl.getUniformLocation(prog,'u_res');uT=gl.getUniformLocation(prog,'u_t');uMx=gl.getUniformLocation(prog,'u_mx');uK=gl.getUniformLocation(prog,'u_k');uLo=gl.getUniformLocation(prog,'u_lo');uCtr=gl.getUniformLocation(prog,'u_ctr');uCol=gl.getUniformLocation(prog,'u_col');uInt=gl.getUniformLocation(prog,'u_int');
       gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.clearColor(0,0,0,0);glOK=true;
     }
     initGL();
@@ -716,9 +717,12 @@
       }
       ctx.globalCompositeOperation='source-over';
     }
-    function drawWater(t,lo){ if(!glOK) return; mx+=(tmx-mx)*0.08;
+    function drawWater(t,lo,col,intens,ctr){ if(!glOK) return; mx+=(tmx-mx)*0.08;
+      col=col||[1.0,0.92,0.80];
       gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(prog);
-      gl.uniform2f(uRes,glc.width,glc.height); gl.uniform1f(uT,t); gl.uniform1f(uMx,mx); gl.uniform1f(uK,k); gl.uniform1f(uLo,lo?1:0); gl.drawArrays(gl.TRIANGLES,0,3); }
+      gl.uniform2f(uRes,glc.width,glc.height); gl.uniform1f(uT,t); gl.uniform1f(uMx,mx); gl.uniform1f(uK,k);
+      gl.uniform1f(uLo,lo?1:0); gl.uniform1f(uCtr,ctr?1:0); gl.uniform3f(uCol,col[0],col[1],col[2]); gl.uniform1f(uInt,intens==null?1:intens);
+      gl.drawArrays(gl.TRIANGLES,0,3); }
     function drawStars(t){   /* temperature · upper night sky — cool twinkling points (over the warm lower water) */
       if(!stars || stars._w!==W){ var n=Math.max(40,Math.min(150,Math.round(W*H/15000))); stars=[]; stars._w=W;
         for(var s=0;s<n;s++){ stars.push({x:Math.random()*W, y:Math.random()*H*0.60, r:0.5+Math.random()*1.5, p:Math.random()*6.2832, sp:0.5+Math.random()*1.6, b:0.4+Math.random()*0.6}); } }
@@ -728,7 +732,39 @@
         if(st.r>1.1){ ctx.beginPath(); ctx.arc(st.x,st.y,st.r*2.6,0,6.2832); ctx.fillStyle='rgba(180,205,255,'+(a*0.18).toFixed(3)+')'; ctx.fill(); } }
       ctx.globalCompositeOperation='source-over';
     }
-    var HAS={0:1,1:1,2:1};
+    function drawScent(t){   /* environment scent · VERY restrained — a couple of near-invisible warm wisps breathing near the centre (over the tinted water shimmer) */
+      if(!clouds || clouds._w!==W){ clouds=[]; clouds._w=W;
+        var PAL=[[236,196,150],[224,150,130],[196,206,150]];   /* soft warm gold · rose · pale green */
+        for(var i=0;i<3;i++){ clouds.push({ang:Math.random()*6.2832, sp:0.035+Math.random()*0.05, ph:Math.random()*6.2832,
+          rad:0.04+Math.random()*0.12, size:0.14+Math.random()*0.10, col:PAL[i%PAL.length]}); } }
+      ctx.globalCompositeOperation='lighter';
+      var cx=W/2, cy=H/2, base=Math.min(W,H);
+      for(var i=0;i<clouds.length;i++){ var c=clouds[i], breath=0.5+0.5*Math.sin(t*c.sp*2+c.ph);
+        var dist=(c.rad+0.05*Math.sin(t*c.sp+c.ph))*base*(0.5+0.5*breath);
+        var x=cx+Math.cos(c.ang+t*c.sp*0.25)*dist, y=cy+Math.sin(c.ang+t*c.sp*0.25)*dist*0.8;
+        var r=c.size*base*(0.7+0.4*breath), a=0.045*k*(0.4+0.6*breath); if(a<0.002) continue;
+        var g=ctx.createRadialGradient(x,y,0,x,y,r);
+        g.addColorStop(0,rgba(c.col,a)); g.addColorStop(1,rgba(c.col,0));
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fill();
+      }
+      ctx.globalCompositeOperation='source-over';
+    }
+    function airFlow(x,y,t){ var s=0.0016;   /* cheap curl-ish angle field */
+      return (Math.sin(x*s+t*0.30)+Math.cos(y*s*1.3-t*0.24)+0.6*Math.sin((x+y)*s*0.7+t*0.20))*1.3; }
+    function drawAir(t){   /* air composition · thin, crisp streams following a flow field (sparse + sharp) */
+      if(!air || air._w!==W){ air=[]; air._w=W; var n=Math.max(28,Math.min(72,Math.round(W*H/24000)));
+        for(var s=0;s<n;s++){ var px=Math.random()*W, py=Math.random()*H; air.push({x:px,y:py,px:px,py:py,life:Math.random()*220}); } }
+      ctx.globalCompositeOperation='source-over'; ctx.fillStyle=rgba([5,5,6],0.12); ctx.fillRect(0,0,W,H);
+      ctx.globalCompositeOperation='lighter'; ctx.lineWidth=1;
+      for(var i=0;i<air.length;i++){ var p=air[i]; p.px=p.x; p.py=p.y;
+        var a=airFlow(p.x,p.y,t); p.x+=Math.cos(a)*1.55; p.y+=Math.sin(a)*1.1; p.life--;
+        if(p.life<0||p.x<-4||p.x>W+4||p.y<-4||p.y>H+4){ p.x=Math.random()*W; p.y=Math.random()*H; p.px=p.x; p.py=p.y; p.life=140+Math.random()*180; continue; }
+        var al=0.34*k; if(al<0.004) continue;
+        ctx.strokeStyle=rgba([206,220,234],al); ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
+      }
+      ctx.globalCompositeOperation='source-over';
+    }
+    var HAS={0:1,1:1,2:1,3:1,4:1};
     function loop(now){
       var want=centred(), target;
       if(want!==mode){ target=0; if(k<0.02){ mode=want; ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); } }  /* switching cards: fade the current effect OUT, then commit + fade the new one IN */
@@ -739,6 +775,8 @@
         if(mode===0){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawSound(t); }
         else if(mode===1){ ctx.clearRect(0,0,W,H); drawWater(t,0); }
         else if(mode===2){ drawStars(t); drawWater(t,1); }   /* temperature: cool stars above (2D) + warm water below (GL) */
+        else if(mode===3){ ctx.clearRect(0,0,W,H); drawWater(t,0,[1.0,0.86,0.72],0.55,1); drawScent(t); }   /* scent: warm water shimmer softly centred + faint wisps */
+        else if(mode===4){ drawWater(t,0,[0.82,0.90,1.0],0.5,0); drawAir(t); }      /* air: cool water shimmer + thin flow streams */
       } else { ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); }
       requestAnimationFrame(loop);
     }
