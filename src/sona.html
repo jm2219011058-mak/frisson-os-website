@@ -535,7 +535,7 @@
       sheetImg=document.getElementById('sheetImg'),
       sheetName=document.getElementById('sheetName'),
       sheetText=document.getElementById('sheetText');
-  function openSheet(s){ sheetImg.src=s.img+'?v=2'; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
+  function openSheet(s){ sheetImg.src=s.img+'?v=3'; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
   function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
@@ -544,7 +544,7 @@
   function s2card(s,dup){
     var c=document.createElement('div'); c.className='card';
     if(dup) c.setAttribute('aria-hidden','true');
-    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+(dup?'':s.name)+'" loading="lazy" draggable="false">';
+    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+(dup?'':s.name)+'" loading="lazy" draggable="false">';
     gal2.appendChild(c);
   }
   SCENES.forEach(function(s){ s2card(s,false); });   // set 1
@@ -554,7 +554,7 @@
   var gal4=document.getElementById('gal4');
   SENSES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
+    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
     gal4.appendChild(c);
   });
 
@@ -803,7 +803,7 @@
               1:[[150,192,222],[120,164,204],[200,222,236],[150,190,210],[176,204,224]],
               2:[[70,110,175],[150,120,90],[96,150,150],[60,90,150],[150,140,120]],
               3:[[236,214,150],[214,204,120],[150,182,110],[236,222,180],[200,196,130]],
-              4:[[120,178,110],[150,192,120],[92,142,100],[168,196,140],[110,160,110]]};
+              4:[[168,110,66],[150,96,58],[120,74,44],[178,124,74],[138,86,52]]};   /* air: warm brown (new photo) */
     function drawBG(now){   /* whole background takes on the centred card's colours (wash) + breathing halos */
       if(!bctx) return;
       var p=(mode>=0)?(samplePalette(mode)||FALL[mode]):null; if(p) tgtPal=p;
