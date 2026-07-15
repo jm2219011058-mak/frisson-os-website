@@ -126,12 +126,6 @@ for (const page of pages) {
     // Defer render-blocking <head> scripts (GSAP libs + logo custom element). Their inline consumers boot on gsap-ready / DOMContentLoaded so deferring doesn't disable animations.
     out = out.replace(/<script src="(assets\/vendor\/gsap\/[^"]+|assets\/frisson-logo-animated\.js[^"]*)"><\/script>/g,
       '<script defer src="$1"></script>');
-    // "Load ahead while reading": after load + idle, warm below-fold lazy images into cache (low priority) so scrolling is instant. Skips data-saver/slow networks.
-    out = out.replace('</body>',
-      '<script>(function(){var c=navigator.connection;if(c&&(c.saveData||/(^|-)2g$/.test(c.effectiveType||"")))return;'
-      + 'function warm(){var s={};document.querySelectorAll(\'img[loading="lazy"]\').forEach(function(im){var u=im.currentSrc||im.getAttribute("src");if(!u||s[u])return;s[u]=1;var p=new Image();if("fetchPriority" in p)p.fetchPriority="low";p.src=u;});}'
-      + 'function go(){(window.requestIdleCallback||function(f){setTimeout(f,800);})(warm);}'
-      + 'if(document.readyState==="complete")go();else addEventListener("load",go);})();</script>\n</body>');
     if (L.base) {
       // pages served from /zh/ reach assets one level up (works on server and local file://).
       // Broad match so JS-built paths like  img:"assets/..."  are rewritten too.
