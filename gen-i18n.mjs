@@ -91,8 +91,8 @@ const O = {
   // --- How It Works (city entry section + dedicated page) ---
   'hiw.title': [`More than ownership`, `超越所有权`],
   'hiw.p1': [`Global Residence Networks`, `全球居住网络`],
-  'hiw.p2': [`Fractional Property Ownership`, `共享产权`],
-  'hiw.p3': [`Full Living-Health Asset Hospitality`, `全方位生活健康资产服务`],
+  'hiw.p2': [`Fractional Property Ownership`, `份额产权`],
+  'hiw.p3': [`Full Living-Health Asset Hospitality`, `全方位生活健康资产酒店`],
   'hiw.discover': [`Discover`, `了解运作`],
   'hiw.eyebrow': [`How It Works`, `工作原理`],
   'hiw.lead': [`More than ownership. A residence you hold, a network you inhabit, and an intelligence that travels with your body.`, `不止于拥有。你持有的是一处寓所,栖居的是一整张网络,而随身而行的,是一套懂得你身体的智能。`],
