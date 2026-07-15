@@ -108,7 +108,7 @@
   /* landscape scenario cards (sized by width -> mobile friendly) */
   #s2 .card{width:min(70vw,800px);aspect-ratio:16/9;border-radius:26px;}
   /* portrait sense cards — sized by height so the row fits one screen */
-  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;}
+  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;box-shadow:0 6px 60px rgba(0,0,0,.24);}   /* soft, diffuse — no dark band below the row */
 
   .card .name{position:absolute;left:18px;bottom:15px;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em;
     text-shadow:0 2px 14px rgba(0,0,0,.7);pointer-events:none;z-index:2;}
@@ -156,6 +156,12 @@
 
   /* #s4 sense-effect background layer (cinematic sound design waves, etc.) */
   .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .s4lib{position:absolute;left:0;right:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .9s ease;overflow:hidden;}
+  .s4lib.on{opacity:1;}
+  #s4stars{top:0;height:62%;}
+  #s4waves{bottom:0;height:58%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%);}
+  #s4waves.on{pointer-events:auto;}   /* let the 3D water react to mouse + touch (only while active) */
+  #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
   #s4 .gal-head,#s4 .hgal,#s4 .capsule,#s4 .s4-foot{position:relative;z-index:1;}
 
   /* 3 · sensing — left-aligned composition (per mockup) */
@@ -198,6 +204,7 @@
   #s-city .citywrap{max-width:min(760px,calc(100% - 12px));margin:0 auto;}
   @media(max-width:640px){
     #s-city,#s7{padding-left:30px;padding-right:30px;}
+    #s-city{padding-top:max(112px,15vh);padding-bottom:max(56px,7svh);}   /* nudge the block down to the optical centre on mobile */
     #s-city .citywrap{max-width:100%;}
     .city-body,.city-finale,.s7-p{max-width:100%;}
   }
@@ -417,6 +424,8 @@
     <canvas class="s4fx" id="s4bg" aria-hidden="true"></canvas>
     <canvas class="s4fx" id="s4fx" aria-hidden="true"></canvas>
     <canvas class="s4fx" id="s4gl" aria-hidden="true"></canvas>
+    <div class="s4lib" id="s4waves" aria-hidden="true"></div>   <!-- temperature · Vanta.WAVES (lower water) -->
+    <div class="s4lib" id="s4stars" aria-hidden="true"></div>   <!-- temperature · tsParticles (upper stars) -->
     <div class="gal-head reveal">
       <p class="s4-sub lead">{{3.8}}</p>
       <h2 class="t2">{{3.9}}</h2>
@@ -526,7 +535,7 @@
       sheetImg=document.getElementById('sheetImg'),
       sheetName=document.getElementById('sheetName'),
       sheetText=document.getElementById('sheetText');
-  function openSheet(s){ sheetImg.src=s.img+'?v=2'; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
+  function openSheet(s){ sheetImg.src=s.img+'?v=3'; sheetImg.alt=s.name; sheetName.textContent=s.name; sheetText.textContent=s.text; sheet.classList.add('open'); document.documentElement.style.overflow='hidden'; }
   function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
@@ -535,7 +544,7 @@
   function s2card(s,dup){
     var c=document.createElement('div'); c.className='card';
     if(dup) c.setAttribute('aria-hidden','true');
-    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+(dup?'':s.name)+'" loading="lazy" draggable="false">';
+    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+(dup?'':s.name)+'" loading="lazy" draggable="false">';
     gal2.appendChild(c);
   }
   SCENES.forEach(function(s){ s2card(s,false); });   // set 1
@@ -545,7 +554,7 @@
   var gal4=document.getElementById('gal4');
   SENSES.forEach(function(s){
     var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'?v=2" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
+    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
     gal4.appendChild(c);
   });
 
@@ -662,7 +671,7 @@
        1 dynamic lighting        · WebGL water-surface refraction (warm white), tracks pointer X
      Runs only while its card is centred AND the section is on-screen (fades out on leave, replays on return).
      Works with mouse AND finger (pointer events). */
-  (function(){
+  try{ (function(){
     var sec=document.getElementById('s4'), cv=document.getElementById('s4fx'), glc=document.getElementById('s4gl'), bgc=document.getElementById('s4bg'), g=gal4;
     if(!sec||!cv||!g) return;
     var ctx=cv.getContext('2d'), bctx=bgc&&bgc.getContext('2d'), dpr=Math.min(2,window.devicePixelRatio||1), W=0,H=0;
@@ -794,7 +803,7 @@
               1:[[150,192,222],[120,164,204],[200,222,236],[150,190,210],[176,204,224]],
               2:[[70,110,175],[150,120,90],[96,150,150],[60,90,150],[150,140,120]],
               3:[[236,214,150],[214,204,120],[150,182,110],[236,222,180],[200,196,130]],
-              4:[[120,178,110],[150,192,120],[92,142,100],[168,196,140],[110,160,110]]};
+              4:[[168,110,66],[150,96,58],[120,74,44],[178,124,74],[138,86,52]]};   /* air: warm brown (new photo) */
     function drawBG(now){   /* whole background takes on the centred card's colours (wash) + breathing halos */
       if(!bctx) return;
       var p=(mode>=0)?(samplePalette(mode)||FALL[mode]):null; if(p) tgtPal=p;
@@ -821,6 +830,50 @@
       }
       bctx.globalCompositeOperation='source-over';
     }
+    /* temperature haptic · library layers — tsParticles (stars) + Vanta.WAVES (water). Lazy-init, pause off-card, destroy off-screen. */
+    var tempFX=(function(){
+      var starsEl=document.getElementById('s4stars'), wavesEl=document.getElementById('s4waves');
+      var vanta=null, tspStarted=false, tspCont=null, active=false, secVis=false, killT=0, libsReady=false, libsLoading=false;
+      function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=function(){res();}; s.onerror=rej; document.head.appendChild(s); }); }
+      function ensureLibs(cb){   /* inject three + vanta + tsParticles only when temperature is first needed */
+        if(libsReady){ cb(); return; } if(libsLoading) return; libsLoading=true;
+        loadScript('assets/vendor/three/three.min.js')
+          .then(function(){ return loadScript('assets/vendor/vanta/vanta.waves.min.js'); })
+          .then(function(){ return loadScript('assets/vendor/tsparticles/tsparticles.bundle.min.js'); })
+          .then(function(){ libsReady=true; if(active&&secVis) cb(); })
+          .catch(function(e){ libsLoading=false; if(window.console) console.warn('[temp libs]',e); });
+      }
+      function startTsp(){
+        if(tspStarted||!window.tsParticles||!starsEl) return; tspStarted=true;
+        tsParticles.load('s4stars', {
+          fullScreen:{enable:false}, fpsLimit:60, detectRetina:true, background:{color:'transparent'},
+          particles:{
+            number:{value:120,density:{enable:true,area:900}},
+            color:{value:['#cfe0ff','#ffffff','#bcd0ff','#eaf2ff']}, shape:{type:'circle'},
+            opacity:{value:{min:0.05,max:0.85},animation:{enable:true,speed:0.8,sync:false,startValue:'random'}},
+            size:{value:{min:0.4,max:1.7}},
+            move:{enable:true,speed:0.12,direction:'none',random:true,straight:false,outModes:{default:'out'}}
+          }
+        }).then(function(c){ tspCont=c; if(!(active&&secVis)&&tspCont) tspCont.pause(); });
+      }
+      function startVanta(){
+        if(vanta||!window.VANTA||!window.THREE||!wavesEl) return;
+        vanta=VANTA.WAVES({ el:wavesEl, THREE:window.THREE, mouseControls:true, touchControls:true, gyroControls:false,
+          minHeight:200, minWidth:200, scale:1, scaleMobile:1, backgroundAlpha:0,   /* transparent bg → no dark sky block above the waves */
+          color:0x0e2a33, shininess:42, waveHeight:11, waveSpeed:0.72, zoom:1.02 });
+      }
+      function killVanta(){ if(vanta){ try{vanta.destroy();}catch(e){} vanta=null; } }
+      function apply(){
+        if(active&&secVis){ clearTimeout(killT); starsEl.classList.add('on'); wavesEl.classList.add('on');
+          ensureLibs(function(){ startTsp(); startVanta(); if(tspCont) tspCont.play(); });
+        } else {
+          starsEl.classList.remove('on'); wavesEl.classList.remove('on');
+          if(tspCont) tspCont.pause(); clearTimeout(killT); killT=setTimeout(killVanta,950);   /* destroy after fade-out to free GPU */
+        }
+      }
+      return { setActive:function(a){ if(a!==active){ active=a; apply(); } },
+               setVisible:function(v){ if(v!==secVis){ secVis=v; apply(); } } };
+    })();
     var HAS={0:1,1:1,2:1,3:1,4:1};
     function loop(now){
       var want=centred(), target;
@@ -828,18 +881,19 @@
       else { target=(visible && HAS[mode])?1:0; }                                                                          /* scroll away → fade out; return → fade back in */
       k+=(target-k)*0.07;
       bgK+=((visible?1:0)-bgK)*0.05; drawBG(now);   /* image-tinted background halos */
+      tempFX.setVisible(visible); tempFX.setActive(mode===2 && visible);   /* temperature = tsParticles stars + Vanta water layers */
       var t=(now-t0)/1000;
       if(k>0.012 && HAS[mode]){
         if(mode===0){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawSound(t); }
         else if(mode===1){ ctx.clearRect(0,0,W,H); drawWater(t,0); }
-        else if(mode===2){ drawStars(t); drawWater(t,1); }   /* temperature: cool stars above (2D) + warm water below (GL) */
+        else if(mode===2){ /* temperature handled by the tsParticles + Vanta DOM layers */ }
         else if(mode===3){ ctx.clearRect(0,0,W,H); drawWater(t,0,[1.0,0.86,0.72],0.46,1); drawScent(t); }   /* scent: warm water blooming in from the four sides + faint wisps */
         else if(mode===4){ if(gl) gl.clear(gl.COLOR_BUFFER_BIT); drawAir(t); }      /* air: trails only, no water */
       } else { ctx.clearRect(0,0,W,H); if(gl) gl.clear(gl.COLOR_BUFFER_BIT); }
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
-  })();
+  })(); }catch(_e){ if(window.console) console.warn('[s4fx engine]', _e); }   /* never let an effect error blank the page */
 
   // reveal on enter
   (function(){

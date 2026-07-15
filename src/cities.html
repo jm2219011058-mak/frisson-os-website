@@ -67,8 +67,8 @@
   .hero .hero-top,.hero .hero-title{opacity:0;}   /* hidden until the line-reveal runs (no flash of static text) */
   @media(max-width:640px){ html[lang="zh"] .hero-top{max-width:min(78vw,430px);} }   /* keep the ZH question to two lines — no lonely "子?" */
   @media(prefers-reduced-motion:reduce){ .hero .hero-top,.hero .hero-title{opacity:1;} }
-  html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(80px,16vw,240px);letter-spacing:.02em;line-height:.98;text-shadow:0 3px 40px rgba(0,0,0,.55);}
-  html[lang="en"] .hero-title{font-size:clamp(46px,10vw,152px);max-width:min(84vw,1240px);line-height:.98;}   /* "CONQUEST OF" (nbsp-glued) + "PARADISE" → exactly two lines */
+  html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(72px,min(15vw,26vh),220px);letter-spacing:.02em;line-height:.98;text-shadow:0 3px 40px rgba(0,0,0,.55);}   /* scale by the SMALLER of width/height so a wide-short window doesn't blow it up */
+  html[lang="en"] .hero-title{font-size:clamp(44px,min(10vw,17vh),150px);max-width:min(84vw,1240px);line-height:.98;}   /* two lines; capped by height so a wide-short window doesn't oversize it */
 
   /* intro — left-aligned block, centred on the page */
   .intro{padding:clamp(90px,16vh,200px) clamp(24px,6vw,80px);}
