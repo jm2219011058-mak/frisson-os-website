@@ -73,9 +73,9 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 母版 | EN | ZH（英译中初稿） |
 |---|---|---|
 | 3.1 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
-| 3.2 EN | More-Than-Human City properties, powered by Sona. | More-Than-Human Cities 房产,搭载 Sona。 |
-| 3.3 ZH | Sona is a spatial intelligence attuned to what you feel. She plays light and sound, temperature and space as a hand moves across strings — and every shift she makes is an answer to the mood of your moment. She reads your weariness and your quiet delight, and the longing you have folded into silence and not yet noticed in yourself. | Sona拥有敏锐的空间智能，能够感知你的情绪。她操控着光与声、温度与空间，如同手在琴弦上移动——她的每一次变换都契合着你当下的情绪。她能读懂你的疲惫与静谧的喜悦，以及你深藏于心、尚未察觉的渴望。 |
-| 3.4 ZH | And the far shore this melody reaches for is exactly this: the frisson beyond words — that shiver down the spine as beauty, at its very utmost, brushes past. | 而这旋律所要抵达的彼岸,正是:极致之美掠过脊背时,那一阵无从言说的战栗。 |
+| 3.2 EN | More-Than-Human City properties, powered by Sona. | 由 Sona 提供技术支持的"超越人类之城"属性。 |
+| 3.3 ZH | Sona is a spatial intelligence attuned to what you feel. She plays light and sound, temperature and space as a hand moves across strings — and every shift she makes is an answer to the mood of your moment. She reads your weariness and your quiet delight, and the longing you have folded into silence and not yet noticed in yourself. | 索娜拥有敏锐的空间智能，能够感知你的情绪。她操控着光与声、温度与空间，如同手在琴弦上移动——她的每一次变换都契合着你当下的情绪。她能读懂你的疲惫与静谧的喜悦，以及你深藏于心、尚未察觉的渴望。 |
+| 3.4 ZH | And the far shore this melody reaches for is exactly this: the frisson beyond words — that shiver down the spine as beauty, at its very utmost, brushes past. | 而这首旋律所追求的彼岸正是如此：一种无法用言语形容的颤栗——当极致的美丽掠过眼前时，脊背上涌起的那种颤栗感。 |
 | 3.5 EN | Space that senses your body | 感知你身体的空间 |
 | 3.6 EN | "what is essential is invisible to the eye." | "真正重要的东西无法由肉眼可见。" |
 | 3.7 EN | Built around the human, Sona understands how residents live and how their bodies feel — accumulating a lasting personal living-health asset, and acting on it with proactive insight and recommendations. | Sona 以人为本，了解居民的生活方式和身体感受，从而积累持久的个人生活健康资产，并积极主动地提供洞察和建议。 |
