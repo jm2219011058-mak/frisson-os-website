@@ -80,7 +80,7 @@ const O = {
   'zahir.spec.intro': [`The first Zahir — a residence engineered to engage the whole human, in body and in soul.`, `首座扎希尔——一座为触动完整的人、身与心皆被唤起而生的居所。`],
   'zahir.f1.k': [`Phase One`, `一期`], 'zahir.f1.v': [`120 residences`, `120 套住宅`],
   'zahir.f2.k': [`Residence`, `居所`], 'zahir.f2.v': [`150–500 m² each · 40 floors`, `每户 150–500 平 · 40 层`],
-  'zahir.f3.k': [`Mobility`, `垂直交通`], 'zahir.f3.v': [`Shared Ownership | Global Living Network`, `共享产权 | 全球生活网络`],
+  'zahir.f3.k': [`Mobility`, `垂直交通`], 'zahir.f3.v': [`Shared Ownership | Global Living Network`, `共享产权 | 全球居住网络`],
   'zahir.f4.k': [`Intelligence`, `智能`], 'zahir.f4.v': [`Sona Bio OS`, `Sona Bio OS`],
   'zahir.f5.k': [`Design`, `设计`], 'zahir.f5.v': [`Spatial design that engages human emotion`, `触动人心的空间设计`],
   'zahir.f6.k': [`Experience`, `体验`], 'zahir.f6.v': [`Soulful Living`, `充满情感的生活`],
