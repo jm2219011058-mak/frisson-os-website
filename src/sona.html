@@ -108,7 +108,7 @@
   /* landscape scenario cards (sized by width -> mobile friendly) */
   #s2 .card{width:min(70vw,800px);aspect-ratio:16/9;border-radius:26px;}
   /* portrait sense cards — sized by height so the row fits one screen */
-  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;}
+  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;box-shadow:0 6px 60px rgba(0,0,0,.24);}   /* soft, diffuse — no dark band below the row */
 
   .card .name{position:absolute;left:18px;bottom:15px;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em;
     text-shadow:0 2px 14px rgba(0,0,0,.7);pointer-events:none;z-index:2;}
@@ -204,6 +204,7 @@
   #s-city .citywrap{max-width:min(760px,calc(100% - 12px));margin:0 auto;}
   @media(max-width:640px){
     #s-city,#s7{padding-left:30px;padding-right:30px;}
+    #s-city{padding-top:max(112px,15vh);padding-bottom:max(56px,7svh);}   /* nudge the block down to the optical centre on mobile */
     #s-city .citywrap{max-width:100%;}
     .city-body,.city-finale,.s7-p{max-width:100%;}
   }
