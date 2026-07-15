@@ -513,8 +513,8 @@
     <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
     <div class="mf-dark">
       <div class="hero-media">
-        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+        <video class="hero-bg" muted loop playsinline preload="none" poster="assets/sona/ponch-poster.jpg" data-vsrc="assets/sona/ponch.mp4?v=2" aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-fg" muted loop playsinline preload="none" poster="assets/sona/ponch-poster.jpg" data-vsrc="assets/sona/ponch.mp4?v=2"></video>
         <div class="hero-scrim"></div>
       </div>
       <div class="mf-dark-in">
@@ -777,6 +777,15 @@
 
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* Lazy-load the below-fold Sona background video only when it nears the viewport (defers ~2.9MB off first paint). */
+  (function(){
+    var vids=document.querySelectorAll('video[data-vsrc]'); if(!vids.length) return;
+    var host=vids[0].closest('.mf-dark')||vids[0].parentNode;
+    function load(){ vids.forEach(function(v){ if(v.dataset.vsrc){ v.src=v.dataset.vsrc; delete v.dataset.vsrc; v.load(); var p=v.play(); if(p&&p.catch) p.catch(function(){}); } }); }
+    if('IntersectionObserver' in window){ var o=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ o.disconnect(); load(); } },{rootMargin:'600px'}); o.observe(host); }
+    else load();
+  })();
 
   /* Sky Mansion vision dialogs */
   document.querySelectorAll('[data-vm]').forEach(function(b){
