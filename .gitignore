@@ -9,6 +9,9 @@ Thumbs.db
 dist/
 node_modules/
 
+# GreenSock reference skills — nested git repo, must NOT be tracked (breaks Netlify submodule checkout)
+gsap-skills/
+
 # Generated translation output — source of truth is content-inventory.md + gen-i18n.mjs.
 # Do NOT edit these by hand; they are rebuilt by `node gen-i18n.mjs`.
 i18n/en.json

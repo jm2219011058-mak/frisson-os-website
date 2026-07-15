@@ -83,7 +83,7 @@ for (const page of pages) {
     let out = tpl.replace(/\{\{([^}]+)\}\}/g, (_, k) => tr(L.code, k));
     out = out.replace(/<html[^>]*>/, `<html lang="${L.code}" dir="${L.dir}">`);
     out = out.replace('<!--HREFLANG-->', hreflang(page));
-    out = out.replace(/<!--LANGNAV-->/g, switcher(L.code, page));
+    out = out.replace(/<!--LANGNAV-->/g, page === 'index.html' ? '' : switcher(L.code, page));   // home (frisson) page: no language switcher
     out = out.replace('</head>', SWITCH_CSS + '\n</head>');
     if (L.base) {
       // pages served from /zh/ reach assets one level up (works on server and local file://).

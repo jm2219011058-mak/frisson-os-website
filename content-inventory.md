@@ -24,7 +24,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 母版 | EN | ZH |
 |---|---|---|
 | 1.1 EN/ZH | Rebuild the Respect for Human | 重建对人的尊重 |
-| 1.2 EN | FRISSON is a soulful living hospitality |  |
+| 1.2 EN | FRISSON is a soulful living network by |  |
 | 1.3 EN | Architects · Sound Designer · Interior Designer · Biologist · HCI Researcher · Material Artist · Writers · Athletes · Frontier AI Researcher · Astronauts · Medical Engineers · Marine Scientist |  |
 | 1.4 EN | We are redesigning the best hospitality in the world |  |
 | 1.5 EN | In the Moon / Mars / And Beyond... |  |
@@ -39,7 +39,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 母版 | EN | ZH（英译中初稿） |
 |---|---|---|
 | 2.1 EN | A world of your own to forge. / What will it become? | A world of your own to forge. / What will it become? |
-| 2.2 EN | Conquest of Paradise | 征服天堂 |
+| 2.2 EN | Conquest of Paradise | 征服天堂 |
 | 2.3 EN | A Place Where You Belong... | 一处让你归属的所在…… |
 | 2.4 EN | Space sensing your body, / Space healing your body, / Soulful living, | 感知你身体的空间，/ 疗愈你身体的空间，/ 有灵魂的栖居， |
 | 2.5 EN | "Out of avidity to see the Immortals, to touch that more-than-human City, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either." | "出于渴望一睹不朽者、触碰那座超越人类之城,我几乎难以成眠。仿佛穴居人窥破了我的心意,他们也彻夜未眠。" |
@@ -60,7 +60,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 2.17 ZH | To let art leave the canvas — to enter architecture, enter light, enter the body, and at last enter the human heart. | 让艺术离开画布,进入建筑、进入光、进入身体,最终进入人的内心。 |
 | 2.18 ZH | We infuse the inspiration of contemporary artists into architectural detail, and carry it into the world through computational design and 3D-printed walls. In the work of Jesperish, for instance, a sensing of ancient-and-future worlds explores identity, emotion and systems of symbols; through symbolism he awakens intuition, asking how architecture, culture and environment shape the inner world of human beings. | 我们将当代艺术家的设计灵感注入建筑细节并由计算设计和3D墙体打印带给世界，如Jesperish的作品通过对远古未来世界的感知，探索身份、情感和符号系统，他运用象征手法，唤起人们的直觉，探索建筑、文化和环境如何塑造人类的内心世界。 |
 | 2.19 ZH | Not a Fantasy of "More-Than-Human" | 不是关于"超越人类"的狂想 |
-| 2.20 ZH | The true "more" is not to surpass the human, but to understand the human more deeply — and to honour them. | 真正的"更多",不是超越人,而是更深地懂得人、尊重人。 |
+| 2.20 ZH | The true "more" is not to surpass the human, but to understand the human more deeply — and to honour them. | 真正的"更多" 是更深地懂得人、尊重人。 |
 | 2.21 ZH | Because it is a precise orchestration made for human perception. | 因为它是一种为人的感知而作的精密编排。 |
 | 2.22 ZH | What we rise above is a poverty of imagination — the kind that treats people as data, and homes as machines. The twentieth-century city fell for a single metaphor: the house as "a machine for living in." And so we were handed spaces efficient but cold, where a person became just another variable in a process. What we set out to build is different — a home that knows how to feel. | 我们所超越的,是那种把人当作数据、把居所当作机器的贫乏想象。二十世纪的城市曾迷信一个隐喻:住宅是"居住的机器"。于是我们得到了高效却冷漠的空间,人成了流程里的一个变量。而我们要造的,是一个懂得感知的居所。 |
 | 2.23 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
