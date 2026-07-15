@@ -510,8 +510,8 @@
     <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
     <div class="mf-dark">
       <div class="hero-media">
-        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg"></video>
+        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
         <div class="hero-scrim"></div>
       </div>
       <div class="mf-dark-in">
@@ -780,14 +780,6 @@
     function rdy(){ h.classList.add('ready'); }
     if(im.complete&&im.naturalWidth) rdy(); else im.addEventListener('load',rdy,{once:true}); })();
 
-  /* Sona video · smooth playback: buffer first, start only when it can play through without stalling. */
-  (function(){ var vids=document.querySelectorAll('.hero-media video'); if(!vids.length) return;
-    vids.forEach(function(v){ var played=false;
-      function go(){ if(played)return; played=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
-      if(v.readyState>=4) go();
-      else { v.addEventListener('canplaythrough',go,{once:true}); setTimeout(function(){ if(!played&&v.readyState>=2)go(); },6000); }
-    });
-  })();
 
 
   /* Sky Mansion vision dialogs */
