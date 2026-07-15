@@ -44,7 +44,7 @@ function switcher(lang, page) {
 }
 
 const SWITCH_CSS = `<style>
-picture{display:contents;}
+picture{display:contents;}picture>source{display:none;}
 .nav{justify-content:flex-start;}
 .nav .brand{margin-right:auto;}
 .langsel{position:relative;display:inline-flex;align-items:center;margin-left:clamp(14px,2.5vw,30px);font-family:var(--sans,-apple-system,Arial,sans-serif);font-size:13px;letter-spacing:.04em;line-height:1;color:#2b1d12;}
