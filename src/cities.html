@@ -54,20 +54,21 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* hero banner */
-  .hero{position:relative;width:100%;height:min(80vh,780px);overflow:hidden;}
+  .hero{position:relative;width:100%;height:min(80vh,780px);overflow:hidden;background:#fff;}   /* pure-white placeholder while the hero image loads */
   .hero img{width:100%;height:100%;object-fit:cover;display:block;}
-  .hero::after{content:"";position:absolute;inset:0;z-index:1;
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .6s ease;
     background:linear-gradient(180deg,rgba(0,0,0,.30),rgba(0,0,0,0) 26%,rgba(0,0,0,0) 62%,rgba(0,0,0,.38));}
+  .hero.ready::after{opacity:1;}   /* scrim fades in only once the image is loaded — keeps the placeholder white */
   .hero-top{position:absolute;z-index:2;top:clamp(28px,6vh,66px);left:clamp(26px,6vw,80px);color:#fff;font-family:var(--serif);
-    font-weight:600;font-size:clamp(21px,3.6vw,44px);line-height:1.35;white-space:nowrap;text-shadow:0 2px 20px rgba(0,0,0,.4);}
+    font-weight:600;font-size:clamp(21px,3.6vw,44px);line-height:1.35;white-space:nowrap;}
   .hero-title{position:absolute;z-index:2;left:clamp(26px,6vw,80px);bottom:clamp(28px,7vh,74px);margin:0;color:#fff;font-family:var(--serif);
-    font-weight:500;font-size:clamp(40px,7.6vw,104px);letter-spacing:.06em;line-height:1.04;text-transform:uppercase;text-shadow:0 2px 28px rgba(0,0,0,.45);}
+    font-weight:500;font-size:clamp(40px,7.6vw,104px);letter-spacing:.06em;line-height:1.04;text-transform:uppercase;}
   html[lang="zh"] .hero-top{font-family:var(--serif);white-space:normal;max-width:min(46vw,640px);letter-spacing:.02em;}
   html[lang="en"] .hero-top{font-weight:500;}   /* EN Playfair reads heavier — dial it back a notch */
   .hero .hero-top,.hero .hero-title{opacity:0;}   /* hidden until the line-reveal runs (no flash of static text) */
   @media(max-width:640px){ html[lang="zh"] .hero-top{max-width:min(78vw,430px);} }   /* keep the ZH question to two lines — no lonely "子?" */
   @media(prefers-reduced-motion:reduce){ .hero .hero-top,.hero .hero-title{opacity:1;} }
-  html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(68px,min(11vw,18vh),150px);letter-spacing:.02em;line-height:.98;text-shadow:0 3px 40px rgba(0,0,0,.55);}   /* lower cap + gentler growth so large/wide windows stay restrained */
+  html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(68px,min(11vw,18vh),150px);letter-spacing:.02em;line-height:.98;}   /* lower cap + gentler growth so large/wide windows stay restrained */
   html[lang="en"] .hero-title{font-size:clamp(42px,min(8vw,14vh),118px);max-width:min(84vw,1240px);line-height:.98;}   /* two lines; lower cap so large/wide windows stay restrained */
 
   /* intro — left-aligned block, centred on the page */
@@ -775,6 +776,11 @@
 
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* Reveal the hero scrim only once the hero image has loaded → keeps the placeholder pure white. */
+  (function(){ var h=document.querySelector('.hero'), im=h&&h.querySelector('img'); if(!h||!im) return;
+    function rdy(){ h.classList.add('ready'); }
+    if(im.complete&&im.naturalWidth) rdy(); else im.addEventListener('load',rdy,{once:true}); })();
 
   /* Lazy-load the below-fold Sona background video only when it nears the viewport (defers ~2.9MB off first paint). */
   (function(){
