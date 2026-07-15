@@ -62,6 +62,9 @@ const O = {
   'rec.light.cap': [`Profound serenity through immersive Sound & Light Therapy — chromotherapy and healing frequencies woven into a tranquil setting, inspired by the visionary art of Alex Grey.`, `在沉浸式声与光中抵达深层宁静——色彩疗法与疗愈频率交织于静谧之境，灵感源自 Alex Grey 的幻视艺术。`],
   'prop.eyebrow': [`More than Residence`, `不止于栖居`],
   'launch.prep': [`Prepare to launch`, `首期发布`],
+  'pf.starlink': [`Starlink Covered`, `星链覆盖`],
+  'pf.airline': [`Concierge Airline`, `物资航线`],
+  'pf.sona': [`Sona Bio-AI OS`, `Sona Bio-AI`],
   'prop.v2035': [`Vision 2035`, `Vision 2035`],
   'coll.lead': [`We build your climate-sealed castle in more-than-human beauty — at the world's most epic edge locations on Earth.`, `为你筑一座气候封闭的城堡,置于超越人类的美之中——在地球最壮阔的边缘之地。`],
   // --- Zahir editorial (Commercial Residence section) ---
