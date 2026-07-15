@@ -66,6 +66,9 @@ const O = {
   'pf.airline': [`Concierge Airline`, `物资航线`],
   'pf.sona': [`Sona Bio-AI OS`, `Sona Bio-AI`],
   'prop.v2035': [`Vision 2035`, `Vision 2035`],
+  'v2035.p1': [`New technologies in construction, transportation, communication and life science are what soulful living in extraterrestrial space will require.`, `在地外行星过上充满灵魂的生活，需要建筑、交通、通信和生命科学领域的新技术。`],
+  'v2035.p2': [`More-than-human city design. Payload-efficient hospitality.`, `超越人类之城将为星际建筑设计高效载荷。`],
+  'v2035.p3': [`Sona is prepared from day one, enabling spatial intelligence to support human physiological and psychological welfare in the most challenging environments.`, `Sona 从诞生之日起就具备了空间智能，能够在最具挑战性的环境中支持人类的生理和心理健康。`],
   'coll.lead': [`We build your climate-sealed castle in more-than-human beauty — at the world's most epic edge locations on Earth.`, `为你筑一座气候封闭的城堡,置于超越人类的美之中——在地球最壮阔的边缘之地。`],
   // --- Zahir editorial (Commercial Residence section) ---
   'zahir.quote': [`"Zahir is the rose's shadow and the crack in the veil."`, `“扎希尔是玫瑰的影子,也是面纱上的裂痕。”`],
