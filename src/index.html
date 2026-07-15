@@ -270,6 +270,7 @@
   /* cities CTA · repeating per-character colour sweep (GSAP SplitText).
      Resting colour is orange (readable on white); a cream gleam sweeps across, then back. */
   (function(){
+    function boot(){
     var label=document.querySelector('.cities-cta .cta-label');
     if(!label||!window.gsap||!window.SplitText) return;
     gsap.registerPlugin(SplitText);
@@ -281,6 +282,8 @@
         .to(sp.chars,{color:'#e07b3c', duration:0.5, stagger:0.035, ease:'sine.inOut'}, '-=0.2');
     }
     (document.fonts&&document.fonts.ready)?document.fonts.ready.then(run):run();
+    }
+    if(window.gsap) boot(); else addEventListener('DOMContentLoaded', boot);   /* deferred GSAP is loaded by DOMContentLoaded */
   })();
 </script>
 </body>

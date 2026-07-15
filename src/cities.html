@@ -881,6 +881,7 @@
     var hero=document.querySelector('.hero'); if(!hero) return;
     var els=[hero.querySelector('.hero-top'), hero.querySelector('.hero-title')].filter(Boolean);
     function show(){ els.forEach(function(e){ e.style.opacity='1'; }); }
+    function boot(){
     if(!window.gsap||!window.SplitText){ show(); return; }   /* no GSAP → just show the text, never leave it hidden */
     gsap.registerPlugin(SplitText);
     if(window.CustomEase && !gsap.parseEase('silk')) CustomEase.create('silk','M0,0 C0.16,1 0.3,1 1,1');
@@ -893,6 +894,8 @@
       });
     }
     (document.fonts&&document.fonts.ready)?document.fonts.ready.then(run):run();
+    }
+    if(window.gsap) boot(); else addEventListener('DOMContentLoaded', boot);   /* deferred GSAP is loaded by DOMContentLoaded */
   })();
 </script>
   <script src="assets/frisson-logo-animated.js?v=2"></script>

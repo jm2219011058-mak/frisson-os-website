@@ -908,6 +908,7 @@
      Words light up as you scroll and are FULLY revealed by the time the block reaches screen centre;
      scroll back up to replay (scrub is reversible). */
   (function(){
+    function boot(){
     if(!window.gsap||!window.ScrollTrigger||!window.SplitText||!window.CustomEase) return;
     gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
     CustomEase.create("silk","M0,0 C0.16,1 0.3,1 1,1");
@@ -934,6 +935,8 @@
       ScrollTrigger.refresh();
     }
     (document.fonts && document.fonts.ready) ? document.fonts.ready.then(run) : run();
+    }
+    if(window.gsap) boot(); else addEventListener('DOMContentLoaded', boot);   /* deferred GSAP is loaded by DOMContentLoaded */
   })();
 
   // mobile hamburger menu
