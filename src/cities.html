@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <script src="assets/vendor/gsap/gsap.min.js"></script>
 <script src="assets/vendor/gsap/SplitText.min.js"></script>
+<script src="assets/vendor/gsap/CustomEase.min.js"></script>
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.12);
@@ -63,6 +64,9 @@
     font-weight:500;font-size:clamp(40px,7.6vw,104px);letter-spacing:.06em;line-height:1.04;text-transform:uppercase;text-shadow:0 2px 28px rgba(0,0,0,.45);}
   html[lang="zh"] .hero-top{font-family:var(--serif);white-space:normal;max-width:min(46vw,640px);letter-spacing:.02em;}
   html[lang="en"] .hero-top{font-weight:500;}   /* EN Playfair reads heavier — dial it back a notch */
+  .hero .hero-top,.hero .hero-title{opacity:0;}   /* hidden until the line-reveal runs (no flash of static text) */
+  @media(max-width:640px){ html[lang="zh"] .hero-top{max-width:min(78vw,430px);} }   /* keep the ZH question to two lines — no lonely "子?" */
+  @media(prefers-reduced-motion:reduce){ .hero .hero-top,.hero .hero-title{opacity:1;} }
   html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(80px,16vw,240px);letter-spacing:.02em;line-height:.98;text-shadow:0 3px 40px rgba(0,0,0,.55);}
   html[lang="en"] .hero-title{font-size:clamp(46px,10vw,152px);max-width:min(84vw,1240px);line-height:.98;}   /* "CONQUEST OF" (nbsp-glued) + "PARADISE" → exactly two lines */
 
@@ -872,17 +876,20 @@
     resize(); requestAnimationFrame(frame);
   })();
 
-  /* hero · per-character 3D card-flip in (GSAP SplitText · rotationX) */
+  /* hero · line-by-line mask reveal (GSAP SplitText · lines + mask). Text stays hidden until this runs. */
   (function(){
-    var hero=document.querySelector('.hero'); if(!hero||!window.gsap||!window.SplitText) return;
+    var hero=document.querySelector('.hero'); if(!hero) return;
+    var els=[hero.querySelector('.hero-top'), hero.querySelector('.hero-title')].filter(Boolean);
+    function show(){ els.forEach(function(e){ e.style.opacity='1'; }); }
+    if(!window.gsap||!window.SplitText){ show(); return; }   /* no GSAP → just show the text, never leave it hidden */
     gsap.registerPlugin(SplitText);
+    if(window.CustomEase && !gsap.parseEase('silk')) CustomEase.create('silk','M0,0 C0.16,1 0.3,1 1,1');
+    var ez=gsap.parseEase('silk')?'silk':'power3.out';
     function run(){
-      gsap.set(hero,{perspective:900});
-      ['.hero-top','.hero-title'].forEach(function(sel,i){
-        var el=hero.querySelector(sel); if(!el) return;
-        var sp=SplitText.create(el,{type:'chars'});
-        gsap.from(sp.chars,{rotationX:-55, opacity:0, transformOrigin:'50% 100%',
-          duration:0.7, ease:'power3.out', stagger:0.04, delay:i*0.25});
+      els.forEach(function(el,i){
+        el.style.opacity='1';                                  /* reveal container; the mask hides the lines */
+        var sp=SplitText.create(el,{type:'lines', mask:'lines'});
+        gsap.from(sp.lines,{yPercent:95, duration:0.9, ease:ez, stagger:0.08, delay:i*0.15});
       });
     }
     (document.fonts&&document.fonts.ready)?document.fonts.ready.then(run):run();
