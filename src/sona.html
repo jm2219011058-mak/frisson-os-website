@@ -8,8 +8,8 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=block" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="assets/vendor/gsap/gsap.min.js"></script>
 <script src="assets/vendor/gsap/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/gsap/SplitText.min.js"></script>
@@ -74,6 +74,9 @@
     text-align:center;padding:max(84px,10svh) clamp(18px,5vw,64px) max(48px,7svh);}
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);}   /* silk ease */
   .reveal.in{opacity:1;transform:none;}
+  /* defer rendering of below-fold TEXT/IMAGE sections until scrolled near — skips off-screen layout/paint.
+     Applied only to non-interactive sections (galleries #s2/#s4 and canvas #s-longevity measure geometry, so excluded). */
+  #s-city,#s3,#s6,#s7{content-visibility:auto;contain-intrinsic-size:auto 100svh;}
 
   /* 1 · hero — full-screen Ponch video with a soft blurred fill (no hard black edges) */
   #hero{padding:0;overflow:hidden;background:#000;}
@@ -905,6 +908,7 @@
      Words light up as you scroll and are FULLY revealed by the time the block reaches screen centre;
      scroll back up to replay (scrub is reversible). */
   (function(){
+    function boot(){
     if(!window.gsap||!window.ScrollTrigger||!window.SplitText||!window.CustomEase) return;
     gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
     CustomEase.create("silk","M0,0 C0.16,1 0.3,1 1,1");
@@ -931,6 +935,8 @@
       ScrollTrigger.refresh();
     }
     (document.fonts && document.fonts.ready) ? document.fonts.ready.then(run) : run();
+    }
+    if(window.gsap) boot(); else addEventListener('DOMContentLoaded', boot);   /* deferred GSAP is loaded by DOMContentLoaded */
   })();
 
   // mobile hamburger menu
