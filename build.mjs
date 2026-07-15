@@ -4,6 +4,7 @@
 // Output: /dist  — English at the root, Chinese under /zh/.
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const SRC = 'src';
 const DIST = 'dist';
@@ -43,6 +44,7 @@ function switcher(lang, page) {
 }
 
 const SWITCH_CSS = `<style>
+picture{display:contents;}
 .nav{justify-content:flex-start;}
 .nav .brand{margin-right:auto;}
 .langsel{position:relative;display:inline-flex;align-items:center;margin-left:clamp(14px,2.5vw,30px);font-family:var(--sans,-apple-system,Arial,sans-serif);font-size:13px;letter-spacing:.04em;line-height:1;color:#2b1d12;}
@@ -77,6 +79,38 @@ catch { for (const e of fs.readdirSync(DIST)) { try { fs.rmSync(path.join(DIST, 
 fs.mkdirSync(DIST, { recursive: true });
 
 const pages = fs.readdirSync(SRC).filter(f => f.endsWith('.html'));
+
+// ---- Responsive image pipeline ----
+// Pre-generate WebP variants at several widths for each <img> raster asset, so browsers fetch a
+// device-appropriate size (mobile pulls a small one, desktop a large one) instead of the full JPEG.
+const IMG_WIDTHS = [480, 960, 1440, 1920];
+const variants = {};   // 'city/hero.jpg' -> [480, 960, 1440]
+{
+  const refs = new Set();
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(SRC, page), 'utf8');
+    for (const m of html.matchAll(/<img[^>]*\ssrc="(?:\.\.\/)?assets\/([^"?]+?\.(?:jpe?g|png))/gi)) refs.add(m[1]);
+  }
+  for (const rel of refs) {
+    const srcAbs = path.join('assets', rel);
+    if (!fs.existsSync(srcAbs)) continue;
+    let meta; try { meta = await sharp(srcAbs).metadata(); } catch { continue; }
+    const ow = meta.width || 0;
+    if (ow < 700) continue;                                       // too small to bother
+    const widths = IMG_WIDTHS.filter(w => w <= ow);
+    if (ow <= 1920 && !widths.includes(ow)) widths.push(ow);      // near-original for large screens
+    if (!widths.length) continue;
+    variants[rel] = widths;
+    const relNoExt = rel.replace(/\.(jpe?g|png)$/i, '');
+    fs.mkdirSync(path.join(DIST, 'assets', path.dirname(rel)), { recursive: true });
+    for (const w of widths) {
+      try { await sharp(srcAbs).resize({ width: w }).webp({ quality: 74 }).toFile(path.join(DIST, 'assets', relNoExt + '-' + w + '.webp')); }
+      catch (e) { console.warn('img variant fail', rel, e.message); }
+    }
+  }
+  console.log('Responsive WebP variants generated for', Object.keys(variants).length, 'images');
+}
+
 for (const page of pages) {
   const tpl = fs.readFileSync(path.join(SRC, page), 'utf8');
   for (const L of LANGS) {
@@ -103,6 +137,20 @@ for (const page of pages) {
       // Broad match so JS-built paths like  img:"assets/..."  are rewritten too.
       out = out.replace(/(["'])assets\//g, '$1../assets/');
       out = out.replace(/url\(assets\//g, 'url(../assets/');
+    }
+    // Rewrite <img> raster tags → <picture> with a WebP srcset so the browser picks a device-appropriate size.
+    // Non-WebP browsers fall back to the original file. Done after the zh path rewrite so prefixes are correct.
+    {
+      const pfx = L.base ? '../' : '';
+      out = out.replace(/<img\s([^>]*?)src="(?:\.\.\/)?assets\/([^"?]+?)\.(jpe?g|png)((?:\?[^"]*)?)"([^>]*?)>/gi,
+        (m, pre, relNoExt, ext, query, post) => {
+          const ws = variants[relNoExt + '.' + ext.toLowerCase()];
+          if (!ws || !ws.length) return m;
+          const webpSet = ws.map(w => `${pfx}assets/${relNoExt}-${w}.webp ${w}w`).join(', ');
+          const attrs = (pre + post).replace(/\s+/g, ' ').trim();
+          const sizes = /\bsizes=/.test(attrs) ? '' : ' sizes="100vw"';
+          return `<picture><source type="image/webp" srcset="${webpSet}" sizes="100vw"><img ${attrs}${sizes} src="${pfx}assets/${relNoExt}.${ext}${query}"></picture>`;
+        });
     }
     const outDir = path.join(DIST, L.base);
     fs.mkdirSync(outDir, { recursive: true });
