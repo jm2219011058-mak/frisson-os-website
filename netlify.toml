@@ -8,11 +8,17 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Assets: cache but revalidate, so updates at the same filename still propagate.
+# Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
+    Cache-Control = "public, max-age=2592000, must-revalidate"
+
+# Third-party libraries never change at the same path → cache a full year, immutable.
+[[headers]]
+  for = "/assets/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/*.html"

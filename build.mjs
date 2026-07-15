@@ -85,6 +85,10 @@ for (const page of pages) {
     out = out.replace('<!--HREFLANG-->', hreflang(page));
     out = out.replace(/<!--LANGNAV-->/g, page === 'index.html' ? '' : switcher(L.code, page));   // home (frisson) page: no language switcher
     out = out.replace('</head>', SWITCH_CSS + '\n</head>');
+    // Make Google Fonts CSS non-render-blocking (load async; font-display:swap already shows fallback text immediately).
+    // This removes the biggest render-blocking item (esp. the ~91KB Noto Serif SC unicode-range CSS).
+    out = out.replace(/<link href="(https:\/\/fonts\.googleapis\.com\/css2[^"]*)" rel="stylesheet">/g,
+      '<link rel="stylesheet" href="$1" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" href="$1"></noscript>');
     if (L.base) {
       // pages served from /zh/ reach assets one level up (works on server and local file://).
       // Broad match so JS-built paths like  img:"assets/..."  are rewritten too.
