@@ -65,9 +65,7 @@
     font-weight:500;font-size:clamp(40px,7.6vw,104px);letter-spacing:.06em;line-height:1.04;text-transform:uppercase;}
   html[lang="zh"] .hero-top{font-family:var(--serif);white-space:normal;max-width:min(46vw,640px);letter-spacing:.02em;}
   html[lang="en"] .hero-top{font-weight:500;}   /* EN Playfair reads heavier — dial it back a notch */
-  .hero .hero-top,.hero .hero-title{opacity:0;}   /* hidden until the line-reveal runs (no flash of static text) */
   @media(max-width:640px){ html[lang="zh"] .hero-top{max-width:min(78vw,430px);} }   /* keep the ZH question to two lines — no lonely "子?" */
-  @media(prefers-reduced-motion:reduce){ .hero .hero-top,.hero .hero-title{opacity:1;} }
   html[lang="zh"] .hero-title{font-family:var(--serif);font-weight:900;font-size:clamp(68px,min(11vw,18vh),150px);letter-spacing:.02em;line-height:.98;}   /* lower cap + gentler growth so large/wide windows stay restrained */
   html[lang="en"] .hero-title{font-size:clamp(42px,min(8vw,14vh),118px);max-width:min(84vw,1240px);line-height:.98;}   /* two lines; lower cap so large/wide windows stay restrained */
 
@@ -512,8 +510,8 @@
     <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
     <div class="mf-dark">
       <div class="hero-media">
-        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg"></video>
         <div class="hero-scrim"></div>
       </div>
       <div class="mf-dark-in">
@@ -781,6 +779,15 @@
   (function(){ var h=document.querySelector('.hero'), im=h&&h.querySelector('img'); if(!h||!im) return;
     function rdy(){ h.classList.add('ready'); }
     if(im.complete&&im.naturalWidth) rdy(); else im.addEventListener('load',rdy,{once:true}); })();
+
+  /* Sona video · smooth playback: buffer first, start only when it can play through without stalling. */
+  (function(){ var vids=document.querySelectorAll('.hero-media video'); if(!vids.length) return;
+    vids.forEach(function(v){ var played=false;
+      function go(){ if(played)return; played=true; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+      if(v.readyState>=4) go();
+      else { v.addEventListener('canplaythrough',go,{once:true}); setTimeout(function(){ if(!played&&v.readyState>=2)go(); },6000); }
+    });
+  })();
 
 
   /* Sky Mansion vision dialogs */

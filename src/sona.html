@@ -282,8 +282,8 @@
   <!-- 1 · HERO -->
   <section class="section" id="hero">
     <div class="hero-media">
-      <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
-      <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
+      <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+      <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" muted loop playsinline preload="auto" poster="assets/sona/ponch-poster.jpg"></video>
       <div class="hero-scrim"></div>
     </div>
     <div class="hero-cap">
@@ -491,12 +491,12 @@
         img.setAttribute('aria-hidden','true'); img.alt='';
         v.parentNode.insertBefore(img,v); v.style.display='none';
       }
-      function tryPlay(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
-      tryPlay();
-      // if it still isn't playing shortly after load, swap in the poster
-      setTimeout(function(){ if(v.paused) fallback(); },600);
-      // resume on first user interaction if the browser allowed it later
-      document.addEventListener('touchstart',tryPlay,{once:true,passive:true});
+      var played=false;
+      /* smooth playback: start only when the browser can play through without stalling; fall back to the poster ONLY if autoplay is genuinely blocked (not merely still buffering) */
+      function go(){ if(played||v.dataset.fb) return; var p=v.play(); if(p&&p.then){ p.then(function(){played=true;}).catch(function(){ fallback(); }); } else { played=true; } }
+      if(v.readyState>=4) go(); else v.addEventListener('canplaythrough',go,{once:true});
+      setTimeout(function(){ if(!played && !v.dataset.fb && v.readyState>=2) go(); },5000);   // backup: some browsers don't fire canplaythrough for short loops
+      document.addEventListener('touchstart',go,{once:true,passive:true});
     });
     // pause the hero video(s) when scrolled off-screen — two looping decodes + a heavy blur cook mobile/iPad
     var hero=document.getElementById('hero');
