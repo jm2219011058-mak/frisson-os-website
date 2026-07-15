@@ -408,6 +408,9 @@
       .zs-gallery{display:flex;flex-direction:row;gap:clamp(12px,1.6vw,22px);width:min(1600px,calc(100vw - 40px));max-width:none;margin-left:50%;transform:translateX(-50%);}
       .zs-gallery figure{flex:1;}
       .zs-feats{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(8px,1.4vh,13px);margin:clamp(16px,2.6vh,24px) 0 0;font-family:var(--serif);font-size:clamp(12px,1.2vw,14px);line-height:1.35;font-weight:500;color:#4a4a4a;}
+      .zs-mission{font-family:var(--serif);color:#4a4a4a;text-align:center;max-width:660px;margin:clamp(16px,2.6vh,24px) auto 0;font-size:clamp(14px,1.45vw,17px);line-height:1.75;}
+      html[lang="zh"] .zs-mission{font-family:var(--serif);}
+      .zs-mission-lg{font-size:clamp(16.5px,1.95vw,22px);line-height:1.65;margin-top:clamp(14px,2.4vh,22px);}
       .zs-sep{display:none;}
       html[lang="zh"] .zs-feats{font-family:var(--serif);}
       .zs-feat b{font-family:var(--sans);font-weight:600;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;color:#4a4a4a;margin-right:6px;}
@@ -457,13 +460,8 @@
             <figure><img src="assets/city/zahir-b.jpg" alt="" loading="lazy"></figure>
           </div>
           <div class="zs-table">
-            <p class="zs-feats">
-              <span class="zs-feat">{{zahir.f1.v}}</span><span class="zs-sep">|</span>
-              <span class="zs-feat">{{zahir.f3.v}}</span><span class="zs-sep">|</span>
-              <span class="zs-feat">{{zahir.f4.v}}</span><span class="zs-sep">|</span>
-              <span class="zs-feat">{{zahir.f5.v}}</span><span class="zs-sep">|</span>
-              <span class="zs-feat">{{zahir.f7.v}}</span>
-            </p>
+            <p class="zs-mission">{{zahir.mission.p1}}</p>
+            <p class="zs-mission zs-mission-lg">{{zahir.mission.p2}}</p>
           </div>
         </div>
       </section>

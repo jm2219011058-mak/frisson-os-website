@@ -88,6 +88,8 @@ const O = {
   'zahir.f5.k': [`Design`, `设计`], 'zahir.f5.v': [`Spatial design that engages human emotion`, `触动人心的空间设计`],
   'zahir.f6.k': [`Experience`, `体验`], 'zahir.f6.v': [`Soulful Living`, `充满情感的生活`],
   'zahir.f7.v': [`Biological Living Assets`, `生物栖居资产`],
+  'zahir.mission.p1': [`We aim to create aesthetic landmarks (living network) that hold the same significance for their world as the Pitti Palace once did for Florence. Within the Frisson framework, we integrate Eastern philosophy, aesthetics, and the Sona Bio-AI OS.`, `我们旨在创建美学地标（居住网络），使其对其所在的世界具有如同昔日皮蒂宫之于佛罗伦萨般的意义。在 Frisson 框架下，我们融合东方哲学、文艺复兴美学与 Sona Bio-AI OS（共情智能）。`],
+  'zahir.mission.p2': [`Spaces that create aesthetic delight, emotional restoration, and lasting spiritual depth — going beyond luxury to reach a state of meaningful living.`, `空间赋予审美愉悦、情绪修复与恒久的精神深度——超越奢华，抵达有意义的居住之境。`],
   // --- How It Works (city entry section + dedicated page) ---
   'hiw.title': [`More than ownership`, `超越所有权`],
   'hiw.p1': [`Global Residence Networks`, `全球居住网络`],
