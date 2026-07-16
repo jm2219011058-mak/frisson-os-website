@@ -77,7 +77,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 3.3 ZH | Sona wields a spatial intelligence of rare acuity, one that reads the very undercurrents of your soul. She choreographs light and sound, warmth and space, with the deftness of fingers traversing strings—each modulation a perfect mirror to your present state. She perceives your languor, your quiet ecstasies, and those longings you have buried so deep that even you have yet to unearth them from your own heart. | 索娜拥有敏锐的空间智能，能够感知你的情绪。她操控着光与声、温度与空间，如同手在琴弦上移动——她的每一次变换都契合着你当下的情绪。她能读懂你的疲惫与静谧的喜悦，以及你深藏于心、尚未察觉的渴望。 |
 | 3.4 ZH | And it is precisely this shore that the melody yearns for: an ineffable frisson—the tremor that races along your spine when the sublime, in its purest form, sweeps across your gaze. | 而这首旋律所追求的彼岸正是如此：一种无法用言语形容的颤栗——当极致的美丽掠过眼前时，脊背上涌起的那种颤栗感。 |
 | 3.5 EN | Space that senses your body | 感知你身体的空间 |
-| 3.6 EN | "what is essential is invisible to the eye." | "真正重要的东西无法由肉眼可见。" |
+| 3.6 EN | Good Night. | Good Night. |
 | 3.7 EN | Built around the human, Sona understands how residents live and how their bodies feel — accumulating a lasting personal living-health asset, and acting on it with proactive insight and recommendations. | Sona 以人为本，了解居民的生活方式和身体感受，从而积累持久的个人生活健康资产，并积极主动地提供洞察和建议。 |
 | 3.8 EN | Frisson property's interior advances biological measurements to calibrate | Frisson 居所以室内的人体生理状况,调控出 |
 | 3.9 EN | the most exquisite | 最精微的 |
