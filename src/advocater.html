@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Advocater Program — FRISSON</title>
-<meta name="description" content="FRISSON Founding Residences Program — experience it, shape it, build it. Where will you choose to devote?">
+<meta name="description" content="Frisson Fellow — a founding circle for those in pursuit of what is exciting. Apply and take your place on the live Fellow wall.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,20 +93,45 @@
   @media (max-width:640px){ .roles6{grid-template-columns:repeat(2,1fr);} }
 
   /* Frisson Fellow — two-column with live dashboard */
-  .adv-grid{max-width:1180px;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(26px,4vw,54px);align-items:center;}
+  .adv-grid{max-width:1320px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:clamp(26px,4vw,58px);align-items:center;}
   @media (max-width:900px){ .adv-grid{grid-template-columns:1fr;gap:36px;} }
   .adv-left{min-width:0;}
-  .adv-dash{position:relative;min-height:440px;border:1px solid rgba(255,255,255,.16);border-radius:22px;overflow:hidden;perspective:900px;
-    background:linear-gradient(160deg,rgba(24,18,13,.55),rgba(10,8,6,.66));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.36);}
+  .adv-dash{position:relative;min-height:auto;max-height:80svh;overflow:hidden;
+    padding:clamp(16px,2.2vw,28px);display:flex;flex-direction:column;justify-content:center;text-align:center;}
   .ff-bgtext{position:absolute;inset:-8%;z-index:0;font-family:var(--sans);font-weight:800;font-size:46px;line-height:1.06;letter-spacing:.14em;
-    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;pointer-events:none;will-change:transform;transition:transform .2s ease-out;}
+    color:rgba(43,29,18,.045);white-space:normal;word-break:break-word;user-select:none;pointer-events:none;will-change:transform;transition:transform .2s ease-out;}
   .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
     background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
-  .ff-dash-head{position:relative;z-index:2;font-family:var(--sans);font-size:clamp(11px,1.3vw,13px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 auto;}
-  .ff-slot{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;text-align:center;padding:14px 0;}
-  .ff-empty{font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.42);max-width:26ch;line-height:1.7;}
-  .ff-empty b{color:rgba(255,255,255,.72);}
+  .ff-dash-head{position:relative;z-index:2;font-family:var(--sans);font-size:clamp(11px,1.3vw,13px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(18px,3vh,30px);text-align:center;flex:0 0 auto;}
+  .ff-slot{position:relative;z-index:2;flex:0 1 auto;max-height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);}
+  .ff-marquee{display:flex;flex-direction:column;gap:clamp(6px,1.1vh,12px);padding:10px 0;}
+  a.ff-line{display:block;text-decoration:none;text-align:center;font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.05vw,28px);line-height:1.32;color:var(--ink);letter-spacing:.005em;transition:color .2s ease;padding:2px 6px;}
+  a.ff-line:nth-child(even){font-style:italic;}
+  a.ff-line:hover{color:var(--accent);}
+  a.ff-line.nolink{pointer-events:none;}
+  a.ff-line.new{color:var(--accent);font-weight:500;}
+  a.ff-line .ff-role{color:var(--ink-soft);}
+  a.ff-badge-mini{--gx:50%;--gy:0%;display:flex;align-items:center;justify-content:space-between;gap:18px;text-decoration:none;position:relative;border-radius:14px;padding:clamp(16px,2vw,22px) clamp(20px,2.4vw,28px);overflow:hidden;isolation:isolate;
+    transition:transform .2s ease;
+    background:
+      conic-gradient(from 210deg at 50% 50%,#c6cbd2,#f7f9fb,#a9afb8,#eef1f4,#b3b9c2,#f3f5f8,#c6cbd2),
+      repeating-linear-gradient(116deg,rgba(255,255,255,.05) 0 1px,rgba(0,0,0,.028) 1px 2.5px),
+      linear-gradient(145deg,#e6eaee 0%,#a7adb6 22%,#f5f7fa 42%,#8d949e 60%,#d0d5db 82%,#9aa0aa 100%);
+    background-blend-mode:soft-light,overlay,normal;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 6px rgba(0,0,0,.14),inset 0 0 0 1px rgba(255,255,255,.3);}
+  a.ff-badge-mini::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;mix-blend-mode:screen;opacity:.85;
+    background:radial-gradient(180px circle at var(--gx) var(--gy),rgba(255,255,255,.95),rgba(255,255,255,0) 56%);}
+  a.ff-badge-mini::after{content:"";position:absolute;top:0;left:-70%;width:46%;height:100%;transform:skewX(-18deg);pointer-events:none;z-index:1;
+    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.9),rgba(255,255,255,0));animation:ffsheen 4.6s ease-in-out infinite;}
+  a.ff-badge-mini:hover{transform:scale(1.02);}
+  a.ff-badge-mini.nolink{pointer-events:none;}
+  .ff-badge-mini .ff-id{position:relative;z-index:2;font-family:var(--sans);font-weight:800;font-size:clamp(18px,1.7vw,23px);letter-spacing:.02em;color:#23262c;text-shadow:0 1px 0 rgba(255,255,255,.6);white-space:nowrap;}
+  .ff-badge-mini .ff-id .dash{color:var(--accent);}
+  .ff-badge-mini .ff-tag{position:relative;z-index:2;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(35,38,44,.6);white-space:nowrap;}
+  .ff-badge-mini.new{outline:2px solid var(--accent);outline-offset:2px;}
+  .ff-mint{position:absolute;left:0;right:0;bottom:4px;z-index:3;text-align:center;font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--accent);opacity:0;transition:opacity .4s;pointer-events:none;}
+  .ff-mint.show{opacity:1;}
   .ff-badge{position:relative;width:min(300px,82%);border-radius:16px;padding:22px 24px;text-align:center;overflow:hidden;transition:transform .12s ease-out;
     background:linear-gradient(145deg,#dfe3e8 0%,#a7adb6 18%,#f2f4f7 38%,#8f96a0 60%,#cdd2d8 80%,#9aa0aa 100%);
     box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 6px rgba(0,0,0,.22);}
@@ -118,16 +143,28 @@
   .ff-badge .ff-tag{font-family:var(--serif);font-style:italic;font-size:13px;color:#3a3f47;margin-top:7px;letter-spacing:.02em;}
   .ff-note{position:relative;z-index:2;font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.7vw,19px);color:#fff;text-align:center;}
   .ff-cvs{position:absolute;inset:0;z-index:4;pointer-events:none;}
-  /* MIMO-style: section-wide FF pattern + mouse-tracking inverted circle */
-  .ff-mimo .tier-bg img{filter:brightness(.42) saturate(.6) contrast(1.02);}
-  .ff-pattern{position:absolute;inset:-3% 0;z-index:1;pointer-events:none;overflow:hidden;text-align:center;
-    font-family:var(--serif);font-weight:600;font-size:clamp(64px,8.5vw,128px);line-height:1.0;letter-spacing:.05em;
-    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;}
-  .ff-invert{position:absolute;left:-999px;top:0;width:clamp(300px,32vw,460px);height:clamp(300px,32vw,460px);border-radius:50%;
-    background:#fff;mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%) scale(0);z-index:7;
-    transition:transform .3s cubic-bezier(.34,1.4,.64,1);will-change:left,top,transform;}
-  .ff-invert.on{transform:translate(-50%,-50%) scale(1);}
-  @media (max-width:900px){ .ff-invert{display:none;} }
+  /* ff-mimo section (Frisson Fellow hero) — clean light backdrop */
+  .ff-mimo .tier-bg img{filter:saturate(.5) opacity(.22);}
+  /* ff-mimo section is light → flip text + form to ink */
+  .ff-mimo{color:var(--ink);}
+  .ff-mimo .t-title{color:var(--ink);text-shadow:none;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;font-size:clamp(28px,4.2vw,56px);}
+  .ff-mimo .t-title .o{color:var(--accent);}
+  .ff-mimo .roles6 .r{color:var(--ink);}
+  .ff-mimo .t-copy{color:var(--ink-soft);text-shadow:none;}
+  .ff-mimo .t-copy a{color:var(--ink);}
+  .ff-mimo .nf-form .lbl{color:var(--ink-soft);}
+  .ff-mimo .nf-form input,.ff-mimo .nf-form textarea{color:var(--ink);border-color:rgba(43,29,18,.28);background:rgba(43,29,18,.03);}
+  .ff-mimo .nf-form input:focus,.ff-mimo .nf-form textarea:focus{border-color:var(--accent);background:rgba(43,29,18,.05);}
+  .ff-mimo .nf-form ::placeholder{color:rgba(43,29,18,.5);}
+  .ff-mimo .nf-form select{color:var(--ink);border-color:rgba(43,29,18,.28);background-color:rgba(43,29,18,.03);
+    background-image:linear-gradient(45deg,transparent 50%,rgba(43,29,18,.6) 50%),linear-gradient(135deg,rgba(43,29,18,.6) 50%,transparent 50%);}
+  .ff-mimo .nf-form option{color:#1a1a1a;}
+  .ff-mimo .consent{color:var(--ink-soft);}
+  .ff-mimo .legal{color:rgba(43,29,18,.6);}
+  .ff-mimo .legal a{color:var(--ink);}
+  .ff-mimo .nf-form .done{color:var(--ink);}
+  .ff-mimo .back-btn{color:var(--ink-soft);}
+  .ff-mimo .back-btn:hover{color:var(--ink);}
 
   /* forms (light on dark) */
   .nf-form{max-width:540px;margin:clamp(26px,4.5vh,40px) auto 0;text-align:left;}
@@ -218,11 +255,56 @@
     <!--LANGNAV-->
   </nav>
 
-  <!-- HERO -->
-  <header class="rec">
-    <p class="rec-eyebrow">Founding Residences Program</p>
-    <h1 class="rec-title">Where will you choose<br>to devote?</h1>
-  </header>
+  <!-- HERO · FRISSON FELLOW -->
+  <section class="tier ff-mimo" id="advocater" style="text-align:center;isolation:isolate;">
+    <div class="tier-bg"><img src="assets/city/advocater-circle-bg.jpg" alt="" loading="lazy"></div>
+    <div class="tier-scrim" style="background:#ffffff;"></div>
+    <div class="tier-inner adv-grid">
+      <div class="adv-left">
+      <div class="tier-intro" id="advIntro">
+        <div class="reveal">
+          <h2 class="t-title" style="margin:0 auto;">Friss<span class="o">o</span>n Fell<span class="o">o</span>w</h2>
+        </div>
+        <p class="t-label reveal" style="justify-content:center;margin-top:clamp(40px,6vh,60px);color:var(--accent);letter-spacing:.28em;">If you are</p>
+        <div class="roles6 reveal">
+          <p class="r">The Athlete</p>
+          <p class="r">The Racing Driver</p>
+          <p class="r">The Investor</p>
+          <p class="r">The Singer</p>
+          <p class="r">The Founder</p>
+          <p class="r">The Artist</p>
+          <p class="r">…</p>
+        </div>
+        <p class="t-copy reveal" style="margin-left:auto;margin-right:auto;font-style:italic;max-width:40ch;">— and your life is spent in pursuit of what is exciting, we invite you to join the Frisson Fellow.</p>
+        <button type="button" class="apply reveal" data-open="adv">Enquire <span class="arw">&rsaquo;</span></button>
+      </div>
+      <div class="tier-apply" id="advApply" hidden>
+        <button type="button" class="back-btn" data-back="adv">&lsaquo; Back</button>
+        <p class="t-copy" style="margin:0 auto clamp(20px,3.5vh,28px);">Space is alive, I am loving it.</p>
+        <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm">
+          <input type="hidden" name="form-name" value="advocater-circle">
+          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+          <div class="f-row">
+            <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
+            <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
+          </div>
+          <div class="field"><label class="lbl" for="a-title">Title On Billboard</label><input id="a-title" type="text" name="title" placeholder="Founder, Investor, Artist…" required></div>
+          <div class="field"><label class="lbl" for="a-link">Link you want to share <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="a-link" type="text" name="link" placeholder="LinkedIn, company link, project link…"></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
+          <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
+          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+        </form>
+      </div>
+      </div><!-- /adv-left -->
+      <aside class="adv-dash" id="ffDash" aria-label="Frisson Fellow Dashboard">
+        <div class="ff-slot" id="ffSlot">
+          <div class="ff-marquee" id="ffMarquee"></div>
+        </div>
+        <div class="ff-mint" id="ffMint" aria-live="polite"></div>
+        <canvas class="ff-cvs" id="ffCvs" aria-hidden="true"></canvas>
+      </aside>
+    </div>
+  </section>
 
   <!-- TIER 1 · TRIAL SLEEP -->
   <section class="tier" id="trial">
@@ -257,60 +339,7 @@
     </div>
   </section>
 
-  <!-- TIER 2 · THE ADVOCATER CIRCLE -->
-  <section class="tier ff-mimo" id="advocater" style="text-align:center;isolation:isolate;">
-    <div class="tier-bg"><img src="assets/city/advocater-circle-bg.jpg" alt="" loading="lazy"></div>
-    <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(8,8,11,.82),rgba(8,8,11,.9));"></div>
-    <div class="ff-pattern" id="ffPat" aria-hidden="true"></div>
-    <div class="tier-inner adv-grid">
-      <div class="adv-left">
-      <div class="tier-intro" id="advIntro">
-        <div class="reveal">
-          <h2 class="t-title" style="margin:0 auto;max-width:20ch;">Frisson Fellow</h2>
-        </div>
-        <p class="t-label reveal" style="justify-content:center;margin-top:clamp(40px,6vh,60px);color:var(--accent);letter-spacing:.28em;">If you are</p>
-        <div class="roles6 reveal">
-          <p class="r">The Athlete</p>
-          <p class="r">The Racing Driver</p>
-          <p class="r">The Investor</p>
-          <p class="r">The Singer</p>
-          <p class="r">The Founder</p>
-          <p class="r">The Artist</p>
-          <p class="r">…</p>
-        </div>
-        <p class="t-copy reveal" style="margin-left:auto;margin-right:auto;font-style:italic;max-width:40ch;">— and your life is spent in pursuit of what is exciting, we invite you to join the Frisson Fellow.</p>
-        <button type="button" class="apply reveal" data-open="adv">Enquire <span class="arw">&rsaquo;</span></button>
-      </div>
-      <div class="tier-apply" id="advApply" hidden>
-        <button type="button" class="back-btn" data-back="adv">&lsaquo; Back</button>
-        <p class="t-copy" style="margin:0 auto clamp(20px,3.5vh,28px);">We are gathering a circle of advocaters to advise on the development of our <a href="cities.html">{{nav.cities}}</a> properties, to refine how they are lived in, and to help decide what comes next.</p>
-        <form name="advocater-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="advocaterForm">
-          <input type="hidden" name="form-name" value="advocater-circle">
-          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-          <div class="f-row">
-            <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
-            <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
-          </div>
-          <div class="field"><label class="lbl" for="a-why">What you would bring <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
-          <div class="field"><label class="lbl" for="a-link">Link you want to share <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="a-link" type="text" name="link" placeholder="LinkedIn, company link, project link…"></div>
-          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
-          <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
-          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-        </form>
-      </div>
-      </div><!-- /adv-left -->
-      <aside class="adv-dash" id="ffDash" aria-label="Frisson Fellow Dashboard">
-        <div class="ff-bgtext" id="ffBg" aria-hidden="true"></div>
-        <div class="ff-glow" id="ffGlow" aria-hidden="true"></div>
-        <div class="ff-dash-head">Frisson Fellow Dashboard</div>
-        <div class="ff-slot" id="ffSlot">
-          <div class="ff-empty">Join the circle — your <b>Frisson Fellow</b> badge is minted here, live, the moment you apply.</div>
-        </div>
-        <canvas class="ff-cvs" id="ffCvs" aria-hidden="true"></canvas>
-      </aside>
-    </div>
-    <div class="ff-invert" id="ffInvert" aria-hidden="true"></div>
-  </section>
+
 
   <!-- MANIFESTO ESSAY -->
   <section class="beat" style="padding-top:clamp(72px,12vh,140px);">
@@ -437,9 +466,11 @@
         ev.preventDefault();
         var data=new URLSearchParams(new FormData(form)).toString();
         var _name=(form.querySelector('[name=name]')||{}).value||'';
+        var _link=(form.querySelector('[name=link]')||{}).value||'';
+        var _title=(form.querySelector('[name=title]')||{}).value||'';
         var _isFF=form.id==='advocaterForm';
         /* fire the reward/confirmation instantly — don't wait on the network */
-        if(_isFF&&window.__ffReward){ window.__ffReward(_name); }
+        if(_isFF&&window.__ffReward){ window.__ffReward(_name,_link,_title); }
         /* record the submission to Netlify in the background (best-effort) */
         fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data}).catch(function(){});
         form.innerHTML='<p class="done">'+(_isFF?'Welcome, Fellow — your badge is live →':'Thank you — we’ll be in touch.')+'</p>';
@@ -452,19 +483,6 @@
     var dash=document.getElementById('ffDash'), bg=document.getElementById('ffBg'),
         glow=document.getElementById('ffGlow'), slot=document.getElementById('ffSlot'), cvs=document.getElementById('ffCvs');
     if(!dash) return;
-    if(bg){ var s=''; for(var i=0;i<180;i++) s+='FF '; bg.textContent=s; }
-    if(!REDUCE){
-      dash.addEventListener('pointermove',function(e){
-        var r=dash.getBoundingClientRect(), dx=(e.clientX-r.left)/r.width-0.5, dy=(e.clientY-r.top)/r.height-0.5;
-        if(bg) bg.style.transform='translate('+(dx*20)+'px,'+(dy*20)+'px)';
-        if(glow){ glow.style.left=(e.clientX-r.left)+'px'; glow.style.top=(e.clientY-r.top)+'px'; glow.style.opacity='1'; }
-        var b=slot.querySelector('.ff-badge'); if(b) b.style.transform='rotateY('+(dx*12)+'deg) rotateX('+(-dy*12)+'deg)';
-      });
-      dash.addEventListener('pointerleave',function(){
-        if(bg) bg.style.transform=''; if(glow) glow.style.opacity='0';
-        var b=slot.querySelector('.ff-badge'); if(b) b.style.transform='';
-      });
-    }
     // orange particle burst — manual physics (count 48, velocity 280, gravity 850)
     function burst(){
       if(REDUCE||!cvs) return;
@@ -481,27 +499,45 @@
         ctx.globalAlpha=1; if(alive) requestAnimationFrame(step); else ctx.clearRect(0,0,cvs.width,cvs.height); }
       requestAnimationFrame(step);
     }
-    function nextSeq(){ var n=1; try{ n=parseInt(localStorage.getItem('ff_seq')||'0',10)+1; localStorage.setItem('ff_seq',String(n)); }catch(e){} if(n<1)n=1; return ('000'+n).slice(-3); }
-    window.__ffReward=function(name){
+    /* roster (seed entries are cosmetic demo data until a backend feeds real fellows) */
+    var ROSTER=[
+      {n:'005',name:'Yara',title:'Artist',link:'https://www.linkedin.com/'},
+      {n:'004',name:'Diego',title:'Founder',link:'https://www.linkedin.com/'},
+      {n:'003',name:'Lena',title:'Investor',link:'https://www.linkedin.com/'},
+      {n:'002',name:'Kenji',title:'Architect',link:'https://www.linkedin.com/'},
+      {n:'001',name:'Amara',title:'Founder',link:'https://www.linkedin.com/'}
+    ];
+    var marquee=document.getElementById('ffMarquee'), mint=document.getElementById('ffMint');
+    function esc(x){ return String(x).replace(/[<>&"]/g,''); }
+    function normLink(l){ l=(l||'').trim(); if(!l) return ''; var m=l.match(/(https?:\/\/[^\s,]+|[a-z0-9.-]+\.[a-z]{2,}[^\s,]*)/i); if(!m) return ''; var u=m[1]; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
+    function lineHTML(f){
+      var u=normLink(f.link), cls='ff-line'+(f.me?' new':'')+(u?'':' nolink'),
+          href=u?(' href="'+esc(u)+'" target="_blank" rel="noopener"'):' href="#"',
+          t=f.title?' <span class="ff-role">· '+esc(f.title)+'</span>':'';
+      return '<a class="'+cls+'"'+href+'>FF-#'+esc(f.n)+'-'+esc(f.name)+t+'</a>';
+    }
+    function renderRoster(){ if(marquee){ marquee.innerHTML=ROSTER.map(lineHTML).join(''); } }
+    function nextSeq(){ var mx=0; ROSTER.forEach(function(f){ var v=parseInt(f.n,10)||0; if(v>mx) mx=v; }); return ('000'+(mx+1)).slice(-3); }
+    var API='/api/fellows', hovering=false;
+    function mapFellow(f){ return {n:('000'+(parseInt(f.n,10)||0)).slice(-3), name:f.name||'Fellow', title:f.title||'', link:f.link||''}; }
+    function loadRoster(){ fetch(API,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){ if(d&&d.fellows&&d.fellows.length){ ROSTER=d.fellows.map(mapFellow); renderRoster(); } }).catch(function(){}); }
+    if(slot){ slot.addEventListener('pointerenter',function(){hovering=true;}); slot.addEventListener('pointerleave',function(){hovering=false;}); }
+    function flashMint(nStr,name){ if(!mint) return; mint.textContent='FF-#'+nStr+'-'+name+' — Space is alive, I love it.'; mint.classList.add('show'); clearTimeout(mint._t); mint._t=setTimeout(function(){ mint.classList.remove('show'); },4800); }
+    renderRoster(); loadRoster();
+    setInterval(function(){ if(!hovering && !document.hidden) loadRoster(); }, 20000);   /* realtime-ish */
+    window.__ffReward=function(name,link,title){
       name=(name||'Fellow').trim().split(/\s+/)[0].replace(/[<>&]/g,'')||'Fellow';
-      var id=nextSeq();
-      slot.innerHTML='<div class="ff-badge"><div class="ff-id">FF<span class="dash">-</span>'+id+' <span class="dash">·</span> '+name+'</div><div class="ff-tag">Frisson Fellow</div></div><div class="ff-note">Space is alive, I love it.</div>';
-      burst();
+      link=(link||'').trim(); title=(title||'').trim().slice(0,40).replace(/[<>&]/g,'');
+      var provN=nextSeq();                       /* optimistic instant badge */
+      ROSTER.unshift({n:provN,name:name,title:title,link:link,me:true});
+      renderRoster(); burst(); flashMint(provN,name);
       try{ dash.scrollIntoView({block:'nearest',behavior:'smooth'}); }catch(e){}
+      /* persist to the global wall → reconcile with the real FF number/list */
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,link:link,title:title})})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(d){ if(d&&d.fellows){ var realN=d.fellow&&d.fellow.n; ROSTER=d.fellows.map(function(f){ var o=mapFellow(f); if(realN&&f.n===realN) o.me=true; return o; }); renderRoster(); if(realN) flashMint(('000'+realN).slice(-3),name); } })
+        .catch(function(){});
     };
-  })();
-
-  /* MIMO-style inverted circle — follows the cursor across the Frisson Fellow section */
-  (function(){
-    var sec=document.getElementById('advocater'), inv=document.getElementById('ffInvert'), pat=document.getElementById('ffPat');
-    if(pat){ var s=''; for(var i=0;i<130;i++) s+='FF '; pat.textContent=s; }
-    if(!sec||!inv||REDUCE) return;
-    sec.addEventListener('pointermove',function(e){
-      var r=sec.getBoundingClientRect();
-      inv.style.left=(e.clientX-r.left)+'px'; inv.style.top=(e.clientY-r.top)+'px';
-      if(!inv.classList.contains('on')) inv.classList.add('on');
-    });
-    sec.addEventListener('pointerleave',function(){ inv.classList.remove('on'); });
   })();
 
   /* mobile hamburger menu */

@@ -8,6 +8,11 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Serverless functions (Frisson Fellow wall: /api/fellows, backed by Netlify Blobs)
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"
