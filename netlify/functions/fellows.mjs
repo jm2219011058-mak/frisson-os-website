@@ -34,7 +34,7 @@ export default async (req) => {
   if (req.method === 'POST') {
     let body = {};
     try { body = await req.json(); } catch { /* ignore */ }
-    const name = clean(body.name, 60);   // keep the full name (e.g. "Jamie Zhang"), not just the first word
+    const name = clean(body.name, 60) || '';   // keep the full name (e.g. "Jamie Zhang"), not just the first word
     const link = clean(body.link, 300);
     const title = clean(body.title, 40);
     if (!name) return reply({ error: 'name required' }, 400);
