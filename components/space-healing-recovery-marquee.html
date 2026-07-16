@@ -1,0 +1,209 @@
+<!--
+  ============================================================================
+  COMPONENT: Space-Healing Recovery Marquee
+  组件名:   疗愈你身体的空间 — 恢复空间横向画廊(带心跳涟漪背景)
+  ----------------------------------------------------------------------------
+  用途 / What it is:
+    A white full-width section with an accent title ("疗愈你身体的空间" /
+    gallery.title), a horizontally auto-scrolling, drag/scrollable marquee of
+    recovery-space cards (液氮 / 红外 / 中药蒸熏 / 天空泳池 / 声光), a caption
+    that follows the centred tile, and an animated "heartbeat ripple" grid
+    canvas background tinted by the active tile's colour.
+
+  从哪里抽取 / Extracted from:
+    src/cities.html (removed 2026-07-16). Lived between the "dark Sona band"
+    section and the "How It Works" teaser.
+
+  如何重新装回 / How to re-insert:
+    1. Paste the HTML <section class="healing"> block into the page where you
+       want it (it was placed right before the `.mf-dark` Sona band).
+    2. Make sure the CSS in the two <style> blocks below exists on the page
+       (the scoped `.healing{}` rules AND the shared `.recovery-*/.rc/.prop-marquee`
+       rules + the `rcscroll` keyframe).
+    3. Make sure the two <script> IIFEs below exist (marquee + heartbeat ripple).
+       They self-guard (`if(!wrap) return;`), so they're harmless when absent.
+    4. Provide the i18n keys listed under "I18N KEYS" (already in gen-i18n.mjs /
+       content-inventory.md). If reused on a non-i18n page, replace the
+       {{key}} tokens with literal text (mapping given below).
+    5. Ship the image assets listed under "ASSETS".
+
+  依赖 / Depends on:
+    - CSS vars: --sans, --serif, --accent, --ink-soft
+    - Optional: GSAP reveal (.reveal class) — degrades fine without it.
+
+  ============================================================================
+  I18N KEYS (current values):
+    gallery.title    EN "Space healing your body"        ZH 疗愈你身体的空间
+    rec.cold.name    EN "Cryotherapy Chamber"            ZH 液氮恢复空间
+    rec.cold.cap     ZH 以液氮低温瞬间唤醒细胞活力，让身心在数秒间重启、焕然一新。
+    rec.red.name     EN "Infrared Sanctuary"             ZH 红外线照射空间
+    rec.red.cap      ZH 全光谱红外线的温热层层渗入，舒缓肌肉、促进循环，直抵身体深处。
+    rec.herb.name    EN "Herbal Steam Ritual"            ZH 中药蒸熏空间
+    rec.herb.cap     ZH 中式药草蒸熏之礼，草木蒸气拂去疲惫，令身体重归平衡。
+    rec.sky.name     EN "Sky Pool"                       ZH 天空游泳池
+    rec.sky.cap      ZH 悬于天际的一池静水，水面与地平线在此融为一体，让人失重般安宁。
+    rec.light.name   EN "Sound & Light Therapy"          ZH 声光氛围恢复空间
+    rec.light.cap    ZH 在沉浸式声与光中抵达深层宁静——色彩疗法与疗愈频率交织于静谧之境，灵感源自 Alex Grey 的幻视艺术。
+
+  ASSETS:
+    assets/city/cold.jpg
+    assets/city/infrared.jpg
+    assets/city/herb.jpg
+    assets/city/Skyswim.jpeg
+    assets/city/light-therapy.jpg
+  ============================================================================
+-->
+
+<!-- ─────────────── HTML ─────────────── -->
+<style>
+.healing{position:relative;background:#fff;padding:clamp(56px,10vh,120px) 0 clamp(56px,9vh,110px);overflow:hidden;}
+.healing .hb-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;}
+.healing .props-in{position:relative;z-index:1;}
+.healing .gallery-title{color:var(--accent);font-weight:700;font-size:clamp(28px,3.8vw,50px);margin:0 0 clamp(36px,6vh,64px);}
+.healing .rc-cap-text{color:var(--ink-soft)!important;}
+.healing .rc-cap-name{color:var(--accent);}
+.healing .prop-marquee .rc img{filter:grayscale(1);}
+/* base title (shared) */
+.gallery-title{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.3vw,28px);line-height:1.25;color:#fff;margin:clamp(6px,1.6vh,16px) 0 clamp(20px,3.2vh,28px);}
+</style>
+<section class="healing reveal">
+  <canvas class="hb-canvas" aria-hidden="true"></canvas>
+  <div class="props-in">
+  <div class="prop-hero reveal">
+    <p class="gallery-title">{{gallery.title}}</p>
+    <div class="prop-marquee">
+      <div class="recovery-bar">
+        <div class="recovery-track">
+          <figure class="rc"><img src="assets/city/cold.jpg" alt="{{rec.cold.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
+          <figure class="rc"><img src="assets/city/infrared.jpg" alt="{{rec.red.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
+          <figure class="rc"><img src="assets/city/herb.jpg" alt="{{rec.herb.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
+          <figure class="rc"><img src="assets/city/Skyswim.jpeg" alt="{{rec.sky.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
+          <figure class="rc"><img src="assets/city/light-therapy.jpg" alt="{{rec.light.name}}" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
+          <figure class="rc" aria-hidden="true"><img src="assets/city/cold.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.cold.name}}</span><span class="rc-text" hidden>{{rec.cold.cap}}</span></figure>
+          <figure class="rc" aria-hidden="true"><img src="assets/city/infrared.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.red.name}}</span><span class="rc-text" hidden>{{rec.red.cap}}</span></figure>
+          <figure class="rc" aria-hidden="true"><img src="assets/city/herb.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.herb.name}}</span><span class="rc-text" hidden>{{rec.herb.cap}}</span></figure>
+          <figure class="rc" aria-hidden="true"><img src="assets/city/Skyswim.jpeg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.sky.name}}</span><span class="rc-text" hidden>{{rec.sky.cap}}</span></figure>
+          <figure class="rc" aria-hidden="true"><img src="assets/city/light-therapy.jpg" alt="" loading="lazy"><span class="rc-name" hidden>{{rec.light.name}}</span><span class="rc-text" hidden>{{rec.light.cap}}</span></figure>
+        </div>
+      </div>
+      <div class="recovery-cap show" aria-live="polite">
+        <span class="rc-cap-name"></span>
+        <span class="rc-cap-text"></span>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ─────────────── SHARED CSS (recovery marquee) ─────────────── -->
+<style>
+.recovery-bar{margin-top:clamp(46px,8vh,90px);overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,.02) 2%,rgba(0,0,0,.12) 5%,rgba(0,0,0,.30) 8%,rgba(0,0,0,.58) 11%,rgba(0,0,0,.85) 14%,#000 17%,#000 83%,rgba(0,0,0,.85) 86%,rgba(0,0,0,.58) 89%,rgba(0,0,0,.30) 92%,rgba(0,0,0,.12) 95%,rgba(0,0,0,.02) 98%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,.02) 2%,rgba(0,0,0,.12) 5%,rgba(0,0,0,.30) 8%,rgba(0,0,0,.58) 11%,rgba(0,0,0,.85) 14%,#000 17%,#000 83%,rgba(0,0,0,.85) 86%,rgba(0,0,0,.58) 89%,rgba(0,0,0,.30) 92%,rgba(0,0,0,.12) 95%,rgba(0,0,0,.02) 98%,rgba(0,0,0,0) 100%);}
+.recovery-track{display:flex;width:max-content;gap:clamp(14px,1.6vw,24px);padding:0 clamp(7px,0.8vw,12px);animation:rcscroll 55s linear infinite;}
+.recovery-bar:hover .recovery-track,.recovery-bar:focus-within .recovery-track{animation-play-state:paused;}
+@keyframes rcscroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.rc{position:relative;flex:0 0 auto;width:clamp(188px,20vw,258px);height:clamp(248px,29vw,336px);margin:0;border-radius:12px;overflow:hidden;cursor:pointer;background:#ececec;}
+.rc img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.93) saturate(.96);transition:transform 1.05s cubic-bezier(.25,.1,.25,1),filter .6s ease;will-change:transform;}
+.rc:hover img,.rc:focus-visible img{transform:scale(1.035);filter:none;}
+.rc:focus{outline:none;}
+.recovery-cap{max-width:640px;margin:clamp(28px,4.6vh,46px) auto 0;padding:0 clamp(24px,6vw,40px);min-height:6em;text-align:center;}
+.rc-cap-name{display:block;font-family:var(--sans);font-size:clamp(11px,1.25vw,13px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;opacity:0;transition:opacity .35s ease;}
+.rc-cap-text{display:block;font-family:var(--serif);font-size:clamp(15px,1.7vw,19px);line-height:1.7;color:var(--ink-soft);text-wrap:pretty;opacity:0;transition:opacity .35s ease;}
+.recovery-cap.show .rc-cap-name,.recovery-cap.show .rc-cap-text{opacity:1;}
+@media(max-width:680px){.recovery-cap{min-height:8em;}}
+/* marquee embedded inside a dark section */
+.prop-marquee{margin:clamp(30px,5vh,50px) 0;}
+.prop-marquee .recovery-bar{margin-top:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab;
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,.02) 2%,rgba(0,0,0,.12) 5%,rgba(0,0,0,.30) 8%,rgba(0,0,0,.58) 11%,rgba(0,0,0,.85) 14%,#000 17%,#000 83%,rgba(0,0,0,.85) 86%,rgba(0,0,0,.58) 89%,rgba(0,0,0,.30) 92%,rgba(0,0,0,.12) 95%,rgba(0,0,0,.02) 98%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,.02) 2%,rgba(0,0,0,.12) 5%,rgba(0,0,0,.30) 8%,rgba(0,0,0,.58) 11%,rgba(0,0,0,.85) 14%,#000 17%,#000 83%,rgba(0,0,0,.85) 86%,rgba(0,0,0,.58) 89%,rgba(0,0,0,.30) 92%,rgba(0,0,0,.12) 95%,rgba(0,0,0,.02) 98%,rgba(0,0,0,0) 100%);}
+.prop-marquee .recovery-bar::-webkit-scrollbar{display:none;}
+.prop-marquee .recovery-track{animation:none;padding-inline:0;}
+.prop-marquee .rc{background:#1a1714;filter:brightness(.45);transition:filter .5s ease;}
+.prop-marquee .rc.is-active{filter:none;}
+.prop-marquee .rc img{filter:none;transition:none;}
+.prop-marquee .recovery-cap{max-width:none;margin:clamp(24px,3.8vh,36px) 0 0;padding:0;text-align:left;min-height:5.4em;}
+.prop-marquee .rc-cap-name,.prop-marquee .rc-cap-text{opacity:1;}
+.prop-marquee .rc-cap-text{color:rgba(244,236,220,.82);}
+</style>
+
+<!-- ─────────────── JS ─────────────── -->
+<script>
+/* recovery gallery — endless auto-scroll you can also drag/scroll by hand; caption follows the centred tile */
+(function(){
+  var wrap=document.querySelector('.prop-marquee'); if(!wrap) return;
+  var bar=wrap.querySelector('.recovery-bar'),
+      track=wrap.querySelector('.recovery-track'),
+      cap=wrap.querySelector('.recovery-cap'),
+      nm=cap.querySelector('.rc-cap-name'),
+      tx=cap.querySelector('.rc-cap-text'),
+      cards=[].slice.call(wrap.querySelectorAll('.rc'));
+  if(!cards.length) return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SPEED=0.45;
+  var pauseUntil=0, down=false, hovering=false, sx=0, sl=0, cur=-1;
+  function setW(){ return track.scrollWidth/2; }
+  function pause(){ pauseUntil=performance.now()+2600; }
+  function centre(){
+    var br=bar.getBoundingClientRect(), cx=br.left+br.width/2, best=1e9, bi=0;
+    cards.forEach(function(c,i){ var r=c.getBoundingClientRect(), d=Math.abs(r.left+r.width/2-cx); if(d<best){best=d;bi=i;} });
+    if(bi!==cur){ cur=bi;
+      nm.textContent=cards[bi].querySelector('.rc-name').textContent;
+      tx.textContent=cards[bi].querySelector('.rc-text').textContent;
+      cap.classList.add('show');
+      cards.forEach(function(x){ x.classList.remove('is-active'); });
+      cards[bi].classList.add('is-active'); window.__healActive=bi%5;
+    }
+  }
+  var pos=0;
+  function loop(now){
+    var w=setW();
+    var drifting=(!down && !hovering && now>pauseUntil);
+    if(drifting){
+      pos+=SPEED;
+      if(w>0){ if(pos>=w) pos-=w; else if(pos<0) pos+=w; }
+      bar.scrollLeft=pos;
+    } else {
+      pos=bar.scrollLeft;
+    }
+    centre();
+    requestAnimationFrame(loop);
+  }
+  bar.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') hovering=true; });
+  bar.addEventListener('pointerleave',function(e){ if(e.pointerType==='mouse'){ hovering=false; if(down){ down=false; bar.style.cursor='grab'; } } });
+  bar.addEventListener('wheel',pause,{passive:true});
+  bar.addEventListener('touchstart',pause,{passive:true});
+  bar.addEventListener('pointerdown',function(e){ down=true; sx=e.clientX; sl=bar.scrollLeft; bar.style.cursor='grabbing'; });
+  addEventListener('pointermove',function(e){ if(down) bar.scrollLeft=sl-(e.clientX-sx); });
+  addEventListener('pointerup',function(e){ if(down){ down=false; bar.style.cursor='grab'; if(e.pointerType!=='mouse') pause(); } });
+  addEventListener('pointercancel',function(e){ if(down){ down=false; if(e.pointerType!=='mouse') pause(); } });
+  requestAnimationFrame(loop);
+})();
+
+/* Space-healing — grid heartbeat ripple, tinted by the centred tile's dominant colour */
+(function(){
+  var sec=document.querySelector('.healing'); if(!sec) return;
+  var cv=sec.querySelector('.hb-canvas'); if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var CELL=52,WAVE_V=280,HALF_W=78,ATTACK=0.30,CYCLE=1.15,MAX_HIST=4;
+  var BEATS=[{o:0.0,s:1.0},{o:0.28,s:0.45}];
+  var COLORS=[[0,209,255],[250,62,4],[247,121,12],[0,68,111],[10,153,187]];
+  var w=0,h=0,dpr=Math.min(2,window.devicePixelRatio||1),mx=-1e4,my=-1e4,inside=false,t0=performance.now();
+  function resize(){var r=sec.getBoundingClientRect();w=r.width;h=r.height;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+"px";cv.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);}
+  function kB(p){if(p<=0||p>=1)return 0;if(p<ATTACK){var n=p/ATTACK;return n*(2-n);}var m=(p-ATTACK)/(1-ATTACK);return 1-m*m;}
+  function gAt(d,t){var b=0,r0=40,MR=Math.max(w,h)*1.25;for(var i=0;i<BEATS.length;i++){var be=BEATS[i],el=t-be.o;if(el<0)continue;var la=Math.floor(el/CYCLE),ol=Math.max(0,la-MAX_HIST+1);for(var c=la;c>=ol;c--){var age=el-c*CYCLE,rad=age*WAVE_V;if(rad>MR)break;var de=d-rad;if(Math.abs(de)>HALF_W)continue;var ph=(HALF_W-de)/(2*HALF_W);b+=kB(ph)*Math.sqrt(r0/Math.max(r0,rad))*be.s;}}return Math.min(1,b);}
+  function fade(x,y){var dx=(x-w/2)/(w/2),dy=(y-h/2)/(h/2),d=Math.sqrt(dx*dx+dy*dy);return Math.max(0,1-Math.max(0,(d-0.55)/0.45));}
+  function frame(now){
+    var t=(now-t0)/1000; ctx.clearRect(0,0,w,h);
+    var col=COLORS[(window.__healActive||0)%COLORS.length];
+    var gi="rgba(20,15,10,", ri="rgba("+col[0]+","+col[1]+","+col[2]+",";
+    for(var gx=CELL/2;gx<w;gx+=CELL) for(var y=0;y<h;y+=CELL){var f=fade(gx,y+CELL/2);if(f<=0)continue;ctx.strokeStyle=gi+(0.05*f)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx,y+CELL);ctx.stroke();if(inside){var g=gAt(Math.hypot(gx-mx,y+CELL/2-my),t);if(g>0.015){ctx.strokeStyle=ri+(0.5*g*f)+")";ctx.lineWidth=1+1.6*g;ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx,y+CELL);ctx.stroke();}}}
+    for(var gy=CELL/2;gy<h;gy+=CELL) for(var x=0;x<w;x+=CELL){var f2=fade(x+CELL/2,gy);if(f2<=0)continue;ctx.strokeStyle=gi+(0.05*f2)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,gy);ctx.lineTo(x+CELL,gy);ctx.stroke();if(inside){var g2=gAt(Math.hypot(x+CELL/2-mx,gy-my),t);if(g2>0.015){ctx.strokeStyle=ri+(0.5*g2*f2)+")";ctx.lineWidth=1+1.6*g2;ctx.beginPath();ctx.moveTo(x,gy);ctx.lineTo(x+CELL,gy);ctx.stroke();}}}
+    requestAnimationFrame(frame);
+  }
+  sec.addEventListener('pointermove',function(e){var r=sec.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;inside=true;},{passive:true});
+  sec.addEventListener('pointerleave',function(){inside=false;});
+  window.addEventListener('resize',resize,{passive:true});
+  resize(); requestAnimationFrame(frame);
+})();
+</script>
