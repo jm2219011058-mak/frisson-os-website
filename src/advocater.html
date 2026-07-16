@@ -118,6 +118,16 @@
   .ff-badge .ff-tag{font-family:var(--serif);font-style:italic;font-size:13px;color:#3a3f47;margin-top:7px;letter-spacing:.02em;}
   .ff-note{position:relative;z-index:2;font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.7vw,19px);color:#fff;text-align:center;}
   .ff-cvs{position:absolute;inset:0;z-index:4;pointer-events:none;}
+  /* MIMO-style: section-wide FF pattern + mouse-tracking inverted circle */
+  .ff-mimo .tier-bg img{filter:brightness(.42) saturate(.6) contrast(1.02);}
+  .ff-pattern{position:absolute;inset:-3% 0;z-index:1;pointer-events:none;overflow:hidden;text-align:center;
+    font-family:var(--serif);font-weight:600;font-size:clamp(64px,8.5vw,128px);line-height:1.0;letter-spacing:.05em;
+    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;}
+  .ff-invert{position:absolute;left:-999px;top:0;width:clamp(300px,32vw,460px);height:clamp(300px,32vw,460px);border-radius:50%;
+    background:#fff;mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%) scale(0);z-index:7;
+    transition:transform .3s cubic-bezier(.34,1.4,.64,1);will-change:left,top,transform;}
+  .ff-invert.on{transform:translate(-50%,-50%) scale(1);}
+  @media (max-width:900px){ .ff-invert{display:none;} }
 
   /* forms (light on dark) */
   .nf-form{max-width:540px;margin:clamp(26px,4.5vh,40px) auto 0;text-align:left;}
@@ -248,9 +258,10 @@
   </section>
 
   <!-- TIER 2 · THE ADVOCATER CIRCLE -->
-  <section class="tier" id="advocater" style="text-align:center;">
+  <section class="tier ff-mimo" id="advocater" style="text-align:center;isolation:isolate;">
     <div class="tier-bg"><img src="assets/city/advocater-circle-bg.jpg" alt="" loading="lazy"></div>
-    <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(6,10,18,.6),rgba(6,10,18,.72));"></div>
+    <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(8,8,11,.82),rgba(8,8,11,.9));"></div>
+    <div class="ff-pattern" id="ffPat" aria-hidden="true"></div>
     <div class="tier-inner adv-grid">
       <div class="adv-left">
       <div class="tier-intro" id="advIntro">
@@ -298,6 +309,7 @@
         <canvas class="ff-cvs" id="ffCvs" aria-hidden="true"></canvas>
       </aside>
     </div>
+    <div class="ff-invert" id="ffInvert" aria-hidden="true"></div>
   </section>
 
   <!-- MANIFESTO ESSAY -->
@@ -477,6 +489,19 @@
       burst();
       try{ dash.scrollIntoView({block:'nearest',behavior:'smooth'}); }catch(e){}
     };
+  })();
+
+  /* MIMO-style inverted circle — follows the cursor across the Frisson Fellow section */
+  (function(){
+    var sec=document.getElementById('advocater'), inv=document.getElementById('ffInvert'), pat=document.getElementById('ffPat');
+    if(pat){ var s=''; for(var i=0;i<130;i++) s+='FF '; pat.textContent=s; }
+    if(!sec||!inv||REDUCE) return;
+    sec.addEventListener('pointermove',function(e){
+      var r=sec.getBoundingClientRect();
+      inv.style.left=(e.clientX-r.left)+'px'; inv.style.top=(e.clientY-r.top)+'px';
+      if(!inv.classList.contains('on')) inv.classList.add('on');
+    });
+    sec.addEventListener('pointerleave',function(){ inv.classList.remove('on'); });
   })();
 
   /* mobile hamburger menu */
