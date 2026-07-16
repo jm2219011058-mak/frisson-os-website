@@ -155,7 +155,7 @@
     background:#fff;mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%) scale(0);z-index:7;
     transition:transform .3s cubic-bezier(.34,1.4,.64,1);will-change:left,top,transform;}
   .ff-invert.on{transform:translate(-50%,-50%) scale(1);}
-  @media (max-width:900px){ .ff-invert{display:none;} }
+  @media (max-width:900px){ .ff-invert{width:clamp(190px,54vw,320px);height:clamp(190px,54vw,320px);} }
   .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
     background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
   /* (dark section: white-on-dark via base .tier styles) */
@@ -541,13 +541,34 @@
     };
   })();
 
-  /* inverted circle (mix-blend difference) + section FF pattern — follow the cursor */
+  /* inverted circle — desktop: follow cursor; mobile: follow device tilt (gyro), gentle drift as fallback */
   (function(){
     var sec=document.getElementById('advocater'), inv=document.getElementById('ffInvert'), pat=document.getElementById('ffPat');
     if(pat){ var s=''; for(var i=0;i<130;i++) s+='FF '; pat.textContent=s; }
     if(!sec||!inv||REDUCE) return;
-    sec.addEventListener('pointermove',function(e){ var r=sec.getBoundingClientRect(); inv.style.left=(e.clientX-r.left)+'px'; inv.style.top=(e.clientY-r.top)+'px'; if(!inv.classList.contains('on')) inv.classList.add('on'); });
-    sec.addEventListener('pointerleave',function(){ inv.classList.remove('on'); });
+    function place(px,py){ inv.style.left=px+'px'; inv.style.top=py+'px'; if(!inv.classList.contains('on')) inv.classList.add('on'); }
+    var coarse = matchMedia('(hover:none), (pointer:coarse)').matches;
+    if(!coarse){
+      sec.addEventListener('pointermove',function(e){ var r=sec.getBoundingClientRect(); place(e.clientX-r.left, e.clientY-r.top); });
+      sec.addEventListener('pointerleave',function(){ inv.classList.remove('on'); });
+      return;
+    }
+    /* touch device: gentle drift baseline, upgrade to tilt when gyro is available */
+    var driftOn=true;
+    function drift(){ var t0=performance.now();
+      function step(now){ if(!driftOn) return; var t=(now-t0)/1000, r=sec.getBoundingClientRect(), vh=window.innerHeight||700;
+        place(r.width*(0.5+0.28*Math.sin(t*0.5)), vh*(0.4+0.14*Math.cos(t*0.38))); requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+    function onOrient(e){ if(e.gamma==null && e.beta==null) return; driftOn=false;
+      var r=sec.getBoundingClientRect(), vh=window.innerHeight||700,
+          gx=Math.max(-45,Math.min(45,e.gamma||0)), gy=Math.max(-45,Math.min(45,(e.beta||0)-45));
+      place(r.width*(0.5+gx/95), vh*(0.42+gy/260)); }
+    drift();
+    var DOE=window.DeviceOrientationEvent;
+    if(DOE && typeof DOE.requestPermission==='function'){
+      document.addEventListener('touchend',function ask(){ document.removeEventListener('touchend',ask); DOE.requestPermission().then(function(res){ if(res==='granted') window.addEventListener('deviceorientation',onOrient,true); }).catch(function(){}); },{once:true});
+    } else if(DOE){ window.addEventListener('deviceorientation',onOrient,true); }
   })();
 
   /* mobile hamburger menu */
