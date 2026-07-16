@@ -156,6 +156,10 @@
     transition:transform .3s cubic-bezier(.34,1.4,.64,1);will-change:left,top,transform;}
   .ff-invert.on{transform:translate(-50%,-50%) scale(1);}
   @media (max-width:900px){ .ff-invert{width:clamp(190px,54vw,320px);height:clamp(190px,54vw,320px);} }
+  @media (max-width:900px){
+    .ff-mimo{padding-top:max(16svh,128px);}
+    .ff-mimo .t-title{font-size:clamp(40px,10.5vw,62px);margin-bottom:clamp(8px,2vh,18px);}
+  }
   .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
     background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
   /* (dark section: white-on-dark via base .tier styles) */
