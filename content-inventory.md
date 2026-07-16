@@ -73,7 +73,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 母版 | EN | ZH（英译中初稿） |
 |---|---|---|
 | 3.1 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
-| 3.2 EN | More than Human City — rendered possible by the artistry of Sona. | 由 Sona 提供技术支持的"超越人类之城"属性。 |
+| 3.2 EN | More than Human City — rendered possible by the artistry of Sona. | 由 Sona 提供支持的"超越人类之城"属性。 |
 | 3.3 ZH | Sona wields a spatial intelligence of rare acuity, one that reads the very undercurrents of your soul. She choreographs light and sound, warmth and space, with the deftness of fingers traversing strings—each modulation a perfect mirror to your present state. She perceives your languor, your quiet ecstasies, and those longings you have buried so deep that even you have yet to unearth them from your own heart. | 索娜拥有敏锐的空间智能，能够感知你的情绪。她操控着光与声、温度与空间，如同手在琴弦上移动——她的每一次变换都契合着你当下的情绪。她能读懂你的疲惫与静谧的喜悦，以及你深藏于心、尚未察觉的渴望。 |
 | 3.4 ZH | And it is precisely this shore that the melody yearns for: an ineffable frisson—the tremor that races along your spine when the sublime, in its purest form, sweeps across your gaze. | 而这首旋律所追求的彼岸正是如此：一种无法用言语形容的颤栗——当极致的美丽掠过眼前时，脊背上涌起的那种颤栗感。 |
 | 3.5 EN | Space that senses your body | 感知你身体的空间 |

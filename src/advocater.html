@@ -92,6 +92,33 @@
   .roles6 .r{border-top:2px solid var(--accent);padding-top:14px;font-family:var(--serif);font-weight:500;font-size:clamp(16px,1.9vw,21px);color:#fff;text-align:left;}
   @media (max-width:640px){ .roles6{grid-template-columns:repeat(2,1fr);} }
 
+  /* Frisson Fellow — two-column with live dashboard */
+  .adv-grid{max-width:1180px;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(26px,4vw,54px);align-items:center;}
+  @media (max-width:900px){ .adv-grid{grid-template-columns:1fr;gap:36px;} }
+  .adv-left{min-width:0;}
+  .adv-dash{position:relative;min-height:440px;border:1px solid rgba(255,255,255,.16);border-radius:22px;overflow:hidden;perspective:900px;
+    background:linear-gradient(160deg,rgba(24,18,13,.55),rgba(10,8,6,.66));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.36);}
+  .ff-bgtext{position:absolute;inset:-8%;z-index:0;font-family:var(--sans);font-weight:800;font-size:46px;line-height:1.06;letter-spacing:.14em;
+    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;pointer-events:none;will-change:transform;transition:transform .2s ease-out;}
+  .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
+    background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
+  .ff-dash-head{position:relative;z-index:2;font-family:var(--sans);font-size:clamp(11px,1.3vw,13px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 auto;}
+  .ff-slot{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;text-align:center;padding:14px 0;}
+  .ff-empty{font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.42);max-width:26ch;line-height:1.7;}
+  .ff-empty b{color:rgba(255,255,255,.72);}
+  .ff-badge{position:relative;width:min(300px,82%);border-radius:16px;padding:22px 24px;text-align:center;overflow:hidden;transition:transform .12s ease-out;
+    background:linear-gradient(145deg,#dfe3e8 0%,#a7adb6 18%,#f2f4f7 38%,#8f96a0 60%,#cdd2d8 80%,#9aa0aa 100%);
+    box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 6px rgba(0,0,0,.22);}
+  .ff-badge::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;transform:skewX(-20deg);pointer-events:none;
+    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.85),rgba(255,255,255,0));animation:ffsheen 3.6s ease-in-out infinite;}
+  @keyframes ffsheen{0%,58%{left:-60%;}100%{left:130%;}}
+  .ff-badge .ff-id{font-family:var(--sans);font-weight:800;font-size:clamp(17px,2vw,21px);letter-spacing:.05em;color:#2b2f36;text-shadow:0 1px 0 rgba(255,255,255,.5);}
+  .ff-badge .ff-id .dash{color:var(--accent);}
+  .ff-badge .ff-tag{font-family:var(--serif);font-style:italic;font-size:13px;color:#3a3f47;margin-top:7px;letter-spacing:.02em;}
+  .ff-note{position:relative;z-index:2;font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.7vw,19px);color:#fff;text-align:center;}
+  .ff-cvs{position:absolute;inset:0;z-index:4;pointer-events:none;}
+
   /* forms (light on dark) */
   .nf-form{max-width:540px;margin:clamp(26px,4.5vh,40px) auto 0;text-align:left;}
   .nf-form.center{margin-left:auto;margin-right:auto;}
@@ -224,7 +251,8 @@
   <section class="tier" id="advocater" style="text-align:center;">
     <div class="tier-bg"><img src="assets/city/advocater-circle-bg.jpg" alt="" loading="lazy"></div>
     <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(6,10,18,.6),rgba(6,10,18,.72));"></div>
-    <div class="tier-inner">
+    <div class="tier-inner adv-grid">
+      <div class="adv-left">
       <div class="tier-intro" id="advIntro">
         <div class="reveal">
           <h2 class="t-title" style="margin:0 auto;max-width:20ch;">Frisson Fellow</h2>
@@ -252,12 +280,23 @@
             <div class="field"><label class="lbl" for="a-name">Full name</label><input id="a-name" type="text" name="name" placeholder="Your name" required></div>
             <div class="field"><label class="lbl" for="a-email">Email</label><input id="a-email" type="email" name="email" placeholder="you@email.com" required></div>
           </div>
-          <div class="field"><label class="lbl" for="a-why">Why you — what you would bring <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
+          <div class="field"><label class="lbl" for="a-why">What you would bring <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><textarea id="a-why" name="message" placeholder="A few lines"></textarea></div>
+          <div class="field"><label class="lbl" for="a-link">Link you want to share <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="a-link" type="text" name="link" placeholder="LinkedIn, company link, project link…"></div>
           <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
           <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
           <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
         </form>
       </div>
+      </div><!-- /adv-left -->
+      <aside class="adv-dash" id="ffDash" aria-label="Frisson Fellow Dashboard">
+        <div class="ff-bgtext" id="ffBg" aria-hidden="true"></div>
+        <div class="ff-glow" id="ffGlow" aria-hidden="true"></div>
+        <div class="ff-dash-head">Frisson Fellow Dashboard</div>
+        <div class="ff-slot" id="ffSlot">
+          <div class="ff-empty">Join the circle — your <b>Frisson Fellow</b> badge is minted here, live, the moment you apply.</div>
+        </div>
+        <canvas class="ff-cvs" id="ffCvs" aria-hidden="true"></canvas>
+      </aside>
     </div>
   </section>
 
@@ -385,11 +424,59 @@
       form.addEventListener('submit',function(ev){
         ev.preventDefault();
         var data=new URLSearchParams(new FormData(form)).toString();
-        fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
-          .then(function(){ form.innerHTML='<p class="done">Thank you — we’ll be in touch.</p>'; })
-          .catch(function(){ form.innerHTML='<p class="done">Thank you.</p>'; });
+        var _name=(form.querySelector('[name=name]')||{}).value||'';
+        var _isFF=form.id==='advocaterForm';
+        /* fire the reward/confirmation instantly — don't wait on the network */
+        if(_isFF&&window.__ffReward){ window.__ffReward(_name); }
+        /* record the submission to Netlify in the background (best-effort) */
+        fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data}).catch(function(){});
+        form.innerHTML='<p class="done">'+(_isFF?'Welcome, Fellow — your badge is live →':'Thank you — we’ll be in touch.')+'</p>';
       });
     });
+  })();
+
+  /* Frisson Fellow — live dashboard: FF pattern, cursor glow/parallax, metallic badge, orange particle burst */
+  (function(){
+    var dash=document.getElementById('ffDash'), bg=document.getElementById('ffBg'),
+        glow=document.getElementById('ffGlow'), slot=document.getElementById('ffSlot'), cvs=document.getElementById('ffCvs');
+    if(!dash) return;
+    if(bg){ var s=''; for(var i=0;i<180;i++) s+='FF '; bg.textContent=s; }
+    if(!REDUCE){
+      dash.addEventListener('pointermove',function(e){
+        var r=dash.getBoundingClientRect(), dx=(e.clientX-r.left)/r.width-0.5, dy=(e.clientY-r.top)/r.height-0.5;
+        if(bg) bg.style.transform='translate('+(dx*20)+'px,'+(dy*20)+'px)';
+        if(glow){ glow.style.left=(e.clientX-r.left)+'px'; glow.style.top=(e.clientY-r.top)+'px'; glow.style.opacity='1'; }
+        var b=slot.querySelector('.ff-badge'); if(b) b.style.transform='rotateY('+(dx*12)+'deg) rotateX('+(-dy*12)+'deg)';
+      });
+      dash.addEventListener('pointerleave',function(){
+        if(bg) bg.style.transform=''; if(glow) glow.style.opacity='0';
+        var b=slot.querySelector('.ff-badge'); if(b) b.style.transform='';
+      });
+    }
+    // orange particle burst — manual physics (count 48, velocity 280, gravity 850)
+    function burst(){
+      if(REDUCE||!cvs) return;
+      var ctx=cvs.getContext('2d'), r=dash.getBoundingClientRect();
+      cvs.width=r.width; cvs.height=r.height;
+      var cx=r.width/2, cy=r.height*0.52, N=48, P=[], cols=['#e07b3c','#f0a15f','#c9611f','#ffd9b0'];
+      for(var i=0;i<N;i++){ var ang=(-90+(Math.random()*100-50))*Math.PI/180, v=280+Math.random()*150;
+        P.push({x:cx,y:cy,vx:Math.cos(ang)*v,vy:Math.sin(ang)*v,rad:2+Math.random()*3,c:cols[i%cols.length],life:0,max:1.5+Math.random()*0.7}); }
+      var last=performance.now();
+      function step(now){ var dt=Math.min((now-last)/1000,0.05); last=now; ctx.clearRect(0,0,cvs.width,cvs.height); var alive=false;
+        for(var i=0;i<P.length;i++){ var p=P[i]; if(p.life>p.max) continue; alive=true;
+          p.life+=dt; p.vy+=850*dt; p.x+=p.vx*dt; p.y+=p.vy*dt;
+          ctx.globalAlpha=Math.max(0,1-p.life/p.max); ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.rad,0,7); ctx.fill(); }
+        ctx.globalAlpha=1; if(alive) requestAnimationFrame(step); else ctx.clearRect(0,0,cvs.width,cvs.height); }
+      requestAnimationFrame(step);
+    }
+    function nextSeq(){ var n=1; try{ n=parseInt(localStorage.getItem('ff_seq')||'0',10)+1; localStorage.setItem('ff_seq',String(n)); }catch(e){} if(n<1)n=1; return ('000'+n).slice(-3); }
+    window.__ffReward=function(name){
+      name=(name||'Fellow').trim().split(/\s+/)[0].replace(/[<>&]/g,'')||'Fellow';
+      var id=nextSeq();
+      slot.innerHTML='<div class="ff-badge"><div class="ff-id">FF<span class="dash">-</span>'+id+' <span class="dash">·</span> '+name+'</div><div class="ff-tag">Frisson Fellow</div></div><div class="ff-note">Space is alive, I love it.</div>';
+      burst();
+      try{ dash.scrollIntoView({block:'nearest',behavior:'smooth'}); }catch(e){}
+    };
   })();
 
   /* mobile hamburger menu */
