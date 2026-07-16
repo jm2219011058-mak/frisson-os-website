@@ -63,8 +63,9 @@
   .tier-bg img{width:100%;height:100%;object-fit:cover;display:block;}
   .tier-scrim{position:absolute;inset:0;z-index:1;}
   /* hero white fades softly into the first dark tier */
-  #trial::before{content:"";position:absolute;top:0;left:0;right:0;height:22vh;z-index:2;pointer-events:none;
-    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);}
+  #trial::before{content:"";position:absolute;top:0;left:0;right:0;height:42vh;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.72) 34%,rgba(255,255,255,0) 100%);}
+  #trial{padding-top:max(22svh,190px);}
   .tier-inner{position:relative;z-index:2;width:100%;max-width:1080px;margin:0 auto;}
   .t-label{font-family:var(--sans);font-size:clamp(11px,1.4vw,14px);letter-spacing:.3em;text-transform:uppercase;color:#fff;margin:0 0 clamp(18px,3vh,26px);}
   .t-label b{color:var(--accent);font-weight:700;margin-right:10px;}
@@ -285,7 +286,7 @@
           <div class="field"><label class="lbl" for="a-title">Title On Billboard</label><input id="a-title" type="text" name="title" placeholder="Founder, Investor, Artist…" required></div>
           <div class="field"><label class="lbl" for="a-link">Link you want to share <span style="text-transform:none;letter-spacing:0;opacity:.7;">(optional)</span></label><input id="a-link" type="text" name="link" placeholder="LinkedIn, company link, project link…"></div>
           <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson about the Advocater Program.</label>
-          <button type="submit" class="apply">Apply to the Advocater Circle <span class="arw">&rsaquo;</span></button>
+          <button type="submit" class="apply">Apply to the Founding Circle <span class="arw">&rsaquo;</span></button>
           <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
         </form>
       </div>
