@@ -96,22 +96,23 @@
   .adv-grid{max-width:1320px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:clamp(26px,4vw,58px);align-items:center;}
   @media (max-width:900px){ .adv-grid{grid-template-columns:1fr;gap:36px;} }
   .adv-left{min-width:0;}
-  .adv-dash{position:relative;min-height:auto;max-height:80svh;overflow:hidden;
-    padding:clamp(16px,2.2vw,28px);display:flex;flex-direction:column;justify-content:center;text-align:center;}
+  .adv-dash{position:relative;min-height:auto;max-height:80svh;overflow:hidden;border:1px solid rgba(255,255,255,.16);border-radius:22px;
+    background:linear-gradient(160deg,rgba(24,18,13,.5),rgba(10,8,6,.62));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 24px 60px rgba(0,0,0,.34);
+    padding:clamp(20px,2.6vw,32px);display:flex;flex-direction:column;justify-content:center;text-align:center;}
   .ff-bgtext{position:absolute;inset:-8%;z-index:0;font-family:var(--sans);font-weight:800;font-size:46px;line-height:1.06;letter-spacing:.14em;
-    color:rgba(43,29,18,.045);white-space:normal;word-break:break-word;user-select:none;pointer-events:none;will-change:transform;transition:transform .2s ease-out;}
+    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;pointer-events:none;will-change:transform;transition:transform .2s ease-out;}
   .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
     background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
   .ff-dash-head{position:relative;z-index:2;font-family:var(--sans);font-size:clamp(11px,1.3vw,13px);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(18px,3vh,30px);text-align:center;flex:0 0 auto;}
   .ff-slot{position:relative;z-index:2;flex:0 1 auto;max-height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;
     -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);}
   .ff-marquee{display:flex;flex-direction:column;gap:clamp(6px,1.1vh,12px);padding:10px 0;}
-  a.ff-line{display:block;text-decoration:none;text-align:center;font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.05vw,28px);line-height:1.32;color:var(--ink);letter-spacing:.005em;transition:color .2s ease;padding:2px 6px;}
+  a.ff-line{display:block;text-decoration:none;text-align:center;font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.05vw,28px);line-height:1.32;color:rgba(245,240,232,.9);letter-spacing:.005em;transition:color .2s ease;padding:2px 6px;}
   a.ff-line:nth-child(even){font-style:italic;}
   a.ff-line:hover{color:var(--accent);}
   a.ff-line.nolink{pointer-events:none;}
   a.ff-line.new{color:var(--accent);font-weight:500;}
-  a.ff-line .ff-role{color:var(--ink-soft);}
+  a.ff-line .ff-role{color:rgba(245,240,232,.5);}
   a.ff-badge-mini{--gx:50%;--gy:0%;display:flex;align-items:center;justify-content:space-between;gap:18px;text-decoration:none;position:relative;border-radius:14px;padding:clamp(16px,2vw,22px) clamp(20px,2.4vw,28px);overflow:hidden;isolation:isolate;
     transition:transform .2s ease;
     background:
@@ -145,26 +146,18 @@
   .ff-cvs{position:absolute;inset:0;z-index:4;pointer-events:none;}
   /* ff-mimo section (Frisson Fellow hero) — clean light backdrop */
   .ff-mimo .tier-bg img{filter:saturate(.5) opacity(.22);}
-  /* ff-mimo section is light → flip text + form to ink */
-  .ff-mimo{color:var(--ink);}
-  .ff-mimo .t-title{color:var(--ink);text-shadow:none;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;font-size:clamp(28px,4.2vw,56px);}
-  .ff-mimo .t-title .o{color:var(--accent);}
-  .ff-mimo .roles6 .r{color:var(--ink);}
-  .ff-mimo .t-copy{color:var(--ink-soft);text-shadow:none;}
-  .ff-mimo .t-copy a{color:var(--ink);}
-  .ff-mimo .nf-form .lbl{color:var(--ink-soft);}
-  .ff-mimo .nf-form input,.ff-mimo .nf-form textarea{color:var(--ink);border-color:rgba(43,29,18,.28);background:rgba(43,29,18,.03);}
-  .ff-mimo .nf-form input:focus,.ff-mimo .nf-form textarea:focus{border-color:var(--accent);background:rgba(43,29,18,.05);}
-  .ff-mimo .nf-form ::placeholder{color:rgba(43,29,18,.5);}
-  .ff-mimo .nf-form select{color:var(--ink);border-color:rgba(43,29,18,.28);background-color:rgba(43,29,18,.03);
-    background-image:linear-gradient(45deg,transparent 50%,rgba(43,29,18,.6) 50%),linear-gradient(135deg,rgba(43,29,18,.6) 50%,transparent 50%);}
-  .ff-mimo .nf-form option{color:#1a1a1a;}
-  .ff-mimo .consent{color:var(--ink-soft);}
-  .ff-mimo .legal{color:rgba(43,29,18,.6);}
-  .ff-mimo .legal a{color:var(--ink);}
-  .ff-mimo .nf-form .done{color:var(--ink);}
-  .ff-mimo .back-btn{color:var(--ink-soft);}
-  .ff-mimo .back-btn:hover{color:var(--ink);}
+  /* Frisson Fellow hero (dark) — inverted circle + FF pattern + glow */
+  .ff-pattern{position:absolute;inset:-3% 0;z-index:1;pointer-events:none;overflow:hidden;text-align:center;
+    font-family:var(--serif);font-weight:600;font-size:clamp(64px,8.5vw,128px);line-height:1.0;letter-spacing:.05em;
+    color:rgba(255,255,255,.05);white-space:normal;word-break:break-word;user-select:none;}
+  .ff-invert{position:absolute;left:-999px;top:0;width:clamp(300px,32vw,460px);height:clamp(300px,32vw,460px);border-radius:50%;
+    background:#fff;mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%) scale(0);z-index:7;
+    transition:transform .3s cubic-bezier(.34,1.4,.64,1);will-change:left,top,transform;}
+  .ff-invert.on{transform:translate(-50%,-50%) scale(1);}
+  @media (max-width:900px){ .ff-invert{display:none;} }
+  .ff-glow{position:absolute;width:240px;height:240px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .3s;
+    background:radial-gradient(circle,rgba(224,123,60,.22),rgba(224,123,60,0) 70%);}
+  /* (dark section: white-on-dark via base .tier styles) */
 
   /* forms (light on dark) */
   .nf-form{max-width:540px;margin:clamp(26px,4.5vh,40px) auto 0;text-align:left;}
@@ -258,12 +251,13 @@
   <!-- HERO · FRISSON FELLOW -->
   <section class="tier ff-mimo" id="advocater" style="text-align:center;isolation:isolate;">
     <div class="tier-bg"><img src="assets/city/advocater-circle-bg.jpg" alt="" loading="lazy"></div>
-    <div class="tier-scrim" style="background:#ffffff;"></div>
+    <div class="tier-scrim" style="background:linear-gradient(180deg,rgba(8,8,11,.82),rgba(8,8,11,.9));"></div>
+    <div class="ff-pattern" id="ffPat" aria-hidden="true"></div>
     <div class="tier-inner adv-grid">
       <div class="adv-left">
       <div class="tier-intro" id="advIntro">
         <div class="reveal">
-          <h2 class="t-title" style="margin:0 auto;">Friss<span class="o">o</span>n Fell<span class="o">o</span>w</h2>
+          <h2 class="t-title" style="margin:0 auto;max-width:20ch;">Frisson Fellow</h2>
         </div>
         <p class="t-label reveal" style="justify-content:center;margin-top:clamp(40px,6vh,60px);color:var(--accent);letter-spacing:.28em;">If you are</p>
         <div class="roles6 reveal">
@@ -297,6 +291,8 @@
       </div>
       </div><!-- /adv-left -->
       <aside class="adv-dash" id="ffDash" aria-label="Frisson Fellow Dashboard">
+        <div class="ff-bgtext" id="ffBg" aria-hidden="true"></div>
+        <div class="ff-glow" id="ffGlow" aria-hidden="true"></div>
         <div class="ff-slot" id="ffSlot">
           <div class="ff-marquee" id="ffMarquee"></div>
         </div>
@@ -304,6 +300,7 @@
         <canvas class="ff-cvs" id="ffCvs" aria-hidden="true"></canvas>
       </aside>
     </div>
+    <div class="ff-invert" id="ffInvert" aria-hidden="true"></div>
   </section>
 
   <!-- TIER 1 · TRIAL SLEEP -->
@@ -483,6 +480,15 @@
     var dash=document.getElementById('ffDash'), bg=document.getElementById('ffBg'),
         glow=document.getElementById('ffGlow'), slot=document.getElementById('ffSlot'), cvs=document.getElementById('ffCvs');
     if(!dash) return;
+    if(bg){ var s0=''; for(var i0=0;i0<180;i0++) s0+='FF '; bg.textContent=s0; }
+    if(!REDUCE){
+      dash.addEventListener('pointermove',function(e){
+        var r=dash.getBoundingClientRect(), dx=(e.clientX-r.left)/r.width-0.5, dy=(e.clientY-r.top)/r.height-0.5;
+        if(bg) bg.style.transform='translate('+(dx*20)+'px,'+(dy*20)+'px)';
+        if(glow){ glow.style.left=(e.clientX-r.left)+'px'; glow.style.top=(e.clientY-r.top)+'px'; glow.style.opacity='1'; }
+      });
+      dash.addEventListener('pointerleave',function(){ if(bg) bg.style.transform=''; if(glow) glow.style.opacity='0'; });
+    }
     // orange particle burst — manual physics (count 48, velocity 280, gravity 850)
     function burst(){
       if(REDUCE||!cvs) return;
@@ -500,13 +506,7 @@
       requestAnimationFrame(step);
     }
     /* roster (seed entries are cosmetic demo data until a backend feeds real fellows) */
-    var ROSTER=[
-      {n:'005',name:'Yara',title:'Artist',link:'https://www.linkedin.com/'},
-      {n:'004',name:'Diego',title:'Founder',link:'https://www.linkedin.com/'},
-      {n:'003',name:'Lena',title:'Investor',link:'https://www.linkedin.com/'},
-      {n:'002',name:'Kenji',title:'Architect',link:'https://www.linkedin.com/'},
-      {n:'001',name:'Amara',title:'Founder',link:'https://www.linkedin.com/'}
-    ];
+    var ROSTER=[];   /* no placeholders — the wall reflects only real fellows from the backend */
     var marquee=document.getElementById('ffMarquee'), mint=document.getElementById('ffMint');
     function esc(x){ return String(x).replace(/[<>&"]/g,''); }
     function normLink(l){ l=(l||'').trim(); if(!l) return ''; var m=l.match(/(https?:\/\/[^\s,]+|[a-z0-9.-]+\.[a-z]{2,}[^\s,]*)/i); if(!m) return ''; var u=m[1]; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
@@ -520,7 +520,7 @@
     function nextSeq(){ var mx=0; ROSTER.forEach(function(f){ var v=parseInt(f.n,10)||0; if(v>mx) mx=v; }); return ('000'+(mx+1)).slice(-3); }
     var API='/api/fellows', hovering=false;
     function mapFellow(f){ return {n:('000'+(parseInt(f.n,10)||0)).slice(-3), name:f.name||'Fellow', title:f.title||'', link:f.link||''}; }
-    function loadRoster(){ fetch(API,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){ if(d&&d.fellows&&d.fellows.length){ ROSTER=d.fellows.map(mapFellow); renderRoster(); } }).catch(function(){}); }
+    function loadRoster(){ fetch(API,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){ if(d&&d.fellows){ ROSTER=d.fellows.map(mapFellow); renderRoster(); } }).catch(function(){}); }
     if(slot){ slot.addEventListener('pointerenter',function(){hovering=true;}); slot.addEventListener('pointerleave',function(){hovering=false;}); }
     function flashMint(nStr,name){ if(!mint) return; mint.textContent='FF-#'+nStr+'-'+name+' — Space is alive, I love it.'; mint.classList.add('show'); clearTimeout(mint._t); mint._t=setTimeout(function(){ mint.classList.remove('show'); },4800); }
     renderRoster(); loadRoster();
@@ -538,6 +538,15 @@
         .then(function(d){ if(d&&d.fellows){ var realN=d.fellow&&d.fellow.n; ROSTER=d.fellows.map(function(f){ var o=mapFellow(f); if(realN&&f.n===realN) o.me=true; return o; }); renderRoster(); if(realN) flashMint(('000'+realN).slice(-3),name); } })
         .catch(function(){});
     };
+  })();
+
+  /* inverted circle (mix-blend difference) + section FF pattern — follow the cursor */
+  (function(){
+    var sec=document.getElementById('advocater'), inv=document.getElementById('ffInvert'), pat=document.getElementById('ffPat');
+    if(pat){ var s=''; for(var i=0;i<130;i++) s+='FF '; pat.textContent=s; }
+    if(!sec||!inv||REDUCE) return;
+    sec.addEventListener('pointermove',function(e){ var r=sec.getBoundingClientRect(); inv.style.left=(e.clientX-r.left)+'px'; inv.style.top=(e.clientY-r.top)+'px'; if(!inv.classList.contains('on')) inv.classList.add('on'); });
+    sec.addEventListener('pointerleave',function(){ inv.classList.remove('on'); });
   })();
 
   /* mobile hamburger menu */

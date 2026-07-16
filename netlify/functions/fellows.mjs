@@ -10,6 +10,21 @@ const reply = (obj, status = 200) => new Response(JSON.stringify(obj), { status,
 
 export default async (req) => {
   const store = getStore({ name: 'frisson-fellows', consistency: 'strong' });
+  const url = new URL(req.url);
+
+  // --- admin: clear all or remove one, protected by the FF_ADMIN_KEY env var ---
+  const reset = url.searchParams.get('reset');   // reset=all -> wipe the wall
+  const del = url.searchParams.get('del');        // del=1     -> remove FF-#1
+  if (reset || del) {
+    const ADMIN = process.env.FF_ADMIN_KEY;
+    const key = url.searchParams.get('key');
+    if (!ADMIN || key !== ADMIN) return reply({ error: 'unauthorized' }, 401);
+    let list = (await store.get('list', { type: 'json' })) || [];
+    if (reset === 'all') list = [];
+    else if (del) list = list.filter((f) => String(f.n) !== String(del));
+    await store.setJSON('list', list);
+    return reply({ ok: true, removed: reset === 'all' ? 'all' : del, fellows: list });
+  }
 
   if (req.method === 'GET') {
     const list = (await store.get('list', { type: 'json' })) || [];
