@@ -526,7 +526,7 @@
     renderRoster(); loadRoster();
     setInterval(function(){ if(!hovering && !document.hidden) loadRoster(); }, 20000);   /* realtime-ish */
     window.__ffReward=function(name,link,title){
-      name=(name||'Fellow').trim().split(/\s+/)[0].replace(/[<>&]/g,'')||'Fellow';
+      name=(name||'Fellow').trim().replace(/[<>&]/g,'').slice(0,60)||'Fellow';
       link=(link||'').trim(); title=(title||'').trim().slice(0,40).replace(/[<>&]/g,'');
       var provN=nextSeq();                       /* optimistic instant badge */
       ROSTER.unshift({n:provN,name:name,title:title,link:link,me:true});
