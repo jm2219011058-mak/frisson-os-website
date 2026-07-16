@@ -93,6 +93,7 @@
   .mf{font-family:var(--serif);padding:clamp(44px,8vh,100px) 0 clamp(70px,12vh,140px);counter-reset:mfch;}
   .mf-open{text-align:center;margin:0 0 clamp(26px,5vh,56px);}
   .mf-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.9vw,21px);line-height:1.2;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0;}
+  .mf-eyebrow.eyebrow-sm{font-size:clamp(11px,1.4vw,15px);}
   .cat-eyebrow{text-align:center;font-size:clamp(12px,1.3vw,15px);letter-spacing:.14em;margin:clamp(28px,5vh,52px) 0 .6em;}
 
   .mf-ch{margin:0 0 clamp(72px,13vh,160px);counter-increment:mfch;}
@@ -120,13 +121,13 @@
   .mf-catwrap{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,7vh,80px);
     background-size:cover;background-position:center;overflow:hidden;
     padding:clamp(80px,13vh,168px) clamp(24px,6vw,64px);}
-  .mf-catwrap::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.74);z-index:0;}
+  .mf-catwrap::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.73);z-index:0;}
   .mf-catwrap .mf-cat{position:relative;z-index:1;margin-top:0;}
   .mf-cat{max-width:min(1120px,calc(100% - 48px));margin:clamp(34px,6vh,60px) auto 0;
     display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,34px);text-align:left;}
   .mf-cat .item{border-top:2px solid var(--accent);padding-top:16px;}
-  .mf-cat .mf-p{font-size:clamp(13.5px,1vw,15px);line-height:1.95;color:var(--ink-soft);margin:0;text-align:left;}
-  .mf-cat .pl{font-weight:600;color:var(--ink);letter-spacing:.03em;}
+  .mf-cat .mf-p{font-size:clamp(13.5px,1vw,15px);line-height:1.95;color:#000;font-weight:700;margin:0;text-align:left;}
+  .mf-cat .pl{font-weight:800;color:#000;letter-spacing:.03em;}
   @media (max-width:820px){ .mf-cat{grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,26px);} }
   @media (max-width:460px){ .mf-cat{grid-template-columns:1fr;} }
 
@@ -222,7 +223,7 @@
   <section class="mf">
 
     <div class="mf-open reveal">
-      <p class="mf-eyebrow">{{2.7}}</p>
+      <p class="mf-eyebrow eyebrow-sm">{{2.7}}</p>
     </div>
 
     <!-- 一 · 收藏整个地球的梦境 -->
@@ -245,7 +246,7 @@
         <p class="mf-p">{{2.13}}</p>
       </div>
 
-      <div class="mf-catwrap reveal" style="background-image:url('assets/city/manifesto-bg.jpg');">
+      <div class="mf-catwrap reveal" style="background-image:url('assets/city/ChatGPT Image 2026年7月16日 21_47_57.png');">
         <div class="mf-cat">
           <div class="item"><p class="mf-p">{{2.14a}}</p></div>
           <div class="item"><p class="mf-p">{{2.14b}}</p></div>
@@ -253,24 +254,6 @@
           <div class="item"><p class="mf-p">{{2.14d}}</p></div>
         </div>
       </div>
-    </div>
-
-    <!-- 二 · 超越画布 -->
-    <div class="mf-ch">
-      <div class="reveal">
-        <div class="mf-rule"></div>
-        <h2 class="mf-title">{{2.16}}</h2>
-      </div>
-      <p class="mf-lead reveal">{{2.17}}</p>
-
-      <figure class="mf-fig wide ar169 reveal">
-        <img src="assets/city/beyond-canvas.jpg?v=2" alt="Beyond the canvas" loading="lazy">
-      </figure>
-
-      <div class="mf-col reveal">
-        <p class="mf-p">{{2.18}}</p>
-      </div>
-
     </div>
 
     <!-- 三 · 不是关于"超越人类"的狂想 -->

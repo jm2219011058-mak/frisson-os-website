@@ -44,7 +44,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 2.4 EN | Space sensing your body, / Space healing your body, / Soulful living, | 感知你身体的空间，/ 疗愈你身体的空间，/ 有灵魂的栖居， |
 | 2.5 EN | "Out of avidity to see the Immortals, to touch that more-than-human City, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either." | "出于渴望一睹不朽者、触碰那座超越人类之城,我几乎难以成眠。仿佛穴居人窥破了我的心意,他们也彻夜未眠。" |
 | 2.6 EN | — The Aleph | ——《阿莱夫》 |
-| 2.7 EN | More than Human City Manifesto | 超越人类之城宣言 |
+| 2.7 EN | More than Human City Manifesto | FRISSON的哲学 |
 | 2.8 ZH | Collecting the Dreams of the Whole Earth | 收藏整个地球的梦境 |
 | 2.9 ZH | No city was ever made great by amassing the most stone. A city becomes great only when beauty — after five hundred years of wandering — chooses it, and there begins again, for the most creative souls among us. | 伟大城市，从来不是因为聚集了最多的建筑，而是因为美在走了五百年之后，选择了这里——为那些最具创造力的人，重新开始。 |
 | 2.10 ZH | We believe that beauty, in itself, has the power to migrate. | 我们相信'美' 本身具有迁徙的能力。 |
