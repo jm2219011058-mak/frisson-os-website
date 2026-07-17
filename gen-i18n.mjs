@@ -111,7 +111,7 @@ const O = {
 <p class="st-p">我们也有同样的信念。</p>
 <h2 class="st-h">动态数据是下一个前沿领域</h2>
 <p class="st-p">Frisson 认为，世界上最有价值的数据不再是数字行为。</p>
-<p class="st-p">这是动态数据。</p>
+<p class="st-p">这是<b style="color:var(--accent);">动态数据</b>。</p>
 <p class="st-p">日常生活中微妙的节奏。</p>
 <p class="st-p">我们如何入睡。</p>
 <p class="st-p">我们如何恢复。</p>
