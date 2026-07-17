@@ -56,6 +56,12 @@
   /* hero banner */
   .hero{position:relative;width:100%;height:min(80vh,780px);overflow:hidden;background:#fff;}   /* pure-white placeholder while the hero image loads */
   .hero img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(66% 52% at 50% 50%,rgba(0,0,0,.34),rgba(0,0,0,0) 72%);}
+  .hero-cap{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;margin:0;
+    padding:0 clamp(24px,6vw,90px);color:#fff;font-family:var(--serif);font-weight:500;line-height:1.6;letter-spacing:.01em;
+    font-size:clamp(19px,2.5vw,33px);text-shadow:0 2px 30px rgba(0,0,0,.55),0 1px 6px rgba(0,0,0,.4);}
+  html[lang="zh"] .hero-cap{letter-spacing:.04em;}
+  @media(max-width:640px){ .hero-cap{font-size:clamp(17px,4.6vw,24px);line-height:1.55;} }
   .hero::after{content:"";position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .6s ease;
     background:linear-gradient(180deg,rgba(0,0,0,.30),rgba(0,0,0,0) 26%,rgba(0,0,0,0) 62%,rgba(0,0,0,.38));}
   .hero.ready::after{opacity:1;}   /* scrim fades in only once the image is loaded — keeps the placeholder white */
@@ -208,6 +214,7 @@
 
   <header class="hero">
     <img src="assets/city/hero-sail-bw.jpg" alt="A classic yacht under sail on the open sea" fetchpriority="high" decoding="async">
+    <p class="hero-cap">{{2.1}}</p>
   </header>
 
   <section class="editorial">
