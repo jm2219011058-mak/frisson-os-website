@@ -54,17 +54,17 @@ const O = {
 <p class="st-p">Together, they create what we call Human Environment Intelligence—a living understanding of the relationship between people and the spaces around them.</p>
 <h2 class="st-h">Privacy Is the Foundation</h2>
 <p class="st-p">This vision only works if trust comes first.</p>
-<p class="st-p">Frisson is not built on selling human data.</p>
+<p class="st-p"><b style="color:var(--ink);">Frisson is not built on selling human data.</b></p>
 <p class="st-p">Quite the opposite.</p>
 <p class="st-p">We believe the next generation of AI will derive its value not from owning personal information, but from processing intelligence locally, where privacy remains intact.</p>
 <p class="st-p">Our intelligence is designed to run at the edge.</p>
 <p class="st-p">Raw behavioral records remain personal.</p>
 <p class="st-p">Sensitive information stays inside the home.</p>
 <p class="st-p">Only privacy-preserving insights—when users explicitly choose to contribute—can improve the collective intelligence of the system.</p>
-<p class="st-p">The future economy of AI should reward participation without requiring surveillance.</p>
+<p class="st-p"><b style="color:var(--ink);">The future economy of AI should reward participation without requiring surveillance.</b></p>
 <h2 class="st-h">From Reactive AI to Living Intelligence</h2>
 <p class="st-p">Today's AI waits for instructions.</p>
-<p class="st-p">Tomorrow's AI will understand life before words are spoken.</p>
+<p class="st-p"><b style="color:var(--ink);">Tomorrow's AI will understand life before words are spoken.</b></p>
 <p class="st-p">Imagine a home quietly sensing changes in your physiology.</p>
 <p class="st-p">A subtle decline in energy.</p>
 <p class="st-p">The first signs of fatigue.</p>
@@ -86,7 +86,7 @@ const O = {
 <p class="st-p">It is where intelligence learns.</p>
 <p class="st-p">Our residences serve as living laboratories where architecture, design, biology, and computation evolve together.</p>
 <p class="st-p">They are the physical foundation of a global living network.</p>
-<p class="st-p">Each residence enriches the collective understanding of how space can support creativity, wellbeing, and human potential.</p>
+<p class="st-p"><b style="color:var(--ink);">Each residence enriches the collective understanding of how space can support creativity, wellbeing, and human potential.</b></p>
 <p class="st-p">Our ambition is not simply to create smarter homes.</p>
 <p class="st-p">It is to build the world's first residences that genuinely help people live better—not by demanding attention, but by quietly understanding those who inhabit them.</p>
 <blockquote class="st-quote">“I was deeply moved by the unique power inherent in the art that FRISSON brings together. Standing before such beauty, I found myself at a loss, unable to put what I felt into words.”</blockquote>`,
