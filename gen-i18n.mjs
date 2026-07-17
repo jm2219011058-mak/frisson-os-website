@@ -88,18 +88,7 @@ const O = {
 <p class="st-p">Each residence enriches the collective understanding of how space can support creativity, wellbeing, and human potential.</p>
 <p class="st-p">Our ambition is not simply to create smarter homes.</p>
 <p class="st-p">It is to build the world's first residences that genuinely help people live better—not by demanding attention, but by quietly understanding those who inhabit them.</p>
-<h2 class="st-h">More Than Human Cities</h2>
-<p class="st-p">We believe cities will eventually become living systems.</p>
-<p class="st-p">Buildings will no longer be passive structures.</p>
-<p class="st-p">They will perceive.</p>
-<p class="st-p">Respond.</p>
-<p class="st-p">Adapt.</p>
-<p class="st-p">Grow.</p>
-<p class="st-p">The relationship between humans and architecture will become continuous rather than static.</p>
-<h2 class="st-h st-h-final">Frisson exists to help shape that future.</h2>
-<p class="st-p">A future where intelligence disappears into the environment.</p>
-<p class="st-p">Where technology becomes invisible.</p>
-<p class="st-p">And where the places we inhabit begin, at last, to understand us.</p>`,
+<blockquote class="st-quote">“I was deeply moved by the unique power inherent in the art that FRISSON brings together. Standing before such beauty, I found myself at a loss, unable to put what I felt into words.”</blockquote>`,
 `<h2 class="st-h">人工智能的未来始于我们的生活方式</h2>
 <p class="st-p">过去十年，人工智能主要存在于屏幕之后。</p>
 <p class="st-p">我们提出问题，人工智能生成答案。</p>
@@ -158,18 +147,7 @@ const O = {
 <p class="st-p"><b style="color:var(--ink);">每处住宅都丰富了人们对空间如何支持创造力、幸福感和人类潜能的集体理解。</b></p>
 <p class="st-p">我们的目标不仅仅是创造更智能的家居环境。</p>
 <p class="st-p"><b style="color:var(--ink);">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅，以便快速建立<span style="font-size:1.18em;">Gobal New Living Network</span></b></p>
-<h2 class="st-h">超越人类的城市</h2>
-<p class="st-p">我们相信城市最终会变成有生命的系统。</p>
-<p class="st-p">建筑物将不再是被动结构。</p>
-<p class="st-p">他们会察觉的。</p>
-<p class="st-p">回应。</p>
-<p class="st-p">适应。</p>
-<p class="st-p">生长。</p>
-<p class="st-p">人与建筑的关系将不再是静态的，而是动态的。</p>
-<h2 class="st-h st-h-final">Frisson 的存在就是为了帮助塑造未来。</h2>
-<p class="st-p">一个智能融入环境的未来。</p>
-<p class="st-p">科技变得无形。</p>
-<p class="st-p">而我们居住的地方，最终也开始理解我们。</p>`
+<blockquote class="st-quote">“我受到了 FRISSON 融合的艺术天然具有的那种特殊力量的感染，尽管我在面对这种美时感到手足无措，我无法用语言表达出这种感觉……”</blockquote>`
   ],
   '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
