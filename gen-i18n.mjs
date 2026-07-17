@@ -34,15 +34,15 @@ const O = {
 <p class="st-note">(FRISSON is led by two elusive geniuses — we call them geeks — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
 <p class="st-p">For the past decade, AI has largely existed behind screens.</p>
 <p class="st-p">We asked questions. AI generated answers.</p>
-<p class="st-p">But intelligence is about to leave the screen and enter the spaces we inhabit.</p>
+<p class="st-p"><b style="color:var(--ink);">But intelligence is about to leave the screen and enter the spaces we inhabit.</b></p>
 <p class="st-p">The next generation of AI will not simply understand language. It will understand context, environment, and ultimately, life itself.</p>
 <p class="st-p">We believe the future of AI lies at the intersection of physical space, on-device intelligence, and privacy-first computing.</p>
 <p class="st-p">The breakthrough will not come from ever-larger foundation models alone. It will come from a new class of data—deeply contextual, continuously evolving, and rooted in the realities of everyday living.</p>
-<p class="st-p">Some industry leaders have begun to point in the same direction. Kevin Kelly has spoken about AI becoming increasingly spatial and emotionally aware. More recently, the founders of Petrarch argued that the next bottleneck is no longer the model itself, but access to high-quality, specialized data assets.</p>
+<p class="st-p">Some industry leaders have begun to point in the same direction. <b style="color:var(--ink);">Kevin Kelly has spoken about AI becoming increasingly spatial and emotionally aware. More recently, the founders of Petrarch argued that the next bottleneck is no longer the model itself, but access to high-quality, specialized data assets.</b></p>
 <p class="st-p">We share that conviction.</p>
 <h2 class="st-h">Living Data is the Next Frontier</h2>
 <p class="st-p">At Frisson, we believe the world's most valuable data is no longer digital behavior.</p>
-<p class="st-p">It is Living Data.</p>
+<p class="st-p">It is <b style="color:var(--accent);">Living Data</b>.</p>
 <p class="st-p">The subtle rhythms of everyday life.</p>
 <p class="st-p">How we sleep.</p>
 <p class="st-p">How we recover.</p>
@@ -50,7 +50,7 @@ const O = {
 <p class="st-p">How sound affects our focus.</p>
 <p class="st-p">How our homes quietly influence our wellbeing.</p>
 <p class="st-p">Living Data emerges where three dimensions meet:</p>
-<ul class="st-list"><li>Human behavioral data.</li><li>Spatial intelligence.</li><li>Biological feedback.</li></ul>
+<ul class="st-list"><li><b style="color:var(--ink);">Human behavioral data.</b></li><li><b style="color:var(--ink);">Spatial intelligence.</b></li><li><b style="color:var(--ink);">Biological feedback.</b></li></ul>
 <p class="st-p">Together, they create what we call Human Environment Intelligence—a living understanding of the relationship between people and the spaces around them.</p>
 <h2 class="st-h">Privacy Is the Foundation</h2>
 <p class="st-p">This vision only works if trust comes first.</p>
