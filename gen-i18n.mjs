@@ -133,7 +133,7 @@ const O = {
 <p class="st-p"><b style="color:var(--ink);">人工智能的未来经济应该奖励参与，而不是进行监控。</b></p>
 <h2 class="st-h">从反应式人工智能到生命智能</h2>
 <p class="st-p">如今的人工智能需要等待指令。</p>
-<p class="st-p">未来的人工智能将在言语出现之前就理解生命。</p>
+<p class="st-p"><b style="color:var(--ink);">未来的人工智能将在言语出现之前就理解生命。</b></p>
 <p class="st-p">想象一下，你的家能够悄无声息地感知你生理上的变化。</p>
 <p class="st-p">精力略有下降。</p>
 <p class="st-p">疲劳的最初迹象。</p>
