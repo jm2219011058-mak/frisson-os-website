@@ -31,7 +31,7 @@ const O = {
   'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>
-<p class="st-note">(FRISSON is led by two elusive geniuses — we call them geeks — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
+<p class="st-note">(FRISSON is led by two elusive oddballs — we call them alternative talents — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
 <p class="st-p">For the past decade, AI has largely existed behind screens.</p>
 <p class="st-p">We asked questions. AI generated answers.</p>
 <p class="st-p"><b style="color:var(--ink);">But intelligence is about to leave the screen and enter the spaces we inhabit.</b></p>
