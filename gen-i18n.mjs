@@ -27,7 +27,7 @@ const O = {
   'nav.sona': ['Sona AI', 'Sona AI'],
   'nav.advocater': ['Frisson Fellow', 'Frisson Fellow'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
-  '2.1': [`A world of your own to forge.<br>What will it become?`, `如果你能创造一个新世界，它会是什么样子？`],
+  '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
   '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹不朽者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
   '2.13.eyebrow': [`FRISSON — Four Aesthetic Bloodlines`, `FRISSON — 四重美学基因`],
