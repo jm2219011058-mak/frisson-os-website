@@ -108,13 +108,6 @@
       b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
       m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
     })();
-    (function(){ var el=document.getElementById('stDate'); if(!el) return;
-      var lang=(document.documentElement.lang||'en').indexOf('zh')===0?'zh-CN':'en-US';
-      var now=new Date();
-      var d=now.toLocaleDateString(lang,{year:'numeric',month:'long',day:'numeric'});
-      var t=now.toLocaleTimeString(lang,{hour:'2-digit',minute:'2-digit'});
-      el.textContent=d+' · '+t;
-    })();
   </script>
 </body>
 </html>
