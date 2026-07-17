@@ -119,7 +119,7 @@ const O = {
 <p class="st-p">声音如何影响我们的注意力。</p>
 <p class="st-p">我们的家如何悄然影响我们的幸福感。</p>
 <p class="st-p">当三个维度交汇时，就会产生动态数据：</p>
-<ul class="st-list"><li>人类行为数据。</li><li>空间智能。</li><li>生物反馈。</li></ul>
+<ul class="st-list"><li><b style="color:var(--ink);">人类行为数据。</b></li><li><b style="color:var(--ink);">空间智能。</b></li><li><b style="color:var(--ink);">生物反馈。</b></li></ul>
 <p class="st-p">它们共同创造了我们所说的“人与环境智能”——一种对人与周围空间之间关系的鲜活理解。</p>
 <h2 class="st-h">隐私是基石</h2>
 <p class="st-p">只有建立在信任基础上，这一愿景才能实现。</p>
