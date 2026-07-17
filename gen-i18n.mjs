@@ -31,6 +31,7 @@ const O = {
   'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>
+<p class="st-note">(FRISSON is led by two elusive geniuses — we call them geeks — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
 <p class="st-p">For the past decade, AI has largely existed behind screens.</p>
 <p class="st-p">We asked questions. AI generated answers.</p>
 <p class="st-p">But intelligence is about to leave the screen and enter the spaces we inhabit.</p>
@@ -90,6 +91,7 @@ const O = {
 <p class="st-p">It is to build the world's first residences that genuinely help people live better—not by demanding attention, but by quietly understanding those who inhabit them.</p>
 <blockquote class="st-quote">“I was deeply moved by the unique power inherent in the art that FRISSON brings together. Standing before such beauty, I found myself at a loss, unable to put what I felt into words.”</blockquote>`,
 `<h2 class="st-h">人工智能的未来始于我们的生活方式</h2>
+<p class="st-note">（FRISSON 由两位不可捉摸的天才（我们称之为怪咖）领衔，未来成员将涵盖天文学家、生物学家、工程师、玄学家、诗人、化学家、代数学家、伦理学家、画家、几何学家……我们尚未正式注册公司也没有团队，但我们渴望找到与我们同频的人。<br>精通这些学科的人并不少，但能发明的人不多；而能将发明纳入严格系统规划的，则更是凤毛麟角。）</p>
 <p class="st-p">过去十年，人工智能主要存在于屏幕之后。</p>
 <p class="st-p">我们提出问题，人工智能生成答案。</p>
 <p class="st-p"><b style="color:var(--ink);">但智能即将走出屏幕，进入我们所居住的空间。</b></p>
