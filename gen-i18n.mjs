@@ -157,7 +157,7 @@ const O = {
 <p class="st-p">它们是全球生命网络的物质基础。</p>
 <p class="st-p"><b style="color:var(--ink);">每处住宅都丰富了人们对空间如何支持创造力、幸福感和人类潜能的集体理解。</b></p>
 <p class="st-p">我们的目标不仅仅是创造更智能的家居环境。</p>
-<p class="st-p">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅——不是通过吸引眼球，而是通过默默地了解居住其中的人们。</p>
+<p class="st-p"><b style="color:var(--ink);">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅，以便快速建立<span style="font-size:1.18em;">Gobal New Living Network</span></b></p>
 <h2 class="st-h">超越人类的城市</h2>
 <p class="st-p">我们相信城市最终会变成有生命的系统。</p>
 <p class="st-p">建筑物将不再是被动结构。</p>
