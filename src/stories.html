@@ -62,9 +62,12 @@
   .story-top{max-width:760px;margin:0 auto;padding:clamp(70px,11vh,120px) clamp(24px,6vw,40px) 0;}
   .story-top .st-eyebrow{margin-bottom:clamp(16px,2.6vh,26px);}
   .story-nav{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,30px);}
-  .st-arrow{width:clamp(42px,5vw,52px);height:clamp(42px,5vw,52px);border-radius:50%;border:1px solid var(--hair);background:#fff;color:var(--ink);font-family:var(--serif);font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,opacity .2s;}
-  .st-arrow:hover:not(:disabled){background:var(--accent);color:#fff;border-color:var(--accent);}
-  .st-arrow:disabled{opacity:.28;cursor:default;}
+  .st-arrow{width:clamp(42px,5vw,52px);height:clamp(42px,5vw,52px);border-radius:50%;border:0;background:var(--accent);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:0;
+    box-shadow:0 6px 18px rgba(224,123,60,.42);transition:box-shadow .25s,transform .2s,opacity .2s;}
+  .st-arrow svg{width:42%;height:42%;display:block;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+  .st-arrow:hover:not(:disabled){box-shadow:0 8px 22px rgba(224,123,60,.55),0 0 16px rgba(224,123,60,.5);transform:translateY(-1px);}
+  .st-arrow:disabled{opacity:.32;cursor:default;box-shadow:none;}
   .st-count{font-family:var(--sans);font-size:12px;letter-spacing:.16em;color:var(--ink-soft);min-width:52px;text-align:center;}
 
   /* diary-specific */
@@ -120,9 +123,9 @@
     <div class="story-top">
       <p class="st-eyebrow">{{nav.stories}}</p>
       <div class="story-nav">
-        <button class="st-arrow" id="stPrev" type="button" aria-label="Older entry">&lsaquo;</button>
+        <button class="st-arrow" id="stPrev" type="button" aria-label="Older entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
         <span class="st-count" id="stCount"></span>
-        <button class="st-arrow" id="stNext" type="button" aria-label="Newer entry">&rsaquo;</button>
+        <button class="st-arrow" id="stNext" type="button" aria-label="Newer entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
     <article class="story" data-entry="0">{{stories.diary}}</article>
