@@ -50,7 +50,24 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* story article */
-  .story{max-width:760px;margin:0 auto;padding:clamp(84px,14vh,150px) clamp(24px,6vw,40px) clamp(80px,13vh,150px);}
+  .story{max-width:760px;margin:0 auto;padding:clamp(22px,3.5vh,40px) clamp(24px,6vw,40px) clamp(80px,13vh,150px);}
+  .story[hidden]{display:none;}
+
+  /* article switcher (top arrows) */
+  .story-top{max-width:760px;margin:0 auto;padding:clamp(70px,11vh,120px) clamp(24px,6vw,40px) 0;}
+  .story-top .st-eyebrow{margin-bottom:clamp(16px,2.6vh,26px);}
+  .story-nav{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,30px);}
+  .st-arrow{width:clamp(42px,5vw,52px);height:clamp(42px,5vw,52px);border-radius:50%;border:1px solid var(--hair);background:#fff;color:var(--ink);font-family:var(--serif);font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,opacity .2s;}
+  .st-arrow:hover:not(:disabled){background:var(--accent);color:#fff;border-color:var(--accent);}
+  .st-arrow:disabled{opacity:.28;cursor:default;}
+  .st-count{font-family:var(--sans);font-size:12px;letter-spacing:.16em;color:var(--ink-soft);min-width:52px;text-align:center;}
+
+  /* diary-specific */
+  .st-h-title{font-size:clamp(30px,5vw,54px);text-transform:uppercase;letter-spacing:.015em;}
+  .st-sub{font-family:var(--serif);font-style:italic;color:#6b6b6b;font-size:clamp(14px,1.35vw,17px);line-height:1.5;margin:clamp(8px,1.3vh,12px) 0 0;}
+  .st-fig{margin:clamp(30px,5.5vh,54px) auto;max-width:clamp(240px,44vw,360px);}
+  .st-fig img{width:100%;height:auto;display:block;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.12);}
+  .st-branson{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--ink);text-align:center;font-size:clamp(17px,1.9vw,22px);line-height:1.65;margin:0 0 1.3em;}
   .st-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(11px,1.2vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(30px,5vh,50px);text-align:center;}
   .st-h{font-family:var(--serif);font-weight:700;font-size:clamp(27px,4vw,44px);line-height:1.22;letter-spacing:.01em;color:var(--ink);
     margin:clamp(56px,10vh,104px) 0 clamp(18px,3vh,30px);}
