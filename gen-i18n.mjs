@@ -153,6 +153,30 @@ const O = {
 <p class="st-p"><b style="color:var(--ink);">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅，以便快速建立<span style="font-size:1.18em;">Gobal New Living Network</span></b></p>
 <blockquote class="st-quote">“我受到了 FRISSON 融合的艺术天然具有的那种特殊力量的感染，尽管我在面对这种美时感到手足无措，我无法用语言表达出这种感觉……”</blockquote>`
   ],
+  'stories.diary': [
+`<h2 class="st-h st-h-title">Competing Against Luck</h2>
+<p class="st-sub">A Soulful Conversation with Dav (Son of HOPO’s Founder)</p>
+<p class="st-date">Published · July 19, 2026</p>
+<p class="st-p">In the early days of building something, the things that matter most rarely begin with a grand plan. They begin with a real meeting, an honest conversation, a shared recognition of where the future might lead.</p>
+<p class="st-p">Yesterday, Jacques and I had a meaningful conversation with Dav, exploring how HOPO (The Leading Window & Door Hardware Control System) could help bring to life FRISSON’s first intelligent-space MVP — to the extent their capabilities allow — so that we can move quickly through the lens of “Jobs to Be Done,” turning an innovative and forward-looking business model into real, tested practice.</p>
+<p class="st-p">A special thanks to Dav for sharing HOPO’s latest technical innovations, along with the customized solutions they’ve developed for the high-end architectural spaces of the future. HOPO has spent years deeply immersed in intelligent window and door control, and in their work I see a role being quietly redefined. A window or a door was once simply the boundary of a building. In the future, it may become a point of dialogue between people and space — connecting the natural world with the interior, the environment with life, and the building with its intelligent systems.</p>
+<p class="st-p">This is a journey with no ready-made template. I deeply value the partners who choose to pay attention to FRISSON this early on. To meet someone like Dav at such a starting point — someone willing to share, willing to understand a vision that is still very young — is a rare and precious thing.</p>
+<p class="st-p">Richard Branson (Founder, Virgin Group) once said something I love:</p>
+<figure class="st-fig"><img src="assets/city/diary-showing-up.webp" alt="Never underestimate the power of showing up" loading="lazy"></figure>
+<p class="st-branson">“Never underestimate the power of showing up.”</p>
+<p class="st-p">Thank you, Dav. Thank you, HOPO. And thank you to everyone who, at the very beginning of FRISSON, is willing to show up, to talk, and to walk alongside us.</p>`,
+`<h2 class="st-h st-h-title">Competing Against Luck</h2>
+<p class="st-sub">Soulful Talking with Dav (Founder’s son of HOPO)</p>
+<p class="st-date">发布于 · 2026年7月19日</p>
+<p class="st-p">创业早期，许多重要的事情并非始于一份宏大的计划，而是始于一次真实的见面、一次深入的交流、一次对未来方向的彼此认可。</p>
+<p class="st-p">昨天，我和 Jacques 与 Dav 进行了一次有意义的对话，谈到了 HOPO (The Leading Window & Door Hardware Control System) 如何帮助（能力所及）Frisson 打造第一个智能空间 MVP，以便快速通过“需要完成的任务”实践突破创新和前瞻性的商业模式。</p>
+<p class="st-p">特别感谢 Dav 分享了 HOPO 最新的技术创新，以及他们为未来高端建筑空间所打造的定制化解决方案。HOPO 深耕门窗智能控制多年，在他们的探索里，我看到一个正在被重新定义的角色：门窗，曾经只是建筑的边界。而在未来，它可能成为人与空间对话的入口——连接自然与室内，连接环境与生命，连接建筑与它的智能系统。</p>
+<p class="st-p">这段旅程没有现成的模板。我很珍惜早期愿意关注 Frisson 发展的伙伴，在这样的起点上遇见像 Dav 这样的伙伴——愿意分享、愿意理解一个还很年轻的愿景，是一件珍贵的事。</p>
+<p class="st-p">Richard Branson（Founder, Virgin Group）说过一句我很喜欢的话：</p>
+<figure class="st-fig"><img src="assets/city/diary-showing-up.webp" alt="Never underestimate the power of showing up" loading="lazy"></figure>
+<p class="st-branson">“Never underestimate the power of showing up.”<br>永远不要低估“出现”的力量。</p>
+<p class="st-p">感谢 Dav，感谢 HOPO。也感谢每一位在 FRISSON 起点愿意出现、交流、并同行的伙伴。</p>`
+  ],
   '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
   '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹不朽者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
