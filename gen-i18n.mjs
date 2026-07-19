@@ -181,7 +181,7 @@ const O = {
   ],
   '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
-  '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹不朽者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
+  '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹永生者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
   '2.13.eyebrow': [`FRISSON — Four Aesthetic Bloodlines`, `FRISSON — 四重美学基因`],
   '2.13': [`Into our work we graft <b>the aesthetic bloodline of Europe's four great Renaissance houses</b> — Medici, Cavendish, Palmela, Montmorency — and render it in a contemporary language of building.`, `我们植入欧洲文艺复兴四大家族：<b>美第奇（Medici）、卡文迪什（Cavendish）、帕尔梅拉（Palmela）、蒙莫朗西（Montmorency）</b>的美学基因,并把它们转译为当代的建造语言。`],
   '2.14a': [`<b class="pl">Florence</b> is Brunelleschi's proportion, the blue-grey pietra serena, Raphael's frescoes, and Buontalenti's man-made grotto in the Boboli Gardens.`, `<b class="pl">佛罗伦萨</b>,是布鲁内莱斯基（Brunelleschi）的比例、塞雷纳石（pietra serena）的青灰石、拉斐尔（Raphael）的湿壁画,和波波利（Boboli）花园里布翁塔伦蒂（Buontalenti）的人工岩窟（grotto）。`],
