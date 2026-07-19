@@ -23,7 +23,7 @@ for (const line of md.split('\n')) {
 
 // ---- overrides (HTML-bearing / dedicated keys) ----
 const O = {
-  'nav.cities': ['More-Than-Human Cities', 'More-Than-Human Cities'],
+  'nav.cities': ['Soulful Living Network', 'Soulful Living Network'],
   'nav.sona': ['Sona AI', 'Sona AI'],
   'nav.advocater': ['Frisson Fellow', 'Frisson Fellow'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
