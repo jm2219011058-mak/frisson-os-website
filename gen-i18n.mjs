@@ -165,8 +165,8 @@ const O = {
 <figure class="st-fig"><img src="assets/city/diary-showing-up.webp" alt="Never underestimate the power of showing up" loading="lazy"></figure>
 <p class="st-branson">“Never underestimate the power of showing up.”</p>
 <p class="st-p">Thank you, Dav. Thank you, HOPO. And thank you to everyone who, at the very beginning of FRISSON, is willing to show up, to talk, and to walk alongside us.</p>`,
-`<h2 class="st-h st-h-title">Competing Against Luck</h2>
-<p class="st-sub">Soulful Talking with Dav (Founder’s son of HOPO)</p>
+`<h2 class="st-h st-h-title">与运气竞争</h2>
+<p class="st-sub">与 Dav（HOPO 创始人之子）的一次对话</p>
 <p class="st-date">发布于 · 2026年7月19日</p>
 <p class="st-p">创业早期，许多重要的事情并非始于一份宏大的计划，而是始于一次真实的见面、一次深入的交流、一次对未来方向的彼此认可。</p>
 <p class="st-p">昨天，我和 Jacques 与 Dav 进行了一次有意义的对话，谈到了 HOPO (The Leading Window & Door Hardware Control System) 如何帮助（能力所及）Frisson 打造第一个智能空间 MVP，以便快速通过“需要完成的任务”实践突破创新和前瞻性的商业模式。</p>

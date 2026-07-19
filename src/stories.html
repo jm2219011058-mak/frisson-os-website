@@ -52,6 +52,11 @@
   /* story article */
   .story{max-width:760px;margin:0 auto;padding:clamp(22px,3.5vh,40px) clamp(24px,6vw,40px) clamp(80px,13vh,150px);}
   .story[hidden]{display:none;}
+  .story.st-in-r{animation:stInR .5s cubic-bezier(.22,1,.36,1);}
+  .story.st-in-l{animation:stInL .5s cubic-bezier(.22,1,.36,1);}
+  @keyframes stInR{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:none;}}
+  @keyframes stInL{from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:none;}}
+  @media(prefers-reduced-motion:reduce){.story.st-in-r,.story.st-in-l{animation:none;}}
 
   /* article switcher (top arrows) */
   .story-top{max-width:760px;margin:0 auto;padding:clamp(70px,11vh,120px) clamp(24px,6vw,40px) 0;}
@@ -138,15 +143,19 @@
       if(entries.length<2){ if(nav) nav.style.display='none'; return; }
       var prev=document.getElementById('stPrev'), next=document.getElementById('stNext'), count=document.getElementById('stCount');
       var cur=0;
-      function show(i){
+      function show(i,dir){
         cur=Math.max(0,Math.min(entries.length-1,i));
         entries.forEach(function(e,idx){ e.hidden = idx!==cur; });
+        var el=entries[cur];
+        el.classList.remove('st-in-l','st-in-r');
+        if(dir){ void el.offsetWidth;                 /* reflow → restart animation */
+          el.classList.add(dir>0 ? 'st-in-r' : 'st-in-l'); }
         next.disabled = (cur===0);                    /* newest → nothing newer */
         prev.disabled = (cur===entries.length-1);     /* oldest → nothing older */
         count.textContent=(cur+1)+' / '+entries.length;
       }
-      prev.addEventListener('click',function(){ show(cur+1); window.scrollTo({top:0,behavior:'smooth'}); });
-      next.addEventListener('click',function(){ show(cur-1); window.scrollTo({top:0,behavior:'smooth'}); });
+      prev.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); show(cur+1,-1); });  /* older ← slide from left */
+      next.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); show(cur-1, 1); });  /* newer → slide from right */
       show(0);
     })();
   </script>
