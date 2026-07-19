@@ -112,10 +112,16 @@
   </nav>
 
   <main>
-    <article class="story">
+    <div class="story-top">
       <p class="st-eyebrow">{{nav.stories}}</p>
-      {{stories.body}}
-    </article>
+      <div class="story-nav">
+        <button class="st-arrow" id="stPrev" type="button" aria-label="Older entry">&lsaquo;</button>
+        <span class="st-count" id="stCount"></span>
+        <button class="st-arrow" id="stNext" type="button" aria-label="Newer entry">&rsaquo;</button>
+      </div>
+    </div>
+    <article class="story" data-entry="0">{{stories.diary}}</article>
+    <article class="story" data-entry="1" hidden>{{stories.body}}</article>
   </main>
 
   <footer class="st-foot">© FRISSON</footer>
