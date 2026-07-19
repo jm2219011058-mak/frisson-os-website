@@ -28,8 +28,8 @@ const O = {
   'nav.advocater': ['Frisson Fellow', 'Frisson Fellow'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Stories', 'Stories'],
-  'cities.hero1': [`A New Renaissance of Living Network.`, `一场关于未来生活的新文艺复兴。`],
-  'cities.hero2': [`Begin with a “More than Residence” — <b style="font-size:1.14em;">the Zahir Sky Atelier</b>, a living space designed to respond to human emotions.`, `从建造一座能<b style="font-size:1.14em;">回应人类情感</b>的「不止于此」开始——<b style="font-size:1.1em;">扎希尔观星塔</b>。`],
+  'cities.hero1': [`A New Renaissance of Future Living.`, `一场关于未来生活的新文艺复兴。`],
+  'cities.hero2': [`It begins with building a “More than Residence” that <b style="font-size:1.14em;">responds to human emotions</b>—<b style="font-size:1.1em;">Zahir Sky Atelier</b>.`, `从建造一座能<b style="font-size:1.14em;">回应人类情感</b>的「不止于此」开始——<b style="font-size:1.1em;">扎希尔观星塔</b>。`],
   'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>
