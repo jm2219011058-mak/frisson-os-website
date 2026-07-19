@@ -168,14 +168,14 @@ const O = {
 `<h2 class="st-h st-h-title">与运气竞争</h2>
 <p class="st-sub">与 Dav（HOPO 创始人之子）的一次对话</p>
 <p class="st-date">发布于 · 2026年7月19日</p>
-<p class="st-p">创业早期，许多重要的事情并非始于一份宏大的计划，而是始于一次真实的见面、一次深入的交流、一次对未来方向的彼此认可。</p>
-<p class="st-p">昨天，我和 Jacques 与 Dav 进行了一次有意义的对话，谈到了 HOPO (The Leading Window & Door Hardware Control System) 如何帮助（能力所及）Frisson 打造第一个智能空间 MVP，以便快速通过“需要完成的任务”实践突破创新和前瞻性的商业模式。</p>
-<p class="st-p">特别感谢 Dav 分享了 HOPO 最新的技术创新，以及他们为未来高端建筑空间所打造的定制化解决方案。HOPO 深耕门窗智能控制多年，在他们的探索里，我看到一个正在被重新定义的角色：门窗，曾经只是建筑的边界。而在未来，它可能成为人与空间对话的入口——连接自然与室内，连接环境与生命，连接建筑与它的智能系统。</p>
-<p class="st-p">这段旅程没有现成的模板。我很珍惜早期愿意关注 Frisson 发展的伙伴，在这样的起点上遇见像 Dav 这样的伙伴——愿意分享、愿意理解一个还很年轻的愿景，是一件珍贵的事。</p>
-<p class="st-p">Richard Branson（Founder, Virgin Group）说过一句我很喜欢的话：</p>
+<p class="st-p">在事业的初期，真正重要的事往往并非始于宏伟的计划，而是始于一次真诚的会面、一次坦诚的对话，以及对未来发展方向的共同认知。</p>
+<p class="st-p">昨天，我和 Jacques 与 Dav 进行了一次有意义的谈话，探讨了 HOPO（领先的门窗五金控制系统）如何能够帮助 FRISSON 实现其首个智能空间 MVP——在他们的能力范围内——以便我们能够快速地从“待完成的任务”的角度出发，将创新且具有前瞻性的商业模式转化为真实、经过检验的实践。</p>
+<p class="st-p">特别感谢 Dav 分享 HOPO 的最新技术创新，以及他们为未来高端建筑空间开发的定制解决方案。HOPO 多年来一直致力于智能门窗控制领域，他们的工作让我看到了门窗角色正在悄然被重新定义。门窗曾经仅仅是建筑物的边界。未来，它们或许会成为人与空间对话的桥梁——连接自然世界与室内空间、环境与生活、建筑与智能系统。</p>
+<p class="st-p">这是一段没有现成模式的旅程。我非常珍惜那些早期愿意关注 FRISSON 发展的伙伴。在这样一个起步阶段就能遇到像 Dav 这样的人——愿意分享，愿意理解一个尚处于萌芽阶段的愿景——弥足珍贵。</p>
+<p class="st-p">理查德·布兰森（维珍集团创始人）曾经说过一句我很喜欢的话：</p>
 <figure class="st-fig"><img src="assets/city/diary-showing-up.webp" alt="Never underestimate the power of showing up" loading="lazy"></figure>
-<p class="st-branson">“Never underestimate the power of showing up.”<br>永远不要低估“出现”的力量。</p>
-<p class="st-p">感谢 Dav，感谢 HOPO。也感谢每一位在 FRISSON 起点愿意出现、交流、并同行的伙伴。</p>`
+<p class="st-branson">“永远不要低估‘出现 Showing Up’的力量。”</p>
+<p class="st-p">谢谢你，Dav。谢谢你，HOPO。还要感谢所有在 FRISSON 早期就愿意分享、交流、与我们并肩前行的人们。</p>`
   ],
   '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
