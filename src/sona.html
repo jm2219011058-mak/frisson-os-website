@@ -913,14 +913,14 @@
     if(!window.gsap||!window.ScrollTrigger||!window.SplitText||!window.CustomEase) return;
     gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
     CustomEase.create("silk","M0,0 C0.16,1 0.3,1 1,1");
-    function scrubWords(wordsSel, sectionSel, endStr){
+    function scrubWords(wordsSel, sectionSel, endStr, endTrig){
       var els=document.querySelectorAll(wordsSel);
       if(!els.length) return;
       var sp=SplitText.create(wordsSel,{type:"words"});
       gsap.set(sp.words,{opacity:0.14});
       gsap.to(sp.words,{opacity:1, ease:"none", stagger:0.5, scrollTrigger:{
         trigger:els[0], start:"top 82%",
-        endTrigger:els[els.length-1], end:endStr||"center 62%", scrub:0.6   /* fully lit by the time the block reaches screen centre */
+        endTrigger:endTrig||els[els.length-1], end:endStr||"center 62%", scrub:0.6   /* fully lit by the time the block reaches screen centre */
       }});
     }
     function lineReveal(sel, sectionSel){   /* ③ heading rises out of a line mask; reverses when you scroll back up */
@@ -933,7 +933,7 @@
     function run(){
       gsap.set("#s-city .citywrap, #s7 .reveal, #s2 .gal-head", {opacity:1, y:0});   /* let the custom reveals take over */
       lineReveal("#s2 .gal-head .t2", "#s2");
-      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city");
+      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city", "center center", "#s-city");   /* fully lit by the time the whole block is centred */
       scrubWords("#s7 .s7-p", "#s7");   /* finish revealing by the time the text block reaches screen centre */
       ScrollTrigger.refresh();
     }

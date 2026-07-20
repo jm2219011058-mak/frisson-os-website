@@ -29,7 +29,7 @@ const O = {
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Stories', 'Stories'],
   'cities.hero1': [`Future Living<br>Renaissance`, `未来生活文艺复兴`],
-  'cities.hero2': [`Residence responds to human emotions`, `回应人类情感的居所`],
+  'cities.hero2': [`Feel forward. `, `回应人类情感的居所`],
   'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>

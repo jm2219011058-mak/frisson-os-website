@@ -60,14 +60,14 @@
   .hero-cap2{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;
     padding:clamp(28px,6vw,84px);color:#fff;}
   .hc-big{font-family:var(--serif);font-weight:600;font-size:clamp(46px,min(9vw,15vh),118px);line-height:.98;letter-spacing:-.005em;margin:0;max-width:min(90vw,1000px);text-shadow:0 2px 40px rgba(0,0,0,.42);}
-  .hc-small{font-family:var(--serif);font-style:normal;font-weight:400;font-size:clamp(19px,2.3vw,29px);line-height:1.5;letter-spacing:.005em;margin:clamp(16px,2.3vh,26px) 0 0;max-width:34ch;text-shadow:0 1px 16px rgba(0,0,0,.08);}
+  .hc-small{font-family:var(--serif);font-style:normal;font-weight:400;font-size:clamp(19px,2.3vw,29px);line-height:1.5;letter-spacing:.005em;margin:clamp(16px,2.3vh,26px) 0 0 6px;max-width:34ch;text-shadow:0 1px 16px rgba(0,0,0,.08);}
   html[lang="zh"] .hc-small{font-size:clamp(15.5px,1.8vw,21px);}
   @media(max-width:640px){
     .hc-big{font-size:clamp(40px,13vw,66px);line-height:.98;}
     .hc-small{font-size:clamp(15px,4.4vw,19px);line-height:1.5;margin-top:clamp(14px,2.4vh,22px);max-width:32ch;}
     html[lang="zh"] .hc-small{font-size:clamp(15px,4vw,18px);max-width:24ch;}
   }
-  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 55%,rgba(0,0,0,.16)),linear-gradient(90deg,rgba(0,0,0,.16),rgba(0,0,0,0) 48%);}   /* darker bottom-left to anchor the caption */
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0) 55%,rgba(0,0,0,.16)),linear-gradient(90deg,rgba(0,0,0,.16),rgba(0,0,0,0) 48%);}   /* darker bottom-left to anchor the caption */
   .hero-top{position:absolute;z-index:2;top:clamp(28px,6vh,66px);left:clamp(26px,6vw,80px);color:#fff;font-family:var(--serif);
     font-weight:600;font-size:clamp(21px,3.6vw,44px);line-height:1.35;white-space:nowrap;}
   .hero-title{position:absolute;z-index:2;left:clamp(26px,6vw,80px);bottom:clamp(28px,7vh,74px);margin:0;color:#fff;font-family:var(--serif);
