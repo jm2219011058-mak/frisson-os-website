@@ -77,7 +77,7 @@
   .reveal.in{opacity:1;transform:none;}
   /* defer rendering of below-fold TEXT/IMAGE sections until scrolled near — skips off-screen layout/paint.
      Applied only to non-interactive sections (galleries #s2/#s4 and canvas #s-longevity measure geometry, so excluded). */
-  #s-city,#s3,#s6,#s7{content-visibility:auto;contain-intrinsic-size:auto 100svh;}
+  #s3,#s6{content-visibility:auto;contain-intrinsic-size:auto 100svh;}   /* #s-city & #s7 excluded: their scrub-word reveals need correct ScrollTrigger geometry */
 
   /* 1 · hero — full-screen Ponch video with a soft blurred fill (no hard black edges) */
   #hero{padding:0;overflow:hidden;background:#000;}
@@ -933,7 +933,7 @@
     function run(){
       gsap.set("#s-city .citywrap, #s7 .reveal, #s2 .gal-head", {opacity:1, y:0});   /* let the custom reveals take over */
       lineReveal("#s2 .gal-head .t2", "#s2");
-      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city", "center center", "#s-city");   /* fully lit by the time the whole block is centred */
+      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city", "center 72%", "#s-city");   /* fully lit slightly BEFORE the block reaches dead centre */
       scrubWords("#s7 .s7-p", "#s7");   /* finish revealing by the time the text block reaches screen centre */
       ScrollTrigger.refresh();
     }
