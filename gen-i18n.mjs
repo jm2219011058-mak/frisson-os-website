@@ -229,7 +229,7 @@ const O = {
   'zahir.p2': [`Borges wrote of it as an ancient coin: whoever gazes upon it desires nothing else. The king, fearing that for its sake the world would forget the entire universe, had it sunk to the bottom of the sea.`, `博尔赫斯曾将其描述为一枚古老的硬币:任何凝视它的人都不会再有其他渴望。国王唯恐因这枚硬币的缘故,世界会忘却整个宇宙的存在,于是将其沉入了海底。`],
   'zahir.p3': [`The coin is a mirror of free will and human nature.`, `这枚硬币是自由意志和人类本性的反映。`],
   'zahir.p4': [`This is why Frisson exists.`, `正因如此,Frisson 才得以存在。`],
-  'zahir.p5': [`We reject one-dimensional living. From our very first building, we are forging a new global living network for the Digital Aristocracy — with Space, Art, and Soul as our mediums.`, `我们拒绝单一维度的生活方式。从我们最初的项目开始,我们便致力于为数字贵族打造一个全新的全球居住网络——以空间、艺术和灵魂作为我们的媒介。`],
+  'zahir.p5': [`We reject one-dimensional living. From our very first building, we are forging a new global living network — with Space, Art, and Soul as our mediums.`, `我们拒绝单一维度的生活方式。从我们最初的项目开始,我们便致力于打造一个全新的全球居住网络——以空间、艺术和灵魂作为我们的媒介。`],
   'zahir.p6': [`Every residence becomes a Zahir that belongs to you — once it enters your life, it remains unforgettable.`, `每一处居所都将成为属于你的扎希尔——一旦它融入你的生活,便注定难以忘怀。`],
   'zahir.climax': [`And all of this is for one purpose: to rebuild the Respect for Human.`, `这一切都是为了一个目的:重新树立对人性的尊重。`],
   'zahir.features': [`120 residences in Phase One · Spatial design that engages human emotion · The world's fastest elevator · Sona Bio OS · Soulful Living`, `一期项目共 120 套住宅 · 触动人心的空间设计 · 全球最快电梯 · Sona Bio OS · 充满情感的生活`],
