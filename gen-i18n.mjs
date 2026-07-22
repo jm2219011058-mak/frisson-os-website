@@ -29,7 +29,7 @@ const O = {
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Stories', 'Stories'],
   'cities.hero1': [`Future Living<br>Renaissance`, `一场关于未来生活的新文艺复兴`],
-  'cities.hero2': [`Feel forward. `, `<b>回应人类情感的居所</b>`],
+  'cities.hero2': [`Feel Forward.`, `<b>回应人类情感的居所</b>`],
   'cat.arch': [`The Renaissance Archive`, `文艺复兴档案`],
   'cat.a.name': [`Florence`, `佛罗伦萨`],
   'cat.a.sub': [`The Birthplace of Human Potential`, `人类潜能的发源地`],
