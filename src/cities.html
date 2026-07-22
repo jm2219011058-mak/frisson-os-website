@@ -125,24 +125,6 @@
   html[lang="en"] .mf-p{text-align:left;line-height:1.7;letter-spacing:0;text-wrap:pretty;}
   html[lang="en"] .mf-lead{text-wrap:balance;}
 
-  /* "Collecting the Dreams" — title + lead overlaid on the right white space of the illustration */
-  .collect-wrap{position:relative;}
-  .collect-wrap .mf-fig{margin-top:clamp(6px,1.2vh,16px);}
-  .collect-overlay{position:absolute;top:5%;right:max(4vw,24px);width:min(38vw,450px);z-index:3;}
-  .collect-overlay .mf-title{max-width:none;margin:0 0 clamp(16px,2.4vh,26px);text-align:left;}
-  .collect-overlay .mf-lead{max-width:none;margin:0;text-align:left;}
-  @media(max-width:1024px){
-    .collect-overlay{position:static;width:auto;right:auto;top:auto;}
-    .collect-overlay .mf-title{margin:0 auto clamp(20px,3.8vh,40px);text-align:center;}
-    .collect-overlay .mf-lead{margin:0 auto;text-align:center;}
-    .collect-wrap .mf-fig{margin-top:clamp(24px,4vh,40px);}
-  }
-
-  /* "Not a Fantasy of More-Than-Human" — nudged down, tighter leading */
-  .mf-ch-mth{padding-top:clamp(24px,5vh,64px);}
-  .mf-ch-mth .mf-lead{line-height:1.42;}
-  .mf-ch-mth .mf-p{line-height:1.5;}
-
   .mf-note{max-width:min(40em,calc(100% - 44px));margin:clamp(34px,6vh,56px) auto 0;
     padding:clamp(22px,3.4vw,36px) clamp(22px,3.6vw,40px);border-left:2px solid var(--accent);
     background:rgba(224,123,60,.05);border-radius:0 12px 12px 0;}
