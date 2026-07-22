@@ -159,6 +159,10 @@
   .mf-fig.narrow{max-width:min(560px,calc(100% - 48px));border-radius:16px;}
   .mf-fig.wide{max-width:min(1080px,calc(100% - 48px));margin-inline:auto;border-radius:16px;}
   .mf-fig.ar32{aspect-ratio:3/2;} .mf-fig.ar45{aspect-ratio:4/5;} .mf-fig.ar169{aspect-ratio:16/9;} .mf-fig.arflat{aspect-ratio:2.5/1;}
+  /* natural, full-bleed, uncropped figure (whole illustration edge-to-edge) */
+  .mf-fig.arnat{aspect-ratio:auto;width:100vw;margin-left:calc(50% - 50vw);background:transparent;overflow:visible;}
+  .mf-fig.arnat picture{display:block;width:100%;}
+  .mf-fig.arnat img{height:auto;object-fit:contain;}
   .mf-fig img{display:block;width:100%;height:100%;object-fit:cover;}
   .mf-fig.empty{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f1ebe3,#e4dacd);}
   .mf-fig.empty::after{content:attr(data-ph);position:absolute;color:var(--ink-soft);opacity:.7;
@@ -252,8 +256,11 @@
       </div>
       <p class="mf-lead reveal">{{2.9}}</p>
 
-      <figure class="mf-fig full ar32 reveal" data-ph="CHAPTER I · 美的迁徙 — Florence / a vista or Renaissance masterwork">
-        <img src="assets/city/migration.jpg" alt="美的迁徙" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
+      <figure class="mf-fig full arnat reveal">
+        <picture>
+          <source type="image/webp" srcset="assets/city/about-migration-820.webp 820w, assets/city/about-migration.webp 1512w" sizes="100vw">
+          <img src="assets/city/about-migration.jpg" alt="美的迁徙" width="1512" height="1040" loading="lazy" decoding="async">
+        </picture>
       </figure>
 
       <div class="mf-col reveal">
