@@ -13,11 +13,12 @@
 <link rel="preload" as="image" href="assets/advocater/trial-bg.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.16);
     --serif:"Playfair Display","Noto Serif SC",serif;
-    --sans:-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    --sans:"Space Grotesk",-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -71,7 +72,7 @@
   .t-label{font-family:var(--sans);font-size:clamp(11px,1.4vw,14px);letter-spacing:.3em;text-transform:uppercase;color:#fff;margin:0 0 clamp(18px,3vh,26px);}
   .t-label b{color:var(--accent);font-weight:700;margin-right:10px;}
   .t-title{font-weight:600;font-size:clamp(30px,5vw,58px);line-height:1.14;letter-spacing:.01em;margin:0;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.5);}
-  .t-copy{font-size:clamp(16px,1.9vw,20px);line-height:1.72;color:rgba(255,255,255,.92);margin:clamp(18px,3vh,28px) 0 0;max-width:48ch;text-shadow:0 1px 16px rgba(0,0,0,.55);}
+  .t-copy{font-family:var(--sans);font-size:clamp(16px,1.9vw,20px);line-height:1.72;color:rgba(255,255,255,.92);margin:clamp(18px,3vh,28px) 0 0;max-width:48ch;text-shadow:0 1px 16px rgba(0,0,0,.55);}
   .t-copy a{color:#fff;text-underline-offset:3px;}
 
   /* trial split: text/form | conch */
@@ -109,7 +110,7 @@
   .ff-slot{position:relative;z-index:2;flex:0 1 auto;max-height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;
     -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);}
   .ff-marquee{display:flex;flex-direction:column;gap:clamp(6px,1.1vh,12px);padding:10px 0;}
-  a.ff-line{display:block;text-decoration:none;text-align:center;font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.05vw,28px);line-height:1.32;color:rgba(245,240,232,.9);letter-spacing:.005em;transition:color .2s ease;padding:2px 6px;}
+  a.ff-line{display:block;text-decoration:none;text-align:center;font-family:var(--sans);font-weight:400;font-size:clamp(19px,2.05vw,28px);line-height:1.32;color:rgba(245,240,232,.9);letter-spacing:.005em;transition:color .2s ease;padding:2px 6px;}
   a.ff-line:nth-child(even){font-style:italic;}
   a.ff-line:hover{color:var(--accent);}
   a.ff-line.nolink{pointer-events:none;}
@@ -171,7 +172,7 @@
   .f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   @media (max-width:520px){ .f-row{grid-template-columns:1fr;} }
   .nf-form .lbl{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.82);margin:0 0 7px;}
-  .nf-form input,.nf-form select,.nf-form textarea{width:100%;font-family:var(--serif);font-size:16px;padding:14px 16px;border:1px solid rgba(255,255,255,.34);
+  .nf-form input,.nf-form select,.nf-form textarea{width:100%;font-family:var(--sans);font-size:16px;padding:14px 16px;border:1px solid rgba(255,255,255,.34);
     background:rgba(255,255,255,.10);color:#fff;border-radius:12px;outline:none;transition:border-color .25s,background .25s;}
   .nf-form input:focus,.nf-form select:focus,.nf-form textarea:focus{border-color:var(--accent);background:rgba(255,255,255,.16);}
   .nf-form ::placeholder{color:rgba(255,255,255,.6);}
@@ -207,7 +208,7 @@
   /* essay */
   .beat{padding:clamp(22px,3.6vh,44px) clamp(24px,6vw,60px);}
   .rd{max-width:640px;margin:0 auto;}
-  .rd-p{font-size:clamp(16px,1.7vw,19px);line-height:1.85;color:var(--ink-soft);margin:0 0 1.4em;text-align:left;}
+  .rd-p{font-family:var(--sans);font-size:clamp(16px,1.7vw,19px);line-height:1.85;color:var(--ink-soft);margin:0 0 1.4em;text-align:left;}
   .rd-p:last-child{margin-bottom:0;}
   .rd-h{font-weight:600;font-size:clamp(28px,4.6vw,52px);line-height:1.18;color:var(--ink);text-align:center;max-width:18ch;margin:0 auto;}
   .rd-quote{font-weight:500;font-style:italic;font-size:clamp(21px,3.2vw,34px);line-height:1.42;color:var(--ink);text-align:center;max-width:22ch;margin:0 auto;}
