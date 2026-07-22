@@ -56,8 +56,10 @@
 
   /* hero banner */
   .hero{position:relative;width:100%;aspect-ratio:1513/1039;height:auto;overflow:hidden;background:#fff;}   /* full painting, uncropped (matches image proportions) */
+  .hero picture{display:block;width:100%;height:100%;}
   .hero img{width:100%;height:100%;object-fit:cover;display:block;}
-  @media(max-width:680px){ .hero{aspect-ratio:auto;min-height:78vh;} .hero img{height:100%;} }
+  /* mobile: give the hero a definite height so the image fills it (cover) instead of collapsing */
+  @media(max-width:680px){ .hero{aspect-ratio:auto;height:min(76vh,620px);} .hero img{object-position:center 40%;} }
   .hero-cap2{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;
     padding:clamp(28px,6vw,84px);color:#fff;}
   .hc-big{font-family:var(--serif);font-weight:600;font-size:clamp(46px,min(9vw,15vh),118px);line-height:.98;letter-spacing:-.005em;margin:0;max-width:min(90vw,1000px);text-shadow:0 2px 40px rgba(0,0,0,.42);}
@@ -216,7 +218,10 @@
   </nav>
 
   <header class="hero">
-    <img src="assets/city/hero-city.jpg" alt="A new renaissance of living" fetchpriority="high" decoding="async">
+    <picture>
+      <source type="image/webp" srcset="assets/city/hero-city-820.webp 820w, assets/city/hero-city.webp 1513w" sizes="100vw">
+      <img src="assets/city/hero-city.jpg" alt="A new renaissance of living" width="1513" height="1039" fetchpriority="high" decoding="async">
+    </picture>
     <div class="hero-cap2">
       <p class="hc-big">{{cities.hero1}}</p>
       <p class="hc-small">{{cities.hero2}}</p>
