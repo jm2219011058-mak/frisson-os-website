@@ -15,7 +15,7 @@
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.12);
-    --serif:"Playfair Display","Noto Serif SC",serif;
+    --serif:"Space Grotesk",-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
     --sans:"Space Grotesk",-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box;}
@@ -26,7 +26,7 @@
   /* nav — white, sticky */
   .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
     padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid var(--hair);}
-  .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
   .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}

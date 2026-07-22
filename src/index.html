@@ -30,6 +30,7 @@
 <link rel="prefetch" href="assets/city/hero-960.webp" as="image">   <!-- and its hero LCP image -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <script src="assets/vendor/gsap/gsap.min.js"></script>
 <script src="assets/vendor/gsap/CustomEase.min.js"></script>
@@ -43,7 +44,7 @@
     --accent:#e07b3c;       /* logo orange */
     --hair:rgba(43,29,18,.16);
     --serif:"Playfair Display","Noto Serif SC",serif;
-    --sans:-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    --sans:"Space Grotesk",-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -80,7 +81,7 @@
     font-family:var(--serif);
     transform:translateY(-100%);opacity:0;pointer-events:none;transition:transform .5s ease,opacity .5s ease;}
   .nav.show{transform:none;opacity:1;pointer-events:auto;}
-  .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
   .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
@@ -134,7 +135,7 @@
   .stack p.world{max-width:18ch;}
   .resume-cta{ /* flows below the cities CTA — consistent spacing on every screen */
     margin-top:clamp(14px,2.4vh,22px);
-    font-family:var(--serif);font-size:clamp(12px,1.4vw,14px);letter-spacing:.02em;
+    font-family:var(--sans);font-size:clamp(12px,1.4vw,14px);letter-spacing:.02em;
     color:var(--ink);opacity:.38;text-decoration:none;
     display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
     transition:opacity .3s;
