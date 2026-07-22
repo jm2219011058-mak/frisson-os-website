@@ -26,7 +26,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 1.1 EN/ZH | Rebuild the Respect for Human | 重建对人的尊重 |
 | 1.2 EN | FRISSON is a Soulful Living Network by |  |
 | 1.3 EN | Architects · Sound Designer · Interior Designer · Biologist · HCI Researcher · Material Artist · Writers · Athletes · Frontier AI Researcher · Astronauts · Medical Engineers · Marine Scientist |  |
-| 1.4 EN | We are redesigning the best hospitality in the world |  |
+| 1.4 EN | We are Redesigning the Best Living in the World |  |
 | 1.5 EN | In the Moon / Mars / And Beyond... |  |
 | 1.6 EN | (nav) More-Than-Human Cities / Sona AI / Advocater Program |  |
 
