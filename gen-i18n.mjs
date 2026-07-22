@@ -30,6 +30,15 @@ const O = {
   'nav.stories': ['Stories', 'Stories'],
   'cities.hero1': [`Future Living<br>Renaissance`, `一场关于未来生活的新文艺复兴`],
   'cities.hero2': [`Feel forward. `, `<b>回应人类情感的居所</b>`],
+  'cat.arch': [`The Renaissance Archive`, `文艺复兴档案`],
+  'cat.a.name': [`Florence`, `佛罗伦萨`],
+  'cat.a.sub': [`The Birthplace of Human Potential`, `人类潜能的发源地`],
+  'cat.b.name': [`Chatsworth`, `查茨沃斯`],
+  'cat.b.sub': [`Nature, Art, and Curiosity in Dialogue`, `自然、艺术与好奇心的对话`],
+  'cat.c.name': [`Palmela Palace`, `帕尔梅拉宫`],
+  'cat.c.sub': [`A Conversation Between Civilizations`, `文明之间的对话`],
+  'cat.d.name': [`Écouen`, `埃库昂`],
+  'cat.d.sub': [`Craftsmanship as Collective Intelligence`, `作为集体智慧的工艺`],
   'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>
