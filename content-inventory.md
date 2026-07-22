@@ -59,10 +59,10 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 2.16 ZH | Beyond the Canvas | 超越画布 |
 | 2.17 ZH | To let art leave the canvas — to enter architecture, enter light, enter the body, and at last enter the human heart. | 让艺术离开画布,进入建筑、进入光、进入身体,最终进入人的内心。 |
 | 2.18 ZH | We infuse the inspiration of contemporary artists into architectural detail, and carry it into the world through computational design and 3D-printed walls. In the work of Jesperish, for instance, a sensing of ancient-and-future worlds explores identity, emotion and systems of symbols; through symbolism he awakens intuition, asking how architecture, culture and environment shape the inner world of human beings. | 我们将当代艺术家的设计灵感注入建筑细节并由计算设计和3D墙体打印带给世界，如Jesperish的作品通过对远古未来世界的感知，探索身份、情感和符号系统，他运用象征手法，唤起人们的直觉，探索建筑、文化和环境如何塑造人类的内心世界。 |
-| 2.19 ZH | Not a Fantasy of "More-Than-Human" | 不是关于"超越人类"的狂想 |
-| 2.20 ZH | The true "more" is not to surpass the human, but to understand the human more deeply — and to honour them. | 真正的"更多" 是更深地懂得人、尊重人。 |
-| 2.21 ZH | Because it is a precise orchestration made for human perception. | 因为它是一种为人的感知而作的精密编排。 |
-| 2.22 ZH | What we rise above is a poverty of imagination — the kind that treats people as data, and homes as machines. The twentieth-century city fell for a single metaphor: the house as "a machine for living in." And so we were handed spaces efficient but cold, where a person became just another variable in a process. What we set out to build is different — a home that knows how to feel. | 我们所超越的,是那种把人当作数据、把居所当作机器的贫乏想象。二十世纪的城市曾迷信一个隐喻:住宅是"居住的机器"。于是我们得到了高效却冷漠的空间,人成了流程里的一个变量。而我们要造的,是一个懂得感知的居所。 |
+| 2.19 ZH | Not a Fantasy of 'More-Than-Human' | 并非一场'超越人类'的幻想 |
+| 2.20 ZH | The true meaning of "more-than-human" is not to transcend humanity, but to understand it more deeply — and to create environments that honour the complexity, dignity, and potential of human life. | "超越人类"的真正含义,不在于超越人性,而在于更深地理解人性——并创造出尊重人类生活之复杂、尊严与潜能的环境。 |
+| 2.21 ZH | It is not about replacing human experience with technology. | 它不是要用技术取代人的体验。 |
+| 2.22 ZH | It is about creating a more sensitive relationship between people and the spaces they inhabit. | 而是要在人与其所栖居的空间之间,建立一种更敏感的关系。 |
 | 2.23 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
 | 2.24 ZH | Enter Sona › | 进入 Sona › |
 
