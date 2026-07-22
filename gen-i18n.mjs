@@ -28,7 +28,7 @@ const O = {
   'nav.advocater': ['Frisson Fellow', 'Frisson Fellow'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Stories', 'Stories'],
-  'cities.hero1': [`Future Living<br>Renaissance`, `一场关于未来生活的新文艺复兴`],
+  'cities.hero1': [`Rebuild Respect<br>for the Human`, `重建对人的尊重`],
   'cities.hero2': [`Feel Forward.`, `<b>回应人类情感的居所</b>`],
   'cat.arch': [`The Renaissance Archive`, `文艺复兴档案`],
   'cat.a.name': [`Florence`, `佛罗伦萨`],
