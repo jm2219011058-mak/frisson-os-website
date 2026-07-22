@@ -126,17 +126,15 @@
     background:rgba(224,123,60,.05);border-radius:0 12px 12px 0;}
   .mf-note .mf-p{font-size:clamp(14px,1.45vw,16.5px);line-height:2;color:var(--ink-soft);margin:0;}
 
-  /* horizontal catalogue — 四大家族名录 */
+  /* horizontal catalogue — the Renaissance Archive (plain: no background image, no orange bars) */
   .mf-catwrap{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,7vh,80px);
-    background-size:cover;background-position:center;overflow:hidden;
-    padding:clamp(80px,13vh,168px) clamp(24px,6vw,64px);}
-  .mf-catwrap::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.67);z-index:0;}
-  .mf-catwrap .mf-cat{position:relative;z-index:1;margin-top:0;}
-  .mf-cat{max-width:min(1120px,calc(100% - 48px));margin:clamp(34px,6vh,60px) auto 0;
-    display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,34px);text-align:left;}
-  .mf-cat .item{border-top:2px solid var(--accent);padding-top:16px;}
-  .mf-cat .mf-p{font-size:clamp(13.5px,1vw,15px);line-height:1.95;color:#000;font-weight:700;margin:0;text-align:left;}
-  .mf-cat .pl{font-weight:800;color:#000;letter-spacing:.03em;}
+    padding:clamp(48px,8vh,96px) clamp(24px,6vw,64px);}
+  .cat-arch{text-align:center;font-family:var(--serif);font-size:clamp(12px,1.2vw,14px);letter-spacing:.14em;color:#8c837a;margin:0;}
+  .mf-cat{max-width:min(1120px,calc(100% - 48px));margin:clamp(30px,5vh,52px) auto 0;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,2.6vw,40px);text-align:left;}
+  .mf-cat .item{padding-top:0;}
+  .mf-cat .cat-name{font-family:var(--serif);font-weight:700;color:#000;font-size:clamp(22px,2.3vw,31px);line-height:1.12;letter-spacing:.005em;margin:0 0 .4em;}
+  .mf-cat .cat-sub{font-family:var(--serif);font-weight:400;color:#000;font-size:clamp(13px,1vw,15.5px);line-height:1.5;margin:0;}
   @media (max-width:820px){ .mf-cat{grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,26px);} }
   @media (max-width:460px){ .mf-cat{grid-template-columns:1fr;} }
 
@@ -258,12 +256,13 @@
         <p class="mf-p">{{2.13}}</p>
       </div>
 
-      <div class="mf-catwrap reveal" style="background-image:url('assets/city/catalogue-bg-18.webp');">
+      <div class="mf-catwrap reveal">
+        <p class="cat-arch">{{cat.arch}}</p>
         <div class="mf-cat">
-          <div class="item"><p class="mf-p">{{2.14a}}</p></div>
-          <div class="item"><p class="mf-p">{{2.14b}}</p></div>
-          <div class="item"><p class="mf-p">{{2.14c}}</p></div>
-          <div class="item"><p class="mf-p">{{2.14d}}</p></div>
+          <div class="item"><h3 class="cat-name">{{cat.a.name}}</h3><p class="cat-sub">{{cat.a.sub}}</p></div>
+          <div class="item"><h3 class="cat-name">{{cat.b.name}}</h3><p class="cat-sub">{{cat.b.sub}}</p></div>
+          <div class="item"><h3 class="cat-name">{{cat.c.name}}</h3><p class="cat-sub">{{cat.c.sub}}</p></div>
+          <div class="item"><h3 class="cat-name">{{cat.d.name}}</h3><p class="cat-sub">{{cat.d.sub}}</p></div>
         </div>
       </div>
     </div>
