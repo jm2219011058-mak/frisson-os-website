@@ -26,9 +26,9 @@
   body{overflow-x:clip;}
   body{background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
-  /* nav — white, sticky */
-  .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid var(--hair);}
+  /* nav — transparent, overlaid on the hero image (image bleeds up behind it) */
+  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:transparent;border-bottom:none;}
   .nav .brand{font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
