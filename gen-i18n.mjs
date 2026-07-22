@@ -190,7 +190,7 @@ const O = {
   ],
   '2.1': [`What world would you dream into being?<br>And what self would you find within it?`, `如果你能创造一个新世界，它会是什么样子？<br>如果你能在那个世界开启一段新生活，你会成为怎样的人？`],
   '2.4': [`Space healing your body,`, `疗愈你身体的空间，`],
-  '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep. And as though the Troglodytes could divine my goal, they did not sleep either."`, `“出于渴望一睹永生者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。仿佛穴居人窥破了我的心意，他们也彻夜未眠。”`],
+  '2.5': [`"Out of avidity to see the Immortals, to touch that <b>more-than-human City</b>, I could hardly sleep."`, `“出于渴望一睹永生者、触碰那座<b>超越人类之城</b>，我几乎难以成眠。”`],
   '2.9': [`No city was ever made great by the number of buildings it contained.<br>Cities become alive when they become vessels for human dreams — <i><b>places where beauty, knowledge, and creativity converge, and where new possibilities for humanity begin again.</b></i>`, `伟大的城市,从不因它拥有的建筑数量而伟大。<br>当城市成为承载人类梦想的容器,它才真正拥有生命——<i><b>在这里,美、知识与创造力彼此交汇,人类新的可能也由此重新开始。</b></i>`],
   '2.11': [`It passes through geographies, through wars, through the turning of civilizations, and alights only in the rarest of moments. <i><b>To the places where it once paused, we pay homage.</b></i>`, `它穿越地理、战争与文明的更替,只在极少数的时刻停留。<i><b>向它曾经停留过的地方,我们致以敬意。</b></i>`],
   '2.13.eyebrow': [`FRISSON — Four Aesthetic Bloodlines`, `FRISSON — 四重美学基因`],
