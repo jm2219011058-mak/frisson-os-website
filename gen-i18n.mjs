@@ -175,7 +175,8 @@ const O = {
 <p class="st-p">That conviction is embedded in our founding DNA.</p>
 <p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
 <p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—all of it orchestrated, all of it invisible.</p>
-<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`,
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>
+<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>`,
 `<h2 class="st-h st-h-title">The Power of Limits</h2>
 <p class="st-sub">— What matters most is invisible</p>
 <p class="st-date">Published · July 23, 2026</p>
@@ -186,7 +187,8 @@ const O = {
 <p class="st-p">That conviction is embedded in our founding DNA.</p>
 <p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
 <p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—all of it orchestrated, all of it invisible.</p>
-<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`],
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>
+<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>`],
   'stories.diary': [
 `<h2 class="st-h st-h-title">Competing Against Luck</h2>
 <p class="st-sub">A Soulful Conversation with Dav (Son of HOPO’s Founder)</p>
