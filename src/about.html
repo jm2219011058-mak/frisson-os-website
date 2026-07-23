@@ -52,6 +52,13 @@
   .ab-p:last-child{margin-bottom:0;}
   .ab-p b{font-weight:700;color:#fff;}
   .ab-p.strong{font-weight:700;color:#fff;}
+  .ra{margin:clamp(34px,6vh,68px) 0 clamp(20px,3vh,34px);}
+  .ra-arch{text-align:center;font-family:var(--sans);font-size:clamp(12px,1.2vw,14px);letter-spacing:.14em;color:rgba(255,255,255,.5);margin:0 0 clamp(26px,4.5vh,44px);}
+  .ra-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.4vw,30px);text-align:center;}
+  .ra-name{font-family:var(--serif);font-weight:700;font-size:clamp(18px,1.9vw,26px);line-height:1.14;letter-spacing:.005em;color:#fff;margin:0 0 .45em;}
+  .ra-sub{font-family:var(--sans);font-weight:400;font-size:clamp(12.5px,1vw,14.5px);line-height:1.5;color:rgba(255,255,255,.72);margin:0;}
+  @media(max-width:820px){.ra-grid{grid-template-columns:repeat(2,1fr);gap:26px 20px;}}
+  @media(max-width:460px){.ra-grid{grid-template-columns:1fr;}}
   .ab-p.mid{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.6vw,30px);line-height:1.3;color:#fff;margin-top:.6em;}
   html[lang="zh"] .ab-p,html[lang="zh"] .ab-h,html[lang="zh"] .ab-p.mid{font-family:var(--serif);}
 
@@ -88,6 +95,16 @@
       <p class="ab-p">It travels across geographies, wars, and the turning of civilizations, pausing only in the rarest of moments. We pay homage to the places where it once chose to dwell.</p>
       <p class="ab-p">Florence was once its waystation — as were the fields of Devonshire, the seventh hill of Lisbon, and the forests of Île-de-France.</p>
       <p class="ab-p">We graft into our work the aesthetic legacies of four great European Renaissance houses — Medici, Cavendish, Palmela, and Montmorency — translating their spirit into a contemporary language of creation.</p>
+
+      <div class="ra">
+        <p class="ra-arch">The Renaissance Archive</p>
+        <div class="ra-grid">
+          <div><h3 class="ra-name">Florence</h3><p class="ra-sub">The Birthplace of Human Potential</p></div>
+          <div><h3 class="ra-name">Chatsworth</h3><p class="ra-sub">Nature, Art, and Curiosity in Dialogue</p></div>
+          <div><h3 class="ra-name">Palmela Palace</h3><p class="ra-sub">A Conversation Between Civilizations</p></div>
+          <div><h3 class="ra-name">Écouen</h3><p class="ra-sub">Craftsmanship as Collective Intelligence</p></div>
+        </div>
+      </div>
       <p class="ab-p">Florence is Brunelleschi’s proportions, the blue-grey stone of pietra serena, Raphael’s frescoes, and Buontalenti’s artificial grotto in the Boboli Gardens. Chatsworth is a book that has never been fully written — from William Kent’s designs and Paxton’s glasshouse to Lucian Freud’s portraits.</p>
       <p class="ab-p">The Palmela Palace holds Anatole Calmels’ herms, the illusions of trompe-l'œil, the Eastern motifs of chinoiserie, and the delicate warmth of blue-and-white azulejos.</p>
       <p class="ab-p">Montmorency’s Écouen is a fortress that breathes, gathering the finest hands of an entire age — Jean Bullant’s loggia, Jean Goujon’s sculptures, Léonard Limosin’s Limoges enamel, and the ceramics of Bernard Palissy and Masséot Abaquesne.</p>
