@@ -171,7 +171,7 @@ const O = {
 <figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
 <p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
 <p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
-<p class="st-p">Why invest such effort in something no one will see?</p>
+<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
 <p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—this world is real, alive, and worth inhabiting.</p>
 <p class="st-p">That conviction is embedded in our founding DNA.</p>
 <p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
@@ -183,7 +183,7 @@ const O = {
 <figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
 <p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
 <p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
-<p class="st-p">Why invest such effort in something no one will see?</p>
+<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
 <p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—this world is real, alive, and worth inhabiting.</p>
 <p class="st-p">That conviction is embedded in our founding DNA.</p>
 <p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
