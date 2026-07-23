@@ -164,6 +164,31 @@ const O = {
 <p class="st-p"><b style="color:var(--ink);">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅，以便快速建立<span style="font-size:1.18em;">Gobal New Living Network</span></b></p>
 <blockquote class="st-quote">“我受到了 FRISSON 融合的艺术天然具有的那种特殊力量的感染，尽管我在面对这种美时感到手足无措，我无法用语言表达出这种感觉……”</blockquote>`
   ],
+  'stories.diary2': [
+`<h2 class="st-h st-h-title">The Power of Limits</h2>
+<p class="st-sub">— What matters most is invisible</p>
+<p class="st-date">Published · July 23, 2026</p>
+<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
+<p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
+<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
+<p class="st-p">Why invest such effort in something no one will see?</p>
+<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—this world is real, alive, and worth inhabiting.</p>
+<p class="st-p">That conviction is embedded in our founding DNA.</p>
+<p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
+<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—all of it orchestrated, all of it invisible.</p>
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`,
+`<h2 class="st-h st-h-title">The Power of Limits</h2>
+<p class="st-sub">— What matters most is invisible</p>
+<p class="st-date">Published · July 23, 2026</p>
+<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
+<p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
+<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
+<p class="st-p">Why invest such effort in something no one will see?</p>
+<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—this world is real, alive, and worth inhabiting.</p>
+<p class="st-p">That conviction is embedded in our founding DNA.</p>
+<p class="st-p">When we began to define the constraints of Sona, we had to confront what it truly means to restore respect for human beings—starting with the most elemental things: air, light, scent. The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
+<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—all of it orchestrated, all of it invisible.</p>
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`],
   'stories.diary': [
 `<h2 class="st-h st-h-title">Competing Against Luck</h2>
 <p class="st-sub">A Soulful Conversation with Dav (Son of HOPO’s Founder)</p>
