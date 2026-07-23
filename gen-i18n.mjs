@@ -168,7 +168,6 @@ const O = {
 `<h2 class="st-h st-h-title">The Power of Limits</h2>
 <p class="st-sub">— What matters most is invisible</p>
 <p class="st-date">Published · July 23, 2026</p>
-<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
 <p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
 <p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—roughly 0.08 seconds. The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
 <p class="st-p">Why invest such effort in something no one will see?</p>
@@ -180,7 +179,6 @@ const O = {
 `<h2 class="st-h st-h-title">The Power of Limits</h2>
 <p class="st-sub">— What matters most is invisible</p>
 <p class="st-date">Published · July 23, 2026</p>
-<figure class="st-fig"><img src="assets/city/diary-limits.webp" alt="Limit’s Edge" loading="lazy"></figure>
 <p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
 <p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—roughly 0.08 seconds. The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
 <p class="st-p">Why invest such effort in something no one will see?</p>
