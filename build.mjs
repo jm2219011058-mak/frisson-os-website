@@ -111,10 +111,16 @@ const variants = {};   // 'city/hero.jpg' -> [480, 960, 1440]
   console.log('Responsive WebP variants generated for', Object.keys(variants).length, 'images');
 }
 
+// Shared typography — single source of truth (assets/type.css). Inlined into each
+// page at build time so the output is self-contained (works on the server, on
+// file://, and in single-file previews). Edit assets/type.css to restyle the site.
+const TYPE_CSS = fs.existsSync('assets/type.css') ? fs.readFileSync('assets/type.css', 'utf8') : '';
+
 for (const page of pages) {
   const tpl = fs.readFileSync(path.join(SRC, page), 'utf8');
   for (const L of LANGS) {
     let out = tpl.replace(/\{\{([^}]+)\}\}/g, (_, k) => tr(L.code, k));
+    out = out.replace('<link rel="stylesheet" href="assets/type.css">', TYPE_CSS ? '<style>\n' + TYPE_CSS + '\n</style>' : '');
     out = out.replace(/<html[^>]*>/, `<html lang="${L.code}" dir="${L.dir}">`);
     out = out.replace('<!--HREFLANG-->', hreflang(page));
     out = out.replace(/<!--LANGNAV-->/g, page === 'index.html' ? '' : switcher(L.code, page));   // home (frisson) page: no language switcher
