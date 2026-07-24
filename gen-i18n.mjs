@@ -41,150 +41,66 @@ const O = {
   'cat.d.sub': [`Craftsmanship as Collective Intelligence`, `作为集体智慧的工艺`],
   'stories.title': ['Field Notes — FRISSON', 'Field Notes — FRISSON'],
   'stories.body': [
-`<h2 class="st-h">The Future of AI Begins with How We Live</h2>
-<p class="st-note">(FRISSON is led by two elusive oddballs — we call them alternative talents — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
+`<h2 class="st-h st-h-title">The Future of AI Begins with How We Live</h2>
 <p class="st-date">Published · July 18, 2026</p>
-<p class="st-p">For the past decade, AI has largely existed behind screens.</p>
-<p class="st-p">We asked questions. AI generated answers.</p>
-<p class="st-p"><b style="color:var(--ink);">But intelligence is about to leave the screen and enter the spaces we inhabit.</b></p>
-<p class="st-p">The next generation of AI will not simply understand language. It will understand context, environment, and ultimately, life itself.</p>
-<p class="st-p">We believe the future of AI lies at the intersection of physical space, on-device intelligence, and privacy-first computing.</p>
-<p class="st-p">The breakthrough will not come from ever-larger foundation models alone. It will come from a new class of data—deeply contextual, continuously evolving, and rooted in the realities of everyday living.</p>
-<p class="st-p">Some industry leaders have begun to point in the same direction. <b style="color:var(--ink);">Kevin Kelly has spoken about AI becoming increasingly spatial and emotionally aware. More recently, the founders of Petrarch argued that the next bottleneck is no longer the model itself, but access to high-quality, specialized data assets.</b></p>
-<p class="st-p">We share that conviction.</p>
-<h2 class="st-h">Living Data is the Next Frontier</h2>
-<p class="st-p">At Frisson, we believe the world's most valuable data is no longer digital behavior.</p>
-<p class="st-p">It is <b style="color:var(--accent);">Living Data</b>.</p>
-<p class="st-p">The subtle rhythms of everyday life.</p>
-<p class="st-p">How we sleep.</p>
-<p class="st-p">How we recover.</p>
-<p class="st-p">How light changes our mood.</p>
-<p class="st-p">How sound affects our focus.</p>
-<p class="st-p">How our homes quietly influence our wellbeing.</p>
-<p class="st-p">Living Data emerges where three dimensions meet:</p>
-<ul class="st-list"><li><b style="color:var(--ink);">Human behavioral data.</b></li><li><b style="color:var(--ink);">Spatial intelligence.</b></li><li><b style="color:var(--ink);">Biological feedback.</b></li></ul>
-<p class="st-p">Together, they create what we call Human Environment Intelligence—a living understanding of the relationship between people and the spaces around them.</p>
-<h2 class="st-h">Privacy Is the Foundation</h2>
-<p class="st-p">This vision only works if trust comes first.</p>
-<p class="st-p"><b style="color:var(--ink);">Frisson is not built on selling human data.</b></p>
-<p class="st-p">Quite the opposite.</p>
-<p class="st-p">We believe the next generation of AI will derive its value not from owning personal information, but from processing intelligence locally, where privacy remains intact.</p>
-<p class="st-p">Our intelligence is designed to run at the edge.</p>
-<p class="st-p">Raw behavioral records remain personal.</p>
-<p class="st-p">Sensitive information stays inside the home.</p>
-<p class="st-p">Only privacy-preserving insights—when users explicitly choose to contribute—can improve the collective intelligence of the system.</p>
-<p class="st-p"><b style="color:var(--ink);">The future economy of AI should reward participation without requiring surveillance.</b></p>
-<h2 class="st-h">From Reactive AI to Living Intelligence</h2>
-<p class="st-p">Today's AI waits for instructions.</p>
-<p class="st-p"><b style="color:var(--ink);">Tomorrow's AI will understand life before words are spoken.</b></p>
-<p class="st-p">Imagine a home quietly sensing changes in your physiology.</p>
-<p class="st-p">A subtle decline in energy.</p>
-<p class="st-p">The first signs of fatigue.</p>
-<p class="st-p">An elevated level of stress.</p>
-<p class="st-p">Before you ask for anything, your environment begins to respond.</p>
-<p class="st-p">The light softens.</p>
-<p class="st-p">The soundscape changes.</p>
-<p class="st-p">The temperature adjusts.</p>
-<p class="st-p">A gentle reminder appears at exactly the right moment.</p>
-<p class="st-p">Not because the system was commanded—</p>
-<p class="st-p">but because it understands.</p>
-<p class="st-p">This is not automation.</p>
-<p class="st-p">It is living intelligence.</p>
-<h2 class="st-h">Why We Build Residences</h2>
-<p class="st-p">Many people ask why Frisson builds residences instead of remaining a software company.</p>
-<p class="st-p">The answer is simple.</p>
-<p class="st-p">Intelligence cannot truly understand life if it is disconnected from the environment in which life unfolds.</p>
-<p class="st-p">Architecture is not merely where AI is installed.</p>
-<p class="st-p">It is where intelligence learns.</p>
-<p class="st-p">Our residences serve as living laboratories where architecture, design, biology, and computation evolve together.</p>
-<p class="st-p">They are the physical foundation of a global living network.</p>
-<p class="st-p"><b style="color:var(--ink);">Each residence enriches the collective understanding of how space can support creativity, wellbeing, and human potential.</b></p>
-<p class="st-p">Our ambition is not simply to create smarter homes.</p>
-<p class="st-p"><b style="color:var(--ink);">Its aim is to build the world's first residences that genuinely help people live better — so as to rapidly establish a <span style="font-size:1.18em;">Global New Living Network</span>.</b></p>
-<blockquote class="st-quote">“I am moved by the singular power inherent in FRISSON’s art of fusion — and though I stand at a loss before such beauty, I cannot find the words to express this feeling…”</blockquote>`,
-`<h2 class="st-h">人工智能的未来始于我们的生活方式</h2>
-<p class="st-note">（FRISSON 由两位不可捉摸的怪咖领衔（我们称之为另类人才），涵盖天文学家、生物学家、工程师、玄学家、诗人、化学家、代数学家、伦理学家、画家、几何学家……我们尚未正式注册公司也没有团队，但我们渴望找到与我们同频的人。<br>精通这些学科的人并不少，但能发明的人不多；而能将发明纳入严格系统规划的，则更是凤毛麟角。）</p>
-<p class="st-date">发布于 · 2026年7月18日</p>
-<p class="st-p">过去十年，人工智能主要存在于屏幕之后。</p>
-<p class="st-p">我们提出问题，人工智能生成答案。</p>
-<p class="st-p"><b style="color:var(--ink);">但智能即将走出屏幕，进入我们所居住的空间。</b></p>
-<p class="st-p">下一代人工智能不仅能理解语言，还能理解语境、环境，最终理解生命本身。</p>
-<p class="st-p">我们相信，人工智能的未来在于物理空间、设备端智能和隐私优先计算的交汇点。</p>
-<p class="st-p">突破不会仅仅来自规模越来越大的基础模型，它将来自一类新型数据——具有深刻的背景信息、不断演变，并植根于日常生活现实。</p>
-<p class="st-p">一些行业领袖也开始朝着同一个方向发展。<b style="color:var(--ink);">凯文·凯利曾谈到人工智能将变得越来越具备空间感知和情感感知能力。最近，Petrarch 的创始人也指出，下一个瓶颈不再是模型本身，而是获取高质量、专业化的数据资产。</b></p>
-<p class="st-p">我们也有同样的信念。</p>
-<h2 class="st-h">动态数据是下一个前沿领域</h2>
-<p class="st-p">Frisson 认为，世界上最有价值的数据不再是数字行为。</p>
-<p class="st-p">这是<b style="color:var(--accent);">动态数据</b>。</p>
-<p class="st-p">日常生活中微妙的节奏。</p>
-<p class="st-p">我们如何入睡。</p>
-<p class="st-p">我们如何恢复。</p>
-<p class="st-p">光线如何影响我们的情绪。</p>
-<p class="st-p">声音如何影响我们的注意力。</p>
-<p class="st-p">我们的家如何悄然影响我们的幸福感。</p>
-<p class="st-p">当三个维度交汇时，就会产生动态数据：</p>
-<ul class="st-list"><li><b style="color:var(--ink);">人类行为数据。</b></li><li><b style="color:var(--ink);">空间智能。</b></li><li><b style="color:var(--ink);">生物反馈。</b></li></ul>
-<p class="st-p">它们共同创造了我们所说的“人与环境智能”——一种对人与周围空间之间关系的鲜活理解。</p>
-<h2 class="st-h">隐私是基石</h2>
-<p class="st-p">只有建立在信任基础上，这一愿景才能实现。</p>
-<p class="st-p"><b style="color:var(--ink);">Frisson 的运营模式并非建立在出售人类数据之上。</b></p>
-<p class="st-p">恰恰相反。</p>
-<p class="st-p">我们认为，下一代人工智能的价值不在于拥有个人信息，而在于本地处理智能，从而确保隐私不受损害。</p>
-<p class="st-p">我们的智能系统旨在挑战极限。</p>
-<p class="st-p">原始行为记录属于个人隐私。</p>
-<p class="st-p">敏感信息应留在家里。</p>
-<p class="st-p">只有在用户明确选择贡献的情况下，保护隐私的见解才能提高系统的集体智慧。</p>
-<p class="st-p"><b style="color:var(--ink);">人工智能的未来经济应该奖励参与，而不是进行监控。</b></p>
-<h2 class="st-h">从反应式人工智能到生命智能</h2>
-<p class="st-p">如今的人工智能需要等待指令。</p>
-<p class="st-p"><b style="color:var(--ink);">未来的人工智能将在言语出现之前就理解生命。</b></p>
-<p class="st-p">想象一下，你的家能够悄无声息地感知你生理上的变化。</p>
-<p class="st-p">精力略有下降。</p>
-<p class="st-p">疲劳的最初迹象。</p>
-<p class="st-p">压力水平升高。</p>
-<p class="st-p">在你提出任何要求之前，你的环境就开始做出回应。</p>
-<p class="st-p">光线变得柔和起来。</p>
-<p class="st-p">声音环境发生了变化。</p>
-<p class="st-p">温度会调节。</p>
-<p class="st-p">恰到好处的温馨提醒出现了。</p>
-<p class="st-p">并非因为系统受到指令——</p>
-<p class="st-p">但因为它能理解。</p>
-<p class="st-p">这不是自动化。</p>
-<p class="st-p">它是鲜活的智能。</p>
-<h2 class="st-h">我们为什么建造住宅</h2>
-<p class="st-p">许多人问，为什么 Frisson 要建造住宅而不是继续做一家软件公司。</p>
-<p class="st-p">答案很简单。</p>
-<p class="st-p">如果智慧脱离了生命发生的环境，就无法真正理解生命。</p>
-<p class="st-p">建筑不仅仅是人工智能的安装场所。</p>
-<p class="st-p">这是智力发展的地方。</p>
-<p class="st-p">我们的住宅就像活的实验室，建筑、设计、生物学和计算在这里共同发展。</p>
-<p class="st-p">它们是全球生命网络的物质基础。</p>
-<p class="st-p"><b style="color:var(--ink);">每处住宅都丰富了人们对空间如何支持创造力、幸福感和人类潜能的集体理解。</b></p>
-<p class="st-p">我们的目标不仅仅是创造更智能的家居环境。</p>
-<p class="st-p"><b style="color:var(--ink);">其目标是建造世界上第一座真正能帮助人们生活得更好的住宅，以便快速建立<span style="font-size:1.18em;">Gobal New Living Network</span></b></p>
-<blockquote class="st-quote">“我受到了 FRISSON 融合的艺术天然具有的那种特殊力量的感染，尽管我在面对这种美时感到手足无措，我无法用语言表达出这种感觉……”</blockquote>`
-  ],
-  'stories.diary2': [
-`<h2 class="st-h st-h-title">The Power of Limits</h2>
-<p class="st-sub">— What matters most is invisible</p>
-<p class="st-date">Published · July 23, 2026</p><p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
-<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
-<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
-<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—<b>this world is real, alive, and worth inhabiting.</b></p>
-<p class="st-p">That conviction is embedded in our <b>founding DNA.</b></p>
-<p class="st-p">When we began to define the constraints of Sona, <b>we had to confront what it truly means to restore respect for human beings</b>—starting with the most elemental things: <b>air, light, scent.</b> The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
-<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—<b>all of it orchestrated, all of it invisible.</b></p>
-<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`,
-`<h2 class="st-h st-h-title">The Power of Limits</h2>
-<p class="st-sub">— What matters most is invisible</p>
-<p class="st-date">Published · July 23, 2026</p><p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
-<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
-<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
-<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—<b>this world is real, alive, and worth inhabiting.</b></p>
-<p class="st-p">That conviction is embedded in our <b>founding DNA.</b></p>
-<p class="st-p">When we began to define the constraints of Sona, <b>we had to confront what it truly means to restore respect for human beings</b>—starting with the most elemental things: <b>air, light, scent.</b> The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
-<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—<b>all of it orchestrated, all of it invisible.</b></p>
-<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`],
+<p class="st-p">For the past decade, intelligence has existed primarily behind screens.</p>
+<p class="st-p">We asked questions.</p>
+<p class="st-p">AI provided answers.</p>
+<p class="st-p">At Frisson, we believe the next evolution of intelligence will unfold in the physical world.</p>
+<p class="st-p">It will begin to understand environments, human vitality, and the continuously evolving relationship between people and the spaces they inhabit.</p>
+<p class="st-p">It will redefine how we live, create, recover, and connect.</p>
+<h2 class="st-h">Living Data: A New Dimension of Life Intelligence</h2>
+<p class="st-p">The most valuable insights of the future will come from life itself.</p>
+<p class="st-p">They exist within the subtle relationship between the human body and its environment:</p>
+<p class="st-p">Our ability to recover.<br>Our quality of sleep.<br>Our energy states.<br>Our biological rhythms.<br>Our long-term health potential.</p>
+<p class="st-p">We call this <b>Living Data</b>.</p>
+<p class="st-p">It represents the evolving intelligence created through the interaction of human vitality, environmental influence, and lived experience.</p>
+<p class="st-p">When spaces begin to better understand the rhythms of life, and environments begin to support human recovery and long-term wellbeing, we will enter a new era of living.</p>
+<h2 class="st-h">Reimagining the Physical World</h2>
+<p class="st-p">Architecture will no longer be defined solely as static structures.</p>
+<p class="st-p">It will evolve into dynamic systems that support human flourishing.</p>
+<p class="st-p">Frisson is creating the next generation of physical environments — transforming spaces from passive containers into living ecosystems that grow alongside humanity.</p>
+<p class="st-p">Here, health, behavior, creativity, and environmental experience converge into a new relationship.</p>
+<p class="st-p">Every space becomes a foundation for understanding human potential and enhancing the quality of life.</p>
+<h2 class="st-h">Trust Is the Foundation</h2>
+<p class="st-p">Frisson believes technology’s highest purpose is to enrich human experience, respect individual autonomy, and create a deeper connection between people and their environments.</p>
+<p class="st-p">The most advanced spaces will not be defined by how much they know.</p>
+<p class="st-p">They will be defined by how deeply they understand.</p>
+<h2 class="st-h">Why We Create Soulful Living Nodes</h2>
+<p class="st-p">Frisson is reimagining the physical world.</p>
+<p class="st-p">We begin by creating singular spaces with their own identity and soul — pioneering a new paradigm where humans and environments continuously evolve together.</p>
+<p class="st-p">Through our own creations and collaborations with visionary architects, designers, and global innovators, we are building the foundation for the next generation of human living.</p>
+<p class="st-p">Each Node will become a place to explore the future of living — a foundation for human health, creativity, and the expansion of human potential.</p>`,
+`<h2 class="st-h st-h-title">The Future of AI Begins with How We Live</h2>
+<p class="st-date">Published · July 18, 2026</p>
+<p class="st-p">For the past decade, intelligence has existed primarily behind screens.</p>
+<p class="st-p">We asked questions.</p>
+<p class="st-p">AI provided answers.</p>
+<p class="st-p">At Frisson, we believe the next evolution of intelligence will unfold in the physical world.</p>
+<p class="st-p">It will begin to understand environments, human vitality, and the continuously evolving relationship between people and the spaces they inhabit.</p>
+<p class="st-p">It will redefine how we live, create, recover, and connect.</p>
+<h2 class="st-h">Living Data: A New Dimension of Life Intelligence</h2>
+<p class="st-p">The most valuable insights of the future will come from life itself.</p>
+<p class="st-p">They exist within the subtle relationship between the human body and its environment:</p>
+<p class="st-p">Our ability to recover.<br>Our quality of sleep.<br>Our energy states.<br>Our biological rhythms.<br>Our long-term health potential.</p>
+<p class="st-p">We call this <b>Living Data</b>.</p>
+<p class="st-p">It represents the evolving intelligence created through the interaction of human vitality, environmental influence, and lived experience.</p>
+<p class="st-p">When spaces begin to better understand the rhythms of life, and environments begin to support human recovery and long-term wellbeing, we will enter a new era of living.</p>
+<h2 class="st-h">Reimagining the Physical World</h2>
+<p class="st-p">Architecture will no longer be defined solely as static structures.</p>
+<p class="st-p">It will evolve into dynamic systems that support human flourishing.</p>
+<p class="st-p">Frisson is creating the next generation of physical environments — transforming spaces from passive containers into living ecosystems that grow alongside humanity.</p>
+<p class="st-p">Here, health, behavior, creativity, and environmental experience converge into a new relationship.</p>
+<p class="st-p">Every space becomes a foundation for understanding human potential and enhancing the quality of life.</p>
+<h2 class="st-h">Trust Is the Foundation</h2>
+<p class="st-p">Frisson believes technology’s highest purpose is to enrich human experience, respect individual autonomy, and create a deeper connection between people and their environments.</p>
+<p class="st-p">The most advanced spaces will not be defined by how much they know.</p>
+<p class="st-p">They will be defined by how deeply they understand.</p>
+<h2 class="st-h">Why We Create Soulful Living Nodes</h2>
+<p class="st-p">Frisson is reimagining the physical world.</p>
+<p class="st-p">We begin by creating singular spaces with their own identity and soul — pioneering a new paradigm where humans and environments continuously evolve together.</p>
+<p class="st-p">Through our own creations and collaborations with visionary architects, designers, and global innovators, we are building the foundation for the next generation of human living.</p>
+<p class="st-p">Each Node will become a place to explore the future of living — a foundation for human health, creativity, and the expansion of human potential.</p>`],
   'stories.diary': [
 `<h2 class="st-h st-h-title">Competing Against Luck</h2>
 <p class="st-sub">A Soulful Conversation with Dav (Son of HOPO’s Founder)</p>
