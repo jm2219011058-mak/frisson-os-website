@@ -128,14 +128,15 @@
   /* article view — full-bleed hero image on top (Founders-Fund style), then long-form story */
   .fn-hero{width:100vw;margin-left:calc(50% - 50vw);height:min(56vh,560px);background:#1a1512 center center/cover no-repeat;}
   .fn-hero[hidden]{display:none;}
-  .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(78px,12vh,120px) clamp(24px,6vw,40px) clamp(20px,3vh,32px);}
-  .fn-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.2vw,14px);letter-spacing:.04em;
-    color:var(--accent);background:transparent;border:0;padding:0;cursor:pointer;
-    text-shadow:0 0 10px rgba(224,123,60,.28);transition:opacity .2s,text-shadow .25s;}
-  .fn-back:hover{opacity:.92;text-shadow:0 0 16px rgba(224,123,60,.55);}
-  .fn-back:hover svg{filter:drop-shadow(0 0 6px rgba(224,123,60,.5));}
-  .fn-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-  .fn-article .story{padding-top:clamp(16px,2.5vh,28px);}
+  .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(30px,5vh,56px) clamp(24px,6vw,40px) clamp(4px,1vh,10px);}
+  .fn-back{display:inline-flex;align-items:center;justify-content:center;width:clamp(42px,4.4vw,54px);height:clamp(42px,4.4vw,54px);margin-left:-8px;
+    background:transparent;border:0;padding:0;cursor:pointer;color:var(--accent);
+    filter:drop-shadow(0 0 8px rgba(224,123,60,.26));transition:filter .25s,transform .2s;}
+  .fn-back:hover{filter:drop-shadow(0 0 15px rgba(224,123,60,.6));transform:translateX(-3px);}
+  .fn-back svg{width:clamp(26px,2.8vw,34px);height:clamp(26px,2.8vw,34px);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  /* article title — oversized editorial headline (Field Notes only) */
+  .fn-article .story{padding-top:clamp(8px,1.5vh,18px);}
+  .fn-article .st-h-title{font-size:clamp(38px,7.6vw,86px);line-height:1;letter-spacing:.005em;margin:0 0 clamp(18px,3vh,30px);}
 
   /* footer — light */
   .st-foot{border-top:1px solid var(--hair);text-align:center;padding:30px clamp(24px,6vw,40px);
