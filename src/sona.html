@@ -207,10 +207,11 @@
     #s-city,#s7{padding-left:30px;padding-right:30px;}
     #s-city{padding-top:max(112px,15vh);padding-bottom:max(56px,7svh);}   /* nudge the block down to the optical centre on mobile */
     #s-city .citywrap{max-width:100%;}
-    .city-body,.city-finale,.s7-p{max-width:100%;}
+    .city-lead,.city-body,.city-finale,.s7-p{max-width:100%;}
   }
-  .city-kicker{font-family:var(--sans);font-weight:700;font-size:clamp(14px,1.9vw,19px);letter-spacing:.06em;color:var(--ink);margin:0 0 clamp(26px,4.5vh,44px);}
-  .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,2vw,20px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:34em;margin:0 auto;text-align:center;text-wrap:pretty;}
+  .city-kicker{font-family:var(--sans);font-weight:700;font-size:clamp(13px,1.6vw,16px);letter-spacing:.08em;color:var(--ink);margin:0 0 clamp(22px,3.5vh,36px);}
+  .city-lead{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.6vw,30px);line-height:1.45;letter-spacing:.005em;color:var(--ink);max-width:30ch;margin:0 auto;text-align:center;text-wrap:balance;}
+  .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.8vw,19px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:32em;margin:clamp(20px,3.2vh,32px) auto 0;text-align:center;text-wrap:pretty;}
   .city-finale{font-family:var(--serif);font-weight:500;font-size:clamp(20px,3vw,30px);line-height:1.5;letter-spacing:.03em;color:var(--ink);max-width:min(30ch,calc(100% - 40px));text-wrap:balance;margin:clamp(34px,6vh,60px) auto 0;}
   /* Chinese keeps the justified body + tighter finale measure it was tuned for */
   html[lang="zh"] .city-body{text-align:justify;line-height:2.05;}
@@ -295,8 +296,8 @@
   <section class="section" id="s-city">
     <div class="citywrap reveal">
       <p class="city-kicker">{{3.2}}</p>
-      <p class="city-body">{{3.3}}</p>
-      <p class="city-finale">{{3.4}}</p>
+      <p class="city-lead">{{3.3}}</p>
+      <p class="city-body">{{3.3b}}</p>
     </div>
   </section>
 
@@ -930,7 +931,7 @@
     function run(){
       gsap.set("#s-city .citywrap, #s7 .reveal, #s2 .gal-head", {opacity:1, y:0});   /* let the custom reveals take over */
       lineReveal("#s2 .gal-head .t2", "#s2");
-      scrubWords("#s-city .city-body, #s-city .city-finale", "#s-city", "center 72%", "#s-city");   /* fully lit slightly BEFORE the block reaches dead centre */
+      scrubWords("#s-city .city-lead, #s-city .city-body", "#s-city", "center 72%", "#s-city");   /* fully lit slightly BEFORE the block reaches dead centre */
       scrubWords("#s7 .s7-p", "#s7");   /* finish revealing by the time the text block reaches screen centre */
       ScrollTrigger.refresh();
     }

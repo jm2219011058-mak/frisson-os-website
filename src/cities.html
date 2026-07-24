@@ -123,6 +123,45 @@
   .mf-col{max-width:min(36em,calc(100% - 48px));margin:clamp(34px,6vh,60px) auto 0;}
   .mf-wwd{max-width:min(1080px,calc(100% - 48px));margin:clamp(56px,9vh,110px) auto 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:clamp(24px,6vw,80px);align-items:start;}
   .wwd-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(12px,1.2vw,14px);letter-spacing:.18em;color:var(--ink);margin:6px 0 0;}
+  .wwd-news{max-width:320px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .wwd-news .wwd-eyebrow{align-self:flex-start;text-align:left;margin:0 0 clamp(18px,2.6vh,28px);}
+  .news-titlerow{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 16px;}
+  .news-arrow{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--accent);cursor:pointer;transition:transform .3s,background .25s;}
+  .news-arrow svg{width:26px;height:26px;}
+  .news-arrow:hover{transform:translateX(4px);background:rgba(224,123,60,.1);}
+  .wwd-news #trialIntro,.wwd-news #trialApply{display:flex;flex-direction:column;align-items:center;width:100%;}
+  .wwd-news #trialApply[hidden],.wwd-news #trialIntro[hidden]{display:none;}
+  .news-pre{font-family:var(--serif);font-weight:400;font-size:clamp(13px,1.3vw,15px);color:var(--ink-soft);opacity:.85;margin:0 0 4px;text-align:center;}
+  .news-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,2.8vw,36px);line-height:1.1;color:var(--ink);margin:0;}
+  .news-conch.conch{width:100%;max-width:300px;margin:0 auto 16px;}
+  .news-conch .conch-cap{font-size:clamp(12.5px,1.2vw,14.5px);}
+  .news-cta{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:0;cursor:pointer;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.03em;padding:9px 22px;border-radius:999px;text-decoration:none;transition:background .25s;}
+  .news-cta:hover{background:#c96a2f;}
+  .news-back{color:var(--ink-soft);margin:0 0 12px;}
+  .news-back:hover{color:var(--ink);}
+  .news-form{max-width:300px;margin:0;}
+  .news-form .lbl{color:var(--ink-soft);}
+  .news-form input[type=text],.news-form input[type=email]{border:1px solid var(--hair);background:#fff;color:var(--ink);font-size:15px;padding:11px 13px;}
+  .news-form input:focus{border-color:var(--accent);background:#fff;}
+  .news-form ::placeholder{color:#b3a89b;}
+  .news-form .consent{color:var(--ink-soft);margin:4px 0 12px;}
+  .news-form .done{color:var(--ink);font-style:italic;font-family:var(--serif);}
+  @media(max-width:820px){
+    .wwd-news{max-width:100%;margin:0 0 10px;position:relative;overflow:hidden;border-radius:16px;
+      padding:clamp(22px,5vw,36px) clamp(18px,5vw,32px);justify-content:center;
+      background:linear-gradient(180deg,rgba(8,6,5,.5),rgba(8,6,5,.64)),url("assets/advocater/trial-bg.jpg") center/cover;color:#fff;}
+    .wwd-news .wwd-eyebrow{color:rgba(255,255,255,.85);}
+    .wwd-news .news-pre{color:rgba(255,255,255,.75);opacity:1;margin-top:10px;}
+    .wwd-news .news-title{color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.5);}
+    .wwd-news .news-conch.conch{max-width:210px;margin:2px auto 14px;}
+    .wwd-news .news-back{color:rgba(255,255,255,.8);}
+    .wwd-news .news-arrow{color:#fff;}
+    .wwd-news .news-arrow:hover{background:rgba(255,255,255,.14);}
+    .wwd-news .news-form .lbl{color:rgba(255,255,255,.82);}
+    .wwd-news .news-form input[type=text],.wwd-news .news-form input[type=email]{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff;}
+    .wwd-news .news-form ::placeholder{color:rgba(255,255,255,.6);}
+    .wwd-news .news-form .consent{color:rgba(255,255,255,.86);}
+  }
   .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(22px,2.4vw,32px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
   .wwd-statement b{font-weight:700;color:var(--ink);}
   .wwd-statement + .wwd-statement{margin-top:clamp(14px,2vh,24px);}
@@ -279,6 +318,75 @@
     </div>
   </section>
 
+  <!-- TRIAL SLEEP · Magic Conch (moved from Frisson Fellow) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs><clipPath id="conchBlob" clipPathUnits="objectBoundingBox"><path id="conchBlobPath" d="M0.5 0.5"></path></clipPath></defs>
+  </svg>
+  <style>
+  .tier{position:relative;min-height:100svh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;padding:clamp(70px,10vh,120px) clamp(24px,6vw,72px);}
+  .tier-bg{position:absolute;inset:0;z-index:0;}
+  .tier-bg img{width:100%;height:100%;object-fit:cover;display:block;}
+  .tier-scrim{position:absolute;inset:0;z-index:1;}
+  .tier-inner{position:relative;z-index:2;width:100%;max-width:1080px;margin:0 auto;}
+  .t-pre{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(17px,2.2vw,26px);letter-spacing:.02em;color:rgba(255,255,255,.72);margin:0 0 clamp(10px,1.8vh,18px);text-shadow:0 2px 24px rgba(0,0,0,.5);}
+  .t-title{font-weight:600;font-size:clamp(34px,5.6vw,64px);line-height:1.1;letter-spacing:.01em;margin:0;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.5);}
+  .t-copy{font-family:var(--serif);font-size:clamp(16px,1.9vw,20px);line-height:1.72;color:rgba(255,255,255,.92);margin:clamp(18px,3vh,28px) 0 0;max-width:48ch;text-shadow:0 1px 16px rgba(0,0,0,.55);}
+  .conch{position:relative;width:min(460px,80vw);aspect-ratio:16/9;margin:0 auto;isolation:isolate;background:#15110d;-webkit-clip-path:url(#conchBlob);clip-path:url(#conchBlob);}
+  .conch-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:blur(16px);transform:scale(1.14);}
+  .conch-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 100% at 50% 50%,rgba(0,0,0,.18),rgba(0,0,0,0) 72%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 42%);box-shadow:inset 0 1px 1px rgba(255,255,255,.22);}
+  .conch-cap{z-index:3;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--sans);color:#fff;font-weight:500;font-size:clamp(15px,2.4vw,22px);letter-spacing:.01em;line-height:1.22;text-shadow:0 2px 24px rgba(0,0,0,.62);padding:0 24px;margin:0;text-align:center;}
+  .nf-form{max-width:540px;margin:clamp(26px,4.5vh,40px) auto 0;text-align:left;}
+  .nf-form .lbl{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.82);margin:0 0 7px;}
+  .nf-form input{width:100%;font-family:var(--sans);font-size:16px;padding:14px 16px;border:1px solid rgba(255,255,255,.34);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;outline:none;transition:border-color .25s,background .25s;}
+  .nf-form input:focus{border-color:var(--accent);background:rgba(255,255,255,.16);}
+  .nf-form ::placeholder{color:rgba(255,255,255,.6);}
+  .field{margin:0 0 12px;}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-family:var(--sans);font-size:13px;line-height:1.5;color:rgba(255,255,255,.86);margin:8px 0 0;}
+  .consent input{width:auto;flex:0 0 auto;margin-top:2px;accent-color:var(--accent);}
+  .apply{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(16px,3vh,22px);font-family:var(--serif);font-weight:600;font-size:clamp(15px,2vw,18px);letter-spacing:.02em;color:#fff;background:var(--accent);border:0;border-radius:999px;padding:14px 32px;cursor:pointer;box-shadow:0 12px 32px rgba(224,123,60,.36);transition:transform .3s,box-shadow .3s;}
+  .apply:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(224,123,60,.44);}
+  .apply .arw{font-size:1.15em;line-height:1;}
+  .legal{font-family:var(--sans);font-size:12px;line-height:1.5;color:rgba(255,255,255,.72);margin:14px 0 0;}
+  .legal a{color:rgba(255,255,255,.92);text-underline-offset:2px;}
+  .back-btn{background:transparent;border:0;color:rgba(255,255,255,.75);font-family:var(--sans);font-size:14px;cursor:pointer;padding:0;margin:0 0 18px;}
+  .back-btn:hover{color:#fff;}
+  .nf-form .done{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,20px);color:#fff;text-align:center;margin:0;}
+  .nf-form[hidden],.tier-intro[hidden],.tier-apply[hidden]{display:none;}
+  .nf-form.reveal-open{animation:nfIn .45s ease both;}
+  @keyframes nfIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  </style>
+  <script>
+  (function(){
+    var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var HARM=[{k:2,a:.07,w:.85,p:.5},{k:3,a:.05,w:-.6,p:2.0},{k:5,a:.03,w:1.0,p:.3}];
+    function blobPath(cx,cy,R0,t,amp){ var N=64,pts=[],i,j;
+      for(i=0;i<N;i++){ var th=(i/N)*Math.PI*2, rr=1; for(j=0;j<HARM.length;j++){var h=HARM[j];rr+=h.a*amp*Math.sin(h.k*th+h.w*t+h.p);} var r=R0*rr; pts.push([cx+r*Math.cos(th), cy+r*Math.sin(th)]); }
+      var d='M '+pts[0][0].toFixed(4)+' '+pts[0][1].toFixed(4);
+      for(var k=0;k<N;k++){ var p0=pts[(k-1+N)%N],p1=pts[k],p2=pts[(k+1)%N],p3=pts[(k+2)%N];
+        var c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6,c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+        d+=' C '+c1x.toFixed(4)+' '+c1y.toFixed(4)+' '+c2x.toFixed(4)+' '+c2y.toFixed(4)+' '+p2[0].toFixed(4)+' '+p2[1].toFixed(4); }
+      return d+' Z';
+    }
+    var path=document.getElementById('conchBlobPath');
+    if(path){ if(REDUCE){ path.setAttribute('d',blobPath(.5,.5,.43,0,1)); } else { (function frame(now){ var t=(now||0)/1000,R=.43*(1+.018*Math.sin(t*1.15)); path.setAttribute('d',blobPath(.5,.5,R,t*.9,1)); requestAnimationFrame(frame); })(0);} }
+    document.querySelectorAll('[data-open]').forEach(function(btn){
+      btn.addEventListener('click',function(){ var b=btn.getAttribute('data-open'),i=document.getElementById(b+'Intro'),a=document.getElementById(b+'Apply');
+        if(!a)return; if(i)i.hidden=true; a.hidden=false; a.classList.add('reveal-open');
+        var f=a.querySelector('input:not([type=hidden]):not([type=checkbox])'); if(f)setTimeout(function(){try{f.focus({preventScroll:true});}catch(e){}},60); });
+    });
+    document.querySelectorAll('[data-back]').forEach(function(btn){
+      btn.addEventListener('click',function(){ var b=btn.getAttribute('data-back'),i=document.getElementById(b+'Intro'),a=document.getElementById(b+'Apply');
+        if(!a)return; a.hidden=true; a.classList.remove('reveal-open'); if(i){i.hidden=false;i.scrollIntoView({block:'nearest'});} });
+    });
+    var form=document.getElementById('trialForm');
+    if(form){ form.addEventListener('submit',function(ev){ ev.preventDefault();
+      var data=new URLSearchParams(new FormData(form)).toString();
+      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
+        .then(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; })
+        .catch(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; }); }); }
+  })();
+  </script>
+
   <!-- ABOUT / MANIFESTO — 美的迁徙 -->
   <section class="mf">
 
@@ -286,8 +394,36 @@
     <!-- 一 · 收藏整个地球的梦境 -->
     <div class="mf-ch mf-ch-migr">
       <div class="mf-wwd reveal">
-        <p class="wwd-eyebrow">WHAT WE DO</p>
+        <div class="wwd-news">
+          <p class="wwd-eyebrow">NEWS</p>
+          <div id="trialIntro">
+            <p class="news-pre">Be the first to sleep inside the</p>
+            <div class="news-titlerow">
+              <p class="news-title">Magic Conch.</p>
+              <button type="button" class="news-arrow" data-open="trial" aria-label="Enquire">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="conch news-conch">
+              <img class="conch-img" src="assets/conch.jpg" alt="Frisson Magic Conch" decoding="async">
+              <div class="conch-scrim"></div>
+              <p class="conch-cap">The Mask comes off<br>January 2027</p>
+            </div>
+          </div>
+          <div id="trialApply" hidden>
+            <button type="button" class="back-btn news-back" data-back="trial">&lsaquo; Back</button>
+            <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form news-form" id="trialForm">
+              <input type="hidden" name="form-name" value="trial-sleep">
+              <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+              <div class="field"><label class="lbl" for="t-name">Full name</label><input id="t-name" type="text" name="name" placeholder="Your name" required></div>
+              <div class="field"><label class="lbl" for="t-email">Email</label><input id="t-email" type="email" name="email" placeholder="you@email.com" required></div>
+              <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
+              <button type="submit" class="news-cta">Request to experience <span aria-hidden="true">&rsaquo;</span></button>
+            </form>
+          </div>
+        </div>
         <div class="wwd-body">
+          <p class="wwd-eyebrow" style="margin:0 0 clamp(18px,2.6vh,28px);">WHAT WE DO</p>
           <p class="wwd-statement">FRISSON is redefining the future value of the physical world.</p>
           <p class="wwd-sub">Through Artistic Soulful Spaces and Sona, an AI-native living intelligence, FRISSON transforms real estate from a static ownership asset into a lifelong health and living asset.</p>
         </div>
