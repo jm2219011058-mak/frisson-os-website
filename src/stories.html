@@ -93,10 +93,11 @@
   /* ===== FIELD NOTES — DESIGN SPEC =====
      · Filter bar (.fn-bar): a standalone sub-nav directly under the site nav; left-aligned TEXT tabs
        in Space Grotesk; active tab = accent (orange) with a 2px underline. No title, no search.
-     · Grid (.fn-list): full-bleed, edge-to-edge, 3 cols (2 ≤900px, 1 ≤560px). Newest first (top-left).
-       Each tile = 4:3 image, dark bottom scrim, Fraunces WHITE title + Space Grotesk byline, orange
-       circular arrow revealed on hover.
-     · Article view: accent pill "Back to Field Notes" + long-form story (st-* styles).
+     · Grid (.fn-list): full-bleed, edge-to-edge, 3 cols (2 ≤900px, 1 ≤560px). NEWEST FIRST, sorted by
+       date (top-left → down). Each tile = 4:3 image, dark bottom scrim, Fraunces WHITE title +
+       Space Grotesk byline (date), orange circular arrow revealed on hover.
+     · Article view: glowing "Back to Field Notes" link → full-bleed HERO image (.fn-hero) → long-form
+       story (st-* styles). Each entry pairs one image, reused as both the tile and the article hero.
      · Type: Fraunces = titles + body; Space Grotesk = tabs / byline / meta / labels. */
   .fn-index{padding:0;}
   .fn-bar{border-bottom:1px solid var(--hair);background:#fff;}
@@ -124,8 +125,10 @@
   .fn-arrow svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
   @media(max-width:900px){ .fn-list{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:560px){ .fn-list{grid-template-columns:1fr;} .fn-card{aspect-ratio:16/10;} }
-  /* article view */
-  .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(84px,13vh,130px) clamp(24px,6vw,40px) 0;}
+  /* article view — full-bleed hero image on top (Founders-Fund style), then long-form story */
+  .fn-hero{width:100vw;margin-left:calc(50% - 50vw);height:min(56vh,560px);background:#1a1512 center center/cover no-repeat;}
+  .fn-hero[hidden]{display:none;}
+  .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(78px,12vh,120px) clamp(24px,6vw,40px) clamp(20px,3vh,32px);}
   .fn-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.2vw,14px);letter-spacing:.04em;
     color:var(--accent);background:transparent;border:0;padding:0;cursor:pointer;
     text-shadow:0 0 10px rgba(224,123,60,.28);transition:opacity .2s,text-shadow .25s;}
@@ -204,9 +207,21 @@
     <!-- ARTICLE (opened from the index) -->
     <section class="fn-article" id="fnArticle" hidden>
       <div class="fn-backwrap"><button class="fn-back" id="fnBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to Field Notes</button></div>
+      <figure class="fn-hero" data-view="0" hidden style="background-image:url('assets/city/fn-a.webp')"></figure>
+      <figure class="fn-hero" data-view="1" hidden style="background-image:url('assets/city/fn-b.webp')"></figure>
+      <figure class="fn-hero" data-view="2" hidden style="background-image:url('assets/city/fn-c.webp')"></figure>
+      <figure class="fn-hero" data-view="3" hidden style="background-image:url('assets/city/fn-d.webp')"></figure>
       <article class="story" data-view="0" hidden>{{stories.diary2}}</article>
       <article class="story" data-view="1" hidden>{{stories.diary}}</article>
       <article class="story" data-view="2" hidden>{{stories.body}}</article>
+      <article class="story" data-view="3" hidden>
+        <h2 class="st-h st-h-title">Beyond the Canvas</h2>
+        <p class="st-sub">Let art leave the canvas</p>
+        <p class="st-date">Published · July 17, 2026</p>
+        <p class="st-p">Let it enter architecture, enter light, enter the body, and ultimately enter the human soul.</p>
+        <p class="st-p">We bring the imagination of contemporary artists into architectural details and share it with the world — awakening intuition, and exploring how architecture, culture, and environment shape the inner world of humanity.</p>
+        <p class="st-p"><b>What humans truly desire has never been beauty placed on display.</b></p>
+      </article>
     </section>
   </main>
 
@@ -223,9 +238,11 @@
       if(!index||!art) return;
       var cards=[].slice.call(document.querySelectorAll('.fn-card'));
       var views=[].slice.call(art.querySelectorAll('.story[data-view]'));
+      var heros=[].slice.call(art.querySelectorAll('.fn-hero[data-view]'));
       var tabs=[].slice.call(document.querySelectorAll('.fn-tab'));
       function open(v){
         views.forEach(function(el){ el.hidden = el.getAttribute('data-view')!==v; });
+        heros.forEach(function(el){ el.hidden = el.getAttribute('data-view')!==v; });
         index.hidden=true; art.hidden=false;
         var el=art.querySelector('.story[data-view="'+v+'"]');
         if(el){ el.classList.remove('st-in-r'); void el.offsetWidth; el.classList.add('st-in-r'); }
