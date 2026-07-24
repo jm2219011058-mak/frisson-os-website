@@ -1,0 +1,427 @@
+    <!-- ===== Soulful Living Nodes — interactive map (integrated component) ===== -->
+    <section class="zres-nodes reveal">
+    <style>
+      .zres-nodes{background:#f9f5ef;padding:0;}
+      .sln-root{position:relative;width:100%;height:min(100vh,1000px);display:grid;place-items:center;overflow:hidden;font-family:'Manrope',system-ui,sans-serif;}
+      .sln-stage{position:relative;overflow:hidden;}
+      .sln-stage svg{display:block;width:100%;height:100%}
+      /* ambient blob drift */
+      .sln-root .drift1,.sln-root .drift2,.sln-root .drift3{transform-box:fill-box;transform-origin:center}
+      .sln-root .drift1{animation:slnD1 26s ease-in-out infinite alternate}
+      .sln-root .drift2{animation:slnD2 32s ease-in-out infinite alternate}
+      .sln-root .drift3{animation:slnD3 22s ease-in-out infinite alternate}
+      @keyframes slnD1{from{transform:translate(0,0) scale(1)}to{transform:translate(-14px,10px) scale(1.035)}}
+      @keyframes slnD2{from{transform:translate(0,0) scale(1.02)}to{transform:translate(12px,-10px) scale(1)}}
+      @keyframes slnD3{from{transform:translate(0,0)}to{transform:translate(9px,-9px) scale(1.05)}}
+      /* star node */
+      .sln-root .star-hover{transform-box:fill-box;transform-origin:center;transition:transform .3s cubic-bezier(.34,1.4,.5,1)}
+      .sln-root .star-node:hover .star-hover,.sln-root .star-node:focus-visible .star-hover{transform:scale(1.2)}
+      .sln-root .star-spin{transform-box:fill-box;transform-origin:center;animation:slnSpin 34s linear infinite}
+      .sln-root .star-shape{transform-box:fill-box;transform-origin:center;animation:slnTwinkle 5s ease-in-out infinite}
+      .sln-root .star-node:focus-visible .star-shape{stroke:var(--accent);stroke-width:2}
+      @keyframes slnSpin{to{transform:rotate(360deg)}}
+      @keyframes slnTwinkle{0%,100%{transform:scale(.94);opacity:.88}50%{transform:scale(1.12);opacity:1}}
+      /* ambient micro-motion */
+      .sln-root .bob{transform-box:fill-box;transform-origin:center;animation:slnBob 7s ease-in-out infinite alternate}
+      @keyframes slnBob{from{transform:translateY(-2.6px)}to{transform:translateY(2.6px)}}
+      .sln-root .sway-r{transform-box:fill-box;transform-origin:center;animation:slnSwayR 9s ease-in-out infinite alternate}
+      @keyframes slnSwayR{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+      .sln-root .spin-slow{transform-box:fill-box;transform-origin:center;animation:slnSpin 80s linear infinite}
+      .sln-root .shimmer{animation:slnShimmer 5.5s ease-in-out infinite alternate}
+      @keyframes slnShimmer{from{opacity:.5}to{opacity:.95}}
+      .sln-root #sln-cal{animation:slnCalFloat 11s ease-in-out infinite alternate}
+      @keyframes slnCalFloat{from{transform:translateY(-2.2px)}to{transform:translateY(2.2px)}}
+      .sln-root .cal-item{opacity:0;animation:slnCalIn .9s ease forwards}
+      @keyframes slnCalIn{to{opacity:1}}
+      .sln-root .wave{transform-box:fill-box;transform-origin:center;animation:slnSway 7s ease-in-out infinite alternate}
+      .sln-root .wave.w2{animation-duration:9s;animation-delay:-3s}
+      @keyframes slnSway{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
+      /* calendar / nodes */
+      .sln-root .cal-label{font-family:'Archivo',sans-serif;font-weight:600;font-size:18px;letter-spacing:.02em;fill:var(--ink)}
+      .sln-root .num{font-family:'Archivo',sans-serif;font-weight:600;font-size:20.5px;fill:var(--ink)}
+      .sln-root .num-in{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;fill:#f8f4ee;pointer-events:none}
+      .sln-root .node{cursor:pointer}
+      .sln-root .node .disc{transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1)}
+      .sln-root .node:hover .disc,.sln-root .node:focus-visible .disc{transform:scale(1.18)}
+      .sln-root .node:focus{outline:none}
+      .sln-root .node:focus-visible .disc{stroke:var(--accent);stroke-width:2}
+      .sln-root .halo{transform-box:fill-box;transform-origin:center;fill:var(--ink);opacity:0;animation:slnPulse 3.4s ease-out infinite;pointer-events:none}
+      .sln-root .node.primary .halo{fill:var(--accent);animation-duration:2.4s}
+      @keyframes slnPulse{0%{transform:scale(.55);opacity:.5}70%{transform:scale(2.15);opacity:0}100%{transform:scale(2.15);opacity:0}}
+      /* tooltip (body-level) */
+      .sln-tip{position:fixed;z-index:40;pointer-events:none;background:var(--ink);color:#f8f4ee;font:600 12px/1 'Manrope',sans-serif;letter-spacing:.04em;padding:7px 12px;border-radius:999px;white-space:nowrap;transform:translate(-50%,calc(-100% - 14px));opacity:0;transition:opacity .18s ease,transform .18s ease;}
+      .sln-tip.on{opacity:1;transform:translate(-50%,calc(-100% - 18px))}
+      .sln-tip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
+      /* modal (body-level) */
+      .sln-overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:4vh 4vw;opacity:0;pointer-events:none;transition:opacity .38s ease}
+      .sln-overlay.show{opacity:1;pointer-events:auto}
+      .sln-backdrop{position:absolute;inset:0;background:rgba(28,20,12,.38);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+      .sln-card{position:relative;width:min(700px,100%);max-height:88vh;overflow-y:auto;background:#FEFCF8;border-radius:22px;padding:clamp(30px,5.5vw,56px) clamp(24px,5.5vw,56px);box-shadow:0 40px 90px -20px rgba(40,25,10,.45);transform:translateY(18px) scale(.965);opacity:0;transition:transform .55s cubic-bezier(.2,.9,.24,1),opacity .45s ease;scrollbar-width:thin;scrollbar-color:#ddd2c2 transparent;}
+      .sln-overlay.show .sln-card{transform:none;opacity:1}
+      .sln-card::-webkit-scrollbar{width:6px}
+      .sln-card::-webkit-scrollbar-thumb{background:#e0d5c4;border-radius:99px}
+      .sln-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;border:1px solid #e8ddcd;background:transparent;color:#9a8b74;font-size:19px;line-height:1;cursor:pointer;transition:.25s;display:grid;place-items:center;}
+      .sln-close:hover{background:#f4ece0;color:#5c4f3c;transform:rotate(90deg)}
+      .sln-eyebrow{color:var(--accent);font:500 clamp(15px,2.2vw,19px)/1.3 'Space Grotesk',sans-serif;letter-spacing:.06em;margin-bottom:14px}
+      .sln-m-title{font:500 clamp(38px,7vw,58px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-.015em;color:#2a211a;margin-bottom:24px}
+      .sln-pill{display:inline-block;border:1px solid #e6dac8;border-radius:999px;padding:11px 24px;color:#bd8a58;font:600 clamp(10px,1.6vw,12.5px)/1 'Manrope',sans-serif;letter-spacing:.22em;margin-bottom:34px;}
+      .sln-subhead{font:800 clamp(19px,3vw,24px)/1.35 'Manrope',sans-serif;color:#2a2018;margin-bottom:18px}
+      .sln-card p{font:500 clamp(14.5px,2.1vw,16.5px)/1.75 'Manrope',sans-serif;color:#57503f;margin-bottom:17px}
+      .sln-card p b{color:#2c2317;font-weight:800}
+      .sln-cta{display:inline-flex;align-items:center;gap:9px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:600 16px/1 'Manrope',sans-serif;padding:15px 30px;border-radius:999px;transition:.28s;cursor:pointer;}
+      .sln-cta:hover{background:#c9743a;gap:14px}
+      .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
+      .sln-card > .sln-anim{opacity:0;transform:translateY(14px)}
+      .sln-overlay.show .sln-card > .sln-anim{animation:slnRise .7s cubic-bezier(.2,.9,.3,1) forwards}
+      @keyframes slnRise{to{opacity:1;transform:none}}
+      @media (max-width:600px){
+        .sln-overlay{padding:0;place-items:end center}
+        .sln-card{width:100%;max-height:92dvh;border-radius:26px 26px 0 0;padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+      }
+      @media (prefers-reduced-motion:reduce){
+        .sln-root .drift1,.sln-root .drift2,.sln-root .drift3,.sln-root .wave,.sln-root .halo,.sln-root .bob,.sln-root .sway-r,.sln-root .spin-slow,.sln-root .shimmer,.sln-root .star-spin,.sln-root .star-shape,.sln-root #sln-cal{animation:none !important}
+        .sln-root .cal-item{animation:none;opacity:1}
+        .sln-overlay,.sln-card,.sln-root .node .disc,.sln-root .star-hover{transition:none}
+        .sln-card > .sln-anim{opacity:1;transform:none;animation:none}
+      }
+    </style>
+
+    <div class="sln-root" id="sln-root">
+      <main class="sln-stage" id="sln-stage" aria-label="Soulful Living Nodes — interactive map">
+        <svg id="sln-scene" viewBox="0 0 800 1067" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <radialGradient id="sln-gPink" cx="55%" cy="6%" r="55%">
+              <stop offset="0%" stop-color="#f2b9ac" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#f2b9ac" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sln-gRed" cx="27%" cy="49%" r="60%">
+              <stop offset="0%" stop-color="#df4b2c" stop-opacity=".96"/>
+              <stop offset="42%" stop-color="#e56a44" stop-opacity=".74"/>
+              <stop offset="100%" stop-color="#e56a44" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sln-gOrange" cx="43%" cy="88%" r="52%">
+              <stop offset="0%" stop-color="#ec7a35" stop-opacity=".85"/>
+              <stop offset="100%" stop-color="#ec7a35" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sln-gTeal" cx="5%" cy="84%" r="27%">
+              <stop offset="0%" stop-color="#17d9c5" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="#17d9c5" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sln-gGreen" cx="13%" cy="96%" r="24%">
+              <stop offset="0%" stop-color="#7fdd6e" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#7fdd6e" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sln-gYellow" cx="27%" cy="102%" r="28%">
+              <stop offset="0%" stop-color="#f7d858" stop-opacity=".92"/>
+              <stop offset="100%" stop-color="#f7d858" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="sln-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch" result="n"/>
+              <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .55 .55 .55 0 0"/>
+            </filter>
+            <pattern id="sln-hatch" width="4.2" height="4.2" patternUnits="userSpaceOnUse">
+              <rect width="1.9" height="4.2" fill="#1c1712"/>
+            </pattern>
+          </defs>
+          <rect class="full" width="800" height="1067" fill="#f9f5ef"/>
+          <g>
+            <rect class="full drift2" width="800" height="1067" fill="url(#sln-gPink)"/>
+            <rect class="full drift1" width="800" height="1067" fill="url(#sln-gRed)"/>
+            <rect class="full drift2" width="800" height="1067" fill="url(#sln-gOrange)"/>
+            <g class="drift3">
+              <rect class="full" width="800" height="1067" fill="url(#sln-gTeal)"/>
+              <rect class="full" width="800" height="1067" fill="url(#sln-gGreen)"/>
+              <rect class="full" width="800" height="1067" fill="url(#sln-gYellow)"/>
+            </g>
+          </g>
+          <rect class="full" width="800" height="1067" filter="url(#sln-grain)" opacity=".3" style="mix-blend-mode:multiply"/>
+          <path id="sln-guide" fill="none" stroke="none" d=""/>
+          <g id="sln-deco" stroke-linecap="square"></g>
+          <g id="sln-calWrap"><g id="sln-cal"></g></g>
+        </svg>
+      </main>
+    </div>
+
+    <div class="sln-tip" id="sln-tip"></div>
+    <div class="sln-overlay" id="sln-overlay" hidden>
+      <div class="sln-backdrop" id="sln-backdrop"></div>
+      <article class="sln-card" role="dialog" aria-modal="true" aria-labelledby="sln-mTitle">
+        <button class="sln-close" id="sln-closeBtn" aria-label="Close">✕</button>
+        <div id="sln-cardBody"></div>
+      </article>
+    </div>
+
+    <script>
+    (function(){
+      const NS='http://www.w3.org/2000/svg';
+      const SPECIAL=[3,4,10,11,17,18,24,25,31];
+      const CHAPTER={}; SPECIAL.forEach((d,i)=>CHAPTER[d]=String(i+1).padStart(2,'0'));
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarse=matchMedia('(pointer: coarse)').matches;
+      const HIT=coarse?26:19;
+
+      const $=id=>document.getElementById('sln-'+id);
+      const root=$('root'), svg=$('scene'), stage=$('stage'), guide=$('guide'), deco=$('deco'), cal=$('cal');
+      const lerp=(a,b,t)=>a+(b-a)*t;
+      const smooth=(e0,e1,x)=>{const u=Math.min(1,Math.max(0,(x-e0)/(e1-e0)));return u*u*(3-2*u);};
+      function el(n,attrs,parent){const e=document.createElementNS(NS,n);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+
+      const VB_P=[800,1067], VB_L=[1400,800];
+      const PATH_P=[[96,641],[300,612],[468,590],[588,528],[670,486],[727,428],[731,364],[734,314],[699,291],[651,286],[613,282],[574,279],[538,283]];
+      const PATH_L=[[150,560],[450,520],[750,470],[1000,380],[1150,325],[1240,250],[1230,185],[1222,135],[1170,115],[1120,118],[1082,121],[1045,128],[1012,140]];
+      function pathD(t){
+        const p=PATH_P.map((q,i)=>[lerp(q[0],PATH_L[i][0],t),lerp(q[1],PATH_L[i][1],t)]);
+        let d=`M ${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+        for(let i=1;i<13;i+=3)
+          d+=` C ${p[i][0].toFixed(1)} ${p[i][1].toFixed(1)}, ${p[i+1][0].toFixed(1)} ${p[i+1][1].toFixed(1)}, ${p[i+2][0].toFixed(1)} ${p[i+2][1].toFixed(1)}`;
+        return d;
+      }
+      const GRADS=[
+        ['gPink',  [55,6,55],  [50,5,50]],
+        ['gRed',   [27,49,60], [28,55,50]],
+        ['gOrange',[43,88,52], [48,92,45]],
+        ['gTeal',  [5,84,27],  [4,82,20]],
+        ['gGreen', [13,96,24], [10,95,18]],
+        ['gYellow',[27,102,28],[20,104,22]]
+      ];
+
+      const updaters=[];
+      function place(P,L,inner,grow){
+        const g=el('g',{},deco);
+        g.innerHTML=inner;
+        const pr=P[2]||0, lr=L[2]||0, gr=(grow===undefined?0.16:grow);
+        updaters.push(t=>{
+          const s=1+gr*t;
+          g.setAttribute('transform',
+            `translate(${lerp(P[0],L[0],t).toFixed(1)} ${lerp(P[1],L[1],t).toFixed(1)}) rotate(${lerp(pr,lr,t).toFixed(2)}) scale(${s.toFixed(3)})`);
+        });
+        return g;
+      }
+      const O='fill="none" stroke="#1c1712"';
+      place([4,92],[4,80],`<rect x="-9" y="-20" width="18" height="40" ${O} stroke-width="1.6"/>`);
+      place([5,127],[5,113],`<rect x="-5" y="-3" width="10" height="6" fill="#1c1712"/>`);
+      place([4,262],[4,303],`<rect x="-4" y="-5.5" width="8" height="11" fill="#1c1712"/>`);
+      place([4,353],[4,433],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
+      place([4,547],[4,623],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
+      place([214,102],[235,84],`<rect x="-102.5" y="-14" width="205" height="28" fill="#1c1712"/>`);
+      place([304,451],[266,338],`<rect x="-17" y="-8" width="34" height="16" fill="#1c1712"/>`);
+      place([538,771],[790,703],`<rect x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`);
+      place([303,859],[338,708],`<rect x="-8" y="-8" width="16" height="16" fill="#1c1712"/>`);
+      place([378,197,-55.5],[520,165,-25],`<rect x="-197" y="-8" width="394" height="16" ${O} stroke-width="1.6"/>`);
+      place([443,47],[620,50],`<circle class="bob" r="4" fill="#1c1712"/>`);
+      place([540,45],[762,56],`<circle class="bob" style="animation-delay:-2.4s" r="3" fill="#1c1712"/>`);
+      place([466,150],[700,142],`<circle class="bob" style="animation-delay:-4.1s" r="4" fill="#1c1712"/>`);
+      place([306,200],[420,232],`<circle class="bob" style="animation-delay:-5.6s" r="4" fill="#1c1712"/>`);
+      place([583,74],[880,66],`<g ${O} stroke-width="1.7"><circle class="bob" style="animation-delay:-1s" cx="-12" r="5"/><circle class="bob" style="animation-delay:-3s" r="5"/><circle class="bob" style="animation-delay:-5s" cx="12" r="5"/></g>`);
+      place([549,110],[962,100],`<g class="sway-r"><circle r="17.5" fill="url(#sln-hatch)"/><circle r="17.5" ${O} stroke-width="1.4"/></g>`);
+      const W1='q4 -5.5 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0';
+      place([588,188],[1075,168],`<path class="wave" d="M0 0 ${W1}" ${O} stroke-width="2"/>`);
+      place([592,205],[1079,185],`<path class="wave w2" d="M0 0 ${W1}" ${O} stroke-width="2"/>`);
+      const X=`<path d="M-5.5 -5.5 l11 11 M5.5 -5.5 l-11 11" stroke="#1c1712" stroke-width="2" fill="none"/>`;
+      place([556.5,382.5],[832,332],X);
+      place([660.5,596.5],[1082,562],X);
+      place([740.5,748.5],[1282,702],X);
+      place([582,663],[966,626],`<rect x="-26" y="-26" width="52" height="52" ${O} stroke-width="1.6"/>`);
+      place([723,625],[1194,442],`<rect x="-14" y="-12" width="28" height="24" ${O} stroke-width="1.6"/>`);
+      place([673,753],[1247,587],`<rect x="-12" y="-47" width="24" height="94" ${O} stroke-width="1.6"/>`);
+      place([694,698],[1268,532],`<rect x="-6" y="-15" width="12" height="30" ${O} stroke-width="1.4"/>`);
+      place([421,908],[470,660],`<rect x="-73" y="-40" width="146" height="80" ${O} stroke-width="1.5"/>`);
+      place([699,868],[1128,744],`<rect x="-21" y="-4.5" width="42" height="9" ${O} stroke-width="1.4"/>`);
+      place([688,1023],[1332,745],`<circle r="7" ${O} stroke-width="1.6"/>`);
+      place([656,1036],[1292,772],`<rect x="-6" y="-2" width="12" height="4" fill="#1c1712"/>`);
+      let dots='';for(let r=0;r<4;r++)for(let c=0;c<8;c++)dots+=`<circle cx="${-24.5+c*7}" cy="${-10.5+r*7}" r="1.1"/>`;
+      place([710,651],[1181,469],`<g class="shimmer" fill="#1c1712" opacity=".85">${dots}</g>`);
+      place([436,834],[560,742],`<path class="wave" d="M0 0 q5 -6.5 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0" ${O} stroke-width="2.2"/>`);
+      place([567,890],[902,722],`<g class="spin-slow" ${O} stroke-width="1.6"><circle cy="-9" r="5.6"/><circle cx="-7.6" cy="-2.5" r="5.6"/><circle cx="-4.7" cy="6.5" r="5.6"/><circle cx="4.7" cy="6.5" r="5.6"/><circle cx="7.6" cy="-2.5" r="5.6"/></g>`);
+      const star=place([432,286],[760,246],
+        `<circle class="halo" r="16" style="animation-delay:1.9s"/>`+
+        `<g class="star-hover"><g class="star-spin"><path class="star-shape" d="M0,-23 C2,-6.5 6.5,-2 23,0 C6.5,2 2,6.5 0,23 C-2,6.5 -6.5,2 -23,0 C-6.5,-2 -2,-6.5 0,-23 Z" fill="#1c1712"/></g></g>`+
+        `<circle r="${coarse?34:28}" fill="transparent"/>`,0.15);
+      star.id='sln-starNode';
+      star.classList.add('node','star-node');
+      star.setAttribute('role','button');star.setAttribute('tabindex','0');
+      star.setAttribute('aria-label','Open reserved star node');
+
+      const calItems=[];
+      const label=el('text',{class:'cal-label cal-item','text-anchor':'end','dominant-baseline':'central'},cal);
+      label.textContent='Soulful Living Nodes';
+      label.style.animationDelay='.1s';
+      let haloDelay=0;
+      for(let i=1;i<=31;i++){
+        const g=el('g',{class:'cal-item'},cal);
+        g.style.animationDelay=(0.15+i*0.03).toFixed(2)+'s';
+        if(SPECIAL.includes(i)){
+          g.classList.add('node'); if(i===3)g.classList.add('primary');
+          g.setAttribute('role','button');g.setAttribute('tabindex','0');
+          g.setAttribute('aria-label','Open node '+i);
+          const halo=el('circle',{class:'halo',r:12.8},g);
+          halo.style.animationDelay=(haloDelay+=0.4)+'s';
+          el('circle',{class:'disc',r:12.8,fill:'#1c1712'},g);
+          const t=el('text',{class:'num-in','text-anchor':'middle','dominant-baseline':'central',dy:'.5'},g);
+          t.textContent=i;
+          el('circle',{r:HIT,fill:'transparent'},g);
+          g.addEventListener('click',()=>openNode(i));
+          g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openNode(i);}});
+          g.addEventListener('mouseenter',e=>showTip(e.currentTarget,
+            i===3?'Zahir Sky Atelier · The First Chapter':'Chapter '+CHAPTER[i]+' · Coming soon'));
+          g.addEventListener('mouseleave',hideTip);
+        }else{
+          const t=el('text',{class:'num','text-anchor':'middle','dominant-baseline':'central'},g);
+          t.textContent=i;
+        }
+        calItems.push(g);
+      }
+
+      function layoutCal(t){
+        guide.setAttribute('d',pathD(t));
+        const L=guide.getTotalLength();
+        const sc=1+0.22*t;
+        const s0=lerp(206,246,t), endPad=10;
+        const step=(L-s0-endPad)/30;
+        const at=s=>{
+          s=Math.max(0,Math.min(L,s));
+          const a=guide.getPointAtLength(s), b=guide.getPointAtLength(Math.min(L,s+0.8));
+          return {x:a.x,y:a.y,a:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI};
+        };
+        const lp=at(s0-14*sc);
+        label.setAttribute('transform',`translate(${lp.x.toFixed(1)} ${lp.y.toFixed(1)}) rotate(${lp.a.toFixed(2)}) scale(${sc.toFixed(3)})`);
+        for(let i=1;i<=31;i++){
+          const p=at(s0+(i-1)*step);
+          calItems[i-1].setAttribute('transform',
+            `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.a.toFixed(2)}) scale(${sc.toFixed(3)})`);
+        }
+      }
+
+      const fullRects=[...root.querySelectorAll('.full')];
+      function applyAll(t){
+        const vbW=lerp(VB_P[0],VB_L[0],t), vbH=lerp(VB_P[1],VB_L[1],t);
+        svg.setAttribute('viewBox',`0 0 ${vbW.toFixed(1)} ${vbH.toFixed(1)}`);
+        fullRects.forEach(r=>{r.setAttribute('width',vbW.toFixed(1));r.setAttribute('height',vbH.toFixed(1));});
+        GRADS.forEach(([id,P,L])=>{
+          const g=$(id);
+          g.setAttribute('cx',lerp(P[0],L[0],t).toFixed(1)+'%');
+          g.setAttribute('cy',lerp(P[1],L[1],t).toFixed(1)+'%');
+          g.setAttribute('r', lerp(P[2],L[2],t).toFixed(1)+'%');
+        });
+        updaters.forEach(u=>u(t));
+        layoutCal(t);
+        // stage size follows the parent container (not the window)
+        const cw=root.clientWidth||1, ch=root.clientHeight||1;
+        const availW=cw*0.98, availH=ch*0.98, ar=vbW/vbH;
+        const w=Math.min(availW, availH*ar);
+        stage.style.width=w+'px';
+        stage.style.height=(w/ar)+'px';
+      }
+
+      // t driven by the CONTAINER aspect ratio (ResizeObserver)
+      const computeT=()=>smooth(0.85,1.4,(root.clientWidth||1)/(root.clientHeight||1));
+      let tTarget=computeT(), tCur=tTarget, dirty=true;
+      if('ResizeObserver' in window){ new ResizeObserver(()=>{tTarget=computeT();dirty=true;}).observe(root); }
+      else { addEventListener('resize',()=>{tTarget=computeT();dirty=true;}); }
+
+      const tip=$('tip');
+      function showTip(node,text){
+        tip.textContent=text;
+        const r=node.getBoundingClientRect();
+        tip.style.left=(r.left+r.width/2)+'px';
+        tip.style.top=r.top+'px';
+        tip.classList.add('on');
+      }
+      function hideTip(){tip.classList.remove('on');}
+
+      const overlay=$('overlay'), cardBody=$('cardBody'), closeBtn=$('closeBtn');
+      // mount body-level nodes on document.body
+      document.body.appendChild(overlay);
+      document.body.appendChild(tip);
+
+      const MAIN_HTML=`
+        <p class="sln-eyebrow sln-anim" style="animation-delay:.05s">The First Chapter</p>
+        <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.12s">Zahir Sky Atelier</h1>
+        <div class="sln-anim" style="animation-delay:.19s"><span class="sln-pill">MORE&nbsp;&nbsp;THAN&nbsp;&nbsp;RESIDENCE</span></div>
+        <h2 class="sln-subhead sln-anim" style="animation-delay:.26s">Where Space and Human Life Evolve Together</h2>
+        <p class="sln-anim" style="animation-delay:.32s">From its first residence, FRISSON begins <b>building a new global living network — where Space, Art, Intelligence, and Soul converge.</b></p>
+        <p class="sln-anim" style="animation-delay:.38s">Zahir Sky Atelier is the first node of this vision: a living environment designed to inspire, connect, and evolve with those who inhabit it.</p>
+        <p class="sln-anim" style="animation-delay:.44s">Inspired by the cultural significance of places such as the Pitti Palace in Florence — where art, ideas, and human ambition converged — <b>FRISSON creates new nodes of human connection and creativity for a new era of living.</b></p>
+        <p class="sln-anim" style="animation-delay:.5s">Through Eastern philosophy, timeless aesthetics, and <b>Sona — a new form of spatial intelligence that enables environments to become more attuned to human life — we create spaces that cultivate beauty, restore vitality, and deepen the human experience.</b></p>
+        <div class="sln-anim" style="animation-delay:.58s"><a class="sln-cta" href="#" id="sln-storyCta">Story <span class="sln-arr">›</span></a></div>`;
+
+      const placeholderHTML=day=>`
+        <p class="sln-eyebrow sln-anim" style="animation-delay:.05s">Chapter ${CHAPTER[day]}</p>
+        <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.12s">Unwritten Node</h1>
+        <div class="sln-anim" style="animation-delay:.19s"><span class="sln-pill">COMING&nbsp;&nbsp;SOON</span></div>
+        <p class="sln-anim" style="animation-delay:.28s">This point on the map is still forming. Each node of the Soulful Living network opens into a new environment — <b>where Space, Art, Intelligence, and Soul converge</b> — revealed one chapter at a time.</p>`;
+
+      const STAR_HTML=`
+        <p class="sln-eyebrow sln-anim" style="animation-delay:.05s">A Reserved Signal</p>
+        <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.12s">Guiding Star</h1>
+        <div class="sln-anim" style="animation-delay:.19s"><span class="sln-pill">TO&nbsp;&nbsp;BE&nbsp;&nbsp;REVEALED</span></div>
+        <p class="sln-anim" style="animation-delay:.28s">This mark is held open on the map — a signal reserved for what comes next. When its moment arrives, it will unfold into a new dimension of the Soulful Living network, <b>beyond chapters, beyond the calendar.</b></p>`;
+
+      let lastFocus=null;
+      function openHTML(html){
+        hideTip();
+        lastFocus=document.activeElement;
+        cardBody.innerHTML=html;
+        overlay.hidden=false;
+        requestAnimationFrame(()=>requestAnimationFrame(()=>overlay.classList.add('show')));
+        closeBtn.focus({preventScroll:true});
+        // wire the Story CTA to the site's existing Zahir story dialog (#vm-grotto)
+        const sc=document.getElementById('sln-storyCta');
+        if(sc){ sc.addEventListener('click',function(e){ e.preventDefault(); closeModal(); var d=document.getElementById('vm-grotto'); if(d&&d.showModal&&!d.open) d.showModal(); }); }
+      }
+      function openNode(day){
+        openHTML(day===3?MAIN_HTML:placeholderHTML(day));
+        if(day===3){
+          const n=root.querySelector('.node.primary');
+          if(n)setTimeout(()=>n.classList.remove('primary'),600);
+        }
+      }
+      function closeModal(){
+        overlay.classList.remove('show');
+        setTimeout(()=>{overlay.hidden=true;},380);
+        if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
+      }
+      closeBtn.addEventListener('click',closeModal);
+      $('backdrop').addEventListener('click',closeModal);
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeModal();});
+
+      const openStar=()=>openHTML(STAR_HTML);
+      star.addEventListener('click',openStar);
+      star.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStar();}});
+      star.addEventListener('mouseenter',e=>showTip(e.currentTarget,'Reserved · To be revealed'));
+      star.addEventListener('mouseleave',hideTip);
+
+      const fine=!reduced && matchMedia('(pointer:fine)').matches;
+      let px=0,py=0,pcx=0,pcy=0;
+      if(fine)addEventListener('pointermove',e=>{
+        const r=root.getBoundingClientRect();
+        px=(e.clientX-r.left)/(r.width||1)-.5; py=(e.clientY-r.top)/(r.height||1)-.5;
+      });
+      const calWrap=$('calWrap');
+      (function frame(){
+        let changed=false;
+        if(Math.abs(tTarget-tCur)>0.0008){tCur+=(tTarget-tCur)*(reduced?1:0.13);changed=true;}
+        else if(tCur!==tTarget){tCur=tTarget;changed=true;}
+        if(changed||dirty){applyAll(tCur);dirty=false;}
+        if(fine){
+          pcx+=(px-pcx)*.05;pcy+=(py-pcy)*.05;
+          deco.setAttribute('transform',`translate(${(pcx*9).toFixed(2)} ${(pcy*7).toFixed(2)})`);
+          calWrap.setAttribute('transform',`translate(${(pcx*4.5).toFixed(2)} ${(pcy*3.5).toFixed(2)})`);
+        }
+        requestAnimationFrame(frame);
+      })();
+      applyAll(tCur);
+
+      // auto-open the first node once the component is 50% in view (replaces the load setTimeout)
+      let autoOpened=false;
+      if('IntersectionObserver' in window){
+        const io=new IntersectionObserver((es)=>{
+          es.forEach(e=>{ if(!autoOpened && e.isIntersecting && e.intersectionRatio>=0.5){ autoOpened=true; io.disconnect(); openNode(3); } });
+        },{threshold:0.5});
+        io.observe(root);
+      } else {
+        setTimeout(()=>{ if(!autoOpened){autoOpened=true; openNode(3);} }, reduced?400:1200);
+      }
+    })();
+    </script>
+    </section>
