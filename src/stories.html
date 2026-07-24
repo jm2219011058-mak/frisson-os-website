@@ -127,9 +127,10 @@
   /* article view */
   .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(84px,13vh,130px) clamp(24px,6vw,40px) 0;}
   .fn-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.2vw,14px);letter-spacing:.04em;
-    color:var(--accent);background:transparent;border:1.5px solid var(--accent);border-radius:999px;padding:9px 20px 9px 16px;cursor:pointer;
-    transition:background .2s,color .2s,box-shadow .2s;}
-  .fn-back:hover{background:var(--accent);color:#fff;box-shadow:0 8px 22px rgba(224,123,60,.32);}
+    color:var(--accent);background:transparent;border:0;padding:0;cursor:pointer;
+    text-shadow:0 0 10px rgba(224,123,60,.28);transition:opacity .2s,text-shadow .25s;}
+  .fn-back:hover{opacity:.92;text-shadow:0 0 16px rgba(224,123,60,.55);}
+  .fn-back:hover svg{filter:drop-shadow(0 0 6px rgba(224,123,60,.5));}
   .fn-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
   .fn-article .story{padding-top:clamp(16px,2.5vh,28px);}
 
