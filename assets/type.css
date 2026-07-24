@@ -7,7 +7,8 @@
 /* TYPE ORDER (Editorial Renaissance):
    --serif (Fraunces)  → everything readable: headlines AND body/leads/captions.
    --sans  (Space Grotesk) → only small "chrome": eyebrows/kickers, nav links,
-                             buttons/CTAs, numbers/IDs/stats, dates, form labels, pills.
+                             numbers/IDs/stats, dates, form labels, pills.
+                             (Buttons/CTAs use --serif too — part of the editorial voice.)
    Pages set body{font-family:var(--serif)} so serif is the default; sans is opt-in. */
 :root{
   --serif:"Fraunces","Noto Serif SC",serif;
