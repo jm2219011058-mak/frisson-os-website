@@ -90,29 +90,33 @@
     max-width:34ch;margin:clamp(64px,12vh,120px) auto 0;padding:0;border:0;}
 
   /* ===== Field Notes — editorial index (archive → article → back) ===== */
-  .fn-index{max-width:940px;margin:0 auto;padding:clamp(96px,15vh,170px) clamp(24px,6vw,40px) clamp(70px,11vh,130px);}
-  .fn-head{text-align:center;margin:0 0 clamp(38px,6.5vh,72px);}
+  .fn-index{padding:clamp(96px,15vh,170px) 0 0;}
+  .fn-head{max-width:940px;margin:0 auto clamp(42px,7vh,84px);padding:0 clamp(24px,6vw,40px);text-align:center;}
   .fn-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(11px,1.2vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(16px,2.6vh,24px);}
   .fn-title{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,52px);line-height:1.12;letter-spacing:.005em;color:var(--ink);margin:0 auto;max-width:22ch;}
   .fn-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:clamp(26px,4.5vh,44px) 0 0;}
   .fn-tab{font-family:var(--sans);font-size:13px;letter-spacing:.03em;color:var(--ink-soft);background:transparent;border:1px solid var(--hair);border-radius:999px;padding:8px 18px;cursor:pointer;transition:color .2s,background .2s,border-color .2s;}
   .fn-tab:hover{border-color:var(--accent);color:var(--accent);}
   .fn-tab.is-on{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .fn-list{display:flex;flex-direction:column;}
-  .fn-card{display:grid;grid-template-columns:clamp(150px,26vw,250px) 1fr;gap:clamp(20px,4vw,48px);align-items:center;
-    padding:clamp(26px,4.5vh,44px) 0;border-top:1px solid var(--hair);text-decoration:none;color:inherit;}
-  .fn-card:last-child{border-bottom:1px solid var(--hair);}
-  .fn-cbody{display:flex;flex-direction:column;align-items:flex-start;min-width:0;}
-  .fn-thumb{aspect-ratio:4/3;border-radius:12px;background:#ece7de center center/cover no-repeat;overflow:hidden;transition:transform .45s cubic-bezier(.2,.7,.2,1);}
-  .fn-thumb-empty{background:repeating-linear-gradient(135deg,#f2ede4,#f2ede4 15px,#e9e2d6 15px,#e9e2d6 30px);}
-  .fn-card:hover .fn-thumb{transform:scale(1.03);}
-  .fn-cmeta{font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;}
-  .fn-ctitle{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.8vw,34px);line-height:1.14;letter-spacing:.005em;color:var(--ink);margin:0 0 .3em;transition:color .2s;}
-  .fn-card:hover .fn-ctitle{color:var(--accent);}
-  .fn-csub{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.4vw,17px);color:var(--ink-soft);margin:0 0 .7em;}
-  .fn-cx{font-family:var(--serif);font-size:clamp(14px,1.35vw,16px);line-height:1.62;color:var(--ink-soft);margin:0 0 1em;max-width:54ch;}
-  .fn-read{font-family:var(--sans);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
-  @media(max-width:640px){ .fn-card{grid-template-columns:1fr;gap:16px;} }
+  /* full-bleed image-tile grid — newest first (top-left), edge to edge */
+  .fn-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;}
+  .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
+    overflow:hidden;text-decoration:none;color:#fff;background:#1a1512 center center/cover no-repeat;
+    padding:clamp(24px,2.8vw,42px);}
+  .fn-card.fn-ph{background:linear-gradient(150deg,#241b13,#12100e);}
+  .fn-card::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(0,0,0,.12) 0%,rgba(0,0,0,0) 32%,rgba(0,0,0,.2) 56%,rgba(0,0,0,.74) 100%);transition:background .3s;}
+  .fn-card:hover::after{background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5) 58%,rgba(0,0,0,.82));}
+  .fn-cbody{position:relative;z-index:2;}
+  .fn-ctitle{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(26px,2.5vw,40px);line-height:1.05;letter-spacing:.005em;color:#fff;margin:0 0 .4em;text-wrap:balance;}
+  .fn-cmeta{display:block;font-family:var(--sans);font-size:clamp(12px,1vw,14px);letter-spacing:.04em;color:rgba(255,255,255,.82);margin:0;}
+  .fn-arrow{position:absolute;z-index:2;right:clamp(20px,2.2vw,30px);bottom:clamp(20px,2.2vw,30px);
+    width:42px;height:42px;border:1.5px solid rgba(255,255,255,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s,background .25s,border-color .25s;}
+  .fn-card:hover .fn-arrow{opacity:1;transform:none;background:var(--accent);border-color:var(--accent);}
+  .fn-arrow svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  @media(max-width:900px){ .fn-list{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .fn-list{grid-template-columns:1fr;} .fn-card{aspect-ratio:16/10;} }
   /* article view */
   .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(84px,13vh,130px) clamp(24px,6vw,40px) 0;}
   .fn-back{font-family:var(--sans);font-size:13px;letter-spacing:.06em;color:var(--ink-soft);background:transparent;border:0;cursor:pointer;padding:0;transition:color .2s;}
@@ -157,35 +161,26 @@
         </div>
       </header>
       <div class="fn-list">
-        <a class="fn-card" href="#" data-view="0" data-cat="diary">
-          <span class="fn-thumb" style="background-image:url('assets/city/diary-limits.webp')"></span>
+        <a class="fn-card" href="#" data-view="0" data-cat="diary" style="background-image:url('assets/city/diary-limits.webp')">
           <span class="fn-cbody">
-            <span class="fn-cmeta">Field Note · July 23, 2026</span>
             <span class="fn-ctitle">The Power of Limits</span>
-            <span class="fn-csub">— What matters most is invisible</span>
-            <span class="fn-cx">At Pixar, there is a phenomenon producers call the “invisible perfect coin” — the obsessive attention to detail no one will ever notice, and that is precisely why it matters.</span>
-            <span class="fn-read">Read note</span>
+            <span class="fn-cmeta">Field Note · July 23, 2026</span>
           </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="fn-card" href="#" data-view="1" data-cat="diary">
-          <span class="fn-thumb fn-thumb-empty"></span>
+        <a class="fn-card fn-ph" href="#" data-view="1" data-cat="diary">
           <span class="fn-cbody">
-            <span class="fn-cmeta">Field Note · July 19, 2026</span>
             <span class="fn-ctitle">Competing Against Luck</span>
-            <span class="fn-csub">A Soulful Conversation with Dav</span>
-            <span class="fn-cx">The things that matter most rarely begin with a grand plan. They begin with a real meeting, an honest conversation, a shared recognition of where the future might lead.</span>
-            <span class="fn-read">Read note</span>
+            <span class="fn-cmeta">Field Note · July 19, 2026</span>
           </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="fn-card" href="#" data-view="2" data-cat="essay">
-          <span class="fn-thumb fn-thumb-empty"></span>
+        <a class="fn-card fn-ph" href="#" data-view="2" data-cat="essay">
           <span class="fn-cbody">
-            <span class="fn-cmeta">Essay · July 18, 2026</span>
             <span class="fn-ctitle">The Future of AI Begins with How We Live</span>
-            <span class="fn-csub">FRISSON Manifesto</span>
-            <span class="fn-cx">For the past decade, AI has largely existed behind screens. The next generation will not simply understand language — it will understand context, environment, and, ultimately, life itself.</span>
-            <span class="fn-read">Read essay</span>
+            <span class="fn-cmeta">FRISSON Manifesto · July 18, 2026</span>
           </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
       </div>
     </section>
