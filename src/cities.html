@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/type.css">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="assets/vendor/gsap/gsap.min.js"></script>
 <script src="assets/vendor/gsap/SplitText.min.js"></script>
 <script src="assets/vendor/gsap/CustomEase.min.js"></script>
@@ -369,8 +368,8 @@
     <section class="zres-nodes reveal">
     <style>
       .zres-nodes{background:#f9f5ef;padding:0;}
-      .sln-root{position:relative;width:100%;height:min(100vh,1000px);display:grid;place-items:center;overflow:hidden;font-family:'Manrope',system-ui,sans-serif;}
-      .sln-stage{position:relative;overflow:hidden;}
+      .sln-root{position:relative;width:100%;display:block;overflow:hidden;font-family:var(--sans);}
+      .sln-stage{position:relative;overflow:hidden;width:100%;margin:0 auto;}
       .sln-stage svg{display:block;width:100%;height:100%}
       /* ambient blob drift */
       .sln-root .drift1,.sln-root .drift2,.sln-root .drift3{transform-box:fill-box;transform-origin:center}
@@ -404,9 +403,9 @@
       .sln-root .wave.w2{animation-duration:9s;animation-delay:-3s}
       @keyframes slnSway{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
       /* calendar / nodes */
-      .sln-root .cal-label{font-family:'Archivo',sans-serif;font-weight:600;font-size:18px;letter-spacing:.02em;fill:var(--ink)}
-      .sln-root .num{font-family:'Archivo',sans-serif;font-weight:600;font-size:20.5px;fill:var(--ink)}
-      .sln-root .num-in{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;fill:#f8f4ee;pointer-events:none}
+      .sln-root .cal-label{font-family:var(--sans);font-weight:600;font-size:18px;letter-spacing:.02em;fill:var(--ink)}
+      .sln-root .num{font-family:var(--sans);font-weight:600;font-size:20.5px;fill:var(--ink)}
+      .sln-root .num-in{font-family:var(--sans);font-weight:700;font-size:14px;fill:#f8f4ee;pointer-events:none}
       .sln-root .node{cursor:pointer}
       .sln-root .node .disc{transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1)}
       .sln-root .node:hover .disc,.sln-root .node:focus-visible .disc{transform:scale(1.18)}
@@ -416,7 +415,7 @@
       .sln-root .node.primary .halo{fill:var(--accent);animation-duration:2.4s}
       @keyframes slnPulse{0%{transform:scale(.55);opacity:.5}70%{transform:scale(2.15);opacity:0}100%{transform:scale(2.15);opacity:0}}
       /* tooltip (body-level) */
-      .sln-tip{position:fixed;z-index:40;pointer-events:none;background:var(--ink);color:#f8f4ee;font:600 12px/1 'Manrope',sans-serif;letter-spacing:.04em;padding:7px 12px;border-radius:999px;white-space:nowrap;transform:translate(-50%,calc(-100% - 14px));opacity:0;transition:opacity .18s ease,transform .18s ease;}
+      .sln-tip{position:fixed;z-index:40;pointer-events:none;background:var(--ink);color:#f8f4ee;font:600 12px/1 var(--sans);letter-spacing:.04em;padding:7px 12px;border-radius:999px;white-space:nowrap;transform:translate(-50%,calc(-100% - 14px));opacity:0;transition:opacity .18s ease,transform .18s ease;}
       .sln-tip.on{opacity:1;transform:translate(-50%,calc(-100% - 18px))}
       .sln-tip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
       /* modal (body-level) */
@@ -429,13 +428,13 @@
       .sln-card::-webkit-scrollbar-thumb{background:#e0d5c4;border-radius:99px}
       .sln-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;border:1px solid #e8ddcd;background:transparent;color:#9a8b74;font-size:19px;line-height:1;cursor:pointer;transition:.25s;display:grid;place-items:center;}
       .sln-close:hover{background:#f4ece0;color:#5c4f3c;transform:rotate(90deg)}
-      .sln-eyebrow{color:var(--accent);font:500 clamp(15px,2.2vw,19px)/1.3 'Space Grotesk',sans-serif;letter-spacing:.06em;margin-bottom:14px}
-      .sln-m-title{font:500 clamp(38px,7vw,58px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-.015em;color:#2a211a;margin-bottom:24px}
-      .sln-pill{display:inline-block;border:1px solid #e6dac8;border-radius:999px;padding:11px 24px;color:#bd8a58;font:600 clamp(10px,1.6vw,12.5px)/1 'Manrope',sans-serif;letter-spacing:.22em;margin-bottom:34px;}
-      .sln-subhead{font:800 clamp(19px,3vw,24px)/1.35 'Manrope',sans-serif;color:#2a2018;margin-bottom:18px}
-      .sln-card p{font:500 clamp(14.5px,2.1vw,16.5px)/1.75 'Manrope',sans-serif;color:#57503f;margin-bottom:17px}
+      .sln-eyebrow{color:var(--accent);font:500 clamp(15px,2.2vw,19px)/1.3 var(--sans);letter-spacing:.06em;margin-bottom:14px}
+      .sln-m-title{font:500 clamp(38px,7vw,58px)/1.08 var(--serif);letter-spacing:-.015em;color:#2a211a;margin-bottom:24px}
+      .sln-pill{display:inline-block;border:1px solid #e6dac8;border-radius:999px;padding:11px 24px;color:#bd8a58;font:600 clamp(10px,1.6vw,12.5px)/1 var(--sans);letter-spacing:.22em;margin-bottom:34px;}
+      .sln-subhead{font:700 clamp(19px,3vw,24px)/1.35 var(--sans);color:#2a2018;margin-bottom:18px}
+      .sln-card p{font:500 clamp(14.5px,2.1vw,16.5px)/1.75 var(--sans);color:#57503f;margin-bottom:17px}
       .sln-card p b{color:#2c2317;font-weight:800}
-      .sln-cta{display:inline-flex;align-items:center;gap:9px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:600 16px/1 'Manrope',sans-serif;padding:15px 30px;border-radius:999px;transition:.28s;cursor:pointer;}
+      .sln-cta{display:inline-flex;align-items:center;gap:9px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:600 16px/1 var(--sans);padding:15px 30px;border-radius:999px;transition:.28s;cursor:pointer;}
       .sln-cta:hover{background:#c9743a;gap:14px}
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
       .sln-card > .sln-anim{opacity:0;transform:translateY(14px)}
@@ -672,16 +671,14 @@
         });
         updaters.forEach(u=>u(t));
         layoutCal(t);
-        // stage size follows the parent container (not the window)
-        const cw=root.clientWidth||1, ch=root.clientHeight||1;
-        const availW=cw*0.98, availH=ch*0.98, ar=vbW/vbH;
-        const w=Math.min(availW, availH*ar);
-        stage.style.width=w+'px';
-        stage.style.height=(w/ar)+'px';
+        // full-bleed: stage fills the section width; height follows its own aspect ratio
+        const cw=root.clientWidth||1, ar=vbW/vbH;
+        stage.style.width=cw+'px';
+        stage.style.height=(cw/ar)+'px';
       }
 
       // t driven by the CONTAINER aspect ratio (ResizeObserver)
-      const computeT=()=>smooth(0.85,1.4,(root.clientWidth||1)/(root.clientHeight||1));
+      const computeT=()=>smooth(0.85,1.4,innerWidth/Math.max(1,innerHeight));
       let tTarget=computeT(), tCur=tTarget, dirty=true;
       if('ResizeObserver' in window){ new ResizeObserver(()=>{tTarget=computeT();dirty=true;}).observe(root); }
       else { addEventListener('resize',()=>{tTarget=computeT();dirty=true;}); }
