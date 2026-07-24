@@ -90,14 +90,21 @@
     max-width:34ch;margin:clamp(64px,12vh,120px) auto 0;padding:0;border:0;}
 
   /* ===== Field Notes — editorial index (archive → article → back) ===== */
-  .fn-index{padding:clamp(96px,15vh,170px) 0 0;}
-  .fn-head{max-width:940px;margin:0 auto clamp(42px,7vh,84px);padding:0 clamp(24px,6vw,40px);text-align:center;}
-  .fn-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(11px,1.2vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(16px,2.6vh,24px);}
-  .fn-title{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,52px);line-height:1.12;letter-spacing:.005em;color:var(--ink);margin:0 auto;max-width:22ch;}
-  .fn-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:clamp(26px,4.5vh,44px) 0 0;}
-  .fn-tab{font-family:var(--sans);font-size:13px;letter-spacing:.03em;color:var(--ink-soft);background:transparent;border:1px solid var(--hair);border-radius:999px;padding:8px 18px;cursor:pointer;transition:color .2s,background .2s,border-color .2s;}
-  .fn-tab:hover{border-color:var(--accent);color:var(--accent);}
-  .fn-tab.is-on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  /* ===== FIELD NOTES — DESIGN SPEC =====
+     · Filter bar (.fn-bar): a standalone sub-nav directly under the site nav; left-aligned TEXT tabs
+       in Space Grotesk; active tab = accent (orange) with a 2px underline. No title, no search.
+     · Grid (.fn-list): full-bleed, edge-to-edge, 3 cols (2 ≤900px, 1 ≤560px). Newest first (top-left).
+       Each tile = 4:3 image, dark bottom scrim, Fraunces WHITE title + Space Grotesk byline, orange
+       circular arrow revealed on hover.
+     · Article view: accent pill "Back to Field Notes" + long-form story (st-* styles).
+     · Type: Fraunces = titles + body; Space Grotesk = tabs / byline / meta / labels. */
+  .fn-index{padding:0;}
+  .fn-bar{border-bottom:1px solid var(--hair);background:#fff;}
+  .fn-bar-in{display:flex;align-items:center;gap:clamp(22px,3.4vw,46px);max-width:1440px;margin:0 auto;padding:clamp(13px,1.9vh,18px) clamp(24px,6vw,64px);}
+  .fn-tab{font-family:var(--sans);font-weight:500;font-size:clamp(14px,1.35vw,16px);letter-spacing:.02em;color:var(--ink-soft);background:transparent;border:0;padding:6px 0;cursor:pointer;position:relative;transition:color .2s;}
+  .fn-tab:hover{color:var(--ink);}
+  .fn-tab.is-on{color:var(--accent);}
+  .fn-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
   /* full-bleed image-tile grid — newest first (top-left), edge to edge */
   .fn-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;}
   .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
@@ -154,15 +161,13 @@
   <main>
     <!-- INDEX (archive of entries) -->
     <section class="fn-index" id="fnIndex">
-      <header class="fn-head">
-        <p class="fn-eyebrow">{{nav.stories}}</p>
-        <h1 class="fn-title">Notes from the frontier of soulful living.</h1>
-        <div class="fn-tabs" role="tablist" aria-label="Filter">
+      <div class="fn-bar">
+        <div class="fn-bar-in" role="tablist" aria-label="Filter field notes">
           <button class="fn-tab is-on" type="button" data-cat="all">All</button>
           <button class="fn-tab" type="button" data-cat="diary">Diary</button>
           <button class="fn-tab" type="button" data-cat="essay">Essays</button>
         </div>
-      </header>
+      </div>
       <div class="fn-list">
         <a class="fn-card" href="#" data-view="0" data-cat="diary" style="background-image:url('assets/city/diary-limits.webp')">
           <span class="fn-cbody">
