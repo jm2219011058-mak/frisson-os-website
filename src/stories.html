@@ -89,6 +89,60 @@
     font-size:clamp(13.5px,1.25vw,16px);line-height:1.75;letter-spacing:.01em;text-align:center;
     max-width:34ch;margin:clamp(64px,12vh,120px) auto 0;padding:0;border:0;}
 
+  /* ===== Field Notes — editorial index (archive → article → back) ===== */
+  /* ===== FIELD NOTES — DESIGN SPEC =====
+     · Filter bar (.fn-bar): a standalone sub-nav directly under the site nav; left-aligned TEXT tabs
+       in Space Grotesk; active tab = accent (orange) with a 2px underline. No title, no search.
+     · Grid (.fn-list): full-bleed, edge-to-edge, 3 cols (2 ≤900px, 1 ≤560px). NEWEST FIRST, sorted by
+       date (top-left → down). Each tile = 4:3 image, dark bottom scrim, Fraunces WHITE title +
+       Space Grotesk byline (date), orange circular arrow revealed on hover.
+     · Article view (Field Notes ONLY): full-bleed HERO image (.fn-hero) at top → a ‹ chevron back
+       control (.fn-back, accent + soft glow) sitting at the left of an OVERSIZED Fraunces title →
+       long-form story (st-* styles). Each entry pairs one image, reused as tile AND article hero.
+     · Type: Fraunces = titles + body; Space Grotesk = tabs / byline / meta / labels. */
+  .fn-index{padding:0;}
+  .fn-bar{border-bottom:1px solid var(--hair);background:#fff;}
+  .fn-bar-in{display:flex;align-items:center;gap:clamp(22px,3.4vw,46px);max-width:1440px;margin:0 auto;padding:clamp(13px,1.9vh,18px) clamp(24px,6vw,64px);}
+  .fn-tab{font-family:var(--sans);font-weight:500;font-size:clamp(14px,1.35vw,16px);letter-spacing:.02em;color:var(--ink-soft);background:transparent;border:0;padding:6px 0;cursor:pointer;position:relative;transition:color .2s;}
+  .fn-tab:hover{color:var(--ink);}
+  .fn-tab.is-on{color:var(--accent);}
+  .fn-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
+  /* full-bleed image-tile grid — newest first (top-left), edge to edge */
+  .fn-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;}
+  .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
+    overflow:hidden;text-decoration:none;color:#fff;background:#1a1512 center center/cover no-repeat;
+    padding:clamp(24px,2.8vw,42px);}
+  .fn-card.fn-ph{background:linear-gradient(150deg,#241b13,#12100e);}
+  .fn-card::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(0,0,0,.12) 0%,rgba(0,0,0,0) 32%,rgba(0,0,0,.2) 56%,rgba(0,0,0,.74) 100%);transition:background .3s;}
+  .fn-card:hover::after{background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5) 58%,rgba(0,0,0,.82));}
+  .fn-cbody{position:relative;z-index:2;}
+  .fn-ctitle{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(26px,2.5vw,40px);line-height:1.05;letter-spacing:.005em;color:#fff;margin:0 0 .4em;text-wrap:balance;}
+  .fn-cmeta{display:block;font-family:var(--sans);font-size:clamp(12px,1vw,14px);letter-spacing:.04em;color:rgba(255,255,255,.82);margin:0;}
+  .fn-arrow{position:absolute;z-index:2;right:clamp(20px,2.2vw,30px);bottom:clamp(20px,2.2vw,30px);
+    width:42px;height:42px;border:1.5px solid rgba(255,255,255,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s,background .25s,border-color .25s;}
+  .fn-card:hover .fn-arrow{opacity:1;transform:none;background:var(--accent);border-color:var(--accent);}
+  .fn-arrow svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  @media(max-width:900px){ .fn-list{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .fn-list{grid-template-columns:1fr;} .fn-card{aspect-ratio:16/10;} }
+  /* article view — full-bleed hero image on top (Founders-Fund style), then long-form story */
+  .fn-article{position:relative;--fnhero:min(52vh,520px);}
+  .fn-hero{width:100vw;margin-left:calc(50% - 50vw);height:var(--fnhero);background:#1a1512 center center/cover no-repeat;}
+  .fn-hero[hidden]{display:none;}
+  /* ‹ chevron — absolutely placed in the left gutter, vertically aligned to the big title */
+  .fn-backwrap{position:absolute;z-index:5;top:calc(var(--fnhero) + clamp(66px,10vh,116px));
+    left:max(14px, calc(50% - 380px - clamp(14px,3.4vw,56px)));padding:0;margin:0;}
+  .fn-back{display:inline-flex;align-items:center;justify-content:center;width:clamp(42px,4.4vw,54px);height:clamp(42px,4.4vw,54px);
+    background:transparent;border:0;padding:0;cursor:pointer;color:var(--accent);
+    filter:drop-shadow(0 0 8px rgba(224,123,60,.26));transition:filter .25s,transform .2s;}
+  .fn-back:hover{filter:drop-shadow(0 0 15px rgba(224,123,60,.6));transform:translateX(-3px);}
+  .fn-back svg{width:clamp(26px,2.8vw,34px);height:clamp(26px,2.8vw,34px);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  /* article title — oversized editorial headline (Field Notes only), pulled up close to the hero */
+  .fn-article .story{padding-top:clamp(34px,5.5vh,66px);}
+  .fn-article .st-h-title{font-size:clamp(38px,7.6vw,86px);line-height:1;letter-spacing:.005em;margin:0 0 clamp(18px,3vh,30px);}
+  @media(max-width:900px){ .fn-backwrap{top:calc(var(--fnhero) + clamp(48px,7vh,80px));left:14px;} }
+
   /* footer — light */
   .st-foot{border-top:1px solid var(--hair);text-align:center;padding:30px clamp(24px,6vw,40px);
     font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:var(--ink-soft);}
@@ -115,17 +169,50 @@
   </nav>
 
   <main>
-    <div class="story-top">
-      <p class="st-eyebrow">{{nav.stories}}</p>
-      <div class="story-nav">
-        <button class="st-arrow" id="stPrev" type="button" aria-label="Older entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <span class="st-count" id="stCount"></span>
-        <button class="st-arrow" id="stNext" type="button" aria-label="Newer entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <!-- INDEX (archive of entries) -->
+    <section class="fn-index" id="fnIndex">
+      <div class="fn-bar">
+        <div class="fn-bar-in" role="tablist" aria-label="Filter field notes">
+          <button class="fn-tab is-on" type="button" data-cat="all">All</button>
+          <button class="fn-tab" type="button" data-cat="diary">Diary</button>
+          <button class="fn-tab" type="button" data-cat="essay">Essays</button>
+        </div>
       </div>
-    </div>
-    <article class="story" data-entry="0">{{stories.diary2}}</article>
-    <article class="story" data-entry="1" hidden>{{stories.diary}}</article>
-    <article class="story" data-entry="2" hidden>{{stories.body}}</article>
+      <div class="fn-list">
+        <a class="fn-card" href="#" data-view="0" data-cat="diary" style="background-image:url('assets/city/fn-a.webp')">
+          <span class="fn-cbody">
+            <span class="fn-ctitle">The Power of Limits</span>
+            <span class="fn-cmeta">Field Note · July 23, 2026</span>
+          </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="fn-card" href="#" data-view="1" data-cat="diary" style="background-image:url('assets/city/fn-b.webp')">
+          <span class="fn-cbody">
+            <span class="fn-ctitle">Competing Against Luck</span>
+            <span class="fn-cmeta">Field Note · July 19, 2026</span>
+          </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="fn-card" href="#" data-view="2" data-cat="essay" style="background-image:url('assets/city/fn-c.webp')">
+          <span class="fn-cbody">
+            <span class="fn-ctitle">The Future of AI Begins with How We Live</span>
+            <span class="fn-cmeta">Essay · July 18, 2026</span>
+          </span>
+          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ARTICLE (opened from the index) -->
+    <section class="fn-article" id="fnArticle" hidden>
+      <figure class="fn-hero" data-view="0" hidden style="background-image:url('assets/city/fn-a.webp')"></figure>
+      <figure class="fn-hero" data-view="1" hidden style="background-image:url('assets/city/fn-b.webp')"></figure>
+      <figure class="fn-hero" data-view="2" hidden style="background-image:url('assets/city/fn-c.webp')"></figure>
+      <div class="fn-backwrap"><button class="fn-back" id="fnBack" type="button" aria-label="Back to Field Notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
+      <article class="story" data-view="0" hidden>{{stories.diary2}}</article>
+      <article class="story" data-view="1" hidden>{{stories.diary}}</article>
+      <article class="story" data-view="2" hidden>{{stories.body}}</article>
+    </section>
   </main>
 
   <footer class="st-foot">© FRISSON</footer>
@@ -135,27 +222,30 @@
       b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
       m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
     })();
-    /* Stories switcher — index 0 is the newest entry; ‹ older, › newer */
+    /* Field Notes — archive index → open article → back (Founders-Fund-style) */
     (function(){
-      var entries=[].slice.call(document.querySelectorAll('.story[data-entry]'));
-      var nav=document.querySelector('.story-nav');
-      if(entries.length<2){ if(nav) nav.style.display='none'; return; }
-      var prev=document.getElementById('stPrev'), next=document.getElementById('stNext'), count=document.getElementById('stCount');
-      var cur=0;
-      function show(i,dir){
-        cur=Math.max(0,Math.min(entries.length-1,i));
-        entries.forEach(function(e,idx){ e.hidden = idx!==cur; });
-        var el=entries[cur];
-        el.classList.remove('st-in-l','st-in-r');
-        if(dir){ void el.offsetWidth;                 /* reflow → restart animation */
-          el.classList.add(dir>0 ? 'st-in-r' : 'st-in-l'); }
-        next.disabled = (cur===0);                    /* newest → nothing newer */
-        prev.disabled = (cur===entries.length-1);     /* oldest → nothing older */
-        count.textContent=(cur+1)+' / '+entries.length;
+      var index=document.getElementById('fnIndex'), art=document.getElementById('fnArticle'), back=document.getElementById('fnBack');
+      if(!index||!art) return;
+      var cards=[].slice.call(document.querySelectorAll('.fn-card'));
+      var views=[].slice.call(art.querySelectorAll('.story[data-view]'));
+      var heros=[].slice.call(art.querySelectorAll('.fn-hero[data-view]'));
+      var tabs=[].slice.call(document.querySelectorAll('.fn-tab'));
+      function open(v){
+        views.forEach(function(el){ el.hidden = el.getAttribute('data-view')!==v; });
+        heros.forEach(function(el){ el.hidden = el.getAttribute('data-view')!==v; });
+        index.hidden=true; art.hidden=false;
+        var el=art.querySelector('.story[data-view="'+v+'"]');
+        if(el){ el.classList.remove('st-in-r'); void el.offsetWidth; el.classList.add('st-in-r'); }
+        window.scrollTo({top:0,behavior:'auto'});
       }
-      prev.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); show(cur+1,-1); });  /* older ← slide from left */
-      next.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); show(cur-1, 1); });  /* newer → slide from right */
-      show(0);
+      function close(){ art.hidden=true; index.hidden=false; window.scrollTo({top:0,behavior:'auto'}); }
+      cards.forEach(function(c){ c.addEventListener('click',function(e){ e.preventDefault(); open(c.getAttribute('data-view')); }); });
+      if(back) back.addEventListener('click',close);
+      tabs.forEach(function(t){ t.addEventListener('click',function(){
+        tabs.forEach(function(x){ x.classList.remove('is-on'); }); t.classList.add('is-on');
+        var cat=t.getAttribute('data-cat');
+        cards.forEach(function(c){ c.style.display=(cat==='all'||c.getAttribute('data-cat')===cat)?'':'none'; });
+      }); });
     })();
   </script>
 </body>
