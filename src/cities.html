@@ -515,8 +515,10 @@
       .sln-stage{position:relative;overflow:hidden;width:100%;margin:0 auto;}
       .sln-caption{position:absolute;left:clamp(20px,4vw,52px);bottom:clamp(20px,4.5vh,48px);z-index:5;}
       .sln-cap-title{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.2vw,44px);line-height:1.08;color:#1c1712;margin:0 0 clamp(12px,1.8vh,18px);}
-      .sln-cap-cta{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.03em;padding:9px 22px;border-radius:999px;text-decoration:none;transition:background .25s;}
-      .sln-cap-cta:hover{background:#c96a2f;}
+      .sln-cap-cta{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#1c1712;font-family:var(--sans);font-weight:600;font-size:clamp(14px,1.6vw,17px);letter-spacing:.02em;padding:0;text-decoration:none;transition:color .25s;}
+      .sln-cap-cta span{transition:transform .3s;}
+      .sln-cap-cta:hover{color:var(--accent);}
+      .sln-cap-cta:hover span{transform:translateX(4px);}
       .sln-stage svg{display:block;width:100%;height:100%}
       /* ambient blob drift */
       .sln-root .drift1,.sln-root .drift2,.sln-root .drift3{transform-box:fill-box;transform-origin:center}
@@ -584,6 +586,20 @@
       .sln-cta{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:500 clamp(13px,1.45vw,15px)/1 var(--sans);letter-spacing:.03em;padding:9px 22px;border-radius:999px;transition:background .25s;cursor:pointer;}
       .sln-cta:hover{background:#c96a2f;}
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
+      .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
+      .sln-card.sln-cardfull .sln-close{background:rgba(0,0,0,.35);color:#fff;border-color:rgba(255,255,255,.3);z-index:5;}
+      .sln-esec{position:relative;overflow:hidden;background:#0a1622;}
+      .sln-esec img{width:100%;height:100%;display:block;object-fit:cover;position:absolute;inset:0;}
+      .sln-moon{height:min(52vh,460px);}
+      .sln-edge-title{position:absolute;z-index:2;right:clamp(20px,5vw,56px);bottom:clamp(22px,5vh,48px);margin:0;max-width:14ch;text-align:right;font-family:var(--sans);font-weight:700;font-size:clamp(26px,4.6vw,58px);line-height:.98;letter-spacing:.005em;text-transform:uppercase;color:#fff;text-shadow:0 2px 34px rgba(0,0,0,.5);}
+      .sln-castle{min-height:min(60vh,520px);display:flex;align-items:flex-end;background:#0a0b10;}
+      .sln-castle::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,.06) 32%,rgba(0,0,0,.58) 70%,rgba(0,0,0,.84));}
+      .sln-castle-cap{position:relative;z-index:2;padding:clamp(80px,14vh,150px) clamp(20px,5vw,48px) clamp(26px,5vh,48px);text-align:left;}
+      .sln-v-title{font-family:var(--serif);font-weight:700;font-size:clamp(28px,5vw,58px);letter-spacing:.01em;line-height:.98;text-transform:uppercase;color:#fff;margin:0 0 clamp(12px,2vh,20px);text-shadow:0 2px 34px rgba(0,0,0,.5);}
+      .sln-v-pill{display:inline-flex;align-items:center;font-family:var(--sans);font-weight:500;font-size:clamp(10.5px,1.15vw,12.5px);letter-spacing:.18em;text-transform:uppercase;color:#f4ecdc;border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:8px 18px;background:rgba(0,0,0,.30);backdrop-filter:blur(4px);}
+      .sln-v-points{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.6vw,36px);margin:clamp(22px,3.6vh,38px) 0 0;}
+      .sln-v-points p{border-top:1px solid rgba(255,255,255,.30);padding-top:clamp(12px,2vh,20px);font-family:var(--serif);font-size:clamp(13.5px,1.35vw,16px);line-height:1.6;color:rgba(244,236,220,.95);margin:0;text-shadow:0 2px 18px rgba(0,0,0,.72);}
+      @media(max-width:640px){.sln-v-points{grid-template-columns:1fr;gap:14px;}.sln-moon{height:min(38vh,300px);}}
       .sln-card > .sln-anim{opacity:0;transform:translateY(14px)}
       .sln-overlay.show .sln-card > .sln-anim{animation:slnRise .7s cubic-bezier(.2,.9,.3,1) forwards}
       @keyframes slnRise{to{opacity:1;transform:none}}
@@ -864,12 +880,22 @@
         <p class="sln-anim" style="animation-delay:.28s">This point on the map is still forming. Each node of the Soulful Living network opens into a new environment — <b>where Space, Art, Intelligence, and Soul converge</b> — revealed one chapter at a time.</p>`;
 
       const STAR_HTML=`
-        <p class="sln-eyebrow sln-anim" style="animation-delay:.05s">Beyond Earth</p>
-        <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.12s">Soulful Existence Beyond Earth</h1>
-        <div class="sln-anim" style="animation-delay:.19s"><span class="sln-pill">HIGH&nbsp;&nbsp;FRONTIER&nbsp;&nbsp;2035&nbsp;&nbsp;·&nbsp;&nbsp;LUNAR&nbsp;/&nbsp;MARTIAN&nbsp;CASTLE</span></div>
-        <p class="sln-anim" style="animation-delay:.28s">New technologies in construction, transportation, communication and life science are what soulful living in extraterrestrial space will require.</p>
-        <p class="sln-anim" style="animation-delay:.34s">More-than-human city design. Payload-efficient hospitality.</p>
-        <p class="sln-anim" style="animation-delay:.4s">Sona is prepared from day one, enabling spatial intelligence to support human physiological and psychological welfare in the most challenging environments.</p>`;
+        <section class="sln-esec sln-moon">
+          <img src="assets/city/Moon.jpeg" alt="The lunar surface, beyond Earth">
+          <h2 class="sln-edge-title">Soulful Existence Beyond Earth</h2>
+        </section>
+        <section class="sln-esec sln-castle">
+          <img src="assets/city/moon-castle.jpg" alt="A castle on the lunar surface">
+          <div class="sln-castle-cap">
+            <h2 class="sln-v-title">High Frontier 2035</h2>
+            <div><span class="sln-v-pill">Lunar / Martian Castle</span></div>
+            <div class="sln-v-points">
+              <p>New technologies in construction, transportation, communication and life science are what soulful living in extraterrestrial space will require.</p>
+              <p>More-than-human city design. Payload-efficient hospitality.</p>
+              <p>Sona is prepared from day one, enabling spatial intelligence to support human physiological and psychological welfare in the most challenging environments.</p>
+            </div>
+          </div>
+        </section>`;
 
       let lastFocus=null;
       function openHTML(html){
@@ -884,6 +910,7 @@
         if(sc){ sc.addEventListener('click',function(e){ e.preventDefault(); closeModal(); var d=document.getElementById('vm-grotto'); if(d&&d.showModal&&!d.open) d.showModal(); }); }
       }
       function openNode(day){
+        overlay.querySelector('.sln-card').classList.remove('sln-cardfull');
         openHTML(day===1?MAIN_HTML:placeholderHTML(day));
         if(day===1){
           const n=root.querySelector('.node.primary');
@@ -899,7 +926,7 @@
       $('backdrop').addEventListener('click',closeModal);
       document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeModal();});
 
-      const openStar=()=>openHTML(STAR_HTML);
+      const openStar=()=>{ overlay.querySelector('.sln-card').classList.add('sln-cardfull'); openHTML(STAR_HTML); };
       star.addEventListener('click',openStar);
       star.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStar();}});
       star.addEventListener('mouseenter',e=>showTip(e.currentTarget,'Reserved · To be revealed'));
