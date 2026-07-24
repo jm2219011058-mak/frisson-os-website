@@ -27,7 +27,7 @@ const O = {
   'nav.sona': ['Sona AI', 'Sona AI'],
   'nav.advocater': ['Frisson Fellow', 'Frisson Fellow'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
-  'nav.stories': ['Stories', 'Stories'],
+  'nav.stories': ['Field Notes', 'Field Notes'],
   'cities.hero1': [`Rebuild Respect<br>for the Human`, `重建对人的尊重`],
   'cities.hero2': [`Feel Forward.`, `<b>回应人类情感的居所</b>`],
   'cat.arch': [`The Renaissance Archive`, `文艺复兴档案`],
@@ -39,7 +39,7 @@ const O = {
   'cat.c.sub': [`A Conversation Between Civilizations`, `文明之间的对话`],
   'cat.d.name': [`Écouen`, `埃库昂`],
   'cat.d.sub': [`Craftsmanship as Collective Intelligence`, `作为集体智慧的工艺`],
-  'stories.title': ['Stories — FRISSON', 'Stories — FRISSON'],
+  'stories.title': ['Field Notes — FRISSON', 'Field Notes — FRISSON'],
   'stories.body': [
 `<h2 class="st-h">The Future of AI Begins with How We Live</h2>
 <p class="st-note">(FRISSON is led by two elusive oddballs — we call them alternative talents — and its future members will span astronomers, biologists, engineers, metaphysicians, poets, chemists, algebraists, ethicists, painters, geometers… We have not yet formally incorporated as a company, nor do we have a formal team, but we are eager to find those who resonate with us.<br>There are plenty of experts in these disciplines, but few are inventors; and even fewer are those who can channel their inventions into a rigorous systematic framework.)</p>
