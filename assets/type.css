@@ -1,16 +1,16 @@
 /* FRISSON — shared typography (Editorial Renaissance)
    Single source of truth for fonts on every page EXCEPT the home page (index.html),
-   which keeps its own Playfair + Space Grotesk setup.
+   which keeps its own Playfair setup.
    To restyle the whole site's type, edit this one file. */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap');
 
 /* TYPE ORDER (Editorial Renaissance):
    --serif (Fraunces)  → everything readable: headlines AND body/leads/captions.
-   --sans  (Space Grotesk) → only small "chrome": eyebrows/kickers, nav links,
+   --sans  (Fraunces) → small "chrome": eyebrows/kickers, nav links,
                              numbers/IDs/stats, dates, form labels, pills.
                              (Buttons/CTAs use --serif too — part of the editorial voice.)
    Pages set body{font-family:var(--serif)} so serif is the default; sans is opt-in. */
 :root{
   --serif:"Fraunces","Noto Serif SC",serif;
-  --sans:"Space Grotesk",-apple-system,"Helvetica Neue","Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+  --sans:"Fraunces","Noto Serif SC",Georgia,serif;   /* unified: Fraunces for everything */
 }
