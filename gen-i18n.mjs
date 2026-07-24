@@ -40,6 +40,29 @@ const O = {
   'cat.d.name': [`Écouen`, `埃库昂`],
   'cat.d.sub': [`Craftsmanship as Collective Intelligence`, `作为集体智慧的工艺`],
   'stories.title': ['Field Notes — FRISSON', 'Field Notes — FRISSON'],
+  'stories.diary2': [
+`<h2 class="st-h st-h-title">The Power of Limits</h2>
+<p class="st-sub">— What matters most is invisible</p>
+<p class="st-date">Published · July 23, 2026</p>
+<p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
+<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
+<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
+<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—<b>this world is real, alive, and worth inhabiting.</b></p>
+<p class="st-p">That conviction is embedded in our <b>founding DNA.</b></p>
+<p class="st-p">When we began to define the constraints of Sona, <b>we had to confront what it truly means to restore respect for human beings</b>—starting with the most elemental things: <b>air, light, scent.</b> The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
+<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—<b>all of it orchestrated, all of it invisible.</b></p>
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`,
+`<h2 class="st-h st-h-title">The Power of Limits</h2>
+<p class="st-sub">— What matters most is invisible</p>
+<p class="st-date">Published · July 23, 2026</p>
+<p class="st-p">At Pixar, there is a phenomenon that producers call the <b>“invisible perfect coin.”</b> It speaks to the obsessive attention to detail that animators bring to their work—details you will never notice, and that is precisely why they matter.</p>
+<p class="st-p">Consider a shot in Monsters, Inc.: Sulley walks through the office, and on a desk behind him sits a coffee cup. It appears for no more than two frames—<b>roughly 0.08 seconds.</b> The vast majority of viewers will never register it. Yet Pixar’s animators spent two full weeks refining the reflection of water droplets on that cup, the thickness of its walls, and the almost imperceptible shadow where its base meets the desktop.</p>
+<p class="st-p"><b>Why invest such effort in something no one will see?</b></p>
+<p class="st-p">Because Pixar believes that when you leave no detail unattended, the audience may not be able to articulate why, but they will feel it—<b>this world is real, alive, and worth inhabiting.</b></p>
+<p class="st-p">That conviction is embedded in our <b>founding DNA.</b></p>
+<p class="st-p">When we began to define the constraints of Sona, <b>we had to confront what it truly means to restore respect for human beings</b>—starting with the most elemental things: <b>air, light, scent.</b> The question consumed us like a fever dream; we lay awake for nights on end, unable to let it go.</p>
+<p class="st-p">We want our residents to never see where Sona’s sensors are hidden, never notice the precise angle where a wall meets the floor, never realize that the path of natural light has been calculated down to the minute, never detect the subtle modulations of sound, temperature, and airflow that quietly settle the mind—<b>all of it orchestrated, all of it invisible.</b></p>
+<p class="st-p"><b>The most rudimentary approach: a billion attempts.</b></p>`],
   'stories.body': [
 `<h2 class="st-h st-h-title">The Future of AI Begins with How We Live</h2>
 <p class="st-date">Published · July 18, 2026</p>
