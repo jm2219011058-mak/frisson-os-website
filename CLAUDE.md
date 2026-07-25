@@ -53,7 +53,8 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 ## 6. 各页关键结构备忘
 
 ### cities.html（最复杂）
-自上而下：hero（Feel forward.）→ 阿莱夫引言 `.editorial`（58svh 垂直居中）→ **NEWS 卡 + WHAT WE DO 分栏 `.mf-wwd`** → 迁徙图 → **Soulful Living Nodes 交互地图** → Sky Mansion 系列 → Sona 暗带 → LIFE FRONTIER/Moon/High Frontier 2035 → ownership。
+自上而下：hero（Feel forward.）→ 阿莱夫引言 `.editorial`（58svh 垂直居中）→ **NEWS 卡 + WHAT WE DO 分栏 `.mf-wwd`** → 迁徙图 → **Soulful Living Nodes 交互地图** → Sky Mansion 系列 → Sona 暗带（**页面到此为止**）。
+- Sona 暗带以下（LIFE FRONTIER props / Moon / High Frontier 2035）已用 `.below-sona-hidden{display:none!important}` 整体隐藏（2026-07-25）——内容仍在 SLN 星星/横条弹窗里活着；恢复 = 删掉该 class。ownership teaser 更早已注释掉（备份在 components/ownership-teaser.html）。`<dialog class="vision">` 们必须保留（SLN 弹窗依赖）。
 
 - **NEWS 卡（Magic Conch）**：左栏卡片，元素居中、NEWS 标签左上；标题单行 nowrap + 右侧圆形箭头（36px）触发内联 Netlify 表单 `trial-sleep`；移动端(≤820px)变全幅背景图 banner（trial-bg.jpg + 遮罩）。相关脚本在页面前部，已用 `slnTrialInit` 延迟到 DOMContentLoaded 绑定——**勿改回立即执行**。
 - **Soulful Living Nodes 组件**（`sln-` 前缀，源备份在 `components/sln-fragment.html`）：

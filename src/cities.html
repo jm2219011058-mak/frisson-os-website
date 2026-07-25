@@ -1305,7 +1305,9 @@
       </div>
     </div>
 
-    <div class="props">
+    <!-- everything below the Sona band is hidden for now (Moon + High Frontier live on inside the SLN star-node popup) — remove .below-sona-hidden to restore -->
+    <style>.below-sona-hidden{display:none!important;}</style>
+    <div class="props below-sona-hidden">
      <div class="grain" aria-hidden="true"></div>
      <div class="props-in">
       <!-- edge hero · Antarctica -->
@@ -1383,7 +1385,7 @@
     </div>
 
     <!-- edge hero · Moon — Beyond Earth -->
-    <section class="edge-hero moon-hero reveal">
+    <section class="edge-hero moon-hero reveal below-sona-hidden">
       <img src="assets/city/Moon.jpeg" alt="The lunar surface, beyond Earth" loading="lazy">
       <h2 class="edge-title">Soulful Existence Beyond Earth</h2>
     </section>
@@ -1403,7 +1405,7 @@
       html[lang="zh"] .v2040-pt{font-family:var(--sans);}
       @media(max-width:820px){.v2040-points{grid-template-columns:1fr;gap:clamp(18px,3vh,26px);}.v2040-hero-cap{padding-top:clamp(88px,20vh,180px);}}
     </style>
-    <section class="v2040 reveal">
+    <section class="v2040 reveal below-sona-hidden">
       <div class="v2040-hero">
         <img src="assets/city/moon-castle.jpg" alt="A castle on the lunar surface" loading="lazy">
         <div class="v2040-hero-cap">
