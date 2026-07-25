@@ -23,7 +23,7 @@
 
   /* nav */
   .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:20px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid rgba(43,29,18,.06);font-family:var(--serif);}
+    padding:20px clamp(20px,5vw,64px);background:transparent;font-family:var(--serif);}
   .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
@@ -46,6 +46,26 @@
   .menu.open a:nth-child(5){transition-delay:.28s;}
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
+
+  /* full-bleed hero with centered overlay text (image faded by a scrim for readability) */
+  .fc-hero{--fc-scrim:.80;position:relative;width:100%;min-height:100vh;margin-top:0;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;background:#f3ede3;}
+  .fc-hero .fc-bg{position:absolute;inset:0;z-index:0;display:block;}
+  .fc-hero .fc-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:rgba(245,240,231,var(--fc-scrim));}
+  .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;
+    padding:clamp(118px,16vh,180px) clamp(24px,6vw,40px) clamp(84px,13vh,130px);}
+  .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
+    font-size:clamp(34px,6.2vw,74px);line-height:1.04;color:var(--ink);margin:0 0 clamp(22px,3.4vh,34px);}
+  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(18px,2.2vw,25px);line-height:1.5;
+    color:var(--ink);margin:0 0 1.1em;}
+  .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(19px,2.4vw,27px);line-height:1.45;
+    color:var(--ink);margin:0 0 1.5em;}
+  .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.55vw,17.5px);line-height:1.82;
+    color:var(--ink-soft);margin:0 0 1.25em;text-wrap:pretty;}
+  .fc-p.fc-close{color:var(--ink);font-weight:500;margin-top:.4em;}
+  .fc-p:last-child{margin-bottom:0;}
 
   /* hero */
   .rec{max-width:960px;margin:0 auto;min-height:70svh;min-height:70dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
@@ -184,6 +204,9 @@
     box-shadow:0 14px 34px rgba(224,123,60,.34);transition:transform .3s,box-shadow .3s;}
   .apply:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(224,123,60,.44);}
   .apply .arw{font-size:1.15em;line-height:1;}
+  /* plain (no pill) submit — orange text link */
+  .apply.apply-plain{background:transparent;color:var(--accent);padding:0;border-radius:0;box-shadow:none;font-weight:700;}
+  .apply.apply-plain:hover{transform:none;box-shadow:none;opacity:.72;}
   .legal{font-family:var(--sans);font-size:12px;line-height:1.5;color:rgba(255,255,255,.72);margin:14px 0 0;}
   .legal a{color:rgba(255,255,255,.92);text-underline-offset:2px;}
   .nf-form .done{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,20px);color:#fff;text-align:center;margin:0;}
@@ -216,15 +239,15 @@
   .tier.solid{background:#fff;color:var(--ink);}
   .join-title{font-family:var(--serif);font-weight:800;font-size:clamp(44px,10vw,110px);letter-spacing:.02em;line-height:1;margin:0;color:#fff;}
   /* JOIN — single big non-bold CTA that opens the enquiry form */
-  .join-cta{display:inline-flex;align-items:center;gap:clamp(10px,1.4vw,18px);font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.3vw,28px);line-height:1.2;letter-spacing:.01em;color:var(--ink-soft);background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;}
-  .join-cta:hover{color:var(--ink);}
+  .join-cta{display:inline-flex;align-items:center;gap:clamp(7px,1vw,11px);font-family:var(--serif);font-weight:700;font-size:clamp(12.5px,1.3vw,14.5px);line-height:1.2;letter-spacing:.015em;color:var(--accent);background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;}
+  .join-cta:hover{opacity:.72;color:var(--accent);}
   /* JOIN enquiry form — light background variant */
   #join .nf-form .lbl{color:var(--ink-soft);}
   #join .nf-form input,#join .nf-form textarea,#join .nf-form select{border:1px solid var(--hair);background:#fff;color:var(--ink);}
   #join .nf-form ::placeholder{color:rgba(43,29,18,.45);}
   #join .consent,#join .legal{color:var(--ink-soft);}
   #join .legal a{color:var(--ink);}
-  .jc-arw{display:inline-block;color:var(--accent);font-size:.86em;font-weight:700;line-height:1;animation:jcHint 1.8s ease-in-out infinite;transition:transform .25s;}
+  .jc-arw{display:inline-block;color:var(--accent);font-size:1.05em;font-weight:700;line-height:1;animation:jcHint 1.8s ease-in-out infinite;transition:transform .25s;}
   .join-cta:hover .jc-arw{transform:translateX(10px);animation:none;}
   @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.72;}50%{transform:translateX(10px);opacity:1;}}
   @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
@@ -264,6 +287,44 @@
     </div>
     <!--LANGNAV-->
   </nav>
+
+  <!-- FULL-BLEED HERO — image faded by scrim, centered overlay text -->
+  <header class="fc-hero">
+    <picture class="fc-bg">
+      <source type="image/webp" srcset="assets/city/advocater-hero-820.webp 820w, assets/city/advocater-hero.webp 1055w" sizes="100vw">
+      <img src="assets/city/advocater-hero.jpg" alt="" width="1055" height="1491" fetchpriority="high" decoding="async">
+    </picture>
+    <div class="fc-scrim"></div>
+    <div class="fc-inner">
+      <h1 class="fc-title">Frisson Founding Catalysts</h1>
+      <p class="fc-lead">A circle of creators shaping the future of living.</p>
+      <p class="fc-strong">But what we are calling upon are those “who cannot stop creating.”</p>
+      <p class="fc-p">If we now possess the power to shape the future, the question will no longer be “can we create,” but “what do we choose to create.”</p>
+      <p class="fc-strong">Founders, artists, architects, scientists, and thinkers have always gathered around shared visions — not simply to exchange ideas, but to bring new possibilities into existence.</p>
+      <p class="fc-p">Frisson Founding Catalysts is a circle of early contributors who believe that the future of living should be reimagined.</p>
+      <p class="fc-p">Because humanity cannot be reduced to numbers.<br>Health is not merely a collection of biological metrics.<br>Creativity is not simply a measure of productivity.<br>Happiness is not defined by material abundance.<br>A human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
+      <p class="fc-p">Through their perspectives, creativity, and experiences, Founding Catalysts will help shape the evolution of Soulful Living Network — a new generation of spaces where architecture, nature, human experience, and life itself come together.</p>
+      <p class="fc-p">This is not a membership built around access.<br>It is a circle built around creation.</p>
+      <p class="fc-p">For those who believe the future is not something to discover.<br>It is something to create.</p>
+      <p class="fc-p fc-close">Come help us imagine and create a future that does not exist yet.</p>
+
+      <div id="join" style="text-align:center;margin-top:clamp(26px,4.5vh,46px);">
+        <button type="button" class="join-cta apply-trigger reveal" data-form="joinForm">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
+        <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
+          <input type="hidden" name="form-name" value="join-frisson">
+          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+          <div class="f-row">
+            <div class="field"><label class="lbl" for="j-name">Full name</label><input id="j-name" type="text" name="name" placeholder="Your name" required></div>
+            <div class="field"><label class="lbl" for="j-email">Email</label><input id="j-email" type="email" name="email" placeholder="you@email.com" required></div>
+          </div>
+          <div class="field"><label class="lbl" for="j-mission">Bring Vision, not Money</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
+          <button type="submit" class="apply apply-plain">Jump <span class="arw">&rsaquo;</span></button>
+          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+        </form>
+      </div>
+    </div>
+  </header>
 
   <!-- HERO · FRISSON FELLOW -->
 
@@ -336,29 +397,11 @@
       <p class="rd-p">If you believe that truly meaningful spaces should be more than structures of steel, glass, and technology — that they should become living environments capable of nurturing human health, creativity, memory, and the deeper dimensions of human experience;</p>
       <p class="rd-p">If you remain curious about the unknown, willing to pursue unanswered questions, and eager to explore new possibilities where science and art, nature and technology, imagination and reality converge;</p>
       <p class="rd-p">Then perhaps we are searching for one another.</p>
-      <p class="rd-p rd-hi">We are looking for architects, scientists, artists, designers, thinkers, and creators — those who still believe the world can be imagined differently.</p>
-      <p class="rd-p rd-hi">Those who are willing to redefine humanity’s relationship with the spaces we inhabit.</p>
+      <p class="rd-p">We are looking for architects, scientists, artists, designers, thinkers, and creators — those who still believe the world can be imagined differently.</p>
+      <p class="rd-p">Those who are willing to redefine humanity’s relationship with the spaces we inhabit.</p>
     </div>
   </section>
 
-  <!-- TIER 3 · JOIN FRISSON (cofounder) -->
-  <section class="tier solid" id="join" style="text-align:center;">
-    <div class="tier-inner">
-      <button type="button" class="join-cta apply-trigger reveal" data-form="joinForm">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
-      <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
-        <input type="hidden" name="form-name" value="join-frisson">
-        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-        <div class="f-row">
-          <div class="field"><label class="lbl" for="j-name">Full name</label><input id="j-name" type="text" name="name" placeholder="Your name" required></div>
-          <div class="field"><label class="lbl" for="j-email">Email</label><input id="j-email" type="email" name="email" placeholder="you@email.com" required></div>
-        </div>
-        <div class="field"><label class="lbl" for="j-mission">What have you built · your mission</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
-        <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
-        <button type="submit" class="apply">Enquire <span class="arw">&rsaquo;</span></button>
-        <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-      </form>
-    </div>
-  </section>
 
   <footer class="site-foot">
     <a href="index.html">FRISSON</a> · <a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a>
