@@ -24,13 +24,13 @@
   /* nav */
   .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
     padding:20px clamp(20px,5vw,64px);background:transparent;font-family:var(--serif);}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -49,26 +49,25 @@
 
   /* full-bleed hero with centered overlay text (image faded by a scrim for readability) */
   .fc-hero{--fc-scrim:.38;position:relative;width:100%;min-height:100vh;margin-top:0;overflow:hidden;
-    display:flex;align-items:center;justify-content:center;background:#f3ede3;}
+    display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3ede3;}
   .fc-hero .fc-bg{position:absolute;inset:0;z-index:0;display:block;}
   .fc-hero .fc-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:rgba(0,0,0,var(--fc-scrim));}
+  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,.78);}
   .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;
     padding:clamp(182px,25vh,272px) clamp(24px,6vw,40px) clamp(84px,13vh,130px);}
   .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
-    font-size:clamp(34px,6.2vw,74px);line-height:1.04;color:#fff;margin:0 0 clamp(22px,3.4vh,34px);}
+    font-size:clamp(34px,6.2vw,74px);line-height:1.04;color:var(--ink);margin:0 0 clamp(22px,3.4vh,34px);}
   .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(18px,2.2vw,25px);line-height:1.5;
-    color:#fff;margin:0 0 1.1em;}
+    color:var(--ink);margin:0 0 1.6em;}
   .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(19px,2.4vw,27px);line-height:1.45;
-    color:#fff;margin:0 0 1.5em;}
+    color:var(--ink);margin:0 0 2.1em;}
   .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.55vw,17.5px);line-height:1.82;
-    color:rgba(255,255,255,.9);margin:0 0 1.25em;text-wrap:pretty;}
-  .fc-p.fc-b{font-weight:700;color:#fff;}
-  .fc-p.fc-close{color:#fff;font-weight:500;margin-top:.4em;}
-  /* lift the copy off the image — soft dark halo for white text */
-  .fc-title{text-shadow:0 2px 26px rgba(0,0,0,.5), 0 0 2px rgba(0,0,0,.4);}
-  .fc-lead,.fc-strong,.fc-p{text-shadow:0 1px 16px rgba(0,0,0,.55), 0 0 1px rgba(0,0,0,.4);}
+    color:rgba(43,29,18,.9);margin:0 0 1.85em;text-wrap:pretty;}
+  .fc-p.fc-b{font-weight:700;color:var(--ink);}
+  .fc-p.fc-close{color:var(--ink);font-weight:500;margin-top:.4em;}
+  /* soft cream halo lifts the dark copy off the busy artwork */
+  .fc-title{text-shadow:0 2px 30px rgba(245,240,231,.85), 0 0 3px rgba(245,240,231,.7);}
+  .fc-lead,.fc-strong,.fc-p{text-shadow:0 1px 18px rgba(245,240,231,.9), 0 0 2px rgba(245,240,231,.75);}
   .fc-p:last-child{margin-bottom:0;}
 
   /* hero */
@@ -243,12 +242,13 @@
   .tier.solid{background:#fff;color:var(--ink);}
   .join-title{font-family:var(--serif);font-weight:800;font-size:clamp(44px,10vw,110px);letter-spacing:.02em;line-height:1;margin:0;color:#fff;}
   /* JOIN — single big non-bold CTA that opens the enquiry form */
-  .join-cta{display:inline-flex;align-items:center;gap:clamp(10px,1.4vw,16px);font-family:var(--serif);font-weight:700;font-size:clamp(20px,2.4vw,27px);line-height:1.2;letter-spacing:.015em;color:#fff;background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;text-shadow:0 1px 16px rgba(0,0,0,.5);}
-  .join-cta:hover{opacity:.82;color:#fff;}
+  .join-cta{display:inline-flex;align-items:center;gap:clamp(10px,1.4vw,16px);font-family:var(--serif);font-weight:700;font-size:clamp(20px,2.4vw,27px);line-height:1.2;letter-spacing:.015em;color:var(--ink);background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;text-shadow:0 1px 18px rgba(245,240,231,.9), 0 0 2px rgba(245,240,231,.75);}
+  .join-cta:hover{opacity:.82;color:var(--ink);}
   /* JOIN enquiry form — light background variant */
   #join .nf-form .lbl{color:var(--ink-soft);}
   #join .nf-form input,#join .nf-form textarea,#join .nf-form select{border:1px solid var(--hair);background:#fff;color:var(--ink);}
   #join .nf-form ::placeholder{color:rgba(43,29,18,.45);}
+  #join .nf-form .done{color:var(--ink);}
   #join .consent,#join .legal{color:var(--ink-soft);}
   #join .legal a{color:var(--ink);}
   .jc-arw{display:inline-block;color:var(--accent);font-size:1.45em;font-weight:700;line-height:1;animation:jcHint 1.3s ease-in-out infinite;transition:transform .25s;}
@@ -263,17 +263,24 @@
   .join-back:hover .jb-arw{transform:translateX(-6px);}
 
   /* BOOK A CALL — lives in the hero, below the join form */
+  /* direct contact line (replaces the old join form) */
+  .contact-direct{text-align:center;}
+  .cd-note{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.1vw,13px);letter-spacing:.18em;text-transform:uppercase;color:#8c837a;margin:0 0 10px;}
+  .cd-mail{font-family:var(--serif);font-size:clamp(16px,1.6vw,18.5px);color:var(--ink);margin:0;}
+  .cd-mail a{color:var(--ink);text-decoration:none;border-bottom:1px solid rgba(43,29,18,.28);transition:color .25s,border-color .25s;}
+  .cd-mail a:hover{color:var(--accent);border-color:var(--accent);}
+  .cd-or{color:var(--ink-soft);padding:0 2px;}
   .fc-book{margin:clamp(36px,6vh,64px) auto 0;text-align:center;}
   .fc-book[hidden]{display:none;}
   .book-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(12px,1.2vw,14px);letter-spacing:.18em;text-transform:uppercase;color:#8c837a;margin:0 0 clamp(14px,2vh,24px);}
-  .book-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.2vw,44px);line-height:1.14;color:var(--ink);margin:0 0 10px;}
+  .book-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.2vw,44px);line-height:1.14;color:var(--ink);margin:0 0 clamp(26px,4vh,40px);}
   .book-sub{font-family:var(--sans);font-size:clamp(14.5px,1.5vw,17px);line-height:1.7;color:var(--ink-soft);margin:0 auto clamp(26px,4vh,40px);max-width:52ch;}
   .book-title,.book-sub{text-shadow:0 1px 12px rgba(245,240,231,.82), 0 0 1px rgba(245,240,231,.7);}
   .book-cal{border:1px solid var(--hair);border-radius:16px;overflow:hidden;min-height:560px;background:#fff;text-align:left;}
   @media(max-width:640px){.fc-book{padding-left:0;padding-right:0;}.book-cal{min-height:620px;border-radius:12px;}}
 
   /* footer */
-  .site-foot{background:transparent;color:var(--ink-soft);text-align:center;padding:30px clamp(24px,6vw,40px);
+  .site-foot{position:relative;z-index:2;align-self:stretch;background:transparent;color:var(--ink-soft);text-align:center;padding:30px clamp(24px,6vw,40px);
     font-family:var(--sans);font-size:13px;letter-spacing:.04em;border-top:1px solid rgba(43,29,18,.08);}
   .site-foot a{color:var(--ink);text-decoration:none;margin:0 10px;}
   .site-foot a:hover{color:var(--accent);}
@@ -320,36 +327,29 @@
       <p class="fc-lead">A circle of creators shaping the future of living.</p>
       <p class="fc-strong">But what we are calling upon are those “who cannot stop creating.”</p>
       <p class="fc-p">If we now possess the power to shape the future, the question will no longer be “can we create,” but “what do we choose to create.”</p>
-      <p class="fc-strong">Founders, artists, architects, scientists, and thinkers have always gathered around shared visions — not simply to exchange ideas, but to bring new possibilities into existence.</p>
-      <p class="fc-p">Frisson Founding Catalysts is a circle of early contributors who believe that the future of living should be reimagined.</p>
-      <p class="fc-p fc-b">We believe a human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
-      <p class="fc-p">Through their perspectives, creativity, and experiences, Founding Catalysts will help shape the evolution of Soulful Living Network — a new generation of spaces where architecture, nature, human experience, and life itself come together.</p>
+      <p class="fc-strong">Frisson Founding Catalysts is a circle of early Founding Members (Founders, Artists, Architects, Creators, Scientists, and Human-computer interaction biologists..) who believe that the future of living should be reimagined.</p>
+      <p class="fc-p">We believe a human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
 
       <div id="join" style="text-align:center;margin-top:clamp(26px,4.5vh,46px);">
         <button type="button" class="join-cta apply-trigger reveal" data-form="joinForm">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
         <button type="button" class="join-back" id="joinBack" hidden><span class="jb-arw" aria-hidden="true">&lsaquo;</span> Back</button>
-        <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
-          <input type="hidden" name="form-name" value="join-frisson">
-          <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
-          <div class="f-row">
-            <div class="field"><label class="lbl" for="j-name">Full name</label><input id="j-name" type="text" name="name" placeholder="Your name" required></div>
-            <div class="field"><label class="lbl" for="j-email">Email</label><input id="j-email" type="email" name="email" placeholder="you@email.com" required></div>
-          </div>
-          <div class="field"><label class="lbl" for="j-mission">Bring Vision, not Money</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
-          <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
-          <button type="submit" class="apply apply-plain">Jump <span class="arw">&rsaquo;</span></button>
-          <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-        </form>
+        <div class="nf-form center contact-direct" id="joinForm" hidden>
+          <p class="cd-note">Contact Frisson&rsquo;s Founder Directly:</p>
+          <p class="cd-mail"><a href="mailto:mak@frisson-os.com">mak@frisson-os.com</a> <span class="cd-or">or</span> <a href="mailto:jamie@frisson-os.com">jamie@frisson-os.com</a></p>
+        </div>
 
         <!-- BOOK A CALL · Cal.com inline embed — revealed together with the join form -->
         <div class="fc-book" id="book" hidden>
           <p class="book-eyebrow">Book a call</p>
           <h2 class="book-title">Talk to Founder</h2>
-          <p class="book-sub">Pick a time that suits you — we meet on video, and the invitation lands in your calendar automatically.</p>
           <div class="book-cal" id="cal-inline"></div>
         </div>
       </div>
     </div>
+
+    <footer class="site-foot">
+      <a href="index.html">FRISSON</a> · <a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a>
+    </footer>
   </header>
 
   <!-- HERO · FRISSON FELLOW -->
@@ -359,74 +359,6 @@
 
 
 
-  <!-- MANIFESTO ESSAY -->
-  <section class="beat" style="padding-top:clamp(72px,12vh,140px);"><h2 class="rd-h reveal">From Conquering the World to Understanding Life</h2></section>
-  <section class="beat">
-    <div class="rd reveal">
-      <p class="rd-p">Since the dawn of humanity, we have been drawn toward the unknown.</p>
-      <p class="rd-p">The pursuit of the unknown has been the invisible force shaping the course of human civilization.</p>
-      <p class="rd-p">Centuries ago, when explorers stood upon the wooden decks of sailing ships, gazing toward horizons that had yet to be mapped, they entered a world defined by uncertainty. There were no satellites, no modern navigation systems, and no guarantees of what awaited beyond the edge of the known world. They had only the stars above, the compass in their hands, and the conviction that the unknown was worth pursuing.</p>
-      <p class="rd-p">The Age of Exploration transformed humanity’s understanding of the world. The voyages of Columbus, Vasco da Gama, and Magellan did more than reveal new continents; they expanded the boundaries of human imagination and forever changed our perception of possibility.</p>
-      <p class="rd-p">The purpose of exploration has never been merely to arrive somewhere new.</p>
-      <p class="rd-p">It has always been to expand the boundaries of what humanity can become.</p>
-    </div>
-  </section>
-  <section class="beat"><h2 class="rd-h reveal">Beyond Boundaries</h2></section>
-  <section class="beat">
-    <div class="rd reveal">
-      <p class="rd-p">In the beginning, humanity crossed the boundary of survival.</p>
-      <p class="rd-p">We were not the strongest creatures on Earth. We had neither the claws of predators, the wings of birds, nor the physical adaptations of creatures that inhabit the deepest oceans. Yet we possessed something far more extraordinary: the ability to imagine what did not yet exist, and the courage to bring those visions into reality.</p>
-      <p class="rd-p">Through creation, humanity continuously transcended its natural limitations.</p>
-      <p class="rd-p">But as we ventured further into the external world, we began to discover that the greatest mysteries were not always found beyond the horizon.</p>
-      <p class="rd-p">Sometimes, they existed within life itself.</p>
-      <p class="rd-p">During the Renaissance, a new generation of thinkers emerged — individuals who were no longer satisfied with discovering new territories, but sought to uncover the hidden principles governing nature.</p>
-      <p class="rd-p">Among them stood Leonardo da Vinci.</p>
-      <p class="rd-p">Inside his workshop in Florence, sketches of human anatomy, studies of flight, mechanical inventions, and works of art existed side by side. In an age when art, science, and engineering were considered separate disciplines, Leonardo saw them as different expressions of the same pursuit:</p>
-      <p class="rd-p">To understand the deeper order of existence.</p>
-      <p class="rd-p">Why is life so extraordinary?</p>
-      <p class="rd-p">Why does nature create structures of such complexity and elegance?</p>
-      <p class="rd-p">Does a hidden order exist beneath the patterns of life itself?</p>
-    </div>
-  </section>
-  <section class="beat"><h2 class="rd-h reveal">What Future Will We Create?</h2></section>
-  <section class="beat">
-    <div class="rd reveal">
-      <p class="rd-p">If we now possess the power to shape the future, then the question is no longer whether we can create — but what we choose to create.</p>
-      <p class="rd-p">For centuries, civilization has been driven by the pursuit of efficiency, scale, and control.</p>
-      <p class="rd-p">We built taller cities, created faster machines, and developed increasingly powerful forms of computation, transforming the world into a system that is more precise, more complex, and more capable than ever before.</p>
-      <p class="rd-p">Yet as our ability to reshape the world continues to expand, we are confronted with a deeper question:</p>
-      <p class="rd-p">Have we truly understood the essence of what we are creating for?</p>
-      <p class="rd-p">The greatness of a civilization is not measured solely by the power of its technologies, but by whether it continues to understand the very foundation of creation itself — the human being.</p>
-      <p class="rd-p">Because humanity cannot be reduced to numbers.</p>
-      <p class="rd-p">Health is not merely a collection of biological metrics.</p>
-      <p class="rd-p">Creativity is not simply a measure of productivity.</p>
-      <p class="rd-p">Happiness is not defined by material abundance.</p>
-      <p class="rd-p">A human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
-    </div>
-  </section>
-  <section class="beat"><h2 class="rd-h reveal">Create What Comes Next</h2></section>
-  <section class="beat" style="padding-bottom:clamp(90px,16vh,190px);">
-    <div class="rd reveal">
-      <p class="rd-p">The future of human spaces will not be defined by a single discipline.</p>
-      <p class="rd-p">It will emerge from the convergence of many forms of intelligence.</p>
-      <p class="rd-p">Architects will explore how environments shape human behavior and perception.</p>
-      <p class="rd-p">Artists will expand the boundaries of human experience.</p>
-      <p class="rd-p">Philosophers will question the meaning of future ways of living.</p>
-      <p class="rd-p">Biologists will uncover the relationship between biological rhythms and the environments that surround us.</p>
-      <p class="rd-p">Musicians will reveal how sound shapes consciousness.</p>
-      <p class="rd-p">Scientists and engineers will transform these discoveries into new possibilities.</p>
-      <p class="rd-p">Because human experience has never been merely an engineering challenge.</p>
-      <p class="rd-p">It is where science meets art, where nature meets technology, and where imagination meets reality.</p>
-      <p class="rd-p">The architecture of the future will not simply be built.</p>
-      <p class="rd-p">It will be co-created.</p>
-      <p class="rd-p">It will emerge from the way we live, the beauty we pursue, the creativity we express, and the values we hold.</p>
-      <p class="rd-p">If you believe that truly meaningful spaces should be more than structures of steel, glass, and technology — that they should become living environments capable of nurturing human health, creativity, memory, and the deeper dimensions of human experience;</p>
-      <p class="rd-p">If you remain curious about the unknown, willing to pursue unanswered questions, and eager to explore new possibilities where science and art, nature and technology, imagination and reality converge;</p>
-      <p class="rd-p">Then perhaps we are searching for one another.</p>
-      <p class="rd-p">We are looking for architects, scientists, artists, designers, thinkers, and creators — those who still believe the world can be imagined differently.</p>
-      <p class="rd-p">Those who are willing to redefine humanity’s relationship with the spaces we inhabit.</p>
-    </div>
-  </section>
 
 
 
@@ -445,10 +377,6 @@
     Cal.ns.frisson("inline", { elementOrSelector:"#cal-inline", config:{layout:"month_view",useSlotsViewOnSmallScreen:"true"}, calLink:"frisson-os/15min" });
   };
   </script>
-
-  <footer class="site-foot">
-    <a href="index.html">FRISSON</a> · <a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a>
-  </footer>
 
 <script>
   /* conch blob animation */
