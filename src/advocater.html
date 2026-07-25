@@ -47,10 +47,25 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
-  /* full-bleed city hero — native aspect ratio, uncropped, edge-to-edge (like Soulful Living Network) */
-  .fc-hero{position:relative;width:100%;margin-top:0;overflow:hidden;background:#fff;line-height:0;}
-  .fc-hero picture{display:block;width:100%;}
-  .fc-hero img{display:block;width:100%;height:auto;}
+  /* full-bleed hero with centered overlay text (image faded by a scrim for readability) */
+  .fc-hero{--fc-scrim:.80;position:relative;width:100%;min-height:100vh;margin-top:0;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;background:#f3ede3;}
+  .fc-hero .fc-bg{position:absolute;inset:0;z-index:0;display:block;}
+  .fc-hero .fc-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:rgba(245,240,231,var(--fc-scrim));}
+  .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;
+    padding:clamp(118px,16vh,180px) clamp(24px,6vw,40px) clamp(84px,13vh,130px);}
+  .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
+    font-size:clamp(34px,6.2vw,74px);line-height:1.04;color:var(--ink);margin:0 0 clamp(22px,3.4vh,34px);}
+  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(18px,2.2vw,25px);line-height:1.5;
+    color:var(--ink);margin:0 0 1.1em;}
+  .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(19px,2.4vw,27px);line-height:1.45;
+    color:var(--ink);margin:0 0 1.5em;}
+  .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.55vw,17.5px);line-height:1.82;
+    color:var(--ink-soft);margin:0 0 1.25em;text-wrap:pretty;}
+  .fc-p.fc-close{color:var(--ink);font-weight:500;margin-top:.4em;}
+  .fc-p:last-child{margin-bottom:0;}
 
   /* hero */
   .rec{max-width:960px;margin:0 auto;min-height:70svh;min-height:70dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
@@ -270,12 +285,26 @@
     <!--LANGNAV-->
   </nav>
 
-  <!-- FULL-BLEED HERO — edge-to-edge, natural proportions (no crop). No text yet. -->
+  <!-- FULL-BLEED HERO — image faded by scrim, centered overlay text -->
   <header class="fc-hero">
-    <picture>
+    <picture class="fc-bg">
       <source type="image/webp" srcset="assets/city/advocater-hero-820.webp 820w, assets/city/advocater-hero.webp 1055w" sizes="100vw">
       <img src="assets/city/advocater-hero.jpg" alt="" width="1055" height="1491" fetchpriority="high" decoding="async">
     </picture>
+    <div class="fc-scrim"></div>
+    <div class="fc-inner">
+      <h1 class="fc-title">Frisson Founding Catalysts</h1>
+      <p class="fc-lead">A circle of creators shaping the future of living.</p>
+      <p class="fc-strong">But what we are calling upon are those “who cannot stop creating.”</p>
+      <p class="fc-p">If we now possess the power to shape the future, the question will no longer be “can we create,” but “what do we choose to create.”</p>
+      <p class="fc-p">Founders, artists, architects, scientists, and thinkers have always gathered around shared visions — not simply to exchange ideas, but to bring new possibilities into existence.</p>
+      <p class="fc-p">Frisson Founding Catalysts is a circle of early contributors who believe that the future of living should be reimagined.</p>
+      <p class="fc-p">Because humanity cannot be reduced to numbers.<br>Health is not merely a collection of biological metrics.<br>Creativity is not simply a measure of productivity.<br>Happiness is not defined by material abundance.<br>A human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
+      <p class="fc-p">Through their perspectives, creativity, and experiences, Founding Catalysts will help shape the evolution of Soulful Living Network — a new generation of spaces where architecture, nature, human experience, and life itself come together.</p>
+      <p class="fc-p">This is not a membership built around access.<br>It is a circle built around creation.</p>
+      <p class="fc-p">For those who believe the future is not something to discover.<br>It is something to create.</p>
+      <p class="fc-p fc-close">Come help us imagine and create a future that does not exist yet.</p>
+    </div>
   </header>
 
   <!-- HERO · FRISSON FELLOW -->
