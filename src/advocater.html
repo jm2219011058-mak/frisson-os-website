@@ -54,16 +54,16 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3ede3;}
   .fc-hero .fc-bg{position:absolute;inset:0;z-index:0;display:block;}
   .fc-hero .fc-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,.82);}
+  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,.81);}
   .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;
-    padding:clamp(240px,36vh,400px) clamp(24px,6vw,40px) clamp(150px,24vh,250px);}
+    padding:clamp(216px,32vh,360px) clamp(24px,6vw,40px) clamp(150px,24vh,250px);}
   .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
-    font-size:clamp(26px,4.8vw,57px);line-height:1.03;color:var(--ink);margin:0 0 clamp(22px,3.4vh,34px);}
-  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.7vw,19.5px);line-height:1.42;
+    font-size:clamp(27px,5vw,60px);line-height:1.03;color:var(--ink);margin:0 0 clamp(22px,3.4vh,34px);}
+  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(15.5px,1.8vw,20.5px);line-height:1.42;
     color:var(--ink);margin:0 0 1.6em;}
-  .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(16px,1.85vw,21px);line-height:1.38;
+  .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(16.5px,1.95vw,22px);line-height:1.38;
     color:var(--ink);margin:0 0 2.1em;}
-  .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(13px,1.3vw,14.5px);line-height:1.7;
+  .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(13.5px,1.38vw,15.2px);line-height:1.7;
     color:rgba(43,29,18,.9);margin:0 0 1.85em;text-wrap:pretty;}
   .fc-p.fc-b{font-weight:700;color:var(--ink);}
   .fc-p.fc-close{color:var(--ink);font-weight:500;margin-top:.4em;}
@@ -254,8 +254,11 @@
   .join-cta:focus-visible,.apply:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   #join .consent,#join .legal{color:var(--ink-soft);}
   #join .legal a{color:var(--ink);}
-  .jc-arw{display:inline-block;color:var(--accent);font-size:1.05em;line-height:1;transition:transform .3s;}
-  .join-cta:hover .jc-arw{transform:translateX(3px);}
+  .jc-arw{display:inline-block;color:var(--accent);font-size:1.35em;line-height:1;transition:transform .3s;
+    animation:jcHint 1.5s ease-in-out infinite;filter:drop-shadow(0 0 9px rgba(224,123,60,.55));}
+  .join-cta:hover .jc-arw{transform:translateX(3px);animation:none;}
+  @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(12px);opacity:1;}}
+  @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
 
   /* collapse control for the revealed join panel — quiet text link, per house style */
 
@@ -292,7 +295,11 @@
   .fcf-close:hover{color:var(--accent);border-color:var(--accent);transform:rotate(90deg);}
   .fcf-close:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   .fcf-inner{max-width:1108px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center;
-    padding:clamp(64px,9vh,100px) clamp(24px,4vw,44px) clamp(40px,7vh,72px);}
+    padding:clamp(48px,6vh,72px) clamp(24px,4vw,44px) clamp(32px,5vh,56px);}
+  /* compact spacing inside the layer so the calendar is visible with little scrolling */
+  .fc-full .fc-book{margin-top:clamp(20px,3.5vh,36px);}
+  .fc-full .book-eyebrow{margin-bottom:clamp(8px,1.2vh,14px);}
+  .fc-full .book-title{margin-bottom:clamp(14px,2.2vh,24px);}
   .fc-full .fc-book{width:100%;margin-left:auto;margin-right:auto;}
 
   /* footer */
@@ -346,7 +353,7 @@
       <p class="fc-strong">Frisson Founding Catalysts is a circle of early Founding Members (Founders, Artists, Architects, Creators, Scientists, and Human-computer interaction biologists..) who believe that the future of living should be reimagined.</p>
       <p class="fc-p">We believe a human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
 
-      <div id="join" style="text-align:center;margin-top:clamp(120px,20vh,230px);">
+      <div id="join" style="text-align:center;margin-top:clamp(80px,13vh,150px);">
         <button type="button" class="join-cta reveal" id="fcOpen" aria-haspopup="dialog" aria-controls="fcFull">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
       </div>
     </div>

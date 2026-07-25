@@ -142,6 +142,12 @@
   }
   .resume-cta:hover{opacity:.72;}
   .resume-cta span{font-size:1.05em;line-height:1;}
+  /* arrow hint — gentle slide pulse in accent orange */
+  .resume-cta .rc-arw{display:inline-block;color:var(--accent);font-size:1.2em;
+    animation:rcHint 1.5s ease-in-out infinite;transition:transform .25s;}
+  .resume-cta:hover .rc-arw{animation:none;transform:translateX(3px);}
+  @keyframes rcHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(8px);opacity:1;}}
+  @media(prefers-reduced-motion:reduce){.resume-cta .rc-arw{animation:none;}}
   .cities-cta{ /* jump to Soulful Living Network — light grey, matching the resume CTA below */
     margin-top:clamp(34px,6vh,64px);
     font-family:var(--sans);font-weight:400;font-size:clamp(12px,1.4vw,14px);letter-spacing:.02em;
@@ -224,7 +230,7 @@
       <p>And Beyond...</p>
     </div>
     <a class="cities-cta" href="cities.html"><span class="cta-label">{{nav.cities}}</span> <span class="arw" aria-hidden="true">&rsaquo;</span></a>
-    <a class="resume-cta" href="advocater.html">Seek Wonder. Bring Vision <span aria-hidden="true">&rsaquo;</span></a>
+    <a class="resume-cta" href="advocater.html">Talk to Founder <span class="rc-arw" aria-hidden="true">&rsaquo;</span></a>
   </section>
 
 <script>
