@@ -243,18 +243,17 @@
   .tier.solid{background:#fff;color:var(--ink);}
   .join-title{font-family:var(--serif);font-weight:800;font-size:clamp(44px,10vw,110px);letter-spacing:.02em;line-height:1;margin:0;color:#fff;}
   /* JOIN — single big non-bold CTA that opens the enquiry form */
-  .join-cta{display:inline-flex;align-items:center;gap:clamp(10px,1.4vw,16px);font-family:var(--serif);font-weight:400;font-size:clamp(18px,2.1vw,24px);line-height:1.2;letter-spacing:.015em;color:#fff;background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;
-    text-shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 18px rgba(0,0,0,.28);}
-  .join-cta:hover{opacity:.82;color:#fff;}
+  .join-cta{display:inline-flex;align-items:center;gap:clamp(10px,1.4vw,16px);font-family:var(--serif);font-weight:700;font-size:clamp(20px,2.4vw,27px);line-height:1.2;letter-spacing:.015em;color:var(--ink-soft);background:transparent;border:0;padding:0;cursor:pointer;transition:opacity .25s,color .25s;text-align:center;}
+  .join-cta:hover{opacity:.82;color:var(--ink);}
   /* JOIN enquiry form — light background variant */
   #join .nf-form .lbl{color:var(--ink-soft);}
   #join .nf-form input,#join .nf-form textarea,#join .nf-form select{border:1px solid var(--hair);background:#fff;color:var(--ink);}
   #join .nf-form ::placeholder{color:rgba(43,29,18,.45);}
   #join .consent,#join .legal{color:var(--ink-soft);}
   #join .legal a{color:var(--ink);}
-  .jc-arw{display:inline-block;color:#fff;font-size:1.3em;font-weight:700;line-height:1;animation:jcHint 1.5s ease-in-out infinite;transition:transform .25s;}
+  .jc-arw{display:inline-block;color:var(--accent);font-size:1.45em;font-weight:700;line-height:1;animation:jcHint 1.3s ease-in-out infinite;transition:transform .25s;}
   .join-cta:hover .jc-arw{transform:translateX(10px);animation:none;}
-  @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(14px);opacity:1;}}
+  @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.65;}50%{transform:translateX(18px);opacity:1;}}
   @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
 
   /* footer */
