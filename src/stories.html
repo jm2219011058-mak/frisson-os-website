@@ -20,15 +20,15 @@
   body{overflow-x:clip;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
   /* nav — white, sticky */
-  .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid var(--hair);}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:transparent;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#fff;text-decoration:none;font-weight:500;text-shadow:0 1px 16px rgba(0,0,0,.4);}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(255,255,255,.92);text-decoration:none;transition:color .25s;white-space:nowrap;text-shadow:0 1px 16px rgba(0,0,0,.4);}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:transform .3s;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -101,6 +101,19 @@
        long-form story (st-* styles). Each entry pairs one image, reused as tile AND article hero.
      · Type: Fraunces = titles + body; Space Grotesk = tabs / byline / meta / labels. */
   .fn-index{padding:0;}
+  /* featured masthead — newest note, full-bleed, image bleeds up behind the transparent nav */
+  .fn-feature{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+    width:100%;min-height:min(84vh,780px);padding:clamp(44px,8vh,96px) clamp(24px,6vw,64px);
+    background:#1a1512 center/cover no-repeat;overflow:hidden;text-decoration:none;cursor:pointer;}
+  .fn-feature::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(0,0,0,.34) 0,rgba(0,0,0,0) 24%,rgba(0,0,0,.06) 50%,rgba(0,0,0,.66) 100%);}
+  .fn-fbody{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;}
+  .fn-ftitle{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(40px,6.6vw,94px);line-height:1;letter-spacing:.004em;color:#fff;margin:0 0 .34em;max-width:16ch;text-wrap:balance;}
+  .fn-fmeta{display:block;font-family:var(--sans);font-size:clamp(12px,1.05vw,14.5px);letter-spacing:.06em;color:rgba(255,255,255,.86);margin:0;}
+  .fn-farrow{position:absolute;z-index:2;right:clamp(24px,3vw,54px);bottom:clamp(28px,4vw,54px);width:clamp(44px,4vw,54px);height:clamp(44px,4vw,54px);border-radius:999px;border:1.5px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;transition:background .25s,border-color .25s,transform .25s;}
+  .fn-feature:hover .fn-farrow{background:var(--accent);border-color:var(--accent);transform:translateX(4px);}
+  .fn-farrow svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  @media(max-width:560px){ .fn-feature{min-height:78vh;} }
   .fn-bar{border-bottom:1px solid var(--hair);background:#fff;}
   .fn-bar-in{display:flex;align-items:center;gap:clamp(22px,3.4vw,46px);max-width:1440px;margin:0 auto;padding:clamp(13px,1.9vh,18px) clamp(24px,6vw,64px);}
   .fn-tab{font-family:var(--sans);font-weight:500;font-size:clamp(14px,1.35vw,16px);letter-spacing:.02em;color:var(--ink-soft);background:transparent;border:0;padding:6px 0;cursor:pointer;position:relative;transition:color .2s;}
@@ -171,6 +184,13 @@
   <main>
     <!-- INDEX (archive of entries) -->
     <section class="fn-index" id="fnIndex">
+      <a class="fn-feature" href="#" data-view="0" style="background-image:url('assets/city/fn-a.webp')">
+        <span class="fn-fbody">
+          <span class="fn-ftitle">The Power of Limits</span>
+          <span class="fn-fmeta">Field Note · July 23, 2026</span>
+        </span>
+        <span class="fn-farrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
       <div class="fn-bar">
         <div class="fn-bar-in" role="tablist" aria-label="Filter field notes">
           <button class="fn-tab is-on" type="button" data-cat="all">All</button>
