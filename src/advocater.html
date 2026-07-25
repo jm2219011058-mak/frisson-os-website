@@ -260,6 +260,7 @@
 
   /* collapse control for the revealed join panel — quiet text link, per house style */
   .join-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:clamp(13px,1.2vw,15px);letter-spacing:.04em;color:var(--ink-soft);background:transparent;border:0;padding:14px 18px;margin:0 0 clamp(4px,1vh,10px);cursor:pointer;transition:color .25s;}
+  .join-back[hidden]{display:none;}
   .join-back:hover{color:var(--accent);}
   .jb-arw{display:inline-block;font-size:1.25em;line-height:1;transition:transform .25s;}
   .join-back:hover .jb-arw{transform:translateX(-6px);}
