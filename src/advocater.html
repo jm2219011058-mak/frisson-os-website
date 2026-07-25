@@ -47,6 +47,11 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
+  /* full-bleed city hero — native aspect ratio, uncropped, edge-to-edge (like Soulful Living Network) */
+  .fc-hero{position:relative;width:100%;margin-top:clamp(56px,7vw,66px);overflow:hidden;background:#fff;line-height:0;}
+  .fc-hero picture{display:block;width:100%;}
+  .fc-hero img{display:block;width:100%;height:auto;}
+
   /* hero */
   .rec{max-width:960px;margin:0 auto;min-height:70svh;min-height:70dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     padding:clamp(96px,14vh,168px) clamp(24px,6vw,60px) clamp(30px,5vh,60px);}
@@ -264,6 +269,14 @@
     </div>
     <!--LANGNAV-->
   </nav>
+
+  <!-- FULL-BLEED CITY HERO (placeholder image — swap when ready) -->
+  <header class="fc-hero">
+    <picture>
+      <source type="image/webp" srcset="assets/city/hero-city-820.webp 820w, assets/city/hero-city.webp 1513w" sizes="100vw">
+      <img src="assets/city/hero-city.jpg" alt="" width="1513" height="1039" fetchpriority="high" decoding="async">
+    </picture>
+  </header>
 
   <!-- HERO · FRISSON FELLOW -->
 
