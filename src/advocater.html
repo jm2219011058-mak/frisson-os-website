@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="assets/type.css">
 <link rel="preload" as="image" href="assets/conch.jpg">
 <link rel="preload" as="image" href="assets/advocater/trial-bg.jpg">
+<script defer src="assets/vendor/gsap/gsap.min.js"></script>
+<script defer src="assets/vendor/gsap/CustomEase.min.js"></script>
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.16);
@@ -218,7 +220,6 @@
   .nf-form[hidden]{display:none;}
   @keyframes nfIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .nf-form.reveal-open{animation:nfIn .45s ease both;}
-  .apply-trigger{margin-top:clamp(20px,3.5vh,30px);}
   /* tier 1 & 2: intro <-> apply toggle */
   .tier-intro[hidden],.tier-apply[hidden]{display:none;}
   .tier-apply{max-width:640px;margin:0 auto;}
@@ -250,20 +251,13 @@
   #join .nf-form input,#join .nf-form textarea,#join .nf-form select{border:1px solid var(--hair);background:#fff;color:var(--ink);}
   #join .nf-form ::placeholder{color:rgba(43,29,18,.62);}
   #join .nf-form .done{color:var(--ink);}
-  .join-cta:focus-visible,.join-back:focus-visible,.apply:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .join-cta:focus-visible,.apply:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   #join .consent,#join .legal{color:var(--ink-soft);}
   #join .legal a{color:var(--ink);}
-  .jc-arw{display:inline-block;color:var(--accent);font-size:1.45em;font-weight:700;line-height:1;animation:jcHint 1.3s ease-in-out infinite;transition:transform .25s;}
-  .join-cta:hover .jc-arw{transform:translateX(10px);animation:none;}
-  @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.65;}50%{transform:translateX(18px);opacity:1;}}
-  @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
+  .jc-arw{display:inline-block;color:var(--accent);font-size:1.05em;line-height:1;transition:transform .3s;}
+  .join-cta:hover .jc-arw{transform:translateX(3px);}
 
   /* collapse control for the revealed join panel — quiet text link, per house style */
-  .join-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:clamp(13px,1.2vw,15px);letter-spacing:.04em;color:var(--ink-soft);background:transparent;border:0;padding:14px 18px;margin:0 0 clamp(4px,1vh,10px);cursor:pointer;transition:color .25s;}
-  .join-back[hidden]{display:none;}
-  .join-back:hover{color:var(--accent);}
-  .jb-arw{display:inline-block;font-size:1.25em;line-height:1;transition:transform .25s;}
-  .join-back:hover .jb-arw{transform:translateX(-6px);}
 
   /* BOOK A CALL — lives in the hero, below the join form */
   /* direct contact line (replaces the old join form) */
@@ -287,6 +281,19 @@
     .book-cal{min-height:600px;}
   }
   @media(max-width:640px){.fc-book{padding-left:0;padding-right:0;}.book-cal{min-height:620px;border-radius:12px;}}
+
+  /* ---- Seek Wonder · full-screen layer — same composition, standalone with exit ---- */
+  .fc-full{position:fixed;inset:0;z-index:210;overflow-y:auto;overscroll-behavior:contain;
+    background:rgba(250,246,239,.42);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);}
+  .fc-full[hidden]{display:none;}
+  html.fcf-open{overflow:hidden;}
+  .fcf-close{position:fixed;top:clamp(16px,3vh,28px);right:clamp(16px,3vw,32px);z-index:5;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(43,29,18,.22);background:transparent;color:var(--ink);cursor:pointer;transition:color .25s,border-color .25s,transform .35s;}
+  .fcf-close svg{width:15px;height:15px;}
+  .fcf-close:hover{color:var(--accent);border-color:var(--accent);transform:rotate(90deg);}
+  .fcf-close:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .fcf-inner{max-width:1108px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(64px,9vh,100px) clamp(24px,4vw,44px) clamp(40px,7vh,72px);}
+  .fc-full .fc-book{width:100%;margin-left:auto;margin-right:auto;}
 
   /* footer */
   .site-foot{position:relative;z-index:2;align-self:stretch;background:transparent;color:var(--ink-soft);text-align:center;padding:30px clamp(24px,6vw,40px);
@@ -340,19 +347,7 @@
       <p class="fc-p">We believe a human life is an intricate system of biology, memory, emotion, environment, relationships, and inner meaning.</p>
 
       <div id="join" style="text-align:center;margin-top:clamp(26px,4.5vh,46px);">
-        <button type="button" class="join-cta apply-trigger reveal" data-form="joinForm" aria-expanded="false" aria-controls="joinForm">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
-        <button type="button" class="join-back" id="joinBack" hidden><span class="jb-arw" aria-hidden="true">&lsaquo;</span> Back</button>
-        <div class="nf-form center contact-direct" id="joinForm" hidden>
-          <p class="cd-note">Contact Frisson&rsquo;s Founder Directly:</p>
-          <p class="cd-mail"><a href="mailto:mak@frisson-os.com">mak@frisson-os.com</a> <span class="cd-or">or</span> <a href="mailto:jamie@frisson-os.com">jamie@frisson-os.com</a></p>
-        </div>
-
-        <!-- BOOK A CALL · Cal.com inline embed — revealed together with the join form -->
-        <div class="fc-book" id="book" hidden>
-          <p class="book-eyebrow">Book a call</p>
-          <h2 class="book-title">Talk to Founder</h2>
-          <div class="book-cal" id="cal-inline"></div>
-        </div>
+        <button type="button" class="join-cta reveal" id="fcOpen" aria-haspopup="dialog" aria-controls="fcFull">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
       </div>
     </div>
 
@@ -360,6 +355,24 @@
       <a href="index.html">FRISSON</a> · <a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a>
     </footer>
   </header>
+
+  <!-- SEEK WONDER · full-screen layer — the original contact + Book-a-call composition, opened by the hero CTA -->
+  <div class="fc-full" id="fcFull" role="dialog" aria-modal="true" aria-label="Contact Frisson" hidden>
+    <button type="button" class="fcf-close" id="fcfClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="fcf-inner">
+      <div class="nf-form center contact-direct" id="joinForm">
+        <p class="cd-note">Contact Frisson&rsquo;s Founder Directly:</p>
+        <p class="cd-mail"><a href="mailto:mak@frisson-os.com">mak@frisson-os.com</a> <span class="cd-or">or</span> <a href="mailto:jamie@frisson-os.com">jamie@frisson-os.com</a></p>
+      </div>
+      <div class="fc-book" id="book">
+        <p class="book-eyebrow">Book a call</p>
+        <h2 class="book-title">Talk to Founder</h2>
+        <div class="book-cal" id="cal-inline"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO · FRISSON FELLOW -->
 
@@ -443,37 +456,44 @@
     });
   })();
 
-  /* tier 3 (cofounder): click CTA -> reveal its form in place */
+  /* Seek Wonder → full-screen contact/booking layer · GSAP silk open/close */
   (function(){
-    document.querySelectorAll('.apply-trigger').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        var form=document.getElementById(btn.getAttribute('data-form'));
-        if(!form) return;
-        form.hidden=false; form.classList.add('reveal-open'); btn.style.display='none'; btn.setAttribute('aria-expanded','true');
-        /* joinForm brings the Book-a-call calendar along; mount Cal on first open */
-        if(form.id==='joinForm'){
-          var bk=document.getElementById('book');
-          if(bk){ bk.hidden=false; }
-          var back=document.getElementById('joinBack');
-          if(back){ back.hidden=false; }
-          if(window.__frissonMountCal) window.__frissonMountCal();
-        }
-        var first=form.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
-        if(first) setTimeout(function(){ try{first.focus({preventScroll:true});}catch(e){} },60);
-      });
-    });
-    /* Back — collapse the join panel (form + calendar) and restore the trigger */
-    var joinBack=document.getElementById('joinBack');
-    if(joinBack){
-      joinBack.addEventListener('click',function(){
-        var form=document.getElementById('joinForm'), bk=document.getElementById('book'),
-            trig=document.querySelector('.apply-trigger[data-form=joinForm]');
-        if(form){ form.hidden=true; form.classList.remove('reveal-open'); }
-        if(bk){ bk.hidden=true; }
-        joinBack.hidden=true;
-        if(trig){ trig.style.display=''; trig.setAttribute('aria-expanded','false'); trig.scrollIntoView({block:'center',behavior:'smooth'}); trig.focus({preventScroll:true}); }
-      });
+    var layer=document.getElementById('fcFull'), openBtn=document.getElementById('fcOpen'), closeBtn=document.getElementById('fcfClose');
+    if(!layer||!openBtn||!closeBtn) return;
+    var isOpen=false, lastFocus=null;
+    function silkEase(){
+      if(window.CustomEase && window.gsap && !gsap.parseEase('silk')) CustomEase.create('silk','M0,0 C0.16,1 0.3,1 1,1');
+      return (window.gsap && gsap.parseEase('silk')) ? 'silk' : 'power3.out';
     }
+    function parts(){ return layer.querySelectorAll('.contact-direct,.fc-book'); }
+    function show(){
+      if(isOpen) return; isOpen=true; lastFocus=document.activeElement;
+      layer.hidden=false; layer.scrollTop=0; document.documentElement.classList.add('fcf-open');
+      if(window.__frissonMountCal) window.__frissonMountCal();
+      if(window.gsap && !REDUCE){
+        gsap.fromTo(layer,{opacity:0},{opacity:1,duration:.4,ease:'power2.out',clearProps:'opacity'});
+        gsap.fromTo(parts(),{opacity:0,y:24},{opacity:1,y:0,duration:.85,ease:silkEase(),stagger:.12,delay:.06,clearProps:'opacity,transform'});
+      }
+      setTimeout(function(){ try{closeBtn.focus({preventScroll:true});}catch(e){} },80);
+    }
+    function hide(){
+      if(!isOpen) return; isOpen=false;
+      var finished=false;
+      function done(){
+        if(finished) return; finished=true;
+        layer.hidden=true; document.documentElement.classList.remove('fcf-open');
+        if(window.gsap) gsap.set([layer].concat([].slice.call(parts())),{clearProps:'opacity,transform'});
+        if(lastFocus) try{lastFocus.focus({preventScroll:true});}catch(e){}
+      }
+      if(window.gsap && !REDUCE){
+        gsap.to(parts(),{opacity:0,y:-12,duration:.22,ease:'power2.in',stagger:.04});
+        gsap.to(layer,{opacity:0,duration:.3,delay:.08,ease:'power2.in',onComplete:done});
+        setTimeout(done,700);   /* frame-throttle safety */
+      } else done();
+    }
+    openBtn.addEventListener('click',show);
+    closeBtn.addEventListener('click',hide);
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide(); });
   })();
 
   /* Netlify forms — AJAX submit (select by class; the data-netlify attr is stripped at deploy) */
