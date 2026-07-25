@@ -13,6 +13,42 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Pretty URL: Field Notes lives at /field-notes (address bar), served from stories.html.
+# Old /stories links 301 to the new path.
+[[redirects]]
+  from = "/field-notes"
+  to = "/stories.html"
+  status = 200
+
+[[redirects]]
+  from = "/stories"
+  to = "/field-notes"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/stories.html"
+  to = "/field-notes"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/field-notes"
+  to = "/zh/stories.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/stories"
+  to = "/zh/field-notes"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/stories.html"
+  to = "/zh/field-notes"
+  status = 301
+  force = true
+
 # Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"
