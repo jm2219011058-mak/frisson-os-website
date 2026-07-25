@@ -23,7 +23,7 @@
 
   /* nav */
   .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:20px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid rgba(43,29,18,.06);font-family:var(--serif);}
+    padding:20px clamp(20px,5vw,64px);background:transparent;font-family:var(--serif);}
   .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
@@ -48,7 +48,7 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* full-bleed city hero — native aspect ratio, uncropped, edge-to-edge (like Soulful Living Network) */
-  .fc-hero{position:relative;width:100%;margin-top:clamp(56px,7vw,66px);overflow:hidden;background:#fff;line-height:0;}
+  .fc-hero{position:relative;width:100%;margin-top:0;overflow:hidden;background:#fff;line-height:0;}
   .fc-hero picture{display:block;width:100%;}
   .fc-hero img{display:block;width:100%;height:auto;}
 
