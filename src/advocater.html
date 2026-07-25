@@ -204,6 +204,9 @@
     box-shadow:0 14px 34px rgba(224,123,60,.34);transition:transform .3s,box-shadow .3s;}
   .apply:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(224,123,60,.44);}
   .apply .arw{font-size:1.15em;line-height:1;}
+  /* plain (no pill) submit — orange text link */
+  .apply.apply-plain{background:transparent;color:var(--accent);padding:0;border-radius:0;box-shadow:none;font-weight:700;}
+  .apply.apply-plain:hover{transform:none;box-shadow:none;opacity:.72;}
   .legal{font-family:var(--sans);font-size:12px;line-height:1.5;color:rgba(255,255,255,.72);margin:14px 0 0;}
   .legal a{color:rgba(255,255,255,.92);text-underline-offset:2px;}
   .nf-form .done{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,20px);color:#fff;text-align:center;margin:0;}
@@ -314,9 +317,9 @@
             <div class="field"><label class="lbl" for="j-name">Full name</label><input id="j-name" type="text" name="name" placeholder="Your name" required></div>
             <div class="field"><label class="lbl" for="j-email">Email</label><input id="j-email" type="email" name="email" placeholder="you@email.com" required></div>
           </div>
-          <div class="field"><label class="lbl" for="j-mission">What have you built · your mission</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
+          <div class="field"><label class="lbl" for="j-mission">Bring Vision, not Money</label><textarea id="j-mission" name="message" placeholder="Tell us what you have built, and what you want to build" required></textarea></div>
           <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
-          <button type="submit" class="apply">Enquire <span class="arw">&rsaquo;</span></button>
+          <button type="submit" class="apply apply-plain">Jump <span class="arw">&rsaquo;</span></button>
           <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
         </form>
       </div>
