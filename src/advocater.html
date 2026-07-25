@@ -257,6 +257,16 @@
   @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(14px);opacity:1;}}
   @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
 
+  /* BOOK A CALL — lives in the hero, below the join form */
+  .fc-book{margin:clamp(36px,6vh,64px) auto 0;text-align:center;}
+  .fc-book[hidden]{display:none;}
+  .book-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(12px,1.2vw,14px);letter-spacing:.18em;text-transform:uppercase;color:#8c837a;margin:0 0 clamp(14px,2vh,24px);}
+  .book-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.2vw,44px);line-height:1.14;color:var(--ink);margin:0 0 10px;}
+  .book-sub{font-family:var(--sans);font-size:clamp(14.5px,1.5vw,17px);line-height:1.7;color:var(--ink-soft);margin:0 auto clamp(26px,4vh,40px);max-width:52ch;}
+  .book-title,.book-sub{text-shadow:0 1px 12px rgba(245,240,231,.82), 0 0 1px rgba(245,240,231,.7);}
+  .book-cal{border:1px solid var(--hair);border-radius:16px;overflow:hidden;min-height:560px;background:#fff;text-align:left;}
+  @media(max-width:640px){.fc-book{padding-left:0;padding-right:0;}.book-cal{min-height:620px;border-radius:12px;}}
+
   /* footer */
   .site-foot{background:transparent;color:var(--ink-soft);text-align:center;padding:30px clamp(24px,6vw,40px);
     font-family:var(--sans);font-size:13px;letter-spacing:.04em;border-top:1px solid rgba(43,29,18,.08);}
@@ -326,6 +336,14 @@
           <button type="submit" class="apply apply-plain">Jump <span class="arw">&rsaquo;</span></button>
           <p class="legal">By submitting, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.</p>
         </form>
+
+        <!-- BOOK A CALL · Cal.com inline embed — revealed together with the join form -->
+        <div class="fc-book" id="book" hidden>
+          <p class="book-eyebrow">Book a call</p>
+          <h2 class="book-title">Talk with FRISSON</h2>
+          <p class="book-sub">Prefer to talk? Pick a time that suits you — we meet on video, and the invitation lands in your calendar automatically.</p>
+          <div class="book-cal" id="cal-inline"></div>
+        </div>
       </div>
     </div>
   </header>
@@ -408,31 +426,20 @@
 
 
 
-  <!-- BOOK A CALL · Cal.com inline embed -->
-  <style>
-  .book{background:#fff;color:var(--ink);padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px);}
-  .book-in{max-width:1080px;margin:0 auto;}
-  .book-eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(12px,1.2vw,14px);letter-spacing:.18em;text-transform:uppercase;color:#8c837a;margin:0 0 clamp(16px,2.4vh,26px);}
-  .book-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.2vw,44px);line-height:1.14;color:var(--ink);margin:0 0 10px;}
-  .book-sub{font-family:var(--sans);font-size:clamp(14.5px,1.5vw,17px);line-height:1.7;color:var(--ink-soft);margin:0 0 clamp(26px,4vh,40px);max-width:52ch;}
-  .book-cal{border:1px solid var(--hair);border-radius:16px;overflow:hidden;min-height:560px;background:#fff;}
-  @media(max-width:640px){.book-cal{min-height:620px;border:0;border-top:1px solid var(--hair);border-radius:0;}}
-  </style>
-  <section class="book" id="book">
-    <div class="book-in">
-      <p class="book-eyebrow">Book a call</p>
-      <h2 class="book-title">Talk with FRISSON</h2>
-      <p class="book-sub">Pick a time that suits you — we meet on video, and the invitation lands in your calendar automatically.</p>
-      <div class="book-cal" id="cal-inline"></div>
-    </div>
-  </section>
+  <!-- Cal.com embed loader (target #cal-inline lives in the hero above) -->
   <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
   Cal("init", "frisson", {origin:"https://app.cal.com"});
   Cal.config = Cal.config || {};
   Cal.config.forwardQueryParams = true;
-  Cal.ns.frisson("inline", { elementOrSelector:"#cal-inline", config:{layout:"month_view",useSlotsViewOnSmallScreen:"true"}, calLink:"jacques-mak-vyyoc6/15min" });
   Cal.ns.frisson("ui", { cssVarsPerTheme:{ light:{"cal-brand":"#e07b3c"}, dark:{"cal-brand":"#e07b3c"} }, hideEventTypeDetails:false, layout:"month_view" });
+  /* mounted lazily — the calendar lives inside the hidden join panel; mounting while
+     display:none makes Cal mis-measure, so we mount on first reveal instead */
+  var __calMounted=false;
+  window.__frissonMountCal=function(){
+    if(__calMounted) return; __calMounted=true;
+    Cal.ns.frisson("inline", { elementOrSelector:"#cal-inline", config:{layout:"month_view",useSlotsViewOnSmallScreen:"true"}, calLink:"frisson-os/15min" });
+  };
   </script>
 
   <footer class="site-foot">
@@ -498,6 +505,12 @@
         var form=document.getElementById(btn.getAttribute('data-form'));
         if(!form) return;
         form.hidden=false; form.classList.add('reveal-open'); btn.style.display='none';
+        /* joinForm brings the Book-a-call calendar along; mount Cal on first open */
+        if(form.id==='joinForm'){
+          var bk=document.getElementById('book');
+          if(bk){ bk.hidden=false; }
+          if(window.__frissonMountCal) window.__frissonMountCal();
+        }
         var first=form.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
         if(first) setTimeout(function(){ try{first.focus({preventScroll:true});}catch(e){} },60);
       });
