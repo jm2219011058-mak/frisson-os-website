@@ -491,17 +491,6 @@
     });
   })();
 
-  /* essay: card -> full manifesto article -> back (mirrors Field Notes) */
-  (function(){
-    var idx=document.getElementById('esIndex'), art=document.getElementById('esArticle'),
-        card=document.getElementById('esCard'), back=document.getElementById('esBack');
-    if(!idx||!art) return;
-    function open(){ idx.hidden=true; art.hidden=false; window.scrollTo({top:0,behavior:'auto'}); }
-    function close(){ art.hidden=true; idx.hidden=false; window.scrollTo({top:0,behavior:'auto'}); }
-    if(card) card.addEventListener('click',function(e){ e.preventDefault(); open(); });
-    if(back) back.addEventListener('click',close);
-  })();
-
   /* tier 3 (cofounder): click CTA -> reveal its form in place */
   (function(){
     document.querySelectorAll('.apply-trigger').forEach(function(btn){
