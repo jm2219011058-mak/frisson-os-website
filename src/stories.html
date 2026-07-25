@@ -20,15 +20,15 @@
   body{overflow-x:clip;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
   /* nav — white, sticky */
-  .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid var(--hair);}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:transparent;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#fff;text-decoration:none;font-weight:500;text-shadow:0 1px 16px rgba(0,0,0,.4);}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(255,255,255,.92);text-decoration:none;transition:color .25s;white-space:nowrap;text-shadow:0 1px 16px rgba(0,0,0,.4);}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:transform .3s;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
