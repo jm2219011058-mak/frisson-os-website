@@ -77,6 +77,13 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 ### about.html
 - 节顺序：Collecting Dreams（含 The Renaissance Archive 四卡）→ Beyond the Canvas → **The Future of AI Begins in the Physical World — with How We Live** → Not a Fantasy。
 
+### stories.html（Field Notes）
+- **排序死规则：顶部 masthead（`.fn-feature`）永远是日期最新的文章；其余按日期倒序放进 `.fn-list` 网格（左上最新）。** 每加一篇新文章：新文章占 feature，原 feature 降为网格第一张卡（记得给它补 `data-cat`）。
+- 一篇文章 = 三处同一个 `data-view` 编号：列表卡/feature、`.fn-hero`（文章头图）、`.story`（正文）。图片一图两用（卡片背景 + 文章 hero），放 `assets/city/fn-*.webp`。
+- 分类标签：`data-cat="diary"`（meta 显示 Field Note）或 `essay`；tabs 只筛网格卡，feature 恒显。
+- 新文章正文直接硬编码在 html 里（不走 i18n）；结构：`st-h st-h-title`（自动全大写）→ `st-sub`（斜体灰）→ `st-date` → 若干 `st-p`。
+- 标题右侧橙色 `›` hint 箭头（`.fn-hint`，em 尺寸随标题缩放，常显含移动端）；卡片标题过长时可只取主句，完整标题放文章内。
+
 ## 7. 后端系统（全部无独立服务器）
 
 | 系统 | 实现 | 管理方式 |
