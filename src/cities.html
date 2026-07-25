@@ -126,14 +126,14 @@
   .wwd-news{max-width:320px;text-align:center;display:flex;flex-direction:column;align-items:center;}
   .wwd-news .wwd-eyebrow{align-self:flex-start;text-align:left;margin:0 0 clamp(18px,2.6vh,28px);}
   .news-titlerow{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 16px;width:100%;}
-  .news-titlerow::before{content:"";flex:0 0 44px;}
-  .news-arrow{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--accent);cursor:pointer;transition:transform .3s,background .25s;}
+  .news-titlerow::before{content:"";flex:0 0 36px;}
+  .news-arrow{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--accent);cursor:pointer;transition:transform .3s,background .25s;}
   .news-arrow svg{width:26px;height:26px;}
   .news-arrow:hover{transform:translateX(4px);background:rgba(224,123,60,.1);}
   .wwd-news #trialIntro,.wwd-news #trialApply{display:flex;flex-direction:column;align-items:center;width:100%;}
   .wwd-news #trialApply[hidden],.wwd-news #trialIntro[hidden]{display:none;}
   .news-pre{font-family:var(--serif);font-weight:400;font-size:clamp(13px,1.3vw,15px);color:var(--ink-soft);opacity:.85;margin:0 0 4px;text-align:center;}
-  .news-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,2.8vw,36px);line-height:1.1;color:var(--ink);margin:0;}
+  .news-title{font-family:var(--serif);font-weight:600;font-size:clamp(24px,2.5vw,32px);line-height:1.1;color:var(--ink);margin:0;white-space:nowrap;}
   .news-conch.conch{width:100%;max-width:300px;margin:0 auto 16px;}
   .news-conch .conch-cap{font-size:clamp(12.5px,1.2vw,14.5px);}
   .news-cta{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:0;cursor:pointer;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.03em;padding:9px 22px;border-radius:999px;text-decoration:none;transition:background .25s;}
@@ -359,6 +359,7 @@
   </style>
   <script>
   (function(){
+  function slnTrialInit(){
     var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
     var HARM=[{k:2,a:.07,w:.85,p:.5},{k:3,a:.05,w:-.6,p:2.0},{k:5,a:.03,w:1.0,p:.3}];
     function blobPath(cx,cy,R0,t,amp){ var N=64,pts=[],i,j;
@@ -386,6 +387,8 @@
       fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
         .then(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; })
         .catch(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; }); }); }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', slnTrialInit); } else { slnTrialInit(); }
   })();
   </script>
 
