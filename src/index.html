@@ -269,6 +269,39 @@
   })();
 
   /* cities CTA colour-sweep animation removed — the link is now static light grey (matches the resume CTA) */
+
+  /* last section · keep scrolling past the bottom → Soulful Living Network */
+  (function(){
+    var DEST='cities.html', bottomSince=0, acc=0, fired=false;
+    var COOLDOWN=450;   /* ms to swallow snap/momentum right after landing on the last screen */
+    var THRESHOLD=140;  /* accumulated wheel delta needed to trigger */
+    function atBottom(){
+      return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    }
+    function go(){ if(fired) return; fired=true; location.href=DEST; }
+    addEventListener('scroll',function(){
+      if(atBottom()){ if(!bottomSince) bottomSince=Date.now(); }
+      else { bottomSince=0; acc=0; }
+    },{passive:true});
+    addEventListener('wheel',function(e){
+      if(!atBottom()||e.deltaY<=0){ acc=0; return; }
+      if(!bottomSince) bottomSince=Date.now();
+      if(Date.now()-bottomSince<COOLDOWN) return;
+      acc+=e.deltaY;
+      if(acc>THRESHOLD) go();
+    },{passive:true});
+    var y0=null;
+    addEventListener('touchstart',function(e){
+      y0=(atBottom() && bottomSince && Date.now()-bottomSince>=COOLDOWN) ? e.touches[0].clientY : null;
+    },{passive:true});
+    addEventListener('touchmove',function(e){
+      if(y0!==null && atBottom() && y0-e.touches[0].clientY>70) go();
+    },{passive:true});
+    addEventListener('keydown',function(e){
+      if(!atBottom()) return;
+      if(e.key==='ArrowDown'||e.key==='PageDown'||(e.key===' '&&!e.shiftKey)) go();
+    });
+  })();
 </script>
 </body>
 </html>

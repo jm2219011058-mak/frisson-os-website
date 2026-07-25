@@ -136,8 +136,10 @@
   .news-title{font-family:var(--serif);font-weight:600;font-size:clamp(24px,2.5vw,32px);line-height:1.1;color:var(--ink);margin:0;white-space:nowrap;}
   .news-conch.conch{width:100%;max-width:300px;margin:0 auto 16px;}
   .news-conch .conch-cap{font-size:clamp(12.5px,1.2vw,14.5px);}
-  .news-cta{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:0;cursor:pointer;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.03em;padding:9px 22px;border-radius:999px;text-decoration:none;transition:background .25s;}
-  .news-cta:hover{background:#c96a2f;}
+  .news-cta{display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--ink);border:0;cursor:pointer;font-family:var(--sans);font-weight:500;font-size:clamp(13px,1.45vw,15px);letter-spacing:.02em;padding:4px 0;margin-top:8px;transition:color .25s;}
+  .news-cta .arw{font-size:1.15em;line-height:1;transition:transform .3s;}
+  .news-cta:hover{color:var(--accent);}
+  .news-cta:hover .arw{transform:translateX(3px);}
   .news-back{color:var(--ink-soft);margin:0 0 12px;}
   .news-back:hover{color:var(--ink);}
   .news-form{max-width:300px;margin:0;}
@@ -162,6 +164,10 @@
     .wwd-news .news-form input[type=text],.wwd-news .news-form input[type=email]{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff;}
     .wwd-news .news-form ::placeholder{color:rgba(255,255,255,.6);}
     .wwd-news .news-form .consent{color:rgba(255,255,255,.86);}
+    .wwd-news .news-cta{color:#fff;}
+    .wwd-news .news-cta:hover{color:var(--accent);}
+    .wwd-news .nf-done .done-title{color:#fff;}
+    .wwd-news .nf-done .done-sub{color:rgba(255,255,255,.82);}
   }
   .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(22px,2.4vw,32px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
   .wwd-statement b{font-weight:700;color:var(--ink);}
@@ -354,8 +360,18 @@
   .back-btn:hover{color:#fff;}
   .nf-form .done{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,20px);color:#fff;text-align:center;margin:0;}
   .nf-form[hidden],.tier-intro[hidden],.tier-apply[hidden]{display:none;}
-  .nf-form.reveal-open{animation:nfIn .45s ease both;}
-  @keyframes nfIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  /* the NEWS card sits on the light column — re-assert light colours over the dark .nf-form defaults above */
+  .news-form .lbl{color:var(--ink-soft);}
+  .news-form ::placeholder{color:#b3a89b;}
+  .news-back{color:var(--ink-soft);}
+  .news-back:hover{color:var(--ink);}
+  /* submitted state */
+  .nf-done{position:relative;text-align:center;padding:clamp(16px,2.6vh,26px) 0;}
+  .nf-done .done-eyebrow{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.18em;color:var(--accent);margin:0 0 10px;}
+  .nf-done .done-title{font-family:var(--serif);font-weight:600;font-size:clamp(21px,2.3vw,27px);line-height:1.22;color:var(--ink);margin:0 0 8px;text-wrap:balance;}
+  .nf-done .done-sub{font-family:var(--serif);font-size:clamp(14px,1.5vw,16px);line-height:1.6;color:var(--ink-soft);margin:0;text-wrap:pretty;}
+  .fx-stage{position:absolute;left:0;right:0;top:-46px;bottom:0;pointer-events:none;z-index:5;}
+  .fx-stage i{position:absolute;border-radius:50%;will-change:transform,opacity;}
   </style>
   <script>
   (function(){
@@ -372,21 +388,73 @@
     }
     var path=document.getElementById('conchBlobPath');
     if(path){ if(REDUCE){ path.setAttribute('d',blobPath(.5,.5,.43,0,1)); } else { (function frame(now){ var t=(now||0)/1000,R=.43*(1+.018*Math.sin(t*1.15)); path.setAttribute('d',blobPath(.5,.5,R,t*.9,1)); requestAnimationFrame(frame); })(0);} }
+    /* intro ↔ form swap · container height morph + staggered fade (GSAP, falls back to instant toggle) */
+    function swap(hide,show,dir){
+      if(!window.gsap||REDUCE){ hide.hidden=true; show.hidden=false; return; }
+      var wrap=hide.parentElement, h0=wrap.offsetHeight, settled=false;
+      /* safety net: if the tab is frame-throttled and tweens stall, land the swap instantly */
+      var safety=setTimeout(function(){ if(settled) return; settled=true;
+        gsap.killTweensOf([hide,show,wrap]); gsap.set([hide,show,wrap],{clearProps:'all'});
+        hide.hidden=true; show.hidden=false; },800);
+      gsap.to(hide,{opacity:0,y:dir>0?-10:10,duration:.22,ease:'power2.in',onComplete:function(){
+        if(settled) return;
+        hide.hidden=true; gsap.set(hide,{clearProps:'opacity,transform'});
+        show.hidden=false;
+        var h1=wrap.offsetHeight;
+        var items=show.querySelectorAll('.back-btn,form>.field,form>.consent,form>.news-cta,.nf-done');
+        if(!items.length) items=show.children;
+        gsap.set(wrap,{height:h0,overflow:'hidden'});
+        gsap.timeline({onComplete:function(){ settled=true; clearTimeout(safety); gsap.set(wrap,{clearProps:'height,overflow'}); }})
+          .to(wrap,{height:h1,duration:.55,ease:'power3.inOut'},0)
+          .fromTo(items,{opacity:0,y:dir>0?16:-16},{opacity:1,y:0,duration:.55,ease:'power3.out',stagger:.06,clearProps:'opacity,transform'},.1);
+      }});
+    }
     document.querySelectorAll('[data-open]').forEach(function(btn){
       btn.addEventListener('click',function(){ var b=btn.getAttribute('data-open'),i=document.getElementById(b+'Intro'),a=document.getElementById(b+'Apply');
-        if(!a)return; if(i)i.hidden=true; a.hidden=false; a.classList.add('reveal-open');
-        var f=a.querySelector('input:not([type=hidden]):not([type=checkbox])'); if(f)setTimeout(function(){try{f.focus({preventScroll:true});}catch(e){}},60); });
+        if(!a||!i)return; swap(i,a,1);
+        var f=a.querySelector('input:not([type=hidden]):not([type=checkbox])'); if(f)setTimeout(function(){try{f.focus({preventScroll:true});}catch(e){}},620); });
     });
     document.querySelectorAll('[data-back]').forEach(function(btn){
       btn.addEventListener('click',function(){ var b=btn.getAttribute('data-back'),i=document.getElementById(b+'Intro'),a=document.getElementById(b+'Apply');
-        if(!a)return; a.hidden=true; a.classList.remove('reveal-open'); if(i){i.hidden=false;i.scrollIntoView({block:'nearest'});} });
+        if(!a||!i)return; swap(a,i,-1); });
     });
+    /* quiet fireworks — fine sparks in brand tones, three small bursts, then gone */
+    function celebrate(host){
+      var stage=document.createElement('div'); stage.className='fx-stage'; host.appendChild(stage);
+      var COLORS=['#e07b3c','#c96a2f','#f0c9a8','#e8ddcf'];
+      var W=host.offsetWidth||300;
+      [[.5,.3,0],[.24,.5,.28],[.76,.46,.52]].forEach(function(burst){
+        setTimeout(function(){
+          for(var i=0;i<16;i++){ (function(){
+            var d=document.createElement('i'), s=2.5+Math.random()*3;
+            d.style.cssText='left:'+(burst[0]*100)+'%;top:'+(burst[1]*100)+'%;width:'+s+'px;height:'+s+'px;background:'+COLORS[(Math.random()*COLORS.length)|0]+';';
+            stage.appendChild(d);
+            var a=Math.random()*Math.PI*2, r=W*.12+Math.random()*W*.22;
+            var vx=Math.cos(a)*r, vy=Math.sin(a)*r*.8;
+            gsap.to(d,{keyframes:[{x:vx*.75,y:vy*.75,duration:.32,ease:'power2.out'},{x:vx,y:vy+46,duration:.95,ease:'power1.in'}]});
+            gsap.to(d,{opacity:0,scale:.3,duration:.6,delay:.62,ease:'power1.in',onComplete:function(){d.remove();}});
+          })(); }
+        }, burst[2]*1000);
+      });
+      setTimeout(function(){ stage.remove(); },2600);
+    }
     var form=document.getElementById('trialForm');
     if(form){ form.addEventListener('submit',function(ev){ ev.preventDefault();
       var data=new URLSearchParams(new FormData(form)).toString();
+      function done(){
+        form.innerHTML='<div class="nf-done">'
+          +'<p class="done-eyebrow">REQUEST SENT</p>'
+          +'<p class="done-title">See you inside the Conch.</p>'
+          +'<p class="done-sub">We will be in touch before the Mask comes off &mdash; January 2027.</p>'
+          +'</div>';
+        var box=form.querySelector('.nf-done');
+        if(window.gsap&&!REDUCE){
+          gsap.fromTo(box.children,{opacity:0,y:14},{opacity:1,y:0,duration:.6,ease:'power3.out',stagger:.09});
+          celebrate(box);
+        }
+      }
       fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
-        .then(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; })
-        .catch(function(){ form.innerHTML='<p class="done">Received. We will be in touch.</p>'; }); }); }
+        .then(done).catch(done); }); }
   }
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', slnTrialInit); } else { slnTrialInit(); }
   })();
@@ -423,7 +491,7 @@
               <div class="field"><label class="lbl" for="t-name">Full name</label><input id="t-name" type="text" name="name" placeholder="Your name" required></div>
               <div class="field"><label class="lbl" for="t-email">Email</label><input id="t-email" type="email" name="email" placeholder="you@email.com" required></div>
               <label class="consent"><input type="checkbox" name="consent" value="yes"> I agree to be contacted by Frisson.</label>
-              <button type="submit" class="news-cta">Request to experience <span aria-hidden="true">&rsaquo;</span></button>
+              <button type="submit" class="news-cta">Request to experience <span class="arw" aria-hidden="true">&rsaquo;</span></button>
             </form>
           </div>
         </div>
@@ -605,6 +673,36 @@
       @media(max-width:640px){.sln-v-points{grid-template-columns:1fr;gap:14px;}.sln-moon{height:min(38vh,300px);}}
       .sln-card > .sln-anim{opacity:0;transform:translateY(14px)}
       .sln-overlay.show .sln-card > .sln-anim{animation:slnRise .7s cubic-bezier(.2,.9,.3,1) forwards}
+      /* caption CTA → expandable blurb */
+      .sln-cap-cta{border:0;cursor:pointer;}
+      .sln-cap-cta[aria-expanded="true"] span{transform:rotate(90deg);}
+      .sln-cap-panel{max-width:min(52ch,78vw);margin-top:clamp(10px,1.6vh,16px);background:rgba(254,252,248,.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:14px;padding:clamp(14px,2vh,18px) clamp(16px,2vw,20px);opacity:0;transform:translateY(-6px);transition:opacity .35s ease,transform .35s ease;}
+      .sln-cap-panel.on{opacity:1;transform:none;}
+      .sln-cap-panel p{font:500 clamp(13.5px,1.5vw,15.5px)/1.7 var(--sans);color:#3f382c;margin:0 0 10px;}
+      .sln-cap-panel a{display:inline-flex;align-items:center;gap:6px;color:#1c1712;font:600 clamp(13px,1.4vw,14.5px)/1 var(--sans);text-decoration:none;transition:color .25s;}
+      .sln-cap-panel a span{transition:transform .3s;}
+      .sln-cap-panel a:hover{color:var(--accent);}
+      .sln-cap-panel a:hover span{transform:translateX(4px);}
+      /* statement-style modal title (node 11) */
+      .sln-m-title.sln-statement{font-size:clamp(23px,3.6vw,34px);line-height:1.3;letter-spacing:0;}
+      /* clickable dark bar → LIFE FRONTIER 2030 */
+      .sln-root .bar-hover{transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1);}
+      .sln-root .bar-node:hover .bar-hover,.sln-root .bar-node:focus-visible .bar-hover{transform:scale(1.07);}
+      .sln-root .bar-node:focus-visible .bar-hover{stroke:var(--accent);stroke-width:2;}
+      /* LIFE FRONTIER full-bleed card section */
+      .sln-fsec{position:relative;background:#0b0a08;padding:clamp(30px,5.5vh,54px) clamp(20px,4vw,44px) clamp(36px,6vh,58px);}
+      .sln-f-launch{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vw,58px);letter-spacing:.01em;line-height:.98;text-transform:uppercase;color:#fff;margin:0 0 clamp(14px,2.4vh,22px);}
+      .sln-fsec .sln-f-lead{font-family:var(--serif);font-size:clamp(15.5px,1.8vw,20px);line-height:1.55;color:rgba(244,236,220,.9);max-width:36ch;margin:clamp(14px,2.4vh,20px) 0 clamp(22px,3.6vh,34px);}
+      .sln-fsec .prop-cards{grid-template-columns:repeat(2,1fr);}
+      @media(max-width:560px){.sln-fsec .prop-cards{grid-template-columns:1fr;}}
+      .sln-fsec .prop-feats{margin-top:clamp(24px,4vh,40px);}
+      /* persistent node labels (mobile) */
+      .sln-mlabs{position:absolute;inset:0;z-index:4;pointer-events:none;display:none;}
+      .sln-mlab{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:var(--ink);color:#f8f4ee;font:600 10.5px/1 var(--sans);letter-spacing:.04em;padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;}
+      .sln-mlab::after{content:"";position:absolute;left:50%;bottom:-3.5px;width:7px;height:7px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
+      .sln-mlab.below{transform:translate(-50%,0);}
+      .sln-mlab.below::after{bottom:auto;top:-3.5px;}
+      @media(max-width:820px){.sln-mlabs{display:block;}}
       @keyframes slnRise{to{opacity:1;transform:none}}
       @media (max-width:600px){
         .sln-overlay{padding:0;place-items:end center}
@@ -621,8 +719,13 @@
     <div class="sln-root" id="sln-root">
       <div class="sln-caption">
         <h2 class="sln-cap-title">Soulful Living Networks</h2>
-        <a class="sln-cap-cta" href="advocater.html">Build with Frisson <span aria-hidden="true">›</span></a>
+        <button class="sln-cap-cta" id="sln-capCta" type="button" aria-expanded="false" aria-controls="sln-capPanel">Build with Frisson <span aria-hidden="true">›</span></button>
+        <div class="sln-cap-panel" id="sln-capPanel" hidden>
+          <p>Frisson specializes as a design-build developer that fuses emotional design and psychological wellness science with spatial AI technology to deliver rapid, cost-controlled, and high-performance soulful living spaces.</p>
+          <a href="advocater.html">Start with Frisson <span aria-hidden="true">›</span></a>
+        </div>
       </div>
+      <div class="sln-mlabs" id="sln-mlabs"></div>
       <main class="sln-stage" id="sln-stage" aria-label="Soulful Living Nodes — interactive map">
         <svg id="sln-scene" viewBox="0 0 800 1067" xmlns="http://www.w3.org/2000/svg" role="img">
           <defs>
@@ -691,9 +794,13 @@
     (function(){
       const NS='http://www.w3.org/2000/svg';
       const SPECIAL=[1,4,10,11,17,18,24,25,31];
+      const INTERACTIVE=[1,11,31];
       const CHAPTER={}; SPECIAL.forEach((d,i)=>CHAPTER[d]=String(i+1).padStart(2,'0'));
+      const TIP={1:'Zahir Sky Atelier · The First Chapter',11:'Chapter '+CHAPTER[11]+' · Built for the Future',31:'Chapter '+CHAPTER[31]+' · Coming soon'};
+      let MLABS=null;
       const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarse=matchMedia('(pointer: coarse)').matches;
+      const mlabMQ=matchMedia('(max-width:820px)');
       const HIT=coarse?26:19;
 
       const $=id=>document.getElementById('sln-'+id);
@@ -741,7 +848,13 @@
       place([4,547],[4,623],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
       place([214,102],[235,84],`<rect x="-102.5" y="-14" width="205" height="28" fill="#1c1712"/>`);
       place([304,451],[266,338],`<rect x="-17" y="-8" width="34" height="16" fill="#1c1712"/>`);
-      place([538,771],[790,703],`<rect x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`);
+      const bar=place([538,771],[790,703],
+        `<rect class="bar-hover" x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`+
+        `<rect x="-94" y="-26" width="188" height="52" fill="transparent"/>`);
+      bar.id='sln-barNode';
+      bar.classList.add('node','bar-node');
+      bar.setAttribute('role','button');bar.setAttribute('tabindex','0');
+      bar.setAttribute('aria-label','Open LIFE FRONTIER 2030');
       place([303,859],[338,708],`<rect x="-8" y="-8" width="16" height="16" fill="#1c1712"/>`);
       place([378,197,-55.5],[520,165,-25],`<rect x="-197" y="-8" width="394" height="16" ${O} stroke-width="1.6"/>`);
       place([443,47],[620,50],`<circle class="bob" r="4" fill="#1c1712"/>`);
@@ -787,20 +900,24 @@
         const g=el('g',{class:'cal-item'},cal);
         g.style.animationDelay=(0.15+i*0.03).toFixed(2)+'s';
         if(SPECIAL.includes(i)){
-          g.classList.add('node'); if(i===1)g.classList.add('primary');
-          g.setAttribute('role','button');g.setAttribute('tabindex','0');
-          g.setAttribute('aria-label','Open node '+i);
-          const halo=el('circle',{class:'halo',r:12.8},g);
-          halo.style.animationDelay=(haloDelay+=0.4)+'s';
+          const interactive=INTERACTIVE.includes(i);
+          if(interactive){
+            g.classList.add('node'); if(i===1)g.classList.add('primary');
+            g.setAttribute('role','button');g.setAttribute('tabindex','0');
+            g.setAttribute('aria-label','Open node '+i);
+            const halo=el('circle',{class:'halo',r:12.8},g);
+            halo.style.animationDelay=(haloDelay+=0.4)+'s';
+          }
           el('circle',{class:'disc',r:12.8,fill:'#1c1712'},g);
           const t=el('text',{class:'num-in','text-anchor':'middle','dominant-baseline':'central',dy:'.5'},g);
           t.textContent=i;
-          el('circle',{r:HIT,fill:'transparent'},g);
-          g.addEventListener('click',()=>openNode(i));
-          g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openNode(i);}});
-          g.addEventListener('mouseenter',e=>showTip(e.currentTarget,
-            i===1?'Zahir Sky Atelier · The First Chapter':'Chapter '+CHAPTER[i]+' · Coming soon'));
-          g.addEventListener('mouseleave',hideTip);
+          if(interactive){
+            el('circle',{r:HIT,fill:'transparent'},g);
+            g.addEventListener('click',()=>openNode(i));
+            g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openNode(i);}});
+            g.addEventListener('mouseenter',e=>showTip(e.currentTarget,TIP[i]));
+            g.addEventListener('mouseleave',hideTip);
+          }
         }else{
           const t=el('text',{class:'num','text-anchor':'middle','dominant-baseline':'central'},g);
           t.textContent=i;
@@ -808,6 +925,7 @@
         calItems.push(g);
       }
 
+      const mpt={};
       function layoutCal(t){
         guide.setAttribute('d',pathD(t));
         const L=guide.getTotalLength();
@@ -825,6 +943,7 @@
           const p=at(s0+(i-1)*step);
           calItems[i-1].setAttribute('transform',
             `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.a.toFixed(2)}) scale(${sc.toFixed(3)})`);
+          if(INTERACTIVE.includes(i))mpt[i]=[p.x,p.y,sc];
         }
       }
 
@@ -845,6 +964,19 @@
         const cw=root.clientWidth||1, ar=vbW/vbH;
         stage.style.width=cw+'px';
         stage.style.height=(cw/ar)+'px';
+        placeMlabs(t,cw/vbW);
+      }
+      // persistent mobile labels track their nodes in css pixels
+      function placeMlabs(t,k){
+        if(!MLABS||!mlabMQ.matches)return;
+        MLABS.forEach(m=>{
+          let x,y,pad;
+          if(m.id==='star'){x=lerp(432,760,t);y=lerp(286,246,t);pad=26*k+6;}
+          else if(m.id==='bar'){x=lerp(538,790,t);y=lerp(771,703,t);pad=13*k+8;}
+          else{const p=mpt[m.id];if(!p)return;x=p[0];y=p[1];pad=13*p[2]*k+8;}
+          m.el.style.left=(x*k).toFixed(1)+'px';
+          m.el.style.top=((y*k)+(m.below?pad:-pad)).toFixed(1)+'px';
+        });
       }
 
       // t driven by the CONTAINER aspect ratio (ResizeObserver)
@@ -900,6 +1032,71 @@
           </div>
         </section>`;
 
+      const NODE11_HTML=`
+        <p class="sln-eyebrow sln-anim" style="animation-delay:.05s">Chapter ${CHAPTER[11]}</p>
+        <h1 class="sln-m-title sln-statement sln-anim" id="sln-mTitle" style="animation-delay:.12s">Through emotional design and psychological wellness intervention, we deliver living spaces built for the future.</h1>
+        <div class="sln-anim" style="animation-delay:.24s"><a class="sln-cta" href="advocater.html">Build with Frisson <span class="sln-arr">›</span></a></div>`;
+
+      const FRONTIER_HTML=`
+        <section class="sln-esec sln-moon">
+          <img src="assets/city/antarctica.jpg" alt="An iceberg colony at the edge of Antarctica">
+          <h2 class="sln-edge-title">Soulful Living on the Edge</h2>
+        </section>
+        <section class="sln-fsec">
+          <h2 class="sln-f-launch">LIFE FRONTIER 2030</h2>
+          <div><span class="sln-v-pill">Collection Castle</span></div>
+          <p class="sln-f-lead">{{coll.lead}}</p>
+          <div class="prop-cards">
+            <button type="button" class="prop-card" data-vm="vm-hill">
+              <img class="pc-bg" src="assets/city/chile.jpg" alt="" loading="lazy" onerror="this.remove()">
+              <span class="pc-in"><span class="pc-name">{{hill.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{hill.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+            </button>
+            <button type="button" class="prop-card" data-vm="vm-fortress">
+              <img class="pc-bg" src="assets/city/iceland.jpg" alt="" loading="lazy" onerror="this.remove()">
+              <span class="pc-in"><span class="pc-name">{{fortress.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{fortress.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+            </button>
+            <button type="button" class="prop-card" data-vm="vm-deer">
+              <img class="pc-bg" src="assets/city/polynesia.jpg" alt="" loading="lazy" onerror="this.remove()">
+              <span class="pc-in"><span class="pc-name">{{deer.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{deer.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+            </button>
+            <button type="button" class="prop-card" data-vm="vm-gg">
+              <img class="pc-bg" src="assets/city/oman.jpg" alt="" loading="lazy" onerror="this.remove()">
+              <span class="pc-in"><span class="pc-name">{{gg.name}}</span><span class="pc-loc"><svg class="pc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>{{gg.loc}}</span><span class="pc-learn">{{prop.learn}} &rsaquo;</span></span>
+            </button>
+          </div>
+          <div class="prop-feats">
+            <div class="pf">
+              <span class="pf-ic">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M8 18 L33 9 L44 13 L19 22 Z"></path>
+                  <line x1="27" y1="20" x2="27" y2="35"></line>
+                  <path d="M27 35 L13 40"></path>
+                  <path d="M27 35 L41 39"></path>
+                  <path d="M27 35 L26 43"></path>
+                </svg>
+              </span>
+              <span class="pf-lb">{{pf.starlink}}</span>
+            </div>
+            <div class="pf">
+              <span class="pf-ic">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="9" y1="13" x2="39" y2="13"></line><line x1="24" y1="13" x2="24" y2="18"></line>
+                  <path d="M14 18h12c6 0 10 3.5 10 8H16c-2.5 0-4-1.8-4-4.5V20c0-1.1.9-2 2-2z"></path>
+                  <line x1="34" y1="21" x2="43" y2="21"></line><line x1="43" y1="18" x2="43" y2="25"></line>
+                  <line x1="16" y1="34" x2="34" y2="34"></line><line x1="19" y1="30" x2="19" y2="34"></line><line x1="31" y1="30" x2="31" y2="34"></line>
+                </svg>
+              </span>
+              <span class="pf-lb">{{pf.airline}}</span>
+            </div>
+            <div class="pf">
+              <span class="pf-ic">
+                <frisson-logo-animated size="64" variant="outline" lockup="none" strokecolor="rgba(244,236,220,.9)" strokewidth="12" aria-hidden="true"></frisson-logo-animated>
+              </span>
+              <span class="pf-lb">{{pf.sona}}</span>
+            </div>
+          </div>
+        </section>`;
+
       let lastFocus=null;
       function openHTML(html){
         hideTip();
@@ -911,10 +1108,14 @@
         // wire the Story CTA to the site's existing Zahir story dialog (#vm-grotto)
         const sc=document.getElementById('sln-storyCta');
         if(sc){ sc.addEventListener('click',function(e){ e.preventDefault(); closeModal(); var d=document.getElementById('vm-grotto'); if(d&&d.showModal&&!d.open) d.showModal(); }); }
+        // wire injected castle cards to the page's existing vision dialogs
+        cardBody.querySelectorAll('[data-vm]').forEach(function(b){
+          b.addEventListener('click',function(){ closeModal(); var d=document.getElementById(b.getAttribute('data-vm')); if(d&&d.showModal&&!d.open) d.showModal(); });
+        });
       }
       function openNode(day){
         overlay.querySelector('.sln-card').classList.remove('sln-cardfull');
-        openHTML(day===1?MAIN_HTML:placeholderHTML(day));
+        openHTML(day===1?MAIN_HTML:day===11?NODE11_HTML:placeholderHTML(day));
         if(day===1){
           const n=root.querySelector('.node.primary');
           if(n)setTimeout(()=>n.classList.remove('primary'),600);
@@ -934,6 +1135,41 @@
       star.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStar();}});
       star.addEventListener('mouseenter',e=>showTip(e.currentTarget,'Reserved · To be revealed'));
       star.addEventListener('mouseleave',hideTip);
+
+      const openFrontier=()=>{ overlay.querySelector('.sln-card').classList.add('sln-cardfull'); openHTML(FRONTIER_HTML); };
+      bar.addEventListener('click',openFrontier);
+      bar.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFrontier();}});
+      bar.addEventListener('mouseenter',e=>showTip(e.currentTarget,'LIFE FRONTIER 2030'));
+      bar.addEventListener('mouseleave',hideTip);
+
+      // persistent labels on mobile — the dots alone are too subtle on small screens
+      const mlabsWrap=$('mlabs');
+      if(mlabMQ.addEventListener)mlabMQ.addEventListener('change',()=>{dirty=true;});
+      else if(mlabMQ.addListener)mlabMQ.addListener(()=>{dirty=true;});
+      MLABS=[
+        {id:1,   text:TIP[1],                 open:()=>openNode(1)},
+        {id:11,  text:'Built for the Future', open:()=>openNode(11)},
+        {id:31,  text:'Coming soon',          open:()=>openNode(31)},
+        {id:'star',text:'To be revealed',     open:openStar, below:true},
+        {id:'bar', text:'LIFE FRONTIER 2030', open:openFrontier}
+      ];
+      MLABS.forEach(m=>{
+        const b=document.createElement('button');
+        b.type='button'; b.className='sln-mlab'+(m.below?' below':'');
+        b.textContent=m.text;
+        b.addEventListener('click',m.open);
+        mlabsWrap.appendChild(b); m.el=b;
+      });
+      dirty=true;
+
+      // caption CTA → expandable blurb
+      const capCta=$('capCta'), capPanel=$('capPanel');
+      capCta.addEventListener('click',()=>{
+        const open=capCta.getAttribute('aria-expanded')==='true';
+        capCta.setAttribute('aria-expanded',String(!open));
+        if(open){ capPanel.classList.remove('on'); setTimeout(()=>{capPanel.hidden=true;},350); }
+        else{ capPanel.hidden=false; requestAnimationFrame(()=>requestAnimationFrame(()=>capPanel.classList.add('on'))); }
+      });
 
       const fine=!reduced && matchMedia('(pointer:fine)').matches;
       let px=0,py=0,pcx=0,pcy=0;
