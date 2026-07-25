@@ -471,9 +471,10 @@
   </section>
   <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-  /* TODO: replace "REPLACE-ME/intro" below with your real cal link (username/event-slug) */
   Cal("init", "frisson", {origin:"https://app.cal.com"});
-  Cal.ns.frisson("inline", { elementOrSelector:"#cal-inline", config:{layout:"month_view"}, calLink:"REPLACE-ME/intro" });
+  Cal.config = Cal.config || {};
+  Cal.config.forwardQueryParams = true;
+  Cal.ns.frisson("inline", { elementOrSelector:"#cal-inline", config:{layout:"month_view",useSlotsViewOnSmallScreen:"true"}, calLink:"jacques-mak-vyyoc6/15min" });
   Cal.ns.frisson("ui", { cssVarsPerTheme:{ light:{"cal-brand":"#e07b3c"}, dark:{"cal-brand":"#e07b3c"} }, hideEventTypeDetails:false, layout:"month_view" });
   </script>
 
