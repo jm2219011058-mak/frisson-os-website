@@ -239,33 +239,6 @@
   .rd-close{font-weight:500;font-size:clamp(23px,3.6vw,42px);line-height:1.4;color:var(--ink);text-align:center;max-width:20ch;margin:0 auto;}
   .rd-close .em{color:var(--accent);}
 
-  /* essay collapsed into a Field-Notes-style card → article (interaction mirrors Field Notes) */
-  .es-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
-    width:100%;min-height:min(60vh,560px);padding:clamp(40px,7vh,80px) clamp(24px,6vw,64px);
-    background:#1a1512 center/cover no-repeat;overflow:hidden;text-decoration:none;cursor:pointer;}
-  .es-card::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 42%,rgba(0,0,0,.34) 72%,rgba(0,0,0,.66) 100%);}
-  .es-cbody{position:relative;z-index:2;width:100%;max-width:1120px;margin:0 auto;}
-  .es-ctitle{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(32px,5vw,72px);line-height:1.02;letter-spacing:.004em;color:#fff;margin:0 0 .32em;max-width:20ch;text-wrap:balance;}
-  .es-cmeta{display:block;font-family:var(--sans);font-size:clamp(12px,1.05vw,14.5px);letter-spacing:.06em;color:rgba(255,255,255,.86);margin:0;}
-  .es-arrow{position:absolute;z-index:2;right:clamp(24px,3vw,54px);bottom:clamp(28px,4vw,54px);
-    width:clamp(44px,4vw,54px);height:clamp(44px,4vw,54px);border-radius:999px;border:1.5px solid rgba(255,255,255,.6);
-    display:flex;align-items:center;justify-content:center;transition:background .25s,border-color .25s,transform .25s;}
-  .es-card:hover .es-arrow{background:var(--accent);border-color:var(--accent);transform:translateX(4px);}
-  .es-arrow svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-
-  .es-article{position:relative;--eshero:min(52vh,520px);}
-  .es-hero{width:100vw;margin-left:calc(50% - 50vw);height:var(--eshero);background:#1a1512 center/cover no-repeat;}
-  .es-backwrap{position:absolute;z-index:5;top:calc(var(--eshero) + clamp(30px,5vh,58px));
-    left:max(14px, calc(50% - 320px - clamp(14px,3vw,56px)));}
-  .es-back{display:inline-flex;align-items:center;justify-content:center;width:clamp(42px,4.4vw,54px);height:clamp(42px,4.4vw,54px);
-    background:transparent;border:0;padding:0;cursor:pointer;color:var(--accent);
-    filter:drop-shadow(0 0 8px rgba(224,123,60,.26));transition:filter .25s,transform .2s;}
-  .es-back:hover{filter:drop-shadow(0 0 15px rgba(224,123,60,.6));transform:translateX(-3px);}
-  .es-back svg{width:clamp(26px,2.8vw,34px);height:clamp(26px,2.8vw,34px);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-  .es-article .beat.es-first{padding-top:clamp(30px,5vh,56px);}
-  @media(max-width:900px){ .es-backwrap{top:calc(var(--eshero) + clamp(18px,3vh,38px));left:14px;} }
-
   /* tier 3 — cofounder (solid dark) */
   .tier.solid{background:#fff;color:var(--ink);}
   .join-title{font-family:var(--serif);font-weight:800;font-size:clamp(44px,10vw,110px);letter-spacing:.02em;line-height:1;margin:0;color:#fff;}
@@ -364,23 +337,8 @@
 
 
 
-  <!-- ESSAY · collapsed into a Field-Notes-style card that opens the full manifesto -->
-  <section class="es-index" id="esIndex">
-    <a class="es-card" id="esCard" href="#" style="background-image:url('assets/city/hero-city.webp')">
-      <span class="es-cbody">
-        <span class="es-ctitle">From Conquering the World to Understanding Life</span>
-        <span class="es-cmeta">Essay</span>
-      </span>
-      <span class="es-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-  </section>
-
-  <section class="es-article" id="esArticle" hidden>
-    <figure class="es-hero" style="background-image:url('assets/city/hero-city.webp')"></figure>
-    <div class="es-backwrap"><button class="es-back" id="esBack" type="button" aria-label="Back to Founding Catalysts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
-
   <!-- MANIFESTO ESSAY -->
-  <section class="beat es-first"><h2 class="rd-h reveal">From Conquering the World to Understanding Life</h2></section>
+  <section class="beat" style="padding-top:clamp(72px,12vh,140px);"><h2 class="rd-h reveal">From Conquering the World to Understanding Life</h2></section>
   <section class="beat">
     <div class="rd reveal">
       <p class="rd-p">Since the dawn of humanity, we have been drawn toward the unknown.</p>
