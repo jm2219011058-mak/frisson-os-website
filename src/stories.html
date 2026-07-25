@@ -156,9 +156,12 @@
   .fn-article .st-h-title{font-size:clamp(38px,7.6vw,86px);line-height:1;letter-spacing:.005em;margin:0 0 clamp(18px,3vh,30px);}
   @media(max-width:900px){ .fn-backwrap{top:calc(var(--fnhero) + clamp(48px,7vh,80px));left:14px;} }
 
-  /* footer — light */
-  .st-foot{border-top:1px solid var(--hair);text-align:center;padding:30px clamp(24px,6vw,40px);
+  /* footer — light, generous space above (matches Founding Catalysts) */
+  .st-foot{margin-top:clamp(64px,11vh,140px);border-top:1px solid rgba(43,29,18,.08);text-align:center;
+    padding:clamp(48px,8vh,96px) clamp(24px,6vw,40px) clamp(40px,6vh,72px);
     font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:var(--ink-soft);}
+  .st-foot a{color:var(--ink);text-decoration:none;margin:0 10px;}
+  .st-foot a:hover{color:var(--accent);}
 </style>
 </head>
 <body>
@@ -228,7 +231,7 @@
     </section>
   </main>
 
-  <footer class="st-foot">© FRISSON</footer>
+  <footer class="st-foot"><a href="index.html">FRISSON</a> · <a href="terms.html">Terms of Use</a> · <a href="privacy.html">Privacy Policy</a></footer>
 
   <script>
     (function(){ var b=document.getElementById('menuBtn'), m=document.getElementById('menu'); if(!b||!m) return;
