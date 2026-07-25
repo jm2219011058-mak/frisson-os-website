@@ -257,6 +257,12 @@
   @keyframes jcHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(14px);opacity:1;}}
   @media(prefers-reduced-motion:reduce){.jc-arw{animation:none;}}
 
+  /* collapse control for the revealed join panel — quiet text link, per house style */
+  .join-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:clamp(13px,1.2vw,15px);letter-spacing:.04em;color:var(--ink-soft);background:transparent;border:0;padding:0;margin:0 0 clamp(14px,2vh,24px);cursor:pointer;transition:color .25s;}
+  .join-back:hover{color:var(--accent);}
+  .jb-arw{display:inline-block;font-size:1.25em;line-height:1;transition:transform .25s;}
+  .join-back:hover .jb-arw{transform:translateX(-6px);}
+
   /* BOOK A CALL — lives in the hero, below the join form */
   .fc-book{margin:clamp(36px,6vh,64px) auto 0;text-align:center;}
   .fc-book[hidden]{display:none;}
@@ -324,6 +330,7 @@
 
       <div id="join" style="text-align:center;margin-top:clamp(26px,4.5vh,46px);">
         <button type="button" class="join-cta apply-trigger reveal" data-form="joinForm">Seek Wonder, Bring Vision <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
+        <button type="button" class="join-back" id="joinBack" hidden><span class="jb-arw" aria-hidden="true">&lsaquo;</span> Back</button>
         <form name="join-frisson" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form center" id="joinForm" hidden>
           <input type="hidden" name="form-name" value="join-frisson">
           <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -340,8 +347,8 @@
         <!-- BOOK A CALL · Cal.com inline embed — revealed together with the join form -->
         <div class="fc-book" id="book" hidden>
           <p class="book-eyebrow">Book a call</p>
-          <h2 class="book-title">Talk with FRISSON</h2>
-          <p class="book-sub">Prefer to talk? Pick a time that suits you — we meet on video, and the invitation lands in your calendar automatically.</p>
+          <h2 class="book-title">Talk to Founder</h2>
+          <p class="book-sub">Pick a time that suits you — we meet on video, and the invitation lands in your calendar automatically.</p>
           <div class="book-cal" id="cal-inline"></div>
         </div>
       </div>
@@ -509,12 +516,26 @@
         if(form.id==='joinForm'){
           var bk=document.getElementById('book');
           if(bk){ bk.hidden=false; }
+          var back=document.getElementById('joinBack');
+          if(back){ back.hidden=false; }
           if(window.__frissonMountCal) window.__frissonMountCal();
         }
         var first=form.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
         if(first) setTimeout(function(){ try{first.focus({preventScroll:true});}catch(e){} },60);
       });
     });
+    /* Back — collapse the join panel (form + calendar) and restore the trigger */
+    var joinBack=document.getElementById('joinBack');
+    if(joinBack){
+      joinBack.addEventListener('click',function(){
+        var form=document.getElementById('joinForm'), bk=document.getElementById('book'),
+            trig=document.querySelector('.apply-trigger[data-form=joinForm]');
+        if(form){ form.hidden=true; form.classList.remove('reveal-open'); }
+        if(bk){ bk.hidden=true; }
+        joinBack.hidden=true;
+        if(trig){ trig.style.display=''; trig.scrollIntoView({block:'center',behavior:'smooth'}); }
+      });
+    }
   })();
 
   /* Netlify forms — AJAX submit (select by class; the data-netlify attr is stripped at deploy) */
