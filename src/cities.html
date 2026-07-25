@@ -738,14 +738,7 @@
     </style>
 
     <div class="sln-root" id="sln-root">
-      <div class="sln-caption">
-        <h2 class="sln-cap-title">Soulful Living Networks</h2>
-        <button class="sln-cap-cta" id="sln-capCta" type="button" aria-expanded="false" aria-controls="sln-capPanel">Build with Frisson <span aria-hidden="true">›</span></button>
-        <div class="sln-cap-panel" id="sln-capPanel" hidden>
-          <p>Frisson specializes as a design-build developer that fuses emotional design and psychological wellness science with spatial AI technology to deliver rapid, cost-controlled, and high-performance soulful living spaces.</p>
-          <a href="advocater.html">Start with Frisson <span aria-hidden="true">›</span></a>
-        </div>
-      </div>
+      <!-- caption (title "Soulful Living Networks" + "Build with Frisson" expandable CTA) removed 2026-07-25 — restore from git history or components/sln-fragment.html if needed -->
       <div class="sln-mlabs" id="sln-mlabs"></div>
       <main class="sln-stage" id="sln-stage" aria-label="Soulful Living Nodes — interactive map">
         <svg id="sln-scene" viewBox="0 0 800 1067" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -1224,6 +1217,7 @@
       dirty=true;
 
       // caption CTA → expandable blurb (GSAP height morph both ways; CSS fallback)
+      // caption removed from markup 2026-07-25 — the null guard keeps the rest of the SLN script alive
       const capCta=$('capCta'), capPanel=$('capPanel');
       function capOpen(){
         capPanel.hidden=false;
@@ -1254,7 +1248,7 @@
           capPanel.classList.remove('on'); setTimeout(()=>{capPanel.hidden=true;},350);
         }
       }
-      capCta.addEventListener('click',()=>{
+      if(capCta&&capPanel)capCta.addEventListener('click',()=>{
         const open=capCta.getAttribute('aria-expanded')==='true';
         capCta.setAttribute('aria-expanded',String(!open));
         open?capClose():capOpen();
