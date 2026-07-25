@@ -20,15 +20,15 @@
   body{overflow-x:clip;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
   /* nav — white, sticky */
-  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:transparent;}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#fff;text-decoration:none;font-weight:500;text-shadow:0 1px 16px rgba(0,0,0,.4);}
+  .nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid var(--hair);}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(255,255,255,.92);text-decoration:none;transition:color .25s;white-space:nowrap;text-shadow:0 1px 16px rgba(0,0,0,.4);}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -103,10 +103,10 @@
   .fn-index{padding:0;}
   /* featured masthead — newest note, full-bleed, image bleeds up behind the transparent nav */
   .fn-feature{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
-    width:100%;min-height:min(84vh,780px);padding:clamp(44px,8vh,96px) clamp(24px,6vw,64px);
+    width:100%;min-height:min(76vh,700px);padding:clamp(40px,7vh,80px) clamp(24px,6vw,64px);
     background:#1a1512 center/cover no-repeat;overflow:hidden;text-decoration:none;cursor:pointer;}
   .fn-feature::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(180deg,rgba(0,0,0,.34) 0,rgba(0,0,0,0) 24%,rgba(0,0,0,.06) 50%,rgba(0,0,0,.66) 100%);}
+    background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 46%,rgba(0,0,0,.34) 74%,rgba(0,0,0,.66) 100%);}
   .fn-fbody{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;}
   .fn-ftitle{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(40px,6.6vw,94px);line-height:1;letter-spacing:.004em;color:#fff;margin:0 0 .34em;max-width:16ch;text-wrap:balance;}
   .fn-fmeta{display:block;font-family:var(--sans);font-size:clamp(12px,1.05vw,14.5px);letter-spacing:.06em;color:rgba(255,255,255,.86);margin:0;}
@@ -187,13 +187,6 @@
   <main>
     <!-- INDEX (archive of entries) -->
     <section class="fn-index" id="fnIndex">
-      <a class="fn-feature" href="#" data-view="0" style="background-image:url('assets/city/fn-a.webp')">
-        <span class="fn-fbody">
-          <span class="fn-ftitle">The Power of Limits</span>
-          <span class="fn-fmeta">Field Note · July 23, 2026</span>
-        </span>
-        <span class="fn-farrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
       <div class="fn-bar">
         <div class="fn-bar-in" role="tablist" aria-label="Filter field notes">
           <button class="fn-tab is-on" type="button" data-cat="all">All</button>
@@ -201,6 +194,13 @@
           <button class="fn-tab" type="button" data-cat="essay">Essays</button>
         </div>
       </div>
+      <a class="fn-feature" href="#" data-view="0" style="background-image:url('assets/city/fn-a.webp')">
+        <span class="fn-fbody">
+          <span class="fn-ftitle">The Power of Limits</span>
+          <span class="fn-fmeta">Field Note · July 23, 2026</span>
+        </span>
+        <span class="fn-farrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
       <div class="fn-list">
         <a class="fn-card" href="#" data-view="1" data-cat="diary" style="background-image:url('assets/city/fn-b.webp')">
           <span class="fn-cbody">
