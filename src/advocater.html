@@ -279,7 +279,13 @@
   .book-title{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.2vw,44px);line-height:1.14;color:var(--ink);margin:0 0 clamp(26px,4vh,40px);}
   .book-sub{font-family:var(--sans);font-size:clamp(14.5px,1.5vw,17px);line-height:1.7;color:var(--ink-soft);margin:0 auto clamp(26px,4vh,40px);max-width:52ch;}
   .book-title,.book-sub{text-shadow:0 1px 12px rgba(245,240,231,.82), 0 0 1px rgba(245,240,231,.7);}
-  .book-cal{border:1px solid var(--hair);border-radius:16px;overflow:hidden;min-height:560px;background:#fff;text-align:left;}
+  .book-cal{border:1px solid rgba(43,29,18,.12);border-radius:16px;overflow:hidden;min-height:560px;text-align:left;
+    background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
+  /* desktop landscape — break out of the 720px hero column so Cal lays out horizontally (meta left · calendar right) */
+  @media(min-width:1024px){
+    .fc-book{width:min(1060px,calc(100vw - 64px));margin-left:calc((100% - min(1060px,calc(100vw - 64px)))/2);}
+    .book-cal{min-height:600px;}
+  }
   @media(max-width:640px){.fc-book{padding-left:0;padding-right:0;}.book-cal{min-height:620px;border-radius:12px;}}
 
   /* footer */
@@ -371,7 +377,11 @@
   Cal("init", "frisson", {origin:"https://app.cal.com"});
   Cal.config = Cal.config || {};
   Cal.config.forwardQueryParams = true;
-  Cal.ns.frisson("ui", { cssVarsPerTheme:{ light:{"cal-brand":"#e07b3c"}, dark:{"cal-brand":"#e07b3c"} }, hideEventTypeDetails:false, layout:"month_view" });
+  Cal.ns.frisson("ui", { theme:"light",
+    cssVarsPerTheme:{
+      light:{"cal-brand":"#e07b3c","cal-bg":"transparent","cal-bg-muted":"rgba(43,29,18,.05)","cal-bg-subtle":"rgba(43,29,18,.07)","cal-bg-emphasis":"rgba(43,29,18,.09)","cal-border":"rgba(43,29,18,.14)","cal-border-subtle":"rgba(43,29,18,.10)","cal-border-booker":"transparent"},
+      dark:{"cal-brand":"#e07b3c","cal-bg":"transparent"}
+    }, hideEventTypeDetails:false, layout:"month_view" });
   /* mounted lazily — the calendar lives inside the hidden join panel; mounting while
      display:none makes Cal mis-measure, so we mount on first reveal instead */
   var __calMounted=false;
