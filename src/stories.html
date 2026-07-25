@@ -121,7 +121,7 @@
   .fn-tab.is-on{color:var(--accent);}
   .fn-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
   /* full-bleed image-tile grid — newest first (top-left), edge to edge */
-  .fn-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;}
+  .fn-list{display:grid;grid-template-columns:repeat(2,1fr);gap:0;width:100%;}
   .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
     overflow:hidden;text-decoration:none;color:#fff;background:#1a1512 center center/cover no-repeat;
     padding:clamp(24px,2.8vw,42px);}
@@ -199,13 +199,6 @@
         </div>
       </div>
       <div class="fn-list">
-        <a class="fn-card" href="#" data-view="0" data-cat="diary" style="background-image:url('assets/city/fn-a.webp')">
-          <span class="fn-cbody">
-            <span class="fn-ctitle">The Power of Limits</span>
-            <span class="fn-cmeta">Field Note · July 23, 2026</span>
-          </span>
-          <span class="fn-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
         <a class="fn-card" href="#" data-view="1" data-cat="diary" style="background-image:url('assets/city/fn-b.webp')">
           <span class="fn-cbody">
             <span class="fn-ctitle">Competing Against Luck</span>
