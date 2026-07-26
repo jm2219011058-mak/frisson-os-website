@@ -40,15 +40,22 @@
 
   /* nav — white bar (same as the rest of the site) */
   .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-    padding:20px clamp(20px,5vw,64px);background:#fff;border-bottom:1px solid rgba(43,29,18,.06);font-family:var(--serif);}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#2b1d12;text-decoration:none;font-weight:500;}
+    padding:20px clamp(20px,5vw,64px);background:transparent;border-bottom:none;font-family:var(--serif);
+    transition:background .3s,border-color .3s;}
+  /* past the hero the light text would drown on white sections — switch to the white bar */
+  .nav.scrolled{background:#fff;border-bottom:1px solid rgba(43,29,18,.06);}
+  .nav.scrolled .brand{color:#2b1d12;}
+  .nav.scrolled .links a{color:#2b1d12;}
+  .nav.scrolled .links a:hover,.nav.scrolled .links a.cur{color:var(--accent);}
+  .nav.scrolled .menu-btn span{background:#2b1d12;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:#2b1d12;text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .25s;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   /* mobile hamburger + pill menu */
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -265,14 +272,14 @@
     <div class="links">
       <a class="sec" href="cities.html">{{nav.cities}}</a>
       <a href="sona.html" class="cur">{{nav.sona}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
       <a href="cities.html">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <!--LANGNAV-->
@@ -946,6 +953,19 @@
     if(!b||!m) return;
     b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
     m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
+  })();
+
+  // fixed nav: light over the hero video, white bar once scrolled past it
+  (function(){
+    var nav=document.querySelector('.nav'), hero=document.getElementById('hero');
+    if(!nav) return;
+    function upd(){
+      var limit=(hero?hero.offsetHeight:window.innerHeight)-70;
+      nav.classList.toggle('scrolled', window.scrollY>limit);
+    }
+    window.addEventListener('scroll',upd,{passive:true});
+    window.addEventListener('resize',upd);
+    upd();
   })();
 </script>
 </body>

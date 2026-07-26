@@ -49,6 +49,41 @@
   status = 301
   force = true
 
+# Pretty URL: Founding Catalysts lives at /founding-catalysts, served from advocater.html.
+[[redirects]]
+  from = "/founding-catalysts"
+  to = "/advocater.html"
+  status = 200
+
+[[redirects]]
+  from = "/advocater"
+  to = "/founding-catalysts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/advocater.html"
+  to = "/founding-catalysts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/founding-catalysts"
+  to = "/zh/advocater.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/advocater"
+  to = "/zh/founding-catalysts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/advocater.html"
+  to = "/zh/founding-catalysts"
+  status = 301
+  force = true
+
 # Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"
