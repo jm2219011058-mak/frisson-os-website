@@ -69,7 +69,7 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 
 ### sona.html
 - `#s-city` 节：kicker（3.2）→ `.city-lead`（3.3 定位句，白、大）→ `.city-body`（3.3b 诗句，柔）。3.4 finale 已删除。
-- 滚动逐词点亮（GSAP ScrollTrigger scrubWords）：`#s-city` 与 `#s7` **不能加 `content-visibility:auto`**（会算错几何导致点不亮）。
+- 滚动逐词点亮（GSAP ScrollTrigger scrubWords）：现仅剩 `#s-city`；`#s7` 的逐词动画已移除（2026-07-26，老出 bug），改用普通 `.reveal` 淡入。`#s-city` 与 `#s7` 仍**不能加 `content-visibility:auto`**（几何稳定性）。
 
 ### advocater.html
 - Frisson Fellow 墙 + 表单；原 Magic Conch 大区块已移到 cities（留注释标记）。
