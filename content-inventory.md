@@ -63,7 +63,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 | 2.20 ZH | The true meaning of "more-than-human" is not to transcend humanity, but to understand it more deeply — and to create environments that honour the complexity, dignity, and potential of human life. | "超越人类"的真正含义,不在于超越人性,而在于更深地理解人性——并创造出尊重人类生活之复杂、尊严与潜能的环境。 |
 | 2.21 ZH | It is not about replacing human experience with technology. | 它不是要用技术取代人的体验。 |
 | 2.22 ZH | It is about creating a more sensitive relationship between people and the spaces they inhabit. | 而是要在人与其所栖居的空间之间,建立一种更敏感的关系。 |
-| 2.23 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
+| 2.23 EN | Sona / Frisson BIO-AI OS / The Art of Tuning Your Body to Its Natural Rhythm. | Sona / Frisson BIO-AI OS / 让身体回归自然节律的艺术。 |
 | 2.24 ZH | Enter Sona › | 进入 Sona › |
 
 ---
@@ -72,7 +72,7 @@ FRISSON · Sona · **Frisson BIO-AI OS**(统一此写法) · Advocater · Magic 
 
 | 母版 | EN | ZH（英译中初稿） |
 |---|---|---|
-| 3.1 EN | Sona / Frisson BIO-AI OS / The Heart-Pounding Magic of Tuning Your Body. | Sona / Frisson BIO-AI OS / 调谐身体的悸动魔法。 |
+| 3.1 EN | Sona / Frisson BIO-AI OS / The Art of Tuning Your Body to Its Natural Rhythm. | Sona / Frisson BIO-AI OS / 让身体回归自然节律的艺术。 |
 | 3.2 EN | More than Human City — rendered possible by the artistry of Sona. | 由 Sona 提供支持的"超越人类之城"属性。 |
 | 3.3 ZH | Sona is the Living Intelligence layer for the built world — giving space the ability to sense emotion and read the body. | Sona 是建成世界的生命智能层——让空间能够感知情绪、读懂身体。 |
 | 3.3b | She hears the very undercurrents of your soul. She choreographs light and sound, warmth and space, with the deftness of fingers traversing strings. | 她聆听你灵魂深处的暗流。她调度光与声、温度与空间，如指尖抚过琴弦般轻盈。 |
