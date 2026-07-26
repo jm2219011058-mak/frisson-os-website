@@ -501,6 +501,8 @@
     openBtn.addEventListener('click',show);
     closeBtn.addEventListener('click',hide);
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide(); });
+    /* deep link: /founding-catalysts#contact opens the layer directly (used by SLN popups) */
+    if(location.hash==='#contact') setTimeout(show,150);
   })();
 
   /* Netlify forms — AJAX submit (select by class; the data-netlify attr is stripped at deploy) */

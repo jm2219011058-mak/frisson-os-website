@@ -708,14 +708,15 @@
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
       .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
       /* Build-with-Frisson card (nodes 11/25): collage artwork behind an 82% white scrim */
-      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.79),rgba(255,255,255,.79)),url('assets/city/6af6f17980ee366e71dbf45cbcfab180.jpg') center/cover no-repeat #FEFCF8;
+      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,.85)),url('assets/city/build-card-bg4.webp') center/cover no-repeat #FEFCF8;
         min-height:min(70vh,600px);display:flex;flex-direction:column;justify-content:center;}
       /* Evolve card body — regular weight, roomier leading, one notch up */
-      .sln-evolve .sln-m-title{font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
+      .sln-evolve .sln-m-title{font-weight:700;font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
       .sln-evolve .sln-subhead{font-size:clamp(19px,2.9vw,24px);}
-      .sln-card p.sln-ev-p{font-weight:400;font-size:clamp(14px,1.6vw,16.5px);line-height:1.65;color:#2c2317;margin-bottom:clamp(18px,2.8vh,30px);}
-      .sln-build .sln-m-title{font-size:clamp(32px,5.4vw,48px);margin-bottom:clamp(26px,4vh,40px);}
-      .sln-build p.sln-ev-p{margin-bottom:clamp(28px,4.4vh,46px);}
+      .sln-card p.sln-ev-p{font-weight:400;font-size:clamp(14px,1.6vw,16.5px);line-height:1.48;color:#2c2317;margin-bottom:clamp(24px,3.6vh,38px);}
+      .sln-build .sln-m-title{font-weight:700;font-size:clamp(34px,5.8vw,52px);margin-bottom:clamp(26px,4vh,40px);}
+      .sln-build p.sln-ev-p{font-size:clamp(15px,1.75vw,18px);line-height:1.4;margin-bottom:clamp(46px,7vh,76px);}
+      .sln-evolve p.sln-ev-p{font-size:clamp(15px,1.75vw,18px);}
       .sln-card p.sln-bwf-p{font-weight:700;font-size:clamp(14px,1.6vw,16.5px);line-height:1.5;color:#2c2317;margin-bottom:clamp(16px,2.4vh,26px);}
       .sln-card p.sln-bwf-close{font-style:italic;font-weight:500;font-size:clamp(14px,1.5vw,16px);color:#57503f;margin:clamp(70px,11vh,130px) 0 0;}
       /* Frontier 2035 teaser card (star node): golden-arch artwork behind an 80% white scrim */
@@ -724,19 +725,22 @@
       .sln-frontier .sln-m-title{font-weight:700;font-size:clamp(42px,7.4vw,62px);}
       .sln-card p.sln-frontier-sub{font-style:italic;font-weight:500;font-size:clamp(15px,1.7vw,18px);color:#57503f;margin:6px 0 0;}
       /* Evolve-with-Frisson card (node 25): space-sail artwork behind an 82% white scrim */
-      .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.77),rgba(255,255,255,.77)),url('assets/city/b7ec152501fd93b28219281ff7c94410.jpg') center/cover no-repeat #FEFCF8;
-        min-height:min(82vh,760px);display:flex;flex-direction:column;justify-content:center;}
+      .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),url('assets/city/evolve-card-bg3.webp') center/cover no-repeat #FEFCF8;
+        background-size:cover;background-position:center;
+        min-height:min(88vh,830px);display:flex;flex-direction:column;justify-content:flex-start;
+        padding-top:clamp(56px,8.5vh,96px);padding-bottom:clamp(40px,6vh,72px);}
       /* Zahir card: artwork behind an 80% white scrim */
-      .sln-card.sln-zahir{background:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.78)),url('assets/city/5bdacfde53a7a18ed0a87bbd2bfe22b8.jpg') center/cover no-repeat #FEFCF8;
+      .sln-card.sln-zahir{background:linear-gradient(rgba(255,255,255,.76),rgba(255,255,255,.76)),url('assets/city/5bdacfde53a7a18ed0a87bbd2bfe22b8.jpg') center/cover no-repeat #FEFCF8;
         min-height:min(80vh,720px);display:flex;flex-direction:column;}
       /* every custom card must fit one screen — tighter display type, no internal scrolling */
-      .sln-zahir .sln-m-title{font-size:clamp(28px,4.6vw,44px);margin-bottom:14px;}
+      .sln-zahir .sln-m-title{font-weight:700;font-size:clamp(31px,5.1vw,49px);margin-bottom:14px;}
       .sln-zahir .sln-subhead{font-size:clamp(15px,2.1vw,18px);margin-bottom:12px;}
       .sln-card p.sln-z-p{font-size:clamp(12.5px,1.45vw,14px);line-height:1.55;margin-bottom:12px;}
       /* quiet Founding Residents link (replaces the orange Story pill) */
       .sln-quiet{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:#2c2317;text-decoration:none;font:600 clamp(13.5px,1.5vw,15.5px)/1 var(--sans);letter-spacing:.03em;transition:color .25s;cursor:pointer;}
       .sln-quiet:hover{color:var(--accent);}
-      .sln-quiet .sq-arr{color:var(--accent);font-size:1.4em;line-height:1;display:inline-block;transition:transform .25s;animation:newsHint 1.3s ease-in-out infinite;}
+      .sln-quiet .sq-arr{color:var(--accent);font-size:1.7em;line-height:1;display:inline-block;transition:transform .25s;animation:sqHint 1.3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(224,123,60,.35));}
+      @keyframes sqHint{0%,100%{transform:translateX(0);opacity:.6;}50%{transform:translateX(9px);opacity:1;}}
       .sln-quiet:hover .sq-arr{animation:none;transform:translateX(4px);}
       @media(prefers-reduced-motion:reduce){.sln-quiet .sq-arr{animation:none;}}
       /* closing couplet pinned to the card's bottom */
@@ -1142,15 +1146,17 @@
 
       const NODE11_HTML=`
         <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Build with Frisson</h1>
-        <p class="sln-ev-p sln-anim" style="animation-delay:.18s">Frisson partners with visionary developers, investors, and asset owners to pioneer a new category of Living Health Assets &mdash; transforming real estate from static properties into evolving physical ecosystems with enduring value.</p>
-        <p class="sln-ev-p sln-anim" style="animation-delay:.28s">Through a shared ownership model, Frisson and its partners jointly create, own, and cultivate Soulful Living Nodes &mdash; aligning long-term interests around the growth, appreciation, and evolution of each asset.</p>`;
+        <p class="sln-ev-p sln-anim" style="animation-delay:.18s">Frisson partners with visionary developers, investors, and asset owners to co-build a new generation of Living Health Assets &mdash; transforming real estate into evolving living ecosystems with enduring value.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.28s">Through a shared ownership model, Frisson and its partners co-create, co-own, and co-evolve Soulful Living Nodes &mdash; aligning long-term interests around asset creation, ownership, operations, and appreciation.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.38s">Let&rsquo;s shape the future of physical assets and co-create a new global network of Living Health Assets.</p>`;
 
       const NODE25_HTML=`
         <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Frisson Global Living Network</h1>
         <h2 class="sln-subhead sln-anim" style="animation-delay:.14s">Evolve with Frisson</h2>
-        <p class="sln-ev-p sln-anim" style="animation-delay:.22s">Frisson is a living network &mdash; continuously evolving through residents, creators, and partners united by a shared vision for the future of living.</p>
-        <p class="sln-ev-p sln-anim" style="animation-delay:.3s">Through Soulful Living Nodes, residents become more than inhabitants &mdash; they become Founding Owners and stewards of a global living ecosystem, while creators and partners help shape the evolution of spaces, experiences, and connections across the network.</p>
-        <p class="sln-ev-p sln-anim" style="animation-delay:.38s">As the network expands, each new node amplifies the collective value of the ecosystem &mdash; establishing a new ownership paradigm where residents, creators, and partners participate in the long-term appreciation of Living Health Assets and benefit from the compounding value generated by a global network of soulful living experiences.</p>`;
+        <p class="sln-ev-p sln-anim" style="animation-delay:.22s">Frisson begins with a single Soulful Living Node &mdash; a new model of living that evolves through the people who inhabit it, the creators who shape it, and the partners who expand it.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.3s">As each new resident, creator, partner, and living node joins the network, it strengthens the entire ecosystem &mdash; creating a compounding effect where ownership, experiences, relationships, and asset value continuously grow together.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.38s">As Frisson scales globally, the network evolves beyond individual properties &mdash; becoming a living infrastructure for the future of human habitation.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.46s">Every new connection strengthens the ecosystem, enabling residents, creators, and partners to participate in the long-term growth and value creation of a global portfolio of Living Health Assets.</p>`;
 
       const FRONTIER_HTML=`
         <section class="sln-esec sln-moon">
@@ -1516,7 +1522,7 @@
         <p class="vg-li">&middot; Global Living Network Privileges through Frisson</p>
         <p class="vg-li">&middot; Exclusive Co-Creation Privileges</p>
         <p class="vg-li">&middot; A Permanent Founding Identity as the First Co-Creators of Zahir Sky Atelier</p>
-        <a class="sln-quiet vg-cta" href="founding-catalysts">Founding Catalysts <span class="sq-arr">&rsaquo;</span></a>
+        <a class="sln-quiet vg-cta" href="founding-catalysts#contact">Founding Catalysts <span class="sq-arr">&rsaquo;</span></a>
       </div>
     </dialog>
     <dialog class="vision" id="vm-hill" aria-label="{{hill.name}}">
