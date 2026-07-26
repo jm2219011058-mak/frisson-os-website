@@ -518,7 +518,7 @@
           </div>
           <div id="trialApply" hidden>
             <button type="button" class="back-btn news-back" data-back="trial">&lsaquo; Back</button>
-            <p class="news-blurb news-blurb-sm">We are inviting <b>100 pioneers</b> to enter FRISSON&rsquo;s first future living experience &mdash; exploring a new way of living where spaces begin to understand, respond to, and evolve with humanity.</p>
+            <p class="news-blurb news-blurb-sm">We are inviting <b>100 pioneers</b> to enter FRISSON&rsquo;s first future living experience &mdash; exploring a new way of living...</p>
             <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form news-form" id="trialForm">
               <input type="hidden" name="form-name" value="trial-sleep">
               <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -708,15 +708,21 @@
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
       .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
       /* Build-with-Frisson card (nodes 11/25): collage artwork behind an 82% white scrim */
-      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.82),rgba(255,255,255,.82)),url('assets/city/c2cc350ffe1fe3f2fd5f5459e29f56b3.jpg') center/cover no-repeat #FEFCF8;
+      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.79),rgba(255,255,255,.79)),url('assets/city/6af6f17980ee366e71dbf45cbcfab180.jpg') center/cover no-repeat #FEFCF8;
         min-height:min(70vh,600px);display:flex;flex-direction:column;justify-content:center;}
       /* Evolve card body — regular weight, roomier leading, one notch up */
       .sln-evolve .sln-m-title{font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
       .sln-evolve .sln-subhead{font-size:clamp(19px,2.9vw,24px);}
       .sln-card p.sln-ev-p{font-weight:400;font-size:clamp(14px,1.6vw,16.5px);line-height:1.65;color:#2c2317;margin-bottom:clamp(18px,2.8vh,30px);}
-      .sln-build .sln-m-title{font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
+      .sln-build .sln-m-title{font-size:clamp(32px,5.4vw,48px);margin-bottom:clamp(26px,4vh,40px);}
+      .sln-build p.sln-ev-p{margin-bottom:clamp(28px,4.4vh,46px);}
       .sln-card p.sln-bwf-p{font-weight:700;font-size:clamp(14px,1.6vw,16.5px);line-height:1.5;color:#2c2317;margin-bottom:clamp(16px,2.4vh,26px);}
       .sln-card p.sln-bwf-close{font-style:italic;font-weight:500;font-size:clamp(14px,1.5vw,16px);color:#57503f;margin:clamp(70px,11vh,130px) 0 0;}
+      /* Frontier 2035 teaser card (star node): golden-arch artwork behind an 80% white scrim */
+      .sln-card.sln-frontier{background:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.78)),url('assets/city/e89acceb113457782f639f9826d801c1.jpg') center/cover no-repeat #FEFCF8;
+        min-height:min(58vh,500px);display:flex;flex-direction:column;justify-content:center;}
+      .sln-frontier .sln-m-title{font-weight:700;font-size:clamp(42px,7.4vw,62px);}
+      .sln-card p.sln-frontier-sub{font-style:italic;font-weight:500;font-size:clamp(15px,1.7vw,18px);color:#57503f;margin:6px 0 0;}
       /* Evolve-with-Frisson card (node 25): space-sail artwork behind an 82% white scrim */
       .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.77),rgba(255,255,255,.77)),url('assets/city/b7ec152501fd93b28219281ff7c94410.jpg') center/cover no-repeat #FEFCF8;
         min-height:min(82vh,760px);display:flex;flex-direction:column;justify-content:center;}
@@ -734,7 +740,7 @@
       .sln-quiet:hover .sq-arr{animation:none;transform:translateX(4px);}
       @media(prefers-reduced-motion:reduce){.sln-quiet .sq-arr{animation:none;}}
       /* closing couplet pinned to the card's bottom */
-      .sln-card p.sln-close-note{font:italic 500 clamp(10.5px,1.1vw,12px)/1.8 var(--serif);color:#6b6b6b;margin:26px 0 0;}
+      .sln-card p.sln-close-note{font:italic 500 clamp(10.5px,1.1vw,12px)/1.45 var(--serif);color:#6b6b6b;margin:26px 0 0;}
       .sln-zahir #sln-cardBody{flex:1;display:flex;flex-direction:column;}
       .sln-zahir #sln-cardBody p.sln-close-note{margin-top:auto;padding-top:26px;}
       .sln-card.sln-cardfull .sln-close{background:rgba(0,0,0,.35);color:#fff;border-color:rgba(255,255,255,.3);z-index:5;}
@@ -1136,10 +1142,8 @@
 
       const NODE11_HTML=`
         <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Build with Frisson</h1>
-        <h2 class="sln-subhead sln-anim" style="animation-delay:.14s">Soulful Living Node</h2>
-        <p class="sln-bwf-p sln-anim" style="animation-delay:.22s">Together with visionary partners, we create a new generation of living assets &mdash; transforming premium real estate into evolving environments designed for long-term value creation.</p>
-        <p class="sln-bwf-p sln-anim" style="animation-delay:.3s">Through Frisson&rsquo;s Living Health Asset model, each Soulful Living Node becomes more than a physical property &mdash; evolving into a connected, scalable asset with recurring value, stronger customer relationships, and long-term appreciation potential.</p>
-        <p class="sln-bwf-p sln-anim" style="animation-delay:.38s">Together, we build a global network of Soulful Living Nodes &mdash; enabling partners to unlock new opportunities across development, ownership, operations, and the future of living.</p>`;
+        <p class="sln-ev-p sln-anim" style="animation-delay:.18s">Frisson partners with visionary developers, investors, and asset owners to pioneer a new category of Living Health Assets &mdash; transforming real estate from static properties into evolving physical ecosystems with enduring value.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.28s">Through a shared ownership model, Frisson and its partners jointly create, own, and cultivate Soulful Living Nodes &mdash; aligning long-term interests around the growth, appreciation, and evolution of each asset.</p>`;
 
       const NODE25_HTML=`
         <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Frisson Global Living Network</h1>
@@ -1237,7 +1241,7 @@
       }
       function openNode(day){
         const c=overlay.querySelector('.sln-card');
-        c.classList.remove('sln-cardfull');
+        c.classList.remove('sln-cardfull','sln-frontier');
         c.classList.toggle('sln-zahir',day===1);
         c.classList.toggle('sln-build',day===11);
         c.classList.toggle('sln-evolve',day===25);
@@ -1266,13 +1270,16 @@
       $('backdrop').addEventListener('click',closeModal);
       document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeModal();});
 
-      const openStar=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve'); c.classList.add('sln-cardfull'); openHTML(STAR_HTML); };
+      const STAR_TEASER_HTML=`
+        <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">The Frontier 2035</h1>
+        <p class="sln-frontier-sub sln-anim" style="animation-delay:.16s">Launching Soon ...</p>`;
+      const openStar=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve','sln-cardfull'); c.classList.add('sln-frontier'); openHTML(STAR_TEASER_HTML); };
       star.addEventListener('click',openStar);
       star.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStar();}});
       star.addEventListener('mouseenter',e=>nodeHover('star',e.currentTarget,'The Frontier 2035',true));
       star.addEventListener('mouseleave',()=>nodeHover('star',null,null,false));
 
-      const openFrontier=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve'); c.classList.add('sln-cardfull'); openHTML(FRONTIER_HTML); };
+      const openFrontier=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve','sln-frontier'); c.classList.add('sln-cardfull'); openHTML(FRONTIER_HTML); };
       globe.addEventListener('click',openFrontier);
       globe.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFrontier();}});
       globe.addEventListener('mouseenter',e=>nodeHover('globe',e.currentTarget,'Living on the Edge',true));
