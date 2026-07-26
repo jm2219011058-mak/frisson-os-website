@@ -136,7 +136,11 @@
   .news-titlerow::before{content:"";flex:0 0 36px;}
   .news-arrow{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--accent);cursor:pointer;transition:transform .3s,background .25s;}
   .news-arrow svg{width:26px;height:26px;}
-  .news-arrow:hover{transform:translateX(4px);background:rgba(224,123,60,.1);}
+  .news-arrow:hover{transform:translateX(4px);background:rgba(224,123,60,.1);animation:none;}
+  /* quiet hint pulse so the arrow reads as clickable */
+  .news-arrow{animation:newsHint 1.3s ease-in-out infinite;}
+  @keyframes newsHint{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(5px);opacity:1;}}
+  @media(prefers-reduced-motion:reduce){.news-arrow{animation:none;}}
   .wwd-news #trialIntro,.wwd-news #trialApply{display:flex;flex-direction:column;align-items:center;width:100%;}
   .wwd-news #trialApply[hidden],.wwd-news #trialIntro[hidden]{display:none;}
   .news-pre{font-family:var(--serif);font-weight:400;font-size:clamp(13px,1.3vw,15px);color:var(--ink-soft);opacity:.85;margin:0 0 4px;text-align:center;}
@@ -150,6 +154,7 @@
   .news-back{color:var(--ink-soft);margin:0 0 12px;}
   .news-back:hover{color:var(--ink);}
   .news-blurb{font-family:var(--serif);font-size:clamp(14px,1.5vw,16.5px);line-height:1.6;color:var(--ink-soft);margin:0 0 14px;text-align:center;text-wrap:balance;max-width:30ch;}
+  .news-blurb-sm{font-size:clamp(12.5px,1.3vw,14.5px);line-height:1.7;max-width:44ch;}
   .news-blurb b{font-weight:700;color:var(--ink);}
   .news-form{max-width:300px;margin:0;}
   .news-form .lbl{color:var(--ink-soft);}
@@ -306,14 +311,14 @@
     <div class="links">
       <a href="cities.html" class="cur">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
       <a href="cities.html">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
-      <a href="advocater.html">{{nav.advocater}}</a>
+      <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <!--LANGNAV-->
@@ -505,7 +510,7 @@
           </div>
           <div id="trialApply" hidden>
             <button type="button" class="back-btn news-back" data-back="trial">&lsaquo; Back</button>
-            <p class="news-blurb">Now gathering <b>100 future residents</b> to experience what home can give back to the human.</p>
+            <p class="news-blurb news-blurb-sm">We are inviting <b>100 pioneers</b> to enter FRISSON&rsquo;s first future living experience &mdash; exploring a new way of living where spaces begin to understand, respond to, and evolve with humanity.</p>
             <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form news-form" id="trialForm">
               <input type="hidden" name="form-name" value="trial-sleep">
               <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -1075,7 +1080,7 @@
 
       const NODE11_HTML=`
         <h1 class="sln-m-title sln-statement sln-anim" id="sln-mTitle" style="animation-delay:.05s">Through emotional design and psychological wellness intervention, we deliver living spaces built for the future.</h1>
-        <div class="sln-anim" style="animation-delay:.24s"><a class="sln-cta" href="advocater.html">Build with Frisson <span class="sln-arr">›</span></a></div>`;
+        <div class="sln-anim" style="animation-delay:.24s"><a class="sln-cta" href="founding-catalysts">Build with Frisson <span class="sln-arr">›</span></a></div>`;
 
       const FRONTIER_HTML=`
         <section class="sln-esec sln-moon">
