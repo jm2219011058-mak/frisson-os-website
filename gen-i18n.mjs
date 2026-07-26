@@ -159,7 +159,7 @@ const O = {
   '2.14b': [`<b class="pl">Chatsworth</b> is a book never finished — from William Kent's seats and Paxton's glasshouse to Lucian Freud's portraits.`, `<b class="pl">查茨沃斯（Chatsworth）</b>是一部从未写完的书,从威廉·肯特（William Kent）的座椅、帕克斯顿（Paxton）的温室,到卢西安·弗洛伊德（Lucian Freud）的肖像。`],
   '2.14c': [`<b class="pl">The Palmela Palace</b> holds Anatole Calmels's herms, the illusions of trompe-l'œil, the Eastern motifs of chinoiserie, and the tender glaze of blue-and-white azulejos.`, `<b class="pl">帕尔梅拉宫（Palácio Palmela）</b>藏着阿纳托尔·卡尔梅尔（Anatole Calmels）的赫姆柱（herm）、错视画（trompe-l'œil）的幻象、中国风（chinoiserie）的东方纹样,和阿苏莱霍斯（azulejos）蓝白釉瓷的温润光泽。`],
   '2.14d': [`<b class="pl">Montmorency's Écouen</b> is a fortress that breathes, gathering the finest hands of an entire age — Jean Bullant's loggia, Jean Goujon's sculpture, Léonard Limosin's Limoges enamel, and the ceramics of Bernard Palissy and Masséot Abaquesne.`, `<b class="pl">蒙莫朗西的埃库昂（Montmorency's Écouen）</b>是一座会呼吸的要塞,集结了整个时代最好的手艺——让·比朗（Jean Bullant）的敞廊（loggia）、让·古戎（Jean Goujon）的雕刻、莱昂纳尔·利莫赞（Léonard Limosin）的利摩日（Limoges）珐琅、贝尔纳·帕利西（Bernard Palissy）与马塞奥·阿巴克斯纳（Masséot Abaquesne）的陶艺。`],
-  '2.23.tag': [`The Heart-Pounding Magic of Tuning Your Body.`, `调谐身体的悸动魔法。`],
+  '2.23.tag': [`The Art of Tuning Your Body to Its Natural Rhythm.`, `让身体回归自然节律的艺术。`],
   '2.24': [`Enter Sona &rsaquo;`, `进入 Sona &rsaquo;`],
   '3.14.num': [`130&nbsp;/&nbsp;168 hours <span class="wk">(One week)</span>`, `130&nbsp;/&nbsp;168 小时 <span class="wk">（一周）</span>`],
   '3.14.cap': [`Average time we spend at home in life`, `我们一生待在家中的平均时长`],
