@@ -154,7 +154,7 @@
   .news-back{color:var(--ink-soft);margin:0 0 12px;}
   .news-back:hover{color:var(--ink);}
   .news-blurb{font-family:var(--serif);font-size:clamp(14px,1.5vw,16.5px);line-height:1.6;color:var(--ink-soft);margin:0 0 14px;text-align:center;text-wrap:balance;max-width:30ch;}
-  .news-blurb-sm{font-size:clamp(12.5px,1.3vw,14.5px);line-height:1.7;max-width:44ch;}
+  .news-blurb-sm{font-size:clamp(12.5px,1.3vw,14.5px);line-height:1.35;max-width:44ch;}
   .news-blurb b{font-weight:700;color:var(--ink);}
   .news-form{max-width:300px;margin:0;}
   .news-form .lbl{color:var(--ink-soft);}
@@ -185,10 +185,18 @@
     .wwd-news .nf-done .done-title{color:#fff;}
     .wwd-news .nf-done .done-sub{color:rgba(255,255,255,.82);}
   }
-  .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(22px,2.4vw,32px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
+  .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,35px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
   .wwd-statement b{font-weight:700;color:var(--ink);}
   .wwd-statement + .wwd-statement{margin-top:clamp(14px,2vh,24px);}
-  .wwd-sub{font-family:var(--sans);font-weight:400;font-size:clamp(17px,1.9vw,22px);line-height:1.65;letter-spacing:.005em;color:var(--ink-soft);margin:clamp(16px,2.4vh,26px) 0 0;text-wrap:pretty;max-width:46ch;}
+  .wwd-sub{font-family:var(--sans);font-weight:400;font-size:clamp(17px,1.9vw,22px);line-height:1.65;letter-spacing:.005em;color:var(--ink-soft);margin:clamp(26px,4vh,42px) 0 0;text-wrap:pretty;max-width:46ch;}
+  /* quiet entry link under the WHAT WE DO copy → Field Notes moon article */
+  .wwd-entry{display:flex;align-items:center;justify-content:flex-start;gap:.5em;max-width:46ch;
+    margin:clamp(12px,2vh,22px) 0 0;font-family:var(--sans);font-size:clamp(11px,1vw,12px);
+    letter-spacing:.02em;color:#6b6b6b;text-decoration:none;transition:color .25s;}
+  .wwd-entry:hover{color:var(--accent);}
+  .we-arw{display:inline-flex;transition:transform .25s;}
+  .we-arw svg{width:.95em;height:.95em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  .wwd-entry:hover .we-arw{transform:translateX(4px);}
   .wwd-sub b{font-weight:700;color:var(--ink);}
   .wwd-cta{display:inline-block;margin-top:clamp(24px,3.5vw,38px);background:var(--accent);color:#fff;font-family:var(--serif);font-weight:600;font-size:clamp(14px,1.5vw,16px);letter-spacing:.02em;padding:14px 34px;border-radius:999px;box-shadow:0 10px 26px rgba(224,123,60,.3);text-decoration:none;transition:transform .25s,box-shadow .25s;}
   .wwd-cta:hover{transform:scale(1.04);box-shadow:0 14px 32px rgba(224,123,60,.4);}
@@ -510,7 +518,7 @@
           </div>
           <div id="trialApply" hidden>
             <button type="button" class="back-btn news-back" data-back="trial">&lsaquo; Back</button>
-            <p class="news-blurb news-blurb-sm">We are inviting <b>100 pioneers</b> to enter FRISSON&rsquo;s first future living experience &mdash; exploring a new way of living where spaces begin to understand, respond to, and evolve with humanity.</p>
+            <p class="news-blurb news-blurb-sm">We are inviting <b>100 pioneers</b> to enter FRISSON&rsquo;s first future living experience &mdash; exploring a new way of living...</p>
             <form name="trial-sleep" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="nf-form news-form" id="trialForm">
               <input type="hidden" name="form-name" value="trial-sleep">
               <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -523,8 +531,9 @@
         </div>
         <div class="wwd-body">
           <p class="wwd-eyebrow" style="margin:0 0 clamp(18px,2.6vh,28px);">WHAT WE DO</p>
-          <p class="wwd-statement">FRISSON is redefining the future value of the physical world.</p>
+          <p class="wwd-statement">FRISSON is Redefining the Future Value of the Physical World.</p>
           <p class="wwd-sub">Through Artistic Soulful Spaces and Sona, an AI-native living intelligence, FRISSON transforms real estate from a static ownership asset into a lifelong health and living asset.</p>
+          <a class="wwd-entry" href="field-notes#view-3">Read : Human Should Not Simply Reach the Moon <span class="we-arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>
         </div>
       </div>
     </div>
@@ -603,6 +612,19 @@
     .vision-body p{font-size:clamp(15px,1.55vw,17px);line-height:2;color:rgba(244,236,220,.9);margin:0 0 1.15em;text-align:justify;}
     html[lang="en"] .vision-body p{line-height:1.85;text-align:left;text-wrap:pretty;}
     .vision-body p:last-child{margin-bottom:0;}
+    /* Zahir story dialog — Skyswim artwork behind a 78% white scrim, ink text */
+    #vm-grotto{background:linear-gradient(rgba(255,255,255,.8),rgba(255,255,255,.8)),url('assets/city/c4c3f3f5cf278c189554ee232003763e.jpg') center/cover no-repeat #f3ede3;color:var(--ink);}
+    #vm-grotto .vision-name{color:var(--ink);}
+    #vm-grotto .vision-body p{color:rgba(43,29,18,.9);}
+    #vm-grotto .vision-x{background:rgba(43,29,18,.1);color:rgba(43,29,18,.75);}
+    #vm-grotto .vision-x:hover{background:rgba(43,29,18,.2);color:var(--ink);}
+    #vm-grotto .vision-loc{color:#6b6b6b;}
+    #vm-grotto .vision-name{font-weight:700;font-size:clamp(20px,2.5vw,28px);line-height:1.25;margin:0 0 10px;}
+    #vm-grotto .vg-sub{font-family:var(--serif);font-style:italic;color:#6b6b6b;font-size:clamp(13px,1.35vw,15px);line-height:1.5;margin:0 0 clamp(18px,2.6vh,26px);}
+    #vm-grotto .vision-body p{font-size:clamp(13.5px,1.4vw,15px);line-height:1.6;color:#1c1712;margin:0 0 1em;}
+    #vm-grotto .vision-body p.vg-head2{font-weight:700;font-size:clamp(15px,1.6vw,17.5px);color:var(--ink);margin:1.5em 0 .7em;}
+    #vm-grotto .vision-body p.vg-li{margin:0 0 .45em;}
+    #vm-grotto .vg-cta{margin-top:clamp(20px,3vh,32px);}
     </style>
     <!-- ===== Soulful Living Nodes — interactive map (integrated component) ===== -->
     <section class="zres-nodes reveal">
@@ -669,6 +691,7 @@
       .sln-root .node:focus-visible .disc{stroke:var(--accent);stroke-width:2}
       .sln-root .halo{transform-box:fill-box;transform-origin:center;fill:var(--ink);opacity:0;animation:slnPulse 2.6s ease-out infinite;pointer-events:none}
       .sln-root .node.primary .halo{fill:var(--accent);animation-duration:1.9s}
+      .sln-root .globe-node .halo{fill:var(--accent);animation-duration:2.4s}
       @keyframes slnPulse{0%{transform:scale(.5);opacity:.9}70%{transform:scale(3.1);opacity:0}100%{transform:scale(3.1);opacity:0}}
       /* tooltip (body-level) */
       .sln-tip{position:fixed;z-index:40;pointer-events:none;background:var(--ink);color:#f8f4ee;font:600 12px/1 var(--sans);letter-spacing:.04em;padding:7px 12px;border-radius:999px;white-space:nowrap;transform:translate(-50%,calc(-100% - 14px));opacity:0;transition:opacity .18s ease,transform .18s ease;}
@@ -687,13 +710,53 @@
       .sln-eyebrow{color:var(--accent);font:500 clamp(15px,2.2vw,19px)/1.3 var(--sans);letter-spacing:.06em;margin-bottom:14px}
       .sln-m-title{font:500 clamp(38px,7vw,58px)/1.08 var(--serif);letter-spacing:-.015em;color:#2a211a;margin-bottom:24px}
       .sln-pill{display:inline-block;border:1px solid #e6dac8;border-radius:999px;padding:11px 24px;color:#bd8a58;font:600 clamp(10px,1.6vw,12.5px)/1 var(--sans);letter-spacing:.22em;margin-bottom:34px;}
-      .sln-subhead{font:700 clamp(19px,3vw,24px)/1.35 var(--sans);color:#2a2018;margin-bottom:18px}
+      .sln-subhead{font:700 clamp(17px,2.6vw,21px)/1.35 var(--sans);color:#2a2018;margin-bottom:18px}
       .sln-card p{font:500 clamp(14.5px,2.1vw,16.5px)/1.75 var(--sans);color:#57503f;margin-bottom:17px}
       .sln-card p b{color:#2c2317;font-weight:800}
       .sln-cta{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:500 clamp(13px,1.45vw,15px)/1 var(--sans);letter-spacing:.03em;padding:9px 22px;border-radius:999px;transition:background .25s;cursor:pointer;}
       .sln-cta:hover{background:#c96a2f;}
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
       .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
+      /* Build-with-Frisson card (nodes 11/25): collage artwork behind an 82% white scrim */
+      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)),url('assets/city/9805dd0021f4e14d597d1c68e6264115.jpg') center/cover no-repeat #FEFCF8;
+        min-height:min(70vh,600px);display:flex;flex-direction:column;justify-content:center;}
+      /* Evolve card body — regular weight, roomier leading, one notch up */
+      .sln-evolve .sln-m-title{font-weight:700;font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
+      .sln-evolve .sln-subhead{font-size:clamp(19px,2.9vw,24px);}
+      .sln-card p.sln-ev-p{font-weight:400;font-size:clamp(14px,1.6vw,16.5px);line-height:1.48;color:#2c2317;margin-bottom:clamp(24px,3.6vh,38px);}
+      .sln-build .sln-m-title{font-weight:700;font-size:clamp(34px,5.8vw,52px);margin-bottom:clamp(26px,4vh,40px);}
+      .sln-build p.sln-ev-p{font-size:clamp(15px,1.75vw,18px);line-height:1.4;margin-bottom:clamp(46px,7vh,76px);}
+      .sln-evolve p.sln-ev-p{font-size:clamp(15px,1.75vw,18px);}
+      .sln-card p.sln-bwf-p{font-weight:700;font-size:clamp(14px,1.6vw,16.5px);line-height:1.5;color:#2c2317;margin-bottom:clamp(16px,2.4vh,26px);}
+      .sln-card p.sln-bwf-close{font-style:italic;font-weight:500;font-size:clamp(14px,1.5vw,16px);color:#57503f;margin:clamp(70px,11vh,130px) 0 0;}
+      /* Frontier 2035 teaser card (star node): golden-arch artwork behind an 80% white scrim */
+      .sln-card.sln-frontier{background:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.78)),url('assets/city/1befab1a886d5034f2b9e774be2f8f23.jpg') center/cover no-repeat #FEFCF8;
+        min-height:min(58vh,500px);display:flex;flex-direction:column;justify-content:center;}
+      .sln-frontier .sln-m-title{font-weight:700;font-size:clamp(42px,7.4vw,62px);}
+      .sln-card p.sln-frontier-sub{font-style:italic;font-weight:500;font-size:clamp(15px,1.7vw,18px);color:#57503f;margin:6px 0 0;}
+      /* Evolve-with-Frisson card (node 25): space-sail artwork behind an 82% white scrim */
+      .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),url('assets/city/evolve-card-bg3.webp') center/cover no-repeat #FEFCF8;
+        background-size:cover;background-position:center;
+        min-height:min(88vh,830px);display:flex;flex-direction:column;justify-content:flex-start;
+        padding-top:clamp(56px,8.5vh,96px);padding-bottom:clamp(40px,6vh,72px);}
+      /* Zahir card: artwork behind an 80% white scrim */
+      .sln-card.sln-zahir{background:linear-gradient(rgba(255,255,255,.76),rgba(255,255,255,.76)),url('assets/city/37d8aa91672a762aae10846f27129cec.jpg') center/cover no-repeat #FEFCF8;
+        min-height:min(80vh,720px);display:flex;flex-direction:column;}
+      /* every custom card must fit one screen — tighter display type, no internal scrolling */
+      .sln-zahir .sln-m-title{font-weight:700;font-size:clamp(31px,5.1vw,49px);margin-bottom:14px;}
+      .sln-zahir .sln-subhead{font-size:clamp(15px,2.1vw,18px);margin-bottom:12px;}
+      .sln-card p.sln-z-p{font-size:clamp(12.5px,1.45vw,14px);line-height:1.55;margin-bottom:12px;}
+      /* quiet Founding Residents link (replaces the orange Story pill) */
+      .sln-quiet{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:#2c2317;text-decoration:none;font:600 clamp(13.5px,1.5vw,15.5px)/1 var(--sans);letter-spacing:.03em;transition:color .25s;cursor:pointer;}
+      .sln-quiet:hover{color:var(--accent);}
+      .sln-quiet .sq-arr{color:var(--accent);font-size:1.7em;line-height:1;display:inline-block;transition:transform .25s;animation:sqHint 1.3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(224,123,60,.35));}
+      @keyframes sqHint{0%,100%{transform:translateX(0);opacity:.6;}50%{transform:translateX(9px);opacity:1;}}
+      .sln-quiet:hover .sq-arr{animation:none;transform:translateX(4px);}
+      @media(prefers-reduced-motion:reduce){.sln-quiet .sq-arr{animation:none;}}
+      /* closing couplet pinned to the card's bottom */
+      .sln-card p.sln-close-note{font:italic 500 clamp(10.5px,1.1vw,12px)/1.45 var(--serif);color:#6b6b6b;margin:26px 0 0;}
+      .sln-zahir #sln-cardBody{flex:1;display:flex;flex-direction:column;}
+      .sln-zahir #sln-cardBody p.sln-close-note{margin-top:auto;padding-top:26px;}
       .sln-card.sln-cardfull .sln-close{background:rgba(0,0,0,.35);color:#fff;border-color:rgba(255,255,255,.3);z-index:5;}
       .sln-esec{position:relative;overflow:hidden;background:#0a1622;}
       .sln-esec img{width:100%;height:100%;display:block;object-fit:cover;position:absolute;inset:0;}
@@ -737,7 +800,7 @@
       @media(max-width:560px){.sln-fsec .prop-cards{grid-template-columns:1fr;}}
       .sln-fsec .prop-feats{margin-top:clamp(24px,4vh,40px);}
       /* persistent node labels (mobile) */
-      .sln-mlabs{position:absolute;inset:0;z-index:4;pointer-events:none;display:none;}
+      .sln-mlabs{position:absolute;inset:0;z-index:4;pointer-events:none;display:block;}
       .sln-mlab{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:var(--ink);color:#f8f4ee;font:600 10.5px/1 var(--sans);letter-spacing:.04em;padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.4,.5,1);}
       .sln-mlab::after{content:"";position:absolute;left:50%;bottom:-3.5px;width:7px;height:7px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
       .sln-mlab.below{transform:translate(-50%,0);}
@@ -745,7 +808,6 @@
       /* portrait: label already visible — hovering its node scales it gently, no second tooltip */
       .sln-mlab:hover,.sln-mlab.zoom{transform:translate(-50%,-100%) scale(1.08);}
       .sln-mlab.below:hover,.sln-mlab.below.zoom{transform:translate(-50%,0) scale(1.08);}
-      @media(max-width:820px){.sln-mlabs{display:block;}}
       @keyframes slnRise{to{opacity:1;transform:none}}
       @media (max-width:600px){
         .sln-overlay{padding:0;place-items:end center}
@@ -798,12 +860,13 @@
     <script>
     (function(){
       const NS='http://www.w3.org/2000/svg';
-      const INTERACTIVE=[1,11,31];
-      const TIP={1:'Zahir Sky Atelier',11:'Next Gen Space Owner',31:'Next Gen Space Owner'};
+      const INTERACTIVE=[1,11,25];
+      const TIP={1:'Zahir Sky Atelier',11:'Build with Frisson',25:'Frisson Global Living Network'};
       let MLABS=null;
       const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarse=matchMedia('(pointer: coarse)').matches;
-      const mlabMQ=matchMedia('(max-width:820px)');
+      /* persistent labels now show on every viewport — stub keeps the old gate points true */
+      const mlabMQ={matches:true,addEventListener:function(){},addListener:function(){}};
       const HIT=coarse?26:19;
 
       const $=id=>document.getElementById('sln-'+id);
@@ -856,13 +919,7 @@
       place([4,547],[4,623],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
       place([214,102],[235,84],`<rect x="-102.5" y="-14" width="205" height="28" fill="#1c1712"/>`);
       place([304,451],[266,338],`<rect x="-17" y="-8" width="34" height="16" fill="#1c1712"/>`);
-      const bar=place([538,771],[790,703],
-        `<rect class="bar-hover" x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`+
-        `<rect x="-94" y="-26" width="188" height="52" fill="transparent"/>`);
-      bar.id='sln-barNode';
-      bar.classList.add('node','bar-node');
-      bar.setAttribute('role','button');bar.setAttribute('tabindex','0');
-      bar.setAttribute('aria-label','Open LIFE FRONTIER 2030');
+      place([538,771],[790,703],`<rect x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`);
       place([303,859],[338,708],`<rect x="-8" y="-8" width="16" height="16" fill="#1c1712"/>`);
       place([378,197,-55.5],[520,165,-25],`<rect x="-197" y="-8" width="394" height="16" ${O} stroke-width="1.6"/>`);
       place([443,47],[620,50],`<circle class="bob" r="4" fill="#1c1712"/>`);
@@ -870,7 +927,14 @@
       place([466,150],[700,142],`<circle class="bob" style="animation-delay:-4.1s" r="4" fill="#1c1712"/>`);
       place([306,200],[420,232],`<circle class="bob" style="animation-delay:-5.6s" r="4" fill="#1c1712"/>`);
       place([583,74],[880,66],`<g ${O} stroke-width="1.7"><circle class="bob" style="animation-delay:-1s" cx="-12" r="5"/><circle class="bob" style="animation-delay:-3s" r="5"/><circle class="bob" style="animation-delay:-5s" cx="12" r="5"/></g>`);
-      place([549,110],[962,100],`<g class="sway-r"><circle r="17.5" fill="url(#sln-hatch)"/><circle r="17.5" ${O} stroke-width="1.4"/></g>`);
+      const globe=place([549,110],[962,100],
+        `<circle class="halo" r="17.5" style="animation-delay:1.2s"/>`+
+        `<g class="spin-slow" style="animation-duration:26s"><circle r="17.5" fill="url(#sln-hatch)"/><circle r="17.5" ${O} stroke-width="1.4"/></g>`+
+        `<circle r="${coarse?32:26}" fill="transparent"/>`);
+      globe.id='sln-globeNode';
+      globe.classList.add('node','globe-node');
+      globe.setAttribute('role','button');globe.setAttribute('tabindex','0');
+      globe.setAttribute('aria-label','Open Living on the Edge');
       const W1='q4 -5.5 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0';
       place([588,188],[1075,168],`<path class="wave" d="M0 0 ${W1}" ${O} stroke-width="2"/>`);
       place([592,205],[1079,185],`<path class="wave w2" d="M0 0 ${W1}" ${O} stroke-width="2"/>`);
@@ -897,7 +961,7 @@
       star.id='sln-starNode';
       star.classList.add('node','star-node');
       star.setAttribute('role','button');star.setAttribute('tabindex','0');
-      star.setAttribute('aria-label','Open HIGH FRONTIER 2035');
+      star.setAttribute('aria-label','Open The Frontier 2035');
 
       const calItems=[];
       const label=el('text',{class:'cal-label cal-item','text-anchor':'end','dominant-baseline':'central'},cal);
@@ -968,7 +1032,7 @@
         MLABS.forEach(m=>{
           let x,y,pad;
           if(m.id==='star'){x=lerp(432,760,t);y=lerp(286,246,t);pad=26*k+6;}
-          else if(m.id==='bar'){x=lerp(538,790,t);y=lerp(771,703,t);pad=13*k+8;}
+          else if(m.id==='globe'){x=lerp(549,962,t);y=lerp(110,100,t);pad=17.5*k+8;}
           else{const p=mpt[m.id];if(!p)return;x=p[0];y=p[1];pad=13*p[2]*k+8;}
           m.el.style.left=(x*k).toFixed(1)+'px';
           m.el.style.top=((y*k)+(m.below?pad:-pad)).toFixed(1)+'px';
@@ -1027,10 +1091,12 @@
 
       const MAIN_HTML=`
         <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.05s">Zahir Sky Atelier</h1>
-        <div class="sln-anim" style="animation-delay:.19s"><span class="sln-pill">MORE&nbsp;&nbsp;THAN&nbsp;&nbsp;RESIDENCE</span></div>
-        <h2 class="sln-subhead sln-anim" style="animation-delay:.26s">Space and Human Life Evolve Together</h2>
-        <p class="sln-anim" style="animation-delay:.32s">From its Residence, Zahir Sky Atelier is the first node of this vision: a living environment designed to inspire with those who inhabit it.</p>
-        <div class="sln-anim" style="animation-delay:.4s"><a class="sln-cta" href="#" id="sln-storyCta">Story <span class="sln-arr">›</span></a></div>`;
+        <h2 class="sln-subhead sln-anim" style="animation-delay:.26s">The First Dwelling to Fuse Architecture with the Intertwining of Human Emotions.</h2>
+        <p class="sln-z-p sln-anim" style="animation-delay:.32s">From its first residence, Zahir Sky Atelier becomes the first node of this vision: a living environment designed to inspire, adapt, and evolve with those who inhabit it.</p>
+        <p class="sln-z-p sln-anim" style="animation-delay:.38s">Inspired by the legacy of Renaissance patrons such as the Medici, Cavendish, Palmela, and Montmorency families, Zahir Sky Atelier embraces a new era where humanism, artistry, scientific exploration, and cultural heritage converge.</p>
+        <p class="sln-z-p sln-anim" style="animation-delay:.44s">Embedded with AI-native Sona Bio-AI OS, Zahir Sky Atelier transcends the traditional notion of residence &mdash; becoming a living ecosystem that understands human rhythms, supports restoration and vitality, and allows intelligence, creativity, and human experience to evolve in harmony over time.</p>
+        <div class="sln-anim" style="animation-delay:.4s"><a class="sln-quiet" href="#" id="sln-storyCta">Founding Residents <span class="sq-arr">›</span></a></div>
+        <p class="sln-close-note sln-anim" style="animation-delay:.48s">&ldquo;Zahir is the rose&rsquo;s shadow and the crack in the veil.&rdquo;&nbsp; &mdash; Borges<br>Some things, once seen, can never be forgotten.</p>`;
 
       const placeholderHTML=day=>`
         <h1 class="sln-m-title sln-anim" id="sln-mTitle" style="animation-delay:.05s">Unwritten Node</h1>
@@ -1056,8 +1122,18 @@
         </section>`;
 
       const NODE11_HTML=`
-        <h1 class="sln-m-title sln-statement sln-anim" id="sln-mTitle" style="animation-delay:.05s">Through emotional design and psychological wellness intervention, we deliver living spaces built for the future.</h1>
-        <div class="sln-anim" style="animation-delay:.24s"><a class="sln-cta" href="founding-catalysts">Build with Frisson <span class="sln-arr">›</span></a></div>`;
+        <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Build with Frisson</h1>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.18s">Frisson partners with visionary developers, investors, and asset owners to co-build a new generation of Living Health Assets &mdash; transforming real estate into evolving living ecosystems with enduring value.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.28s">Through a shared ownership model, Frisson and its partners co-create, co-own, and co-evolve Soulful Living Nodes &mdash; aligning long-term interests around asset creation, ownership, operations, and appreciation.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.38s">Let&rsquo;s shape the future of physical assets and co-create a new global network of Living Health Assets.</p>`;
+
+      const NODE25_HTML=`
+        <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">Frisson Global Living Network</h1>
+        <h2 class="sln-subhead sln-anim" style="animation-delay:.14s">Evolve with Frisson</h2>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.22s">Frisson begins with a single Soulful Living Node &mdash; a new model of living that evolves through the people who inhabit it, the creators who shape it, and the partners who expand it.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.3s">As each new resident, creator, partner, and living node joins the network, it strengthens the entire ecosystem &mdash; creating a compounding effect where ownership, experiences, relationships, and asset value continuously grow together.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.38s">As Frisson scales globally, the network evolves beyond individual properties &mdash; becoming a living infrastructure for the future of human habitation.</p>
+        <p class="sln-ev-p sln-anim" style="animation-delay:.46s">Every new connection strengthens the ecosystem, enabling residents, creators, and partners to participate in the long-term growth and value creation of a global portfolio of Living Health Assets.</p>`;
 
       const FRONTIER_HTML=`
         <section class="sln-esec sln-moon">
@@ -1147,8 +1223,12 @@
         });
       }
       function openNode(day){
-        overlay.querySelector('.sln-card').classList.remove('sln-cardfull');
-        openHTML(day===1?MAIN_HTML:(day===11||day===31)?NODE11_HTML:placeholderHTML(day));
+        const c=overlay.querySelector('.sln-card');
+        c.classList.remove('sln-cardfull','sln-frontier');
+        c.classList.toggle('sln-zahir',day===1);
+        c.classList.toggle('sln-build',day===11);
+        c.classList.toggle('sln-evolve',day===25);
+        openHTML(day===1?MAIN_HTML:day===11?NODE11_HTML:day===25?NODE25_HTML:placeholderHTML(day));
         if(day===1){
           const n=root.querySelector('.node.primary');
           if(n)setTimeout(()=>n.classList.remove('primary'),600);
@@ -1173,17 +1253,20 @@
       $('backdrop').addEventListener('click',closeModal);
       document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeModal();});
 
-      const openStar=()=>{ overlay.querySelector('.sln-card').classList.add('sln-cardfull'); openHTML(STAR_HTML); };
+      const STAR_TEASER_HTML=`
+        <h1 class="sln-m-title sln-anim" style="animation-delay:.05s">The Frontier 2035</h1>
+        <p class="sln-frontier-sub sln-anim" style="animation-delay:.16s">Launching Soon ...</p>`;
+      const openStar=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve','sln-cardfull'); c.classList.add('sln-frontier'); openHTML(STAR_TEASER_HTML); };
       star.addEventListener('click',openStar);
       star.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStar();}});
-      star.addEventListener('mouseenter',e=>nodeHover('star',e.currentTarget,'HIGH FRONTIER 2035',true));
+      star.addEventListener('mouseenter',e=>nodeHover('star',e.currentTarget,'The Frontier 2035',true));
       star.addEventListener('mouseleave',()=>nodeHover('star',null,null,false));
 
-      const openFrontier=()=>{ overlay.querySelector('.sln-card').classList.add('sln-cardfull'); openHTML(FRONTIER_HTML); };
-      bar.addEventListener('click',openFrontier);
-      bar.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFrontier();}});
-      bar.addEventListener('mouseenter',e=>nodeHover('bar',e.currentTarget,'LIFE FRONTIER 2030',true));
-      bar.addEventListener('mouseleave',()=>nodeHover('bar',null,null,false));
+      const openFrontier=()=>{ const c=overlay.querySelector('.sln-card'); c.classList.remove('sln-zahir','sln-build','sln-evolve','sln-frontier'); c.classList.add('sln-cardfull'); openHTML(FRONTIER_HTML); };
+      globe.addEventListener('click',openFrontier);
+      globe.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFrontier();}});
+      globe.addEventListener('mouseenter',e=>nodeHover('globe',e.currentTarget,'Living on the Edge',true));
+      globe.addEventListener('mouseleave',()=>nodeHover('globe',null,null,false));
 
       // persistent labels on mobile — the dots alone are too subtle on small screens
       const mlabsWrap=$('mlabs');
@@ -1192,9 +1275,9 @@
       MLABS=[
         {id:1,   text:TIP[1],                  open:()=>openNode(1)},
         {id:11,  text:TIP[11],                 open:()=>openNode(11)},
-        {id:31,  text:TIP[31],                 open:()=>openNode(31)},
-        {id:'star',text:'HIGH FRONTIER 2035',  open:openStar, below:true},
-        {id:'bar', text:'LIFE FRONTIER 2030',  open:openFrontier}
+        {id:25,  text:TIP[25],                 open:()=>openNode(25)},
+        {id:'star',text:'The Frontier 2035',  open:openStar, below:true},
+        {id:'globe', text:'Living on the Edge',  open:openFrontier, below:true}
       ];
       MLABS.forEach(m=>{
         const b=document.createElement('button');
@@ -1429,18 +1512,20 @@
       </div>
     </section>
 
-    <dialog class="vision" id="vm-grotto" aria-label="{{grotto.name}}">
+    <dialog class="vision" id="vm-grotto" aria-label="Zahir Sky Atelier — Founding Residents">
       <button type="button" class="vision-x" aria-label="Close">&times;</button>
-      <p class="vision-loc">{{grotto.loc}}</p>
-      <h3 class="vision-name">{{grotto.name}}</h3>
+      <p class="vision-loc">OMAN / QATAR / DUBAI...</p>
+      <h3 class="vision-name">Frisson invites the first 200 Founding Residents</h3>
+      <p class="vg-sub">The Art of Creating Harmony Between Human, Nature, and Space</p>
       <div class="vision-body">
-        <p class="vqt"><em>{{zahir.quote}}</em> &nbsp;{{zahir.cite}}</p>
-        <p>{{zahir.p1}}</p>
-        <p>{{zahir.p2}}</p>
-        <p>{{zahir.p3}}</p>
-        <p>{{zahir.p4}}</p>
-        <p>{{zahir.p6}}</p>
-        <p>{{zahir.climax}}</p>
+        <p>Architects, artists, designers, scientists, and the first Founding Residents will come together to explore:</p>
+        <p>When spaces begin to understand human beings, when environments respond to the rhythms of life, when intelligence seamlessly integrates into everyday living, and when life itself becomes part of the creative process,<br>how will the future of living be redefined?</p>
+        <p class="vg-head2">Founding Residents Will Receive&#65306;</p>
+        <p class="vg-li">&middot; Founding Ownership of Zahir Sky Atelier</p>
+        <p class="vg-li">&middot; Global Living Network Privileges through Frisson</p>
+        <p class="vg-li">&middot; Exclusive Co-Creation Privileges</p>
+        <p class="vg-li">&middot; A Permanent Founding Identity as the First Co-Creators of Zahir Sky Atelier</p>
+        <a class="sln-quiet vg-cta" href="founding-catalysts#contact">Founding Catalysts <span class="sq-arr">&rsaquo;</span></a>
       </div>
     </dialog>
     <dialog class="vision" id="vm-hill" aria-label="{{hill.name}}">
