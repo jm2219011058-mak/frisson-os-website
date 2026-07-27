@@ -127,6 +127,7 @@
      and you see a line. JS keeps the original clamp(130px,26vh,300px) and only caps it at a
      third of the artwork, so short bands don't get buried while wide screens stay untouched. */
   .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:var(--sdl-fade,clamp(130px,26vh,300px));}
+  .sdl-stage::after{height:var(--sdl-fadeb,var(--sdl-fade,clamp(130px,26vh,300px)));}
   .sdl-stage::before{top:0;background:
     radial-gradient(ellipse 44% 96% at 11% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
     radial-gradient(ellipse 58% 71% at 37% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
@@ -706,8 +707,10 @@
        sized off the canvas's SHORT side, so R out-reaches ry by ~1.8× and the string really
        gets shoved around. Only the portrait canvas height is trimmed (1467 → 1240) — that was
        the actual dead-space problem; the ring itself was never the issue. */
-    var VB_P=[1200,1240], VB_L=[1600,900];
-    var LOOP_P={cx:600,cy:620,rx:400,ry:165,rot:-6};
+    var VB_P=[1200,1120], VB_L=[1600,900];
+    /* portrait ring runs wider so the 24 beads sit further apart — that spacing is what caps
+       how big a tap target can get without neighbours stealing each other's taps */
+    var LOOP_P={cx:600,cy:560,rx:470,ry:165,rot:-6};
     var LOOP_L={cx:800,cy:490,rx:470,ry:165,rot:-4};
 
     /* ---- the 24-hour ring ----
@@ -833,7 +836,8 @@
       capName.textContent=pn; capText.innerHTML=pt;
       capReserved=max; cap.style.minHeight=max+'px';
     }
-    var vbW=VB_P[0], vbH=VB_P[1], svgH=0, capPull=0, lastVars='';
+    var vbW=VB_P[0], vbH=VB_P[1], svgH=0, capPull=0, lastVars='', lastDisc=0, lastHit=0;
+    var beadDiscs=[].slice.call(cal.querySelectorAll('.disc,.halo')), beadHits=[].slice.call(cal.querySelectorAll('.hit'));
     function applyAll(t){
       vbW=lerp(VB_P[0],VB_L[0],t); vbH=lerp(VB_P[1],VB_L[1],t);
       svg.setAttribute('viewBox','0 0 '+vbW.toFixed(1)+' '+vbH.toFixed(1));
@@ -842,14 +846,31 @@
       var cw=stage.clientWidth||1, ar=vbW/vbH;
       svgH=cw/ar;
       svg.style.height=svgH+'px';
-      /* copy: fully overlaid at t=1, fully below the artwork at t=0 — continuous, no breakpoint */
-      capPull=capReserved*t;
-      stage.style.height=(svgH + Math.max(0,capReserved-capPull) + (1-t)*26)+'px';
+      /* copy: fully overlaid at t=1, fully below the artwork at t=0 — continuous, no breakpoint.
+         On narrow screens it also rides a little way UP into the band so it isn't marooned. */
+      capPull=capReserved*(t+(1-t)*0.16);
+      stage.style.height=(svgH + Math.max(0,capReserved-capPull) + (1-t)*12)+'px';
+
+      /* bead + tap-target sizing — ATTRIBUTES, not CSS, so r.baseVal stays truthful for the
+         bloom's start radius. Written only when the value actually moves. */
+      var kpx=cw/vbW;                                    /* css px per user unit */
+      var spacing=2*Math.PI*Math.sqrt((Math.pow(lerp(LOOP_P.rx,LOOP_L.rx,t),2)+Math.pow(lerp(LOOP_P.ry,LOOP_L.ry,t),2))/2)/24;
+      var discR=Math.max(17, 15/kpx);
+      /* never smaller than the disc itself; half the bead spacing is the ceiling (adjacent
+         targets would otherwise steal each other's taps) */
+      var hitR=Math.max(discR, Math.min(spacing*0.5, Math.max(26, 24/kpx)));
+      if(Math.abs(discR-lastDisc)>0.5||Math.abs(hitR-lastHit)>0.5){
+        lastDisc=discR; lastHit=hitR;
+        beadDiscs.forEach(function(c){ c.setAttribute('r',discR.toFixed(1)); });
+        beadHits.forEach(function(c){ c.setAttribute('r',hitR.toFixed(1)); });
+      }
 
       var numPx=Math.max(15,Math.min(26,0.016*cw));
       var fadeCss=Math.max(130,Math.min(0.26*innerHeight,300));   /* the original clamp */
       var vars=[
         ['--sdl-fade', Math.min(fadeCss, svgH*0.33).toFixed(0)+'px'],
+        /* the lower melt starts higher on narrow screens so the band doesn't trail off green */
+        ['--sdl-fadeb', Math.min(fadeCss, svgH*lerp(0.52,0.33,t)).toFixed(0)+'px'],
         ['--sdl-num',  (numPx*vbW/cw).toFixed(1)+'px'],
         ['--sdl-numin',(numPx*0.76*vbW/cw).toFixed(1)+'px'],
         ['--sdl-capx', Math.max(18,Math.min(72,cw*0.05)).toFixed(0)+'px'],
