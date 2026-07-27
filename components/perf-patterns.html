@@ -1,0 +1,83 @@
+<!-- ============================================================
+     FRISSON 渲染性能模式库（copy-paste 源）
+     规则说明见 CLAUDE.md §5.5 渲染性能红线
+     2026-07-27 由全站性能审计产出：SLN 区段 6fps → 60fps 的三个修复
+     的可复用形态。新 section 需要同类效果时，抄这里，不要重新发明。
+     ============================================================ -->
+
+<!-- ────────────────────────────────────────────────
+     模式 1 · GPU 分层氛围背景（渐变漂移 + 烘焙噪点）
+     用途：任何"彩色渐变氛围 + 颗粒质感"的大面积背景。
+     原理：会动的层（wash）各自独立、只动 transform → 合成器免费；
+           噪点是一张平铺贴图，光栅化一次永久复用。
+     ──────────────────────────────────────────────── -->
+<style>
+  .fx-bglayers{position:absolute;inset:0;z-index:0;background:#f9f5ef;overflow:hidden;pointer-events:none;}
+  .fx-wash{position:absolute;inset:0;will-change:transform;
+    /* 每层一个 radial-gradient；位置/大小按需改，动画只允许 transform */
+    background:radial-gradient(ellipse 55% 55% at 50% 20%, rgba(223,75,44,.8), rgba(223,75,44,0));}
+  .fx-wash.d1{animation:fxDrift1 26s ease-in-out infinite alternate;}
+  .fx-wash.d2{animation:fxDrift2 32s ease-in-out infinite alternate;}
+  @keyframes fxDrift1{from{transform:translate(0,0) scale(1)}to{transform:translate(-14px,10px) scale(1.035)}}
+  @keyframes fxDrift2{from{transform:translate(0,0) scale(1.02)}to{transform:translate(12px,-10px) scale(1)}}
+  /* 烘焙噪点：一张 240px 平铺贴图。纯黑噪点不需要 mix-blend-mode（与 multiply 数学等价）。
+     禁止改回运行时 feTurbulence 滤镜（曾致 6fps）。 */
+  .fx-grain{position:absolute;inset:0;opacity:.3;background-size:240px 240px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
+  /* 内容层（SVG 线稿/文字等）压在背景层上方 */
+  .fx-content{position:relative;z-index:1;}
+</style>
+<div class="fx-bglayers" aria-hidden="true">
+  <div class="fx-wash d1"></div>
+  <div class="fx-wash d2" style="background:radial-gradient(ellipse 52% 52% at 43% 88%, rgba(236,122,53,.85), rgba(236,122,53,0));"></div>
+  <div class="fx-grain"></div>
+</div>
+
+<!-- ────────────────────────────────────────────────
+     模式 2 · autoplay 视频离屏自动暂停
+     用途：页面里任何 autoplay muted loop 视频。放在 </body> 前执行一次即可。
+     同一素材不开第二路解码：模糊背景层用 poster 图 + CSS blur，
+     不要再放第二个 <video>（参照 cities.html Sona 暗带 .hero-bg）。
+     ──────────────────────────────────────────────── -->
+<script>
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){
+    var v=en.target;
+    if(en.isIntersecting){ if(v.paused){var p=v.play(); if(p&&p.catch)p.catch(function(){});} }
+    else if(!v.paused){ v.pause(); }
+  });},{rootMargin:'160px'});
+  document.querySelectorAll('video[autoplay]').forEach(function(v){io.observe(v);});
+})();
+</script>
+
+<!-- ────────────────────────────────────────────────
+     模式 3 · rAF 循环纪律（写入去重 + 离屏暂停）
+     用途：任何每帧驱动的效果（视差、形变、跟随）。
+     两条纪律：值没变就不写 DOM；区段离屏就不做工。
+     ──────────────────────────────────────────────── -->
+<script>
+(function(){
+  var section=document.getElementById('my-section'); if(!section)return;
+  var on=true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){on=en[0].isIntersecting;},{rootMargin:'120px'}).observe(section);
+  }
+  var lastX=NaN;
+  (function frame(){
+    if(on){
+      var x=+(computeSomething()).toFixed(2);      // 你的每帧计算
+      if(x!==lastX){                               // ① 值没变就不写
+        lastX=x;
+        section.style.transform='translate('+x+'px,0)';  // ② 只写 transform/opacity
+      }
+    }
+    requestAnimationFrame(frame);
+  })();
+  function computeSomething(){return 0;}
+})();
+</script>
+
+<!-- 配套 CSS：离屏时暂停区段内全部 CSS 动画（IO 往 section 上切换 .is-off 即可）
+<style>.my-section.is-off *{animation-play-state:paused!important;}</style>
+-->

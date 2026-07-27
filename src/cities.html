@@ -616,7 +616,17 @@
       .sln-cap-cta span{transition:transform .3s;}
       .sln-cap-cta:hover{color:var(--accent);}
       .sln-cap-cta:hover span{transform:translateX(4px);}
-      .sln-stage svg{display:block;width:100%;height:100%}
+      .sln-stage svg{display:block;width:100%;height:100%;position:relative;z-index:1}
+      /* GPU-layered background (washes + grain live outside the SVG raster) */
+      .sln-bg{position:absolute;inset:0;z-index:0;background:#f9f5ef;overflow:hidden;pointer-events:none;}
+      .sln-wash{position:absolute;inset:0;will-change:transform;}
+      /* no mix-blend-mode needed: for pure-black noise, multiply ≡ plain alpha compositing (identical math), and dropping it keeps this layer on the fast composite path */
+      .sln-grainbg{position:absolute;inset:0;opacity:.3;background-size:240px 240px;
+        background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
+      /* parallax groups ride the compositor, not the rasterizer */
+      #sln-deco,#sln-calWrap{will-change:transform;}
+      /* section off-screen → every ambient animation stops burning frames */
+      .sln-root.sln-off #sln-scene *,.sln-root.sln-off .sln-wash{animation-play-state:paused!important;}
       /* ambient blob drift */
       .sln-root .drift1,.sln-root .drift2,.sln-root .drift3{transform-box:fill-box;transform-origin:center}
       .sln-root .drift1{animation:slnD1 26s ease-in-out infinite alternate}
@@ -753,53 +763,22 @@
       <!-- caption (title "Soulful Living Networks" + "Build with Frisson" expandable CTA) removed 2026-07-25 — restore from git history or components/sln-fragment.html if needed -->
       <div class="sln-mlabs" id="sln-mlabs"></div>
       <main class="sln-stage" id="sln-stage" aria-label="Soulful Living Nodes — interactive map">
+        <!-- GPU-layered background: gradient washes + baked grain live OUTSIDE the SVG so their
+             drift animations run on the compositor and never force the vector scene to re-raster.
+             (perf rule — see CLAUDE.md 渲染性能红线; pattern copy: components/perf-patterns.html) -->
+        <div class="sln-bg" aria-hidden="true">
+          <div class="sln-wash drift2" id="sln-wash-pink"></div>
+          <div class="sln-wash drift1" id="sln-wash-red"></div>
+          <div class="sln-wash drift2" id="sln-wash-orange"></div>
+          <div class="sln-wash drift3" id="sln-wash-trio"></div>
+          <div class="sln-grainbg"></div>
+        </div>
         <svg id="sln-scene" viewBox="0 0 800 1067" xmlns="http://www.w3.org/2000/svg" role="img">
           <defs>
-            <radialGradient id="sln-gPink" cx="55%" cy="6%" r="55%">
-              <stop offset="0%" stop-color="#f2b9ac" stop-opacity=".55"/>
-              <stop offset="100%" stop-color="#f2b9ac" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sln-gRed" cx="27%" cy="49%" r="60%">
-              <stop offset="0%" stop-color="#df4b2c" stop-opacity=".96"/>
-              <stop offset="42%" stop-color="#e56a44" stop-opacity=".74"/>
-              <stop offset="100%" stop-color="#e56a44" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sln-gOrange" cx="43%" cy="88%" r="52%">
-              <stop offset="0%" stop-color="#ec7a35" stop-opacity=".85"/>
-              <stop offset="100%" stop-color="#ec7a35" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sln-gTeal" cx="5%" cy="84%" r="27%">
-              <stop offset="0%" stop-color="#17d9c5" stop-opacity=".95"/>
-              <stop offset="100%" stop-color="#17d9c5" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sln-gGreen" cx="13%" cy="96%" r="24%">
-              <stop offset="0%" stop-color="#7fdd6e" stop-opacity=".9"/>
-              <stop offset="100%" stop-color="#7fdd6e" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sln-gYellow" cx="27%" cy="102%" r="28%">
-              <stop offset="0%" stop-color="#f7d858" stop-opacity=".92"/>
-              <stop offset="100%" stop-color="#f7d858" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="sln-grain" x="0" y="0" width="100%" height="100%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch" result="n"/>
-              <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .55 .55 .55 0 0"/>
-            </filter>
             <pattern id="sln-hatch" width="4.2" height="4.2" patternUnits="userSpaceOnUse">
               <rect width="1.9" height="4.2" fill="#1c1712"/>
             </pattern>
           </defs>
-          <rect class="full" width="800" height="1067" fill="#f9f5ef"/>
-          <g>
-            <rect class="full drift2" width="800" height="1067" fill="url(#sln-gPink)"/>
-            <rect class="full drift1" width="800" height="1067" fill="url(#sln-gRed)"/>
-            <rect class="full drift2" width="800" height="1067" fill="url(#sln-gOrange)"/>
-            <g class="drift3">
-              <rect class="full" width="800" height="1067" fill="url(#sln-gTeal)"/>
-              <rect class="full" width="800" height="1067" fill="url(#sln-gGreen)"/>
-              <rect class="full" width="800" height="1067" fill="url(#sln-gYellow)"/>
-            </g>
-          </g>
-          <rect class="full" width="800" height="1067" filter="url(#sln-grain)" opacity=".3" style="mix-blend-mode:multiply"/>
           <path id="sln-guide" fill="none" stroke="none" d=""/>
           <g id="sln-deco" stroke-linecap="square"></g>
           <g id="sln-calWrap"><g id="sln-cal"></g></g>
@@ -843,14 +822,19 @@
           d+=` C ${p[i][0].toFixed(1)} ${p[i][1].toFixed(1)}, ${p[i+1][0].toFixed(1)} ${p[i+1][1].toFixed(1)}, ${p[i+2][0].toFixed(1)} ${p[i+2][1].toFixed(1)}`;
         return d;
       }
-      const GRADS=[
-        ['gPink',  [55,6,55],  [50,5,50]],
-        ['gRed',   [27,49,60], [28,55,50]],
-        ['gOrange',[43,88,52], [48,92,45]],
-        ['gTeal',  [5,84,27],  [4,82,20]],
-        ['gGreen', [13,96,24], [10,95,18]],
-        ['gYellow',[27,102,28],[20,104,22]]
-      ];
+      /* gradient washes: CSS layers repainted only on resize (t change), never per frame */
+      const rgGrad=(P,L,t,stops)=>{
+        const cx=lerp(P[0],L[0],t).toFixed(1),cy=lerp(P[1],L[1],t).toFixed(1),r=lerp(P[2],L[2],t).toFixed(1);
+        return `radial-gradient(ellipse ${r}% ${r}% at ${cx}% ${cy}%, ${stops})`;
+      };
+      function paintWashes(t){
+        $('wash-pink').style.background  =rgGrad([55,6,55],[50,5,50],t,'rgba(242,185,172,.55), rgba(242,185,172,0)');
+        $('wash-red').style.background   =rgGrad([27,49,60],[28,55,50],t,'rgba(223,75,44,.96), rgba(229,106,68,.74) 42%, rgba(229,106,68,0)');
+        $('wash-orange').style.background=rgGrad([43,88,52],[48,92,45],t,'rgba(236,122,53,.85), rgba(236,122,53,0)');
+        $('wash-trio').style.background  =rgGrad([27,102,28],[20,104,22],t,'rgba(247,216,88,.92), rgba(247,216,88,0)')+','
+                                         +rgGrad([13,96,24],[10,95,18],t,'rgba(127,221,110,.9), rgba(127,221,110,0)')+','
+                                         +rgGrad([5,84,27],[4,82,20],t,'rgba(23,217,197,.95), rgba(23,217,197,0)');
+      }
 
       const updaters=[];
       function place(P,L,inner,grow){
@@ -966,17 +950,10 @@
         }
       }
 
-      const fullRects=[...root.querySelectorAll('.full')];
       function applyAll(t){
         const vbW=lerp(VB_P[0],VB_L[0],t), vbH=lerp(VB_P[1],VB_L[1],t);
         svg.setAttribute('viewBox',`0 0 ${vbW.toFixed(1)} ${vbH.toFixed(1)}`);
-        fullRects.forEach(r=>{r.setAttribute('width',vbW.toFixed(1));r.setAttribute('height',vbH.toFixed(1));});
-        GRADS.forEach(([id,P,L])=>{
-          const g=$(id);
-          g.setAttribute('cx',lerp(P[0],L[0],t).toFixed(1)+'%');
-          g.setAttribute('cy',lerp(P[1],L[1],t).toFixed(1)+'%');
-          g.setAttribute('r', lerp(P[2],L[2],t).toFixed(1)+'%');
-        });
+        paintWashes(t);
         updaters.forEach(u=>u(t));
         layoutCal(t);
         // full-bleed: stage fills the section width; height follows its own aspect ratio
@@ -1273,6 +1250,11 @@
         px=(e.clientX-r.left)/(r.width||1)-.5; py=(e.clientY-r.top)/(r.height||1)-.5;
       });
       const calWrap=$('calWrap');
+      /* section off-screen → pause every ambient animation (CSS hook: .sln-off) */
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(en=>root.classList.toggle('sln-off',!en[0].isIntersecting),{rootMargin:'120px'}).observe(root);
+      }
+      let pDx=NaN,pDy=NaN;
       (function frame(){
         let changed=false;
         if(Math.abs(tTarget-tCur)>0.0008){tCur+=(tTarget-tCur)*(reduced?1:0.13);changed=true;}
@@ -1280,8 +1262,13 @@
         if(changed||dirty){applyAll(tCur);dirty=false;}
         if(fine){
           pcx+=(px-pcx)*.05;pcy+=(py-pcy)*.05;
-          deco.setAttribute('transform',`translate(${(pcx*9).toFixed(2)} ${(pcy*7).toFixed(2)})`);
-          calWrap.setAttribute('transform',`translate(${(pcx*4.5).toFixed(2)} ${(pcy*3.5).toFixed(2)})`);
+          /* CSS transform (compositor path) + write-dedup: an idle pointer must never invalidate the SVG raster */
+          const dx=+(pcx*9).toFixed(2), dy=+(pcy*7).toFixed(2);
+          if(dx!==pDx||dy!==pDy){
+            pDx=dx;pDy=dy;
+            deco.style.transform=`translate(${dx}px,${dy}px)`;
+            calWrap.style.transform=`translate(${(pcx*4.5).toFixed(2)}px,${(pcy*3.5).toFixed(2)}px)`;
+          }
         }
         requestAnimationFrame(frame);
       })();
@@ -1297,7 +1284,9 @@
     <!-- dark band · Sona — background = Sona AI hero (Ponch video) -->
     <div class="mf-dark">
       <div class="hero-media">
-        <video class="hero-bg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg" aria-hidden="true" tabindex="-1"></video>
+        <!-- blurred fill layer: a still poster (blur 40px makes motion imperceptible) — was a second
+             <video> decoding the same file full-time; one decoder is enough (perf rule, CLAUDE.md) -->
+        <img class="hero-bg" src="assets/sona/ponch-poster.jpg" alt="" aria-hidden="true">
         <video class="hero-fg" src="assets/sona/ponch.mp4?v=2" autoplay muted loop playsinline poster="assets/sona/ponch-poster.jpg"></video>
         <div class="hero-scrim"></div>
       </div>
@@ -1310,6 +1299,20 @@
         </div>
       </div>
     </div>
+
+    <script>
+    /* perf rule: autoplay videos must not decode while off-screen (CLAUDE.md 渲染性能红线;
+       reusable copy in components/perf-patterns.html) */
+    (function(){
+      if(!('IntersectionObserver' in window))return;
+      var io=new IntersectionObserver(function(es){es.forEach(function(en){
+        var v=en.target;
+        if(en.isIntersecting){ if(v.paused){var p=v.play(); if(p&&p.catch)p.catch(function(){});} }
+        else if(!v.paused){ v.pause(); }
+      });},{rootMargin:'160px'});
+      document.querySelectorAll('video[autoplay]').forEach(function(v){io.observe(v);});
+    })();
+    </script>
 
     <!-- everything below the Sona band is hidden for now (Moon + High Frontier live on inside the SLN star-node popup) — remove .below-sona-hidden to restore -->
     <style>.below-sona-hidden{display:none!important;}</style>

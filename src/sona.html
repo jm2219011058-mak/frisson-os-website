@@ -97,11 +97,60 @@
 
   /* 2 & 4 · horizontal galleries */
   .gal-head{flex:0 0 auto;}
+  /* #s2 · A day with Sona — May-calendar poster, black edition.
+     GPU layering per CLAUDE.md §5.5: washes + grain are composited divs OUTSIDE the SVG;
+     the SVG holds only line art, the calendar loop and the photo bloom (no filters, no gradients). */
+  #s2{justify-content:flex-start;align-items:stretch;text-align:left;background:#060504;overflow:hidden;padding-left:0;padding-right:0;}
+  #s2 .gal-head{margin:0 0 clamp(6px,1.4vh,16px);text-align:center;}
+  .sdl-stage{position:relative;flex:0 0 auto;width:100vw;margin-left:calc(50% - 50vw);}
+  .sdl-bg{position:absolute;inset:0;z-index:0;background:#060504;overflow:hidden;pointer-events:none;}
+  /* wash positions are painted by JS (paintWashes) so the glow tracks the portrait↔landscape morph, SLN-style */
+  .sdl-wash{position:absolute;inset:-5%;will-change:transform;}
+  .sdl-wash.w1{animation:sdlD1 28s ease-in-out infinite alternate;}
+  .sdl-wash.w2{animation:sdlD2 34s ease-in-out infinite alternate;}
+  .sdl-wash.w3{animation:sdlD3 24s ease-in-out infinite alternate;}
+  .sdl-wash.w4{animation:sdlD2 40s ease-in-out infinite alternate-reverse;}
+  @keyframes sdlD1{from{transform:translate(0,0) scale(1)}to{transform:translate(-26px,18px) scale(1.045)}}
+  @keyframes sdlD2{from{transform:translate(0,0) scale(1.025)}to{transform:translate(22px,-16px) scale(1)}}
+  @keyframes sdlD3{from{transform:translate(0,0)}to{transform:translate(16px,-14px) scale(1.05)}}
+  /* baked grain tile — bright speckle for black paper (no runtime filters, per §5.5) */
+  .sdl-grain{position:absolute;inset:0;opacity:.09;background-size:240px 240px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
+  #s2.sdl-off .sdl-wash{animation-play-state:paused;}
+  /* soft edges — the section melts into its neighbours above and below */
+  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:clamp(70px,14vh,170px);}
+  .sdl-stage::before{top:0;background:linear-gradient(180deg,#060504 0%,rgba(6,5,4,.55) 45%,rgba(6,5,4,0) 100%);}
+  .sdl-stage::after{bottom:0;background:linear-gradient(0deg,#060504 0%,rgba(6,5,4,.55) 45%,rgba(6,5,4,0) 100%);}
+  #sdlScene{position:relative;z-index:1;display:block;width:100%;height:100%;}
+  /* beads reveal only once the section is on screen — staggered, house curve (动画规范 §5/§8) */
+  #s2 .cal-item{opacity:0;animation:sdlCalIn .6s cubic-bezier(0.25,0.1,0.25,1) forwards;animation-play-state:paused;}
+  #s2.sdl-in .cal-item{animation-play-state:running;}
+  @keyframes sdlCalIn{to{opacity:1}}
+  #s2 .node{outline:none;}   /* no square focus flash on click — the disc itself signals state */
+  /* calendar ink — dark green on the glow, exactly like the poster */
+  #s2 .num{font-family:var(--sans);font-weight:600;font-size:26px;fill:#1f2817;}
+  #s2 .num-in{font-family:var(--sans);font-weight:700;font-size:19px;fill:#efe9d8;pointer-events:none;}
+  #s2 .ddisc{fill:#1f2817;stroke:rgba(233,228,212,.3);stroke-width:1;}
+  #s2 .node{cursor:pointer;}
+  #s2 .node .disc{fill:#1f2817;stroke:rgba(233,228,212,.35);stroke-width:1;transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1),stroke .3s;}
+  #s2 .node:hover .disc,#s2 .node:focus-visible .disc{transform:scale(1.16);stroke:var(--accent);}
+  #s2 .node.on .disc{fill:var(--accent);stroke:var(--accent);}
+  #s2 .node.on .num-in{fill:#12100d;}
+  /* halo pulses ONLY on the active node — everything else stays still */
+  #s2 .halo{transform-box:fill-box;transform-origin:center;fill:var(--accent);opacity:0;pointer-events:none;}
+  #s2 .node.on .halo{animation:sdlPulse 1.9s ease-out infinite;}
+  @keyframes sdlPulse{0%{transform:scale(.5);opacity:.85}70%{transform:scale(2.6);opacity:0}100%{transform:scale(2.6);opacity:0}}
+  #sdlPhotoG{pointer-events:none;}
+  .sdl-ring{fill:none;stroke:rgba(233,228,212,.4);stroke-width:1.5;}
+  .sdl-cap{position:absolute;z-index:3;left:clamp(20px,5vw,72px);bottom:clamp(14px,4vh,48px);max-width:min(46ch,72%);pointer-events:none;}
+  .sdl-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(8px,1.4vh,13px);}
+  .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:var(--ink-dim);text-wrap:pretty;}
+  .sdl-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}
+  @media (prefers-reduced-motion:reduce){
+    .sdl-wash,#s2 .halo{animation:none!important;}
+    #s2 .cal-item{animation:none;opacity:1;}
+  }
   /* section 2 — Apple-style carousel: title top-left, card centred with breathing room */
-  #s2{justify-content:flex-start;align-items:stretch;text-align:left;}
-  #s2 .gal-head{margin:0 0 clamp(12px,2.4vh,26px);text-align:center;}
-  #s2 .hgal{flex:1 1 auto;gap:clamp(20px,2.6vw,40px);}
-  #s2 .capsule{align-self:center;}
   .hgal{flex:0 0 auto;display:flex;gap:clamp(14px,2vw,26px);align-items:center;
     width:100vw;margin-left:calc(50% - 50vw);        /* full-bleed to the screen edges */
     overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
@@ -114,7 +163,6 @@
     background:var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.45);}
   .card img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
   /* landscape scenario cards (sized by width -> mobile friendly) */
-  #s2 .card{width:min(70vw,800px);aspect-ratio:16/9;border-radius:26px;}
   /* portrait sense cards — sized by height so the row fits one screen */
   #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;box-shadow:0 6px 60px rgba(0,0,0,.24);}   /* soft, diffuse — no dark band below the row */
 
@@ -151,16 +199,6 @@
   .capsule i{width:8px;height:8px;border-radius:999px;background:var(--ink-faint);transition:width .35s,background .35s;cursor:pointer;}
   .capsule i.on{width:30px;background:var(--ink);}
 
-  /* #s2 redesign — cities-style: centred card highlighted (sides dimmed), name + full text below */
-  #s2 .hgal{flex:0 0 auto;scroll-snap-type:none;}
-  #s2 .card{filter:brightness(.4);transform:scale(.94);transition:filter .55s ease,transform .55s cubic-bezier(.16,1,.3,1);}
-  #s2 .card.is-active{filter:none;transform:scale(1);}          /* ④ centred card pops forward */
-  #s2 .card img{will-change:transform;}                          /* ④ image parallax (set in JS loop) */
-  .s2cap{align-self:center;max-width:52ch;margin:clamp(18px,3vh,34px) auto 0;padding:0 clamp(20px,5vw,40px);text-align:left;}   /* ① left-aligned measure — long prose reads far better than centred */
-  .s2cap-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(10px,1.6vh,14px);opacity:0;transition:opacity .35s ease;}
-  .s2cap-text{margin:0;font-family:var(--serif);font-size:clamp(14px,1.55vw,18px);line-height:1.72;color:var(--ink-dim);text-wrap:pretty;opacity:0;transition:opacity .35s ease;}
-  .s2cap-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}   /* ⑤ sensor data / key terms glow warm */
-  .s2cap.show .s2cap-name,.s2cap.show .s2cap-text{opacity:1;}
 
   /* #s4 sense-effect background layer (cinematic sound design waves, etc.) */
   .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
@@ -232,8 +270,6 @@
     .section{padding:max(9svh,68px) 18px max(5svh,30px);}
     /* section 2: narrow portrait card, next card peeks (Apple-style carousel) */
     #s2{justify-content:flex-start;}
-    #s2 .hgal{flex:0 0 auto;}
-    #s2 .card{width:min(74vw,340px);aspect-ratio:3/4;}
     #s4 .card{height:min(40vh,360px);}
     .hgal{padding:clamp(12px,3vh,22px) 0;}
     .s4-sub{font-size:clamp(15px,4.2vw,18px);margin-bottom:8px;}
@@ -424,8 +460,26 @@
   <!-- 2 · SPACE THAT SENSE YOUR BODY -->
   <section class="section" id="s2">
     <div class="gal-head reveal"><h2 class="t2">{{3.5}}</h2></div>
-    <div class="hgal" id="gal2"></div>
-    <div class="s2cap" id="cap2" aria-live="polite"><span class="s2cap-name"></span><p class="s2cap-text"></p></div>
+    <div class="sdl-stage" id="sdlStage">
+      <div class="sdl-bg" aria-hidden="true">
+        <div class="sdl-wash w1"></div>
+        <div class="sdl-wash w2"></div>
+        <div class="sdl-wash w3"></div>
+        <div class="sdl-wash w4"></div>
+        <div class="sdl-grain"></div>
+      </div>
+      <svg id="sdlScene" viewBox="0 0 1200 1467" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><clipPath id="sdlClip"><circle id="sdlClipC" cx="0" cy="0" r="0"/></clipPath></defs>
+        <g id="sdlDeco" stroke-linecap="square"></g>
+        <g id="sdlCal"></g>
+        <g id="sdlPhotoG" opacity="0">
+          <circle id="sdlBloom" cx="0" cy="0" r="0" fill="#1f2817" stroke="rgba(224,123,60,.85)" stroke-width="1.5"/>
+          <g clip-path="url(#sdlClip)"><image id="sdlImg" preserveAspectRatio="xMidYMid slice"/></g>
+          <circle id="sdlRing" class="sdl-ring" cx="0" cy="0" r="0"/>
+        </g>
+      </svg>
+      <div class="sdl-cap" id="sdlCap" aria-live="polite"><span class="sdl-name"></span><p class="sdl-text"></p></div>
+    </div>
   </section>
 
   <!-- 4 · THE MOST EXQUISITE -->
@@ -548,17 +602,6 @@
   function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
-  // build section 2 gallery — desktop: darken image + text on it; mobile: slide-up sheet
-  var gal2=document.getElementById('gal2');
-  function s2card(s,dup){
-    var c=document.createElement('div'); c.className='card';
-    if(dup) c.setAttribute('aria-hidden','true');
-    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+(dup?'':s.name)+'" loading="lazy" draggable="false">';
-    gal2.appendChild(c);
-  }
-  SCENES.forEach(function(s){ s2card(s,false); });   // set 1
-  SCENES.forEach(function(s){ s2card(s,true); });    // set 2 — one repeat is all a seamless loop needs (tail reconnects to head)
-
   // build section 4 gallery — labels
   var gal4=document.getElementById('gal4');
   SENSES.forEach(function(s){
@@ -605,74 +648,259 @@
     var esc=String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     return esc.replace(/(\bANC\b|\bSTC\b|\bHRV\b|\bCO2\b|\bVOC\b|\bTOPS\b|\d+(?:\.\d+)?(?:\s?(?:°C|°F|°|%|dB|nits|Hz|lux|nm))?)/g,'<span class="s2hl">$1</span>');
   }
-  function initS2(g, cap){
-    var name=cap.querySelector('.s2cap-name'), text=cap.querySelector('.s2cap-text'), cur=-1, lastBest=-1;
-    var N=SCENES.length, SPEED=0.4, pauseUntil=0, down=false, hovering=false, sx=0, sl=0, pos=0, drag=false;
-    var centers=[], setW=0, halfW=0, visible=true;
-    function measure(){                                // cache geometry — only changes on resize, never per frame
-      var k=g.children; centers=[];
-      for(var i=0;i<k.length;i++){ centers[i]=k[i].offsetLeft+k[i].offsetWidth/2; }
-      setW = k.length>N ? (k[N].offsetLeft-k[0].offsetLeft) : g.scrollWidth/2;
-      halfW = g.clientWidth/2;
+
+
+
+  /* ===== #s2 · A DAY WITH SONA — May-calendar poster, black edition =====
+     Full-bleed stage. Washes + grain live in composited div layers (CLAUDE.md §5.5);
+     the SVG holds only ivory line art, the May loop and the photo bloom.
+     7 circled dates carry the 7 SCENES: the active one blooms into a circle-clipped
+     photo (GSAP silk) and the caption sits bottom-left.
+     Portrait 1200×1467 ↔ landscape 1600×900 morph (technique from cities' SLN). */
+  (function(){
+    var NS='http://www.w3.org/2000/svg';
+    var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var stage=document.getElementById('sdlStage'); if(!stage) return;
+    var sec=document.getElementById('s2');
+    var svg=document.getElementById('sdlScene'),
+        deco=document.getElementById('sdlDeco'), cal=document.getElementById('sdlCal'),
+        photoG=document.getElementById('sdlPhotoG'), clipC=document.getElementById('sdlClipC'),
+        img=document.getElementById('sdlImg'), ring=document.getElementById('sdlRing'),
+        cap=document.getElementById('sdlCap'), capName=cap.querySelector('.sdl-name'), capText=cap.querySelector('.sdl-text');
+    function lerp(a,b,t){return a+(b-a)*t;}
+    function smooth(e0,e1,x){var u=Math.min(1,Math.max(0,(x-e0)/(e1-e0)));return u*u*(3-2*u);}
+    function el(n,attrs,parent){var e=document.createElementNS(NS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+    /* house ease — one curve site-wide (动画规范 §6) */
+    function silk(){ if(window.CustomEase&&window.gsap)CustomEase.create('silk','M0,0 C0.25,0.1 0.25,1 1,1'); return (window.gsap&&gsap.parseEase('silk'))?'silk':'power3.out'; }
+    function gs(){ return window.gsap&&!REDUCE; }
+
+    var VB_P=[1200,1467], VB_L=[1600,900];
+
+    /* main horseshoe loop — tilted ellipse, laid clockwise from the left (24 → 31 → May → 1 → 23) */
+    var LOOP_P={cx:570,cy:745,rx:365,ry:150,rot:-6};
+    var LOOP_L={cx:800,cy:490,rx:470,ry:165,rot:-4};
+
+    /* no decorative marks — the number string is the artwork */
+
+    /* ---- the May loop — 24–31, "May", 1–23; four circled pairs ---- */
+    var LOOP_DATES=[24,25,26,27,28,29,30,31].concat([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]);
+    var LOOP_CIRCLED={25:1,26:1,4:1,5:1,11:1,12:1,18:1,19:1};
+    var NODE_DATES=[25,26,4,5,11,12,18];   /* 7 of the circled dates carry the scenes, in loop order */
+    var nodeEls={}, itemSeq=0;
+    function calItem(date,circled,nodeIdx){
+      var g=el('g',{'class':'cal-item'},cal);
+      g.style.animationDelay=(0.1+(itemSeq++)*0.04).toFixed(2)+'s';
+      if(nodeIdx>-1){
+        g.classList.add('node');
+        g.setAttribute('role','button'); g.setAttribute('tabindex','0');
+        g.setAttribute('aria-label',SCENES[nodeIdx].name);
+        el('circle',{'class':'halo',r:17},g);
+        el('circle',{'class':'disc',r:17},g);
+        var tn=el('text',{'class':'num-in','text-anchor':'middle','dominant-baseline':'central',dy:'.5'},g);
+        tn.textContent=date;
+        el('circle',{r:26,fill:'transparent'},g);
+        g.addEventListener('click',function(){ activate(nodeIdx); restart(); });
+        g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(nodeIdx); restart(); } });
+        nodeEls[nodeIdx]=g;
+      } else if(circled){
+        el('circle',{'class':'ddisc',r:17},g);
+        var td=el('text',{'class':'num-in','text-anchor':'middle','dominant-baseline':'central',dy:'.5'},g);
+        td.textContent=date;
+      } else {
+        var t0=el('text',{'class':'num','text-anchor':'middle','dominant-baseline':'central'},g);
+        t0.textContent=date;
+      }
+      return g;
     }
-    function pause(){ pauseUntil=performance.now()+2600; }
-    function centre(){
-      if(!centers.length) return;
-      var mid=pos+halfW, best=0, bd=1e9, i;                     // uses cached centers + pos — no forced layout
-      for(i=0;i<centers.length;i++){ var dd=Math.abs(centers[i]-mid); if(dd<bd){bd=dd;best=i;} }
-      if(best===lastBest) return;                              // only touch the DOM when the centred card actually changes
-      lastBest=best;
-      var k=g.children;
-      for(i=0;i<k.length;i++){ k[i].classList.toggle('is-active',i===best); }
-      var si=best%N;
-      if(si!==cur){ cur=si; var s=SCENES[si]; if(!s) return;
-        cap.classList.remove('show');
-        setTimeout(function(){ name.textContent=s.name; text.innerHTML=s2hl(s.text); cap.classList.add('show'); },150);
+    var loopItems=LOOP_DATES.map(function(d,i){
+      /* 25/26 live in the month-end stretch (i<8); 4/5/11/12/18 in the May stretch */
+      var hit=NODE_DATES.indexOf(d), inFirst=i<8;
+      var ni=(hit>-1 && ((inFirst&&d>=24)||(!inFirst&&d<24))) ? hit : -1;
+      return calItem(d, LOOP_CIRCLED[d]&&((inFirst&&d>=24)||(!inFirst&&d<24)), ni);
+    });
+    /* ---- bead-string layout ----
+       The loop is a string of beads in a low-friction world. The photo is a soft
+       repulsor: it deforms the STRING (samples pushed out of the circle with a C1
+       two-radius blend — no fold-over), and the beads re-seat themselves by arc
+       length along the deformed curve. Order and spacing survive by construction,
+       so numbers never collide — the whole string just breathes around the photo. */
+    var mpt={};
+    var N=180, base=new Array(N+1), warped=new Array(N+1), cum=new Array(N+1);
+    var itemFrac=loopItems.map(function(_,i){ return 0.015 + i*(0.945/32.5); });
+    var curSc=1, lastKey=[];
+    function buildBase(t){
+      var cx=lerp(LOOP_P.cx,LOOP_L.cx,t), cy=lerp(LOOP_P.cy,LOOP_L.cy,t),
+          rx=lerp(LOOP_P.rx,LOOP_L.rx,t), ry=lerp(LOOP_P.ry,LOOP_L.ry,t),
+          rot=lerp(LOOP_P.rot,LOOP_L.rot,t)*Math.PI/180;
+      var cr=Math.cos(rot), sr=Math.sin(rot);
+      for(var i=0;i<=N;i++){
+        var a=Math.PI + (i/N)*Math.PI*2;   /* start at the left tip, run clockwise */
+        var ca=Math.cos(a), sa=Math.sin(a);
+        base[i]=[cx+rx*ca*cr-ry*sa*sr, cy+rx*ca*sr+ry*sa*cr];
       }
     }
-    function loop(now){
-      if(visible){
-        var drifting=(!down && !hovering && now>pauseUntil);
-        if(drifting){ pos+=SPEED; } else { pos=g.scrollLeft; }   // float accumulator — mobile scrollLeft is integer-only
-        if(setW>0){                                              // wrap at one-set width → tail reconnects to head (seamless)
-          if(pos>=setW){ pos-=setW; g.scrollLeft=pos; }
-          else if(pos<0){ pos+=setW; g.scrollLeft=pos; }
-          else if(drifting){ g.scrollLeft=pos; }
-        } else if(drifting){ g.scrollLeft=pos; }
-        centre();
-        if(centers.length){                                       /* ④ subtle image parallax: cards drift opposite to their offset from centre */
-          var mid2=pos+halfW, kk=g.children;
-          for(var pi=0;pi<kk.length;pi++){ var d=(centers[pi]-mid2)/(halfW||1); if(d<-1.3)d=-1.3; else if(d>1.3)d=1.3;
-            var im=kk[pi].firstElementChild; if(im&&im.tagName==='IMG') im.style.transform='translate3d('+(d*-16).toFixed(1)+'px,0,0) scale(1.09)'; }
+    function layNumbers(){
+      var s=Math.max(0,Math.min(1,P.o)), pts=base;
+      if(s>0.02 && P.r>1){
+        var Z0=P.r+40, Z1=Z0*1.5;
+        for(var i=0;i<=N;i++){
+          var dx=base[i][0]-P.cx, dy=base[i][1]-P.cy, d=Math.sqrt(dx*dx+dy*dy);
+          if(d<Z1 && d>0.0001){
+            var nd=Z0+(Z1-Z0)*(d/Z1)*(d/Z1);   /* monotonic: centre→rim, edge→untouched */
+            nd=d+(nd-d)*s;                      /* field strength fades with photo opacity */
+            warped[i]=[P.cx+dx/d*nd, P.cy+dy/d*nd];
+          } else warped[i]=base[i];
         }
+        pts=warped;
       }
-      requestAnimationFrame(loop);
+      cum[0]=0;
+      for(var j=1;j<=N;j++){ cum[j]=cum[j-1]+Math.sqrt(Math.pow(pts[j][0]-pts[j-1][0],2)+Math.pow(pts[j][1]-pts[j-1][1],2)); }
+      var L=cum[N];
+      loopItems.forEach(function(g,idx){
+        var ts=itemFrac[idx]*L, lo=0, hi=N;
+        while(lo<hi){ var mid=(lo+hi)>>1; if(cum[mid]<ts) lo=mid+1; else hi=mid; }
+        var j1=Math.max(1,lo), t0=cum[j1-1], seg=(cum[j1]-t0)||1e-6, f=(ts-t0)/seg;
+        var x=pts[j1-1][0]+(pts[j1][0]-pts[j1-1][0])*f, y=pts[j1-1][1]+(pts[j1][1]-pts[j1-1][1])*f;
+        var ang=Math.atan2(pts[j1][1]-pts[j1-1][1], pts[j1][0]-pts[j1-1][0])*180/Math.PI;
+        var key=((x*4)|0)+','+((y*4)|0)+','+((ang*2)|0);
+        if(lastKey[idx]===key) return;                       /* write dedupe (§5.5) */
+        lastKey[idx]=key;
+        g.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(2)+') scale('+curSc.toFixed(3)+')');
+        if(g.classList.contains('node')){ for(var k in nodeEls){ if(nodeEls[k]===g) mpt[k]=[x,y,curSc]; } }
+      });
     }
-    g.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') hovering=true; });
-    g.addEventListener('pointerleave',function(e){ if(e.pointerType==='mouse') hovering=false; });
-    g.addEventListener('wheel',pause,{passive:true});
-    // touch: let the browser handle horizontal scroll natively AND vertical page scroll — JS just pauses the drift
-    g.addEventListener('touchstart',pause,{passive:true});
-    g.addEventListener('touchmove',pause,{passive:true});
-    // custom drag is MOUSE-ONLY, so a finger swipe (esp. vertical) is never hijacked
-    g.addEventListener('pointerdown',function(e){ if(e.pointerType!=='mouse'){ pause(); return; } down=true;drag=false;sx=e.clientX;sl=g.scrollLeft; });
-    addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
-    function up(){ if(down){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); } }
-    addEventListener('pointerup',up); addEventListener('pointercancel',up);
-    // reserve height of the tallest caption so switching scenes never reflows the page (kills vertical jump)
-    function reserve(){
-      var pn=name.textContent, pt=text.textContent, maxH=0, i;
-      cap.style.minHeight='0px';
-      for(i=0;i<N;i++){ name.textContent=SCENES[i].name; text.textContent=SCENES[i].text; var h=cap.getBoundingClientRect().height; if(h>maxH) maxH=h; }
-      cap.style.minHeight=maxH+'px';
-      name.textContent=pn; text.textContent=pt;
+    function layoutCal(t){ curSc=1+0.1*t; buildBase(t); lastKey=[]; layNumbers(); }
+
+    /* washes — positions lerp with the morph; repainted only when t moves (never per frame) */
+    var washEls={w1:stage.querySelector('.sdl-wash.w1'), w2:stage.querySelector('.sdl-wash.w2'),
+                 w3:stage.querySelector('.sdl-wash.w3'), w4:stage.querySelector('.sdl-wash.w4')};
+    function rg(x,y,rx,ry,c,a,mid){
+      return 'radial-gradient(ellipse '+rx.toFixed(1)+'% '+ry.toFixed(1)+'% at '+x.toFixed(1)+'% '+y.toFixed(1)+'%, rgba('+c+','+a+') 0%, rgba('+c+','+(a*.55).toFixed(3)+') '+mid+'%, rgba('+c+',0) 74%)';
     }
-    function layout(){ reserve(); measure(); lastBest=-1; centre(); }
-    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(g); }
-    addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,300); setTimeout(layout,900);
-    requestAnimationFrame(loop);
-  }
-  initS2(gal2, document.getElementById('cap2'));
+    function paintWashes(t){
+      if(!washEls.w1) return;
+      washEls.w1.style.backgroundImage=rg(lerp(47,50,t),lerp(50,55,t),lerp(52,40,t),lerp(50,46,t),'200,224,76',.66,42);
+      washEls.w2.style.backgroundImage=rg(lerp(62,66,t),lerp(14,12,t),lerp(46,36,t),lerp(42,40,t),'79,191,82',.58,40);
+      washEls.w3.style.backgroundImage=
+        rg(lerp(89,91,t),lerp(10,9,t),lerp(30,24,t),lerp(26,26,t),'75,131,201',.62,40)+','+
+        rg(lerp(100,101,t),lerp(4,3,t),lerp(18,14,t),lerp(14,14,t),'207,143,174',.42,45);
+      washEls.w4.style.backgroundImage=rg(lerp(18,14,t),lerp(88,86,t),lerp(38,30,t),lerp(30,26,t),'239,232,207',.12,50);
+    }
+    var vbW=VB_P[0], vbH=VB_P[1];
+    function applyAll(t){
+      vbW=lerp(VB_P[0],VB_L[0],t); vbH=lerp(VB_P[1],VB_L[1],t);
+      svg.setAttribute('viewBox','0 0 '+vbW.toFixed(1)+' '+vbH.toFixed(1));
+      paintWashes(t);
+      layoutCal(t);
+      var cw=stage.clientWidth||1, ar=vbW/vbH;
+      stage.style.height=(cw/ar)+'px';
+    }
+
+    /* photo bloom — the numbered circle grows first, then the image surfaces from its centre */
+    var bloom=document.getElementById('sdlBloom');
+    var P={cx:0,cy:0,r:0,ir:0,o:0}, active=-1, animating=false;
+    function paint(){
+      var r=Math.max(0,P.r), ir=Math.max(0,Math.min(P.ir,r));
+      bloom.setAttribute('cx',P.cx); bloom.setAttribute('cy',P.cy); bloom.setAttribute('r',r);
+      clipC.setAttribute('cx',P.cx); clipC.setAttribute('cy',P.cy); clipC.setAttribute('r',ir);
+      img.setAttribute('x',P.cx-r); img.setAttribute('y',P.cy-r);
+      img.setAttribute('width',r*2); img.setAttribute('height',r*2);
+      ring.setAttribute('cx',P.cx); ring.setAttribute('cy',P.cy); ring.setAttribute('r',r+8);
+      ring.setAttribute('opacity',(r>1?Math.min(1,ir/r):0).toFixed(3));
+      photoG.setAttribute('opacity',P.o);
+      layNumbers();
+    }
+    function target(k){
+      var m=Math.max(26,0.02*vbW), R=0.24*Math.min(vbW,vbH);
+      var p=mpt[k]||[vbW/2,vbH/2,1];
+      /* keep the caption zone clear — clamp against the caption's measured top edge */
+      var pxPerUnit=(stage.clientWidth||1)/vbW;
+      var capTopSvg=(cap.getBoundingClientRect().top - stage.getBoundingClientRect().top)/Math.max(0.0001,pxPerUnit);
+      var cyMax=Math.max(R+m+30, Math.min(vbH-R-m, capTopSvg-R-14));
+      return { x0:p[0], y0:p[1], r:R,
+        cx:Math.min(Math.max(p[0],R+m),vbW-R-m),
+        cy:Math.min(Math.max(p[1],R+m+30),cyMax) };
+    }
+    function setText(k){ capName.textContent=SCENES[k].name; capText.innerHTML=s2hl(SCENES[k].text); }
+    function activate(k){
+      if(k===active) return;
+      var prev=active; active=k;
+      var prevNode=nodeEls[prev], node=nodeEls[k];
+      Object.keys(nodeEls).forEach(function(i){ nodeEls[i].classList.toggle('on',+i===k); });
+      if(!gs()){
+        setText(k);
+        if(prevNode) prevNode.style.opacity='';
+        var tg0=target(k); img.setAttribute('href',SCENES[k].img+'?v=3');
+        P.cx=tg0.cx; P.cy=tg0.cy; P.r=tg0.r; P.ir=tg0.r; P.o=1; paint(); return;
+      }
+      var ez=silk();
+      animating=true;
+      var tl=gsap.timeline({onComplete:function(){ animating=false; }});
+      /* leave: the image sinks back into its circle, the circle settles away */
+      if(prev>-1&&P.o>0){
+        tl.to(P,{ir:0,duration:.26,ease:'power2.in',onUpdate:paint},0);
+        tl.to(P,{r:24,o:0,duration:.34,ease:'power2.in',onUpdate:paint},.08);
+        tl.add(function(){ if(prevNode) gsap.set(prevNode,{clearProps:'opacity'}); });
+      }
+      /* arrive: the numbered circle itself grows out of the loop… */
+      tl.add(function(){
+        var st=mpt[k]||[vbW/2,vbH/2,1];
+        img.setAttribute('href',SCENES[k].img+'?v=3');
+        if(node) gsap.set(node,{opacity:0});
+        P.cx=st[0]; P.cy=st[1]; P.r=17*st[2]; P.ir=0; P.o=1; paint();
+      });
+      tl.to(P,{cx:function(){return target(k).cx;},cy:function(){return target(k).cy;},r:function(){return target(k).r;},duration:.85,ease:ez,onUpdate:paint});
+      /* …then the image surfaces silkily from its centre */
+      tl.to(P,{ir:function(){return target(k).r;},duration:.7,ease:ez,onUpdate:paint},'-=0.45');
+      /* the date re-lights on the loop once the bloom has left its spot */
+      tl.add(function(){ if(node) gsap.to(node,{opacity:1,duration:.4,ease:'power2.out',onComplete:function(){ gsap.set(node,{clearProps:'opacity'}); }}); },'-=0.3');
+      gsap.to(cap,{opacity:0,y:8,duration:.22,ease:'power2.in',onComplete:function(){
+        setText(k); gsap.to(cap,{opacity:1,y:0,duration:.6,ease:ez});
+      }});
+    }
+
+    /* auto-rotation + off-screen discipline (§5.5): interval, ambient CSS and rAF all pause off-screen */
+    var timer=null, onScreen=false;
+    function next(){ activate((active+1)%SCENES.length); }
+    function restart(){ if(timer) clearInterval(timer); timer=setInterval(next,5200); }
+    /* first-entry choreography — washes breathe in, beads stagger on, caption rises (动画规范 §2/§5) */
+    var entered=false;
+    function enterStage(){
+      if(entered) return; entered=true;
+      sec.classList.add('sdl-in');
+      if(window.gsap && !REDUCE){
+        var ez=silk();
+        gsap.fromTo('#s2 .sdl-wash',{opacity:0},{opacity:1,duration:1.1,ease:ez,stagger:.12,clearProps:'opacity'});
+        gsap.fromTo('#s2 .sdl-grain',{opacity:0},{opacity:.09,duration:1.2,ease:ez,clearProps:'opacity'});
+        gsap.fromTo(cap,{opacity:0,y:26},{opacity:1,y:0,duration:.8,ease:ez,clearProps:'opacity,transform'});
+      }
+    }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        onScreen=es[0].isIntersecting;
+        sec.classList.toggle('sdl-off',!onScreen);
+        if(onScreen){ enterStage(); if(active<0) activate(0); restart(); }
+        else if(timer){ clearInterval(timer); timer=null; }
+      },{rootMargin:'120px'}).observe(stage);
+    } else { onScreen=true; enterStage(); activate(0); restart(); }
+
+    /* portrait ↔ landscape morph — t from viewport aspect; writes only while the value still moves */
+    function computeT(){ return smooth(0.85,1.4, innerWidth/Math.max(1,innerHeight)); }
+    var tTarget=computeT(), tCur=tTarget, dirty=true;
+    if('ResizeObserver' in window){ new ResizeObserver(function(){ tTarget=computeT(); dirty=true; }).observe(stage); }
+    else { addEventListener('resize',function(){ tTarget=computeT(); dirty=true; }); }
+    (function tick(){
+      if(dirty){
+        tCur+=(tTarget-tCur)*0.16;
+        if(Math.abs(tCur-tTarget)<0.001){ tCur=tTarget; dirty=false; }
+        applyAll(tCur);
+        if(active>-1&&!animating){ var tg=target(active); P.cx=tg.cx; P.cy=tg.cy; P.r=tg.r; P.ir=tg.r; paint(); }
+      }
+      requestAnimationFrame(tick);
+    })();
+    applyAll(tCur);
+  })();
+
   initGallery(gal4, document.getElementById('cap4'));
 
   /* ===== #s4 SENSE-EFFECT ENGINE — mode = centred card =====
@@ -917,7 +1145,7 @@
     function boot(){
     if(!window.gsap||!window.ScrollTrigger||!window.SplitText||!window.CustomEase) return;
     gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
-    CustomEase.create("silk","M0,0 C0.16,1 0.3,1 1,1");
+    CustomEase.create("silk","M0,0 C0.25,0.1 0.25,1 1,1");   /* house ease (动画规范 §6) */
     function scrubWords(wordsSel, sectionSel, endStr, endTrig){
       var els=document.querySelectorAll(wordsSel);
       if(!els.length) return;

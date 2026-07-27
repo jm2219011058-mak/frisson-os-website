@@ -50,6 +50,16 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 - 层级靠「字号 + 明暗」表达，不靠满段加粗；英文句式用正常 sentence case，避免 AI 腔（converge/weave/三连排比）。
 - 品牌色：橙 `--accent:#e07b3c`；墨色 `--ink:#2b1d12`。
 
+## 5.5 渲染性能红线（新增 section/动画时务必遵守；可复制模式见 components/perf-patterns.html）
+
+> 背景：2026-07-27 全站性能审计发现 SLN 区段仅 6fps，根因全部是下述反模式；修复后 GPU 路径 60fps。新代码不得重新引入。
+
+1. **持续动画的元素必须独立成层**：只用 CSS `transform`/`opacity` 动画（合成器免费加速），**永远不放进含滤镜的 SVG 内部**——SVG 是"一张位图"，内部任何东西动一下整张连滤镜重新光栅化。氛围渐变/漂移 → 独立 div 层（参照 cities 的 `.sln-bg > .sln-wash` 结构）。
+2. **噪点/颗粒一律预烘焙**：data-URI SVG 贴图平铺（参照 `.sln-grainbg` / `.props .grain`），**禁止运行时 feTurbulence 滤镜**。纯黑噪点不需要 `mix-blend-mode:multiply`（数学上与普通 alpha 叠加等价，省掉混合路径）。
+3. **每个 autoplay `<video>` 必须挂离屏暂停**（IntersectionObserver，模式在 cities.html Sona 暗带后的内联脚本）；同一素材不开第二路解码——模糊背景层用 poster 图 + CSS blur 替代第二个 `<video>`。
+4. **rAF 循环两条纪律**：值没变就不写（写 DOM 前做 delta 判断）；离屏就不跑（IO 挂暂停，参照 `.sln-off` / conch blob 的做法）。
+5. **新增大 section 后跑一次 `/benchmark`** 与 `.gstack/benchmark-reports/baselines/baseline.json` 对比，帧率/体积退化要么修复要么在提交信息里说明原因。
+
 ## 6. 各页关键结构备忘
 
 ### cities.html（最复杂）
@@ -59,6 +69,7 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 - **NEWS 卡（Magic Conch）**：左栏卡片，元素居中、NEWS 标签左上；标题单行 nowrap + 右侧圆形箭头（36px）触发内联 Netlify 表单 `trial-sleep`；移动端(≤820px)变全幅背景图 banner（trial-bg.jpg + 遮罩）。相关脚本在页面前部，已用 `slnTrialInit` 延迟到 DOMContentLoaded 绑定——**勿改回立即执行**。
 - **Soulful Living Nodes 组件**（`sln-` 前缀，源备份在 `components/sln-fragment.html`）：
   - SVG 日历地图，viewBox 随视口比例在竖版 800×1067 ↔ 横版 1400×800 间无级形变；满宽、高度随自身比例。
+  - **GPU 分层结构（2026-07-27 性能重构，勿回退）**：氛围渐变（`.sln-wash` div×4，drift 动画走合成器）与噪点（`.sln-grainbg` 烘焙 data-URI）已移出 SVG；SVG 只剩线稿+日历链。视差用 CSS transform + 写入去重（`pDx/pDy`）；区段离屏加 `.sln-off` 暂停全部氛围动画。渐变位置随 t 由 `paintWashes()` 重绘（仅 resize 时）。**不得把渐变/滤镜加回 SVG 内部**（曾导致 6fps，见 §5.5）。
   - 节点 **1 = Zahir Sky Atelier**（primary 橙色强脉冲），弹窗文字已缩减版；Story 按钮 → 打开站内 `#vm-grotto` 故事弹窗。
   - **星星节点** → 弹窗为全出血深色卡（`.sln-cardfull`），完整复刻 Soulful Existence Beyond Earth + High Frontier 2035 两节。
   - 其余特殊节点 = Coming soon 占位；**无自动弹窗**（靠 primary 光晕引导）。
