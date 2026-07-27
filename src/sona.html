@@ -114,7 +114,7 @@
   @keyframes sdlD2{from{transform:translate(0,0) scale(1.025)}to{transform:translate(22px,-16px) scale(1)}}
   @keyframes sdlD3{from{transform:translate(0,0)}to{transform:translate(16px,-14px) scale(1.05)}}
   /* baked grain tile — bright speckle for black paper (no runtime filters, per §5.5) */
-  .sdl-grain{position:absolute;inset:0;opacity:.09;background-size:240px 240px;
+  .sdl-grain{position:absolute;inset:0;opacity:.18;background-size:240px 240px;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
   #s2.sdl-off .sdl-wash{animation-play-state:paused;}
   /* soft edges — the section melts into its neighbours above and below */
@@ -462,10 +462,10 @@
     <div class="gal-head reveal"><h2 class="t2">{{3.5}}</h2></div>
     <div class="sdl-stage" id="sdlStage">
       <div class="sdl-bg" aria-hidden="true">
+        <div class="sdl-wash w4"></div>   <!-- moss underpaint sits beneath the colour field -->
         <div class="sdl-wash w1"></div>
         <div class="sdl-wash w2"></div>
         <div class="sdl-wash w3"></div>
-        <div class="sdl-wash w4"></div>
         <div class="sdl-grain"></div>
       </div>
       <svg id="sdlScene" viewBox="0 0 1200 1467" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -774,17 +774,28 @@
     /* washes — positions lerp with the morph; repainted only when t moves (never per frame) */
     var washEls={w1:stage.querySelector('.sdl-wash.w1'), w2:stage.querySelector('.sdl-wash.w2'),
                  w3:stage.querySelector('.sdl-wash.w3'), w4:stage.querySelector('.sdl-wash.w4')};
-    function rg(x,y,rx,ry,c,a,mid){
-      return 'radial-gradient(ellipse '+rx.toFixed(1)+'% '+ry.toFixed(1)+'% at '+x.toFixed(1)+'% '+y.toFixed(1)+'%, rgba('+c+','+a+') 0%, rgba('+c+','+(a*.55).toFixed(3)+') '+mid+'%, rgba('+c+',0) 74%)';
+    /* cities-SLN recipe: big circular radii + free-form stops (hue can shift inside one
+       gradient), running to 100% — no early cut-off, so no edge rings on the black paper */
+    function rgGrad(P,L,t,stops){
+      var cx=lerp(P[0],L[0],t).toFixed(1), cy=lerp(P[1],L[1],t).toFixed(1), r=lerp(P[2],L[2],t).toFixed(1);
+      return 'radial-gradient(ellipse '+r+'% '+r+'% at '+cx+'% '+cy+'%, '+stops+')';
     }
     function paintWashes(t){
       if(!washEls.w1) return;
-      washEls.w1.style.backgroundImage=rg(lerp(47,50,t),lerp(50,55,t),lerp(52,40,t),lerp(50,46,t),'200,224,76',.66,42);
-      washEls.w2.style.backgroundImage=rg(lerp(62,66,t),lerp(14,12,t),lerp(46,36,t),lerp(42,40,t),'79,191,82',.58,40);
-      washEls.w3.style.backgroundImage=
-        rg(lerp(89,91,t),lerp(10,9,t),lerp(30,24,t),lerp(26,26,t),'75,131,201',.62,40)+','+
-        rg(lerp(100,101,t),lerp(4,3,t),lerp(18,14,t),lerp(14,14,t),'207,143,174',.42,45);
-      washEls.w4.style.backgroundImage=rg(lerp(18,14,t),lerp(88,86,t),lerp(38,30,t),lerp(30,26,t),'239,232,207',.12,50);
+      /* deep moss underpaint — bright cores land on a dark hue instead of raw black (kills dark-tail banding) */
+      washEls.w4.style.background=rgGrad([50,45,95],[52,48,85],t,
+        'rgba(52,66,30,.5), rgba(30,38,20,.28) 55%, rgba(30,38,20,0)');
+      /* main yellow-green field — hue shifts inside the gradient, cities wash-red style */
+      washEls.w1.style.background=rgGrad([47,52,72],[50,55,60],t,
+        'rgba(200,224,76,.72), rgba(122,180,70,.42) 46%, rgba(122,180,70,0)');
+      /* upper emerald */
+      washEls.w2.style.background=rgGrad([62,16,58],[66,13,48],t,
+        'rgba(79,191,82,.6), rgba(79,191,82,0)');
+      /* trio in one layer (cities wash-trio style): cobalt + pink rim + cream lift */
+      washEls.w3.style.background=
+        rgGrad([89,11,42],[91,9,34],t,'rgba(75,131,201,.66), rgba(75,131,201,0)')+','+
+        rgGrad([101,4,24],[101,3,20],t,'rgba(207,143,174,.42), rgba(207,143,174,0)')+','+
+        rgGrad([16,88,44],[13,86,36],t,'rgba(239,232,207,.10), rgba(239,232,207,0)');
     }
     var vbW=VB_P[0], vbH=VB_P[1];
     function applyAll(t){
@@ -871,7 +882,7 @@
       if(window.gsap && !REDUCE){
         var ez=silk();
         gsap.fromTo('#s2 .sdl-wash',{opacity:0},{opacity:1,duration:1.1,ease:ez,stagger:.12,clearProps:'opacity'});
-        gsap.fromTo('#s2 .sdl-grain',{opacity:0},{opacity:.09,duration:1.2,ease:ez,clearProps:'opacity'});
+        gsap.fromTo('#s2 .sdl-grain',{opacity:0},{opacity:.18,duration:1.2,ease:ez,clearProps:'opacity'});
         gsap.fromTo(cap,{opacity:0,y:26},{opacity:1,y:0,duration:.8,ease:ez,clearProps:'opacity,transform'});
       }
     }
