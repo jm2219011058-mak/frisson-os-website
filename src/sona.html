@@ -168,7 +168,7 @@
     bottom:var(--sdl-capbottom,24px);max-width:var(--sdl-capw,46ch);pointer-events:none;}
   /* narrow screens: stacked composition — artwork above, copy in a band of its own below */
   .sdl-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(8px,1.4vh,13px);}
-  .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:var(--ink-dim);text-wrap:pretty;}
+  .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.2vw,15.5px);line-height:1.68;color:var(--ink-dim);text-wrap:pretty;}
   .sdl-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}
   @media (prefers-reduced-motion:reduce){
     .sdl-wash,#s2 .halo{animation:none!important;}
@@ -278,7 +278,6 @@
     #s-city .citywrap{max-width:100%;}
     .city-lead,.city-body,.city-finale,.s7-p{max-width:100%;}
   }
-  .city-kicker{font-family:var(--sans);font-weight:700;font-size:clamp(13px,1.6vw,16px);letter-spacing:.08em;color:var(--ink);margin:0 0 clamp(22px,3.5vh,36px);}
   .city-lead{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.6vw,30px);line-height:1.45;letter-spacing:.005em;color:var(--ink);max-width:30ch;margin:0 auto;text-align:center;text-wrap:balance;}
   .city-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.8vw,19px);line-height:1.9;letter-spacing:.03em;color:var(--ink-dim);max-width:32em;margin:clamp(20px,3.2vh,32px) auto 0;text-align:center;text-wrap:pretty;}
   .city-finale{font-family:var(--serif);font-weight:500;font-size:clamp(20px,3vw,30px);line-height:1.5;letter-spacing:.03em;color:var(--ink);max-width:min(30ch,calc(100% - 40px));text-wrap:balance;margin:clamp(34px,6vh,60px) auto 0;}
@@ -362,7 +361,6 @@
   <!-- 1b · MORE THAN HUMAN CITY → SONA -->
   <section class="section" id="s-city">
     <div class="citywrap reveal">
-      <p class="city-kicker">{{3.2}}</p>
       <p class="city-lead">{{3.3}}</p>
       <p class="city-body">{{3.3b}}</p>
     </div>
@@ -711,7 +709,9 @@
     /* portrait ring runs wider so the 24 beads sit further apart — that spacing is what caps
        how big a tap target can get without neighbours stealing each other's taps */
     var LOOP_P={cx:600,cy:560,rx:470,ry:165,rot:-6};
-    var LOOP_L={cx:800,cy:490,rx:470,ry:165,rot:-4};
+    /* wide screens read as two columns: the ring sits right of centre so the copy owns the
+       left third — centring it is what let the 19–24 stretch land on top of the text */
+    var LOOP_L={cx:1010,cy:450,rx:470,ry:165,rot:-4};
 
     /* ---- the 24-hour ring ----
        One number per hour. Seven of them are circled — the hour each scene happens in,
@@ -867,15 +867,19 @@
 
       var numPx=Math.max(15,Math.min(26,0.016*cw));
       var fadeCss=Math.max(130,Math.min(0.26*innerHeight,300));   /* the original clamp */
+      var capx=Math.max(18,Math.min(72,cw*0.05));
+      var ringLeftPx=(lerp(LOOP_P.cx,LOOP_L.cx,t)-lerp(LOOP_P.rx,LOOP_L.rx,t))*cw/vbW;
       var vars=[
         ['--sdl-fade', Math.min(fadeCss, svgH*0.33).toFixed(0)+'px'],
         /* the lower melt starts higher on narrow screens so the band doesn't trail off green */
         ['--sdl-fadeb', Math.min(fadeCss, svgH*lerp(0.52,0.33,t)).toFixed(0)+'px'],
         ['--sdl-num',  (numPx*vbW/cw).toFixed(1)+'px'],
         ['--sdl-numin',(numPx*0.76*vbW/cw).toFixed(1)+'px'],
-        ['--sdl-capx', Math.max(18,Math.min(72,cw*0.05)).toFixed(0)+'px'],
-        ['--sdl-capw', (lerp(cw, Math.min(cw*0.72, 46*numPx*0.62), t)).toFixed(0)+'px'],
-        ['--sdl-capbottom', (lerp(0, Math.max(14,svgH*0.06), t)).toFixed(0)+'px']
+        ['--sdl-capx', capx.toFixed(0)+'px'],
+        /* wide: a compact block in the lower-left, stopping short of where the ring begins.
+           narrow: full width under the artwork */
+        ['--sdl-capw', (lerp(cw-2*capx, Math.max(240,Math.min(ringLeftPx-capx-30, cw*0.25)), t)).toFixed(0)+'px'],
+        ['--sdl-capbottom', (lerp(0, Math.max(16,svgH*0.10), t)).toFixed(0)+'px']
       ];
       var key=vars.map(function(v){return v[1];}).join('|');
       if(key!==lastVars){ lastVars=key; vars.forEach(function(v){ stage.style.setProperty(v[0],v[1]); }); }
@@ -903,16 +907,12 @@
       var m=Math.max(26,0.02*vbW), R=0.24*Math.min(vbW,vbH);
       var p=mpt[k]||[vbW/2,vbH/2,1];
       var lx=lerp(LOOP_P.cx,LOOP_L.cx,tCur), ly=lerp(LOOP_P.cy,LOOP_L.cy,tCur);
-      var cyMax=vbH-R-m;
-      if(tCur>0.02){   /* the more the copy overlays the artwork, the more the photo dodges it */
-        var pxPerUnit=(stage.clientWidth||1)/vbW;
-        var capTopSvg=(cap.getBoundingClientRect().top - stage.getBoundingClientRect().top)/Math.max(0.0001,pxPerUnit);
-        var dodge=Math.max(R+m, Math.min(cyMax, capTopSvg-R+40));
-        cyMax=lerp(cyMax, dodge, tCur);
-      }
+      /* The photo sits exactly on the ring's centre. It must NOT be nudged to dodge the copy:
+         off-centre, the radial field blows the ring open on the side it drifted towards.
+         Separation from the copy is the left/right split's job, not the photo's. */
       return { x0:p[0], y0:p[1], r:R,
         cx:Math.min(Math.max(lx,R+m),vbW-R-m),
-        cy:Math.min(Math.max(ly,R+m),cyMax) };
+        cy:Math.min(Math.max(ly,R+m),vbH-R-m) };
     }
     function setText(k){ capName.textContent=SCENES[k].name; capText.innerHTML=s2hl(SCENES[k].text); }
     function activate(k){
@@ -991,8 +991,11 @@
     (function tick(){
       if(dirty){
         tCur+=(tTarget-tCur)*0.16;
-        if(Math.abs(tCur-tTarget)<0.001){ tCur=tTarget; dirty=false; }
+        var settled=false;
+        if(Math.abs(tCur-tTarget)<0.001){ tCur=tTarget; dirty=false; settled=true; }
         applyAll(tCur);
+        /* the copy's reserved height depends on the column width it just got — re-measure once */
+        if(settled){ reserveCap(); applyAll(tCur); }
         if(active>-1&&!animating){ var tg=target(active); P.cx=tg.cx; P.cy=tg.cy; P.r=tg.r; P.ir=tg.r; paint(); }
       }
       requestAnimationFrame(tick);
