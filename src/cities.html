@@ -730,6 +730,7 @@
       .sln-root .node:hover .disc,.sln-root .node:focus-visible .disc{transform:scale(1.18)}
       .sln-root .node:focus{outline:none}
       .sln-root .node:focus-visible .disc{stroke:var(--accent);stroke-width:2}
+      .sln-root .sln-seek{font-family:var(--serif);font-weight:700;font-size:46px;letter-spacing:-.01em;fill:#1c1712;}
       .sln-root .halo{transform-box:fill-box;transform-origin:center;fill:var(--ink);opacity:0;animation:slnPulse 2.6s ease-out infinite;pointer-events:none}
       .sln-root .node.primary .halo{fill:var(--accent);animation-duration:1.9s}
       .sln-root .globe-node .halo{fill:var(--accent);animation-duration:2.4s}
@@ -958,7 +959,7 @@
       place([4,262],[4,303],`<rect x="-4" y="-5.5" width="8" height="11" fill="#1c1712"/>`);
       place([4,353],[4,433],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
       place([4,547],[4,623],`<rect x="-4" y="-4" width="8" height="8" fill="#1c1712"/>`);
-      place([214,102],[235,84],`<rect x="-102.5" y="-14" width="205" height="28" fill="#1c1712"/>`);
+      place([214,102],[235,84],`<text class="sln-seek" x="0" y="0" text-anchor="middle" dominant-baseline="central">Seek Wonder</text>`);
       place([304,451],[266,338],`<rect x="-17" y="-8" width="34" height="16" fill="#1c1712"/>`);
       place([538,771],[790,703],`<rect x="-82" y="-13" width="164" height="26" fill="#1c1712"/>`);
       place([303,859],[338,708],`<rect x="-8" y="-8" width="16" height="16" fill="#1c1712"/>`);
