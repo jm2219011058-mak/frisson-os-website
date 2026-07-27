@@ -123,7 +123,10 @@
      (b) the boundary is the UNION of edge-anchored ellipses of differing width, height and
          offset, so the line where black lets go is an irregular curve rather than horizontal,
          while each contributor stays individually soft. */
-  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:clamp(130px,26vh,300px);}
+  /* Long and soft on purpose: the melt needs a LOT of distance or the gradient turns steep
+     and you see a line. JS keeps the original clamp(130px,26vh,300px) and only caps it at a
+     third of the artwork, so short bands don't get buried while wide screens stay untouched. */
+  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:var(--sdl-fade,clamp(130px,26vh,300px));}
   .sdl-stage::before{top:0;background:
     radial-gradient(ellipse 44% 96% at 11% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
     radial-gradient(ellipse 58% 71% at 37% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
@@ -142,9 +145,11 @@
   #s2.sdl-in .cal-item{animation-play-state:running;}
   @keyframes sdlCalIn{to{opacity:1}}
   #s2 .node{outline:none;}   /* no square focus flash on click — the disc itself signals state */
-  /* calendar ink — dark green on the glow, exactly like the poster */
-  #s2 .num{font-family:var(--sans);font-weight:600;font-size:26px;fill:#1f2817;}
-  #s2 .num-in{font-family:var(--sans);font-weight:700;font-size:19px;fill:#efe9d8;pointer-events:none;}
+  /* calendar ink — dark green on the glow, exactly like the poster.
+     Sizes are USER UNITS driven by JS (--sdl-*) so the on-screen optical size is a smooth
+     function of the artwork width — no breakpoints, legible at every ratio. */
+  #s2 .num{font-family:var(--sans);font-weight:600;font-size:var(--sdl-num,26px);fill:#1f2817;}
+  #s2 .num-in{font-family:var(--sans);font-weight:700;font-size:var(--sdl-numin,19px);fill:#efe9d8;pointer-events:none;}
   #s2 .node{cursor:pointer;}
   #s2 .node .disc{fill:#1f2817;stroke:rgba(233,228,212,.35);stroke-width:1;transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1),stroke .3s;}
   #s2 .node:hover .disc,#s2 .node:focus-visible .disc{transform:scale(1.16);stroke:var(--accent);}
@@ -156,23 +161,11 @@
   @keyframes sdlPulse{0%{transform:scale(.5);opacity:.85}70%{transform:scale(2.6);opacity:0}100%{transform:scale(2.6);opacity:0}}
   #sdlPhotoG{pointer-events:none;}
   .sdl-ring{fill:none;stroke:rgba(233,228,212,.4);stroke-width:1.5;}
-  .sdl-cap{position:absolute;z-index:3;left:clamp(20px,5vw,72px);bottom:clamp(14px,4vh,48px);max-width:min(46ch,72%);pointer-events:none;}
+  /* Copy sits in the artwork's lower-left on wide screens and slides out below it as the
+     screen narrows — driven continuously by --sdl-cappull / --sdl-capw (no breakpoint jump). */
+  .sdl-cap{position:absolute;z-index:3;left:var(--sdl-capx,72px);right:var(--sdl-capx,72px);
+    bottom:var(--sdl-capbottom,24px);max-width:var(--sdl-capw,46ch);pointer-events:none;}
   /* narrow screens: stacked composition — artwork above, copy in a band of its own below */
-  @media(max-width:720px){
-    .sdl-cap{left:clamp(18px,5vw,28px);right:clamp(18px,5vw,28px);bottom:0;max-width:none;}
-    /* fades scale with the (much shorter) artwork, or they'd swallow it */
-    .sdl-stage::before{height:clamp(54px,9vh,110px);}
-    .sdl-stage::after{height:clamp(66px,11vh,130px);}
-  }
-  /* phones: the canvas is only ~390px wide, so SVG user units shrink ~3x — scale the type
-     and discs back up in user space so the ring stays legible and tappable */
-  @media(max-width:520px){
-    #s2 .num{font-size:46px;}
-    #s2 .num-in{font-size:34px;}
-    #s2 .disc,#s2 .halo{r:31px;}
-    #s2 .hit{r:48px;}
-    .sdl-name{font-size:13px;}
-  }
   .sdl-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(8px,1.4vh,13px);}
   .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:var(--ink-dim);text-wrap:pretty;}
   .sdl-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}
@@ -707,8 +700,14 @@
     /* Portrait canvas is near-square and the ring nearly circular, so a phone shows a full
        clock face with even margins instead of a flat ellipse floating in dead space.
        Landscape keeps the wide, poster-like ellipse. */
-    var VB_P=[1200,1080], VB_L=[1600,900];
-    var LOOP_P={cx:600,cy:540,rx:410,ry:340,rot:-4};
+    /* Both canvases are horizontal bands and both rings are FLAT (ry/rx ≈ .38) — a near-circle
+       ring killed the squash-and-stretch, because the photo could no longer out-reach ry. */
+    /* Original proportions restored: BOTH rings are flat (ry/rx ≈ .41 / .35) and the photo is
+       sized off the canvas's SHORT side, so R out-reaches ry by ~1.8× and the string really
+       gets shoved around. Only the portrait canvas height is trimmed (1467 → 1240) — that was
+       the actual dead-space problem; the ring itself was never the issue. */
+    var VB_P=[1200,1240], VB_L=[1600,900];
+    var LOOP_P={cx:600,cy:620,rx:400,ry:165,rot:-6};
     var LOOP_L={cx:800,cy:490,rx:470,ry:165,rot:-4};
 
     /* ---- the 24-hour ring ----
@@ -822,27 +821,43 @@
         rgGrad([101,4,28],[101,3,22],t,'rgba(219,155,186,.46), rgba(196,132,166,.28) 30%, rgba(160,104,138,.12) 55%, rgba(140,90,125,.04) 78%, rgba(140,90,125,0)')+','+
         rgGrad([16,88,48],[13,86,40],t,'rgba(239,232,207,.11), rgba(239,232,207,.06) 40%, rgba(239,232,207,.02) 68%, rgba(239,232,207,0)');
     }
-    /* narrow screens stack: artwork on top, copy in its own band below (no overlap) */
-    var mqStack=matchMedia('(max-width:720px)');
+    /* Reserve the tallest caption so switching scenes never reflows the band. */
+    var capReserved=0;
     function reserveCap(){
-      if(!mqStack.matches){ cap.style.minHeight=''; return; }
       var pn=capName.textContent, pt=capText.innerHTML, max=0;
+      cap.style.minHeight='0px';
       for(var i=0;i<SCENES.length;i++){
         capName.textContent=SCENES[i].name; capText.innerHTML=s2hl(SCENES[i].text);
         var h=cap.getBoundingClientRect().height; if(h>max) max=h;
       }
       capName.textContent=pn; capText.innerHTML=pt;
-      cap.style.minHeight=max+'px';
+      capReserved=max; cap.style.minHeight=max+'px';
     }
-    var vbW=VB_P[0], vbH=VB_P[1];
+    var vbW=VB_P[0], vbH=VB_P[1], svgH=0, capPull=0, lastVars='';
     function applyAll(t){
       vbW=lerp(VB_P[0],VB_L[0],t); vbH=lerp(VB_P[1],VB_L[1],t);
       svg.setAttribute('viewBox','0 0 '+vbW.toFixed(1)+' '+vbH.toFixed(1));
       paintWashes(t);
       layoutCal(t);
-      var cw=stage.clientWidth||1, ar=vbW/vbH, svgH=cw/ar;
+      var cw=stage.clientWidth||1, ar=vbW/vbH;
+      svgH=cw/ar;
       svg.style.height=svgH+'px';
-      stage.style.height=(svgH + (mqStack.matches ? cap.offsetHeight+28 : 0))+'px';
+      /* copy: fully overlaid at t=1, fully below the artwork at t=0 — continuous, no breakpoint */
+      capPull=capReserved*t;
+      stage.style.height=(svgH + Math.max(0,capReserved-capPull) + (1-t)*26)+'px';
+
+      var numPx=Math.max(15,Math.min(26,0.016*cw));
+      var fadeCss=Math.max(130,Math.min(0.26*innerHeight,300));   /* the original clamp */
+      var vars=[
+        ['--sdl-fade', Math.min(fadeCss, svgH*0.33).toFixed(0)+'px'],
+        ['--sdl-num',  (numPx*vbW/cw).toFixed(1)+'px'],
+        ['--sdl-numin',(numPx*0.76*vbW/cw).toFixed(1)+'px'],
+        ['--sdl-capx', Math.max(18,Math.min(72,cw*0.05)).toFixed(0)+'px'],
+        ['--sdl-capw', (lerp(cw, Math.min(cw*0.72, 46*numPx*0.62), t)).toFixed(0)+'px'],
+        ['--sdl-capbottom', (lerp(0, Math.max(14,svgH*0.06), t)).toFixed(0)+'px']
+      ];
+      var key=vars.map(function(v){return v[1];}).join('|');
+      if(key!==lastVars){ lastVars=key; vars.forEach(function(v){ stage.style.setProperty(v[0],v[1]); }); }
     }
 
     /* photo bloom — the numbered circle grows first, then the image surfaces from its centre */
@@ -862,14 +877,17 @@
     /* The photo always lands in the CENTRE OF THE LOOP — the string then wraps it evenly.
        (Deriving the spot from the node position pushed it off to one side and over the copy.) */
     function target(k){
+      /* photo sized off the canvas's short side (original logic) — this is what makes it much
+         larger than ry, so the string gets a real shove instead of a nudge */
       var m=Math.max(26,0.02*vbW), R=0.24*Math.min(vbW,vbH);
       var p=mpt[k]||[vbW/2,vbH/2,1];
       var lx=lerp(LOOP_P.cx,LOOP_L.cx,tCur), ly=lerp(LOOP_P.cy,LOOP_L.cy,tCur);
       var cyMax=vbH-R-m;
-      if(!mqStack.matches){   /* landscape: keep clear of the caption sitting bottom-left */
+      if(tCur>0.02){   /* the more the copy overlays the artwork, the more the photo dodges it */
         var pxPerUnit=(stage.clientWidth||1)/vbW;
         var capTopSvg=(cap.getBoundingClientRect().top - stage.getBoundingClientRect().top)/Math.max(0.0001,pxPerUnit);
-        cyMax=Math.max(R+m, Math.min(cyMax, capTopSvg-R+40));
+        var dodge=Math.max(R+m, Math.min(cyMax, capTopSvg-R+40));
+        cyMax=lerp(cyMax, dodge, tCur);
       }
       return { x0:p[0], y0:p[1], r:R,
         cx:Math.min(Math.max(lx,R+m),vbW-R-m),
@@ -901,8 +919,10 @@
         var st=mpt[k]||[vbW/2,vbH/2,1];
         img.setAttribute('href',SCENES[k].img+'?v=3');
         if(node) gsap.set(node,{opacity:0});
+        /* must be the RENDERED radius — r.baseVal only reports the attribute, so a CSS-sized
+           disc made the bloom start at half size and visibly pop */
         var d0=node&&node.querySelector('.disc'), r0=17;
-        try{ r0=(d0&&d0.r.baseVal.value)||17; }catch(e){}   /* discs are larger on phones (CSS r) */
+        try{ r0=parseFloat(getComputedStyle(d0).r)||d0.r.baseVal.value||17; }catch(e){}
         P.cx=st[0]; P.cy=st[1]; P.r=r0*st[2]; P.ir=0; P.o=1; paint();
       });
       tl.to(P,{cx:function(){return target(k).cx;},cy:function(){return target(k).cy;},r:function(){return target(k).r;},duration:.85,ease:ez,onUpdate:paint});
