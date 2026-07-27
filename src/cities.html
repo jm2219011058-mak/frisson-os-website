@@ -62,6 +62,31 @@
   .hero{position:relative;width:100%;aspect-ratio:1513/1039;height:auto;overflow:hidden;background:#fff;}   /* full painting, uncropped (matches image proportions) */
   .hero picture{display:block;width:100%;height:100%;}
   .hero img{width:100%;height:100%;object-fit:cover;display:block;}
+  /* crossfading slideshow — first slide sits in flow, the rest stack over it */
+  .hero .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease-in-out;}
+  .hero .hero-slide:first-of-type{position:relative;}
+  .hero .hero-slide.is-on{opacity:1;}
+  .hero-cap-slide{opacity:0;pointer-events:none;transition:opacity 1.2s ease-in-out;}
+  .hero-cap-slide.is-on{opacity:1;}
+  /* second slide's caption runs a couple of steps smaller and tighter */
+  .hero-cap2.cap-sm .hc-big{font-weight:700;font-size:clamp(33px,min(5.2vw,8.5vh),61px);line-height:1.16;max-width:min(74vw,900px);}
+  .hero-cap2.cap-sm .hc-small{font-size:clamp(14px,1.5vw,18px);line-height:1.4;max-width:44ch;margin-top:clamp(12px,1.6vh,18px);}
+  @media(max-width:640px){
+    .hero-cap2.cap-sm .hc-big{font-size:clamp(26px,8vw,40px);}
+    .hero-cap2.cap-sm .hc-small{font-size:clamp(13px,3.6vw,15px);line-height:1.4;}
+  }
+  /* quiet manual controls, bottom-right of the hero */
+  .hero-arrows{position:absolute;z-index:3;right:clamp(20px,5vw,64px);bottom:clamp(22px,5vh,60px);display:flex;gap:10px;}
+  .hero-arw{width:clamp(36px,3.4vw,44px);height:clamp(36px,3.4vw,44px);border-radius:50%;border:1.4px solid rgba(255,255,255,.55);
+    background:rgba(0,0,0,.16);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+    transition:background .25s,border-color .25s,transform .25s;}
+  .hero-arw svg{width:45%;height:45%;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;}
+  .hero-arw:hover{background:var(--accent);border-color:var(--accent);}
+  .hero-arw:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  #heroNext{animation:heroHint 1.6s ease-in-out infinite;}
+  #heroNext:hover{animation:none;transform:translateX(3px);}
+  @keyframes heroHint{0%,100%{transform:translateX(0);}50%{transform:translateX(5px);}}
+  @media(prefers-reduced-motion:reduce){.hero .hero-slide,.hero-cap-slide{transition:none;} #heroNext{animation:none;}}
   /* mobile: give the hero a definite height so the image fills it (cover) instead of collapsing */
   @media(max-width:680px){ .hero{aspect-ratio:auto;height:min(76vh,620px);} .hero img{object-position:center 40%;} }
   .hero-cap2{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;
@@ -333,13 +358,25 @@
   </nav>
 
   <header class="hero">
-    <picture>
-      <source type="image/webp" srcset="assets/city/hero-city-820.webp 820w, assets/city/hero-city.webp 1513w" sizes="100vw">
-      <img src="assets/city/hero-city.jpg" alt="A new renaissance of living" width="1517" height="1037" fetchpriority="high" decoding="async">
+    <!-- slideshow: two artworks, each with its own caption; arrows switch manually -->
+    <picture class="hero-slide is-on">
+      <source type="image/webp" srcset="assets/city/hero-slide2-820.webp 820w, assets/city/hero-slide2.webp 1513w" sizes="100vw">
+      <img src="assets/city/hero-slide2.webp" alt="Biology, memory, emotion, environment, relationships, and inner meaning" width="1513" height="1039" fetchpriority="high" decoding="async">
     </picture>
-    <div class="hero-cap2">
+    <picture class="hero-slide">
+      <source type="image/webp" srcset="assets/city/hero-slide-eye-820.webp 820w, assets/city/hero-slide-eye.webp 1400w" sizes="100vw">
+      <img src="assets/city/hero-slide-eye.webp" alt="A new renaissance of living" width="1400" height="788" loading="lazy" decoding="async">
+    </picture>
+    <div class="hero-cap2 hero-cap-slide cap-sm is-on">
+      <p class="hc-big">Biology, Memory, Emotion, Environment, Relationships, and Inner Meaning.</p>
+    </div>
+    <div class="hero-cap2 hero-cap-slide">
       <p class="hc-big">{{cities.hero1}}</p>
       <p class="hc-small">{{cities.hero2}}</p>
+    </div>
+    <div class="hero-arrows">
+      <button type="button" class="hero-arw" id="heroPrev" aria-label="Previous artwork"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="hero-arw" id="heroNext" aria-label="Next artwork"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
   </header>
 
@@ -1681,6 +1718,27 @@
     if(!b||!m) return;
     b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
     m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
+  })();
+
+  /* hero slideshow — image + its caption crossfade together; arrows switch by hand */
+  (function(){
+    var slides=[].slice.call(document.querySelectorAll('.hero .hero-slide')),
+        caps=[].slice.call(document.querySelectorAll('.hero .hero-cap-slide')),
+        prev=document.getElementById('heroPrev'), next=document.getElementById('heroNext');
+    if(slides.length<2) return;
+    var i=0, timer=null;
+    function show(n){
+      slides[i].classList.remove('is-on'); if(caps[i]) caps[i].classList.remove('is-on');
+      i=(n+slides.length)%slides.length;
+      slides[i].classList.add('is-on'); if(caps[i]) caps[i].classList.add('is-on');
+    }
+    function start(){ if(!timer) timer=setInterval(function(){ show(i+1); },5000); }
+    function stop(){ clearInterval(timer); timer=null; }
+    function manual(n){ stop(); show(n); start(); }        /* a click restarts the cycle from there */
+    if(prev) prev.addEventListener('click',function(){ manual(i-1); });
+    if(next) next.addEventListener('click',function(){ manual(i+1); });
+    document.addEventListener('visibilitychange',function(){ document.hidden?stop():start(); });
+    if(!matchMedia('(prefers-reduced-motion:reduce)').matches) start();
   })();
 
   /* fixed nav: light over the hero, white bar once scrolled past it */
