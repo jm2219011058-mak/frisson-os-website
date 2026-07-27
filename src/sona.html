@@ -40,22 +40,22 @@
 
   /* nav — white bar (same as the rest of the site) */
   .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-    padding:20px clamp(20px,5vw,64px);background:transparent;border-bottom:none;font-family:var(--serif);
-    transition:background .3s,border-color .3s;}
+    padding:20px clamp(20px,5vw,64px);background:transparent;border-bottom:1px solid transparent;font-family:var(--serif);
+    transition:background-color .45s ease,border-color .45s ease;}
   /* past the hero the light text would drown on white sections — switch to the white bar */
-  .nav.scrolled{background:#fff;border-bottom:1px solid rgba(43,29,18,.06);}
+  .nav.scrolled{background:#fff;border-color:rgba(43,29,18,.06);}
   .nav.scrolled .brand{color:#2b1d12;}
   .nav.scrolled .links a{color:#2b1d12;}
   .nav.scrolled .links a:hover,.nav.scrolled .links a.cur{color:var(--accent);}
   .nav.scrolled .menu-btn span{background:#2b1d12;}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;transition:color .45s ease;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .45s ease;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   /* mobile hamburger + pill menu */
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s,background-color .45s ease;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -117,10 +117,25 @@
   .sdl-grain{position:absolute;inset:0;opacity:.18;background-size:240px 240px;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
   #s2.sdl-off .sdl-wash{animation-play-state:paused;}
-  /* soft edges — the section melts into its neighbours above and below */
-  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:clamp(70px,14vh,170px);}
-  .sdl-stage::before{top:0;background:linear-gradient(180deg,#060504 0%,rgba(6,5,4,.55) 45%,rgba(6,5,4,0) 100%);}
-  .sdl-stage::after{bottom:0;background:linear-gradient(0deg,#060504 0%,rgba(6,5,4,.55) 45%,rgba(6,5,4,0) 100%);}
+  /* Edge melt — two ideas stacked:
+     (a) every fade is sampled off SMOOTHERSTEP 6t^5-15t^4+10t^3 (C2-continuous: its slope
+         never jumps, so no Mach band — a 3/4-stop linear gradient always shows its seams);
+     (b) the boundary is the UNION of edge-anchored ellipses of differing width, height and
+         offset, so the line where black lets go is an irregular curve rather than horizontal,
+         while each contributor stays individually soft. */
+  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:clamp(130px,26vh,300px);}
+  .sdl-stage::before{top:0;background:
+    radial-gradient(ellipse 44% 122% at 11% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 58% 84% at 37% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 34% 138% at 64% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 52% 96% at 90% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    linear-gradient(180deg, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 9%, rgba(6,5,4,.896) 19%, rgba(6,5,4,.725) 28%, rgba(6,5,4,.5) 38%, rgba(6,5,4,.275) 47%, rgba(6,5,4,.104) 57%, rgba(6,5,4,.016) 66%, rgba(6,5,4,0) 76%);}
+  .sdl-stage::after{bottom:0;background:
+    radial-gradient(ellipse 50% 104% at 16% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 36% 134% at 43% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 60% 88% at 69% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 42% 126% at 93% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    linear-gradient(0deg, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 9%, rgba(6,5,4,.896) 19%, rgba(6,5,4,.725) 28%, rgba(6,5,4,.5) 38%, rgba(6,5,4,.275) 47%, rgba(6,5,4,.104) 57%, rgba(6,5,4,.016) 66%, rgba(6,5,4,0) 76%);}
   #sdlScene{position:relative;z-index:1;display:block;width:100%;height:100%;}
   /* beads reveal only once the section is on screen — staggered, house curve (动画规范 §5/§8) */
   #s2 .cal-item{opacity:0;animation:sdlCalIn .6s cubic-bezier(0.25,0.1,0.25,1) forwards;animation-play-state:paused;}
@@ -473,7 +488,7 @@
         <g id="sdlDeco" stroke-linecap="square"></g>
         <g id="sdlCal"></g>
         <g id="sdlPhotoG" opacity="0">
-          <circle id="sdlBloom" cx="0" cy="0" r="0" fill="#1f2817" stroke="rgba(224,123,60,.85)" stroke-width="1.5"/>
+          <circle id="sdlBloom" cx="0" cy="0" r="0" fill="#1f2817"/>
           <g clip-path="url(#sdlClip)"><image id="sdlImg" preserveAspectRatio="xMidYMid slice"/></g>
           <circle id="sdlRing" class="sdl-ring" cx="0" cy="0" r="0"/>
         </g>
@@ -782,20 +797,23 @@
     }
     function paintWashes(t){
       if(!washEls.w1) return;
-      /* deep moss underpaint — bright cores land on a dark hue instead of raw black (kills dark-tail banding) */
-      washEls.w4.style.background=rgGrad([50,45,95],[52,48,85],t,
-        'rgba(52,66,30,.5), rgba(30,38,20,.28) 55%, rgba(30,38,20,0)');
-      /* main yellow-green field — hue shifts inside the gradient, cities wash-red style */
-      washEls.w1.style.background=rgGrad([47,52,72],[50,55,60],t,
-        'rgba(200,224,76,.72), rgba(122,180,70,.42) 46%, rgba(122,180,70,0)');
+      /* multi-stop gaussian-like falloffs: CSS lerps linearly between stops, so a 2-stop
+         gradient always reads as a cone edge — 5 stops on a smooth curve melt the circle.
+         Every tail also darkens its hue before hitting black, so nothing lands on raw #060504. */
+      /* deep moss underpaint — the whole colour field sits on this, not on black */
+      washEls.w4.style.background=rgGrad([50,45,110],[52,48,95],t,
+        'rgba(52,66,30,.46), rgba(42,54,26,.34) 30%, rgba(30,38,20,.2) 55%, rgba(18,24,13,.08) 78%, rgba(18,24,13,0)');
+      /* main yellow-green field — bright, tighter core reads as a light source; tail still smootherstep-soft */
+      washEls.w1.style.background=rgGrad([47,52,82],[50,55,68],t,
+        'rgba(214,236,96,.8), rgba(200,224,76,.7) 14%, rgba(168,208,72,.5) 30%, rgba(122,180,70,.3) 48%, rgba(90,140,58,.15) 66%, rgba(60,90,44,.05) 83%, rgba(60,90,44,0)');
       /* upper emerald */
-      washEls.w2.style.background=rgGrad([62,16,58],[66,13,48],t,
-        'rgba(79,191,82,.6), rgba(79,191,82,0)');
-      /* trio in one layer (cities wash-trio style): cobalt + pink rim + cream lift */
+      washEls.w2.style.background=rgGrad([62,16,66],[66,13,54],t,
+        'rgba(96,208,98,.68), rgba(79,191,82,.56) 16%, rgba(70,166,80,.36) 36%, rgba(56,128,66,.2) 56%, rgba(40,86,50,.08) 76%, rgba(40,86,50,0)');
+      /* trio in one layer: cobalt + pink rim + cream lift, all eased */
       washEls.w3.style.background=
-        rgGrad([89,11,42],[91,9,34],t,'rgba(75,131,201,.66), rgba(75,131,201,0)')+','+
-        rgGrad([101,4,24],[101,3,20],t,'rgba(207,143,174,.42), rgba(207,143,174,0)')+','+
-        rgGrad([16,88,44],[13,86,36],t,'rgba(239,232,207,.10), rgba(239,232,207,0)');
+        rgGrad([89,11,48],[91,9,38],t,'rgba(92,150,220,.72), rgba(75,131,201,.6) 15%, rgba(66,112,180,.38) 34%, rgba(56,90,150,.2) 54%, rgba(42,64,110,.08) 74%, rgba(42,64,110,0)')+','+
+        rgGrad([101,4,28],[101,3,22],t,'rgba(219,155,186,.46), rgba(196,132,166,.28) 30%, rgba(160,104,138,.12) 55%, rgba(140,90,125,.04) 78%, rgba(140,90,125,0)')+','+
+        rgGrad([16,88,48],[13,86,40],t,'rgba(239,232,207,.11), rgba(239,232,207,.06) 40%, rgba(239,232,207,.02) 68%, rgba(239,232,207,0)');
     }
     var vbW=VB_P[0], vbH=VB_P[1];
     function applyAll(t){

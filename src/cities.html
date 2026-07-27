@@ -25,22 +25,22 @@
 
   /* nav — transparent, overlaid on the hero image (image bleeds up behind it) */
   .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:transparent;border-bottom:none;
-    transition:background .3s,border-color .3s;}
+    padding:18px clamp(20px,5vw,64px);background:transparent;border-bottom:1px solid transparent;
+    transition:background-color .45s ease,border-color .45s ease;}
   /* past the hero the light text would drown on white sections — switch to the white bar */
-  .nav.scrolled{background:#fff;border-bottom:1px solid var(--hair);}
+  .nav.scrolled{background:#fff;border-color:var(--hair);}
   .nav.scrolled .brand{color:var(--ink);}
   .nav.scrolled .links a{color:var(--ink);}
   .nav.scrolled .links a:hover,.nav.scrolled .links a.cur{color:var(--accent);}
   .nav.scrolled .menu-btn span{background:#2b1d12;}
-  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:#f7f2ea;text-decoration:none;font-weight:500;transition:color .45s ease;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
-  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:rgba(247,242,234,.85);text-decoration:none;transition:color .45s ease;white-space:nowrap;}
   .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
   /* mobile hamburger + pill menu */
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
-  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#f7f2ea;border-radius:2px;transition:transform .3s,background-color .45s ease;}
   .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
   .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
   .menu{display:flex;position:absolute;top:100%;right:clamp(16px,5vw,44px);margin-top:12px;flex-direction:column;gap:10px;z-index:70;
@@ -647,6 +647,10 @@
         background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
       /* parallax groups ride the compositor, not the rasterizer */
       #sln-deco,#sln-calWrap{will-change:transform;}
+      /* persistently-animating svg children get their own composited layers (Chrome layerizes
+         will-change'd SVG elements) — without this, each tick re-rasters the whole line-art scene */
+      .sln-root .bob,.sln-root .wave,.sln-root .sway-r,.sln-root .spin-slow,.sln-root .shimmer,
+      .sln-root .halo,.sln-root .star-spin,.sln-root #sln-cal{will-change:transform;}
       /* section off-screen → every ambient animation stops burning frames */
       .sln-root.sln-off #sln-scene *,.sln-root.sln-off .sln-wash{animation-play-state:paused!important;}
       /* ambient blob drift */
