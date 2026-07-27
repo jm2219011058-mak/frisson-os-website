@@ -160,7 +160,18 @@
   /* narrow screens: stacked composition — artwork above, copy in a band of its own below */
   @media(max-width:720px){
     .sdl-cap{left:clamp(18px,5vw,28px);right:clamp(18px,5vw,28px);bottom:0;max-width:none;}
-    .sdl-stage::after{height:clamp(80px,14vh,150px);}
+    /* fades scale with the (much shorter) artwork, or they'd swallow it */
+    .sdl-stage::before{height:clamp(54px,9vh,110px);}
+    .sdl-stage::after{height:clamp(66px,11vh,130px);}
+  }
+  /* phones: the canvas is only ~390px wide, so SVG user units shrink ~3x — scale the type
+     and discs back up in user space so the ring stays legible and tappable */
+  @media(max-width:520px){
+    #s2 .num{font-size:46px;}
+    #s2 .num-in{font-size:34px;}
+    #s2 .disc,#s2 .halo{r:31px;}
+    #s2 .hit{r:48px;}
+    .sdl-name{font-size:13px;}
   }
   .sdl-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(8px,1.4vh,13px);}
   .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:var(--ink-dim);text-wrap:pretty;}
@@ -693,10 +704,11 @@
     function silk(){ if(window.CustomEase&&window.gsap)CustomEase.create('silk','M0,0 C0.25,0.1 0.25,1 1,1'); return (window.gsap&&gsap.parseEase('silk'))?'silk':'power3.out'; }
     function gs(){ return window.gsap&&!REDUCE; }
 
-    var VB_P=[1200,1467], VB_L=[1600,900];
-
-    /* main loop — tilted ellipse carrying one full day, laid clockwise from the left */
-    var LOOP_P={cx:570,cy:745,rx:365,ry:150,rot:-6};
+    /* Portrait canvas is near-square and the ring nearly circular, so a phone shows a full
+       clock face with even margins instead of a flat ellipse floating in dead space.
+       Landscape keeps the wide, poster-like ellipse. */
+    var VB_P=[1200,1080], VB_L=[1600,900];
+    var LOOP_P={cx:600,cy:540,rx:410,ry:340,rot:-4};
     var LOOP_L={cx:800,cy:490,rx:470,ry:165,rot:-4};
 
     /* ---- the 24-hour ring ----
@@ -716,7 +728,7 @@
         el('circle',{'class':'disc',r:17},g);
         var tn=el('text',{'class':'num-in','text-anchor':'middle','dominant-baseline':'central',dy:'.5'},g);
         tn.textContent=hour;
-        el('circle',{r:26,fill:'transparent'},g);
+        el('circle',{'class':'hit',r:26,fill:'transparent'},g);
         g.addEventListener('click',function(){ activate(nodeIdx); restart(); });
         g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(nodeIdx); restart(); } });
         nodeEls[nodeIdx]=g;
@@ -889,7 +901,9 @@
         var st=mpt[k]||[vbW/2,vbH/2,1];
         img.setAttribute('href',SCENES[k].img+'?v=3');
         if(node) gsap.set(node,{opacity:0});
-        P.cx=st[0]; P.cy=st[1]; P.r=17*st[2]; P.ir=0; P.o=1; paint();
+        var d0=node&&node.querySelector('.disc'), r0=17;
+        try{ r0=(d0&&d0.r.baseVal.value)||17; }catch(e){}   /* discs are larger on phones (CSS r) */
+        P.cx=st[0]; P.cy=st[1]; P.r=r0*st[2]; P.ir=0; P.o=1; paint();
       });
       tl.to(P,{cx:function(){return target(k).cx;},cy:function(){return target(k).cy;},r:function(){return target(k).r;},duration:.85,ease:ez,onUpdate:paint});
       /* …then the image surfaces silkily from its centre */
