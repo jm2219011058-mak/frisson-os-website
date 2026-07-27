@@ -77,11 +77,11 @@
   }
   /* quiet manual controls, bottom-right of the hero */
   .hero-arrows{position:absolute;z-index:3;right:clamp(20px,5vw,64px);bottom:clamp(22px,5vh,60px);display:flex;gap:10px;}
-  .hero-arw{width:clamp(36px,3.4vw,44px);height:clamp(36px,3.4vw,44px);border-radius:50%;border:1.4px solid rgba(255,255,255,.55);
-    background:rgba(0,0,0,.16);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
-    transition:background .25s,border-color .25s,transform .25s;}
-  .hero-arw svg{width:45%;height:45%;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;}
-  .hero-arw:hover{background:var(--accent);border-color:var(--accent);}
+  .hero-arw{width:clamp(38px,3.6vw,50px);height:clamp(38px,3.6vw,50px);border:0;border-radius:0;
+    background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+    filter:drop-shadow(0 1px 10px rgba(0,0,0,.45));transition:opacity .25s,transform .25s;}
+  .hero-arw svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;}
+  .hero-arw:hover{opacity:.75;}
   .hero-arw:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   #heroNext{animation:heroHint 1.6s ease-in-out infinite;}
   #heroNext:hover{animation:none;transform:translateX(3px);}
