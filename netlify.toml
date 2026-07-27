@@ -84,6 +84,41 @@
   status = 301
   force = true
 
+# Pretty URL: Soulful Living Network lives at /soulful-living-network, served from cities.html.
+[[redirects]]
+  from = "/soulful-living-network"
+  to = "/cities.html"
+  status = 200
+
+[[redirects]]
+  from = "/cities"
+  to = "/soulful-living-network"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cities.html"
+  to = "/soulful-living-network"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/soulful-living-network"
+  to = "/zh/cities.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/cities"
+  to = "/zh/soulful-living-network"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/cities.html"
+  to = "/zh/soulful-living-network"
+  status = 301
+  force = true
+
 # Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"
