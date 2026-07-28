@@ -199,9 +199,11 @@
   #s4{overflow:hidden;padding:0;min-height:0;}
   /* The stage follows the viewport's shape and is HEIGHT-capped, so the artwork can never push
      the section past one screen. contain:paint fences the invalidation region for high-DPR. */
+  /* deliberately taller than one screen: the navy is meant to own the scroll for a beat,
+     not sit as a band inside it */
   .s4b-stage{position:relative;flex:0 0 auto;width:100vw;margin-left:calc(50% - 50vw);
-    height:min(82svh,1040px);contain:paint;}
-  @media (max-aspect-ratio:1/1){ .s4b-stage{height:min(68svh,760px);} }
+    height:min(116svh,1420px);contain:paint;}
+  @media (max-aspect-ratio:1/1){ .s4b-stage{height:min(96svh,1080px);} }
   /* Edge melt, same construction as #s2 (§ CLAUDE.md): every fade is sampled off SMOOTHERSTEP
      6t^5-15t^4+10t^3, which is C2 — its slope never jumps, so there is no Mach band the way a
      3-stop linear gradient always shows one. The boundary is the UNION of edge-anchored
@@ -210,7 +212,7 @@
   /* capped against the stage height as well as the viewport, or on a short stage the melt eats
      the artwork instead of just softening its edge (it was taking the top bead) */
   .s4b-stage::before,.s4b-stage::after{content:"";position:absolute;left:0;right:0;z-index:5;
-    pointer-events:none;height:min(clamp(120px,22vh,300px), 21%);}
+    pointer-events:none;height:min(clamp(120px,20vh,280px), 15%);}
   .s4b-stage::before{top:0;background:
     radial-gradient(ellipse 46% 96% at 10% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
     radial-gradient(ellipse 58% 72% at 36% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
