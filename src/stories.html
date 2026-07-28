@@ -93,7 +93,7 @@
   .st-h-title{font-size:clamp(30px,5vw,54px);text-transform:uppercase;letter-spacing:.015em;}
   .st-sub{font-family:var(--serif);font-style:italic;color:#6b6b6b;font-size:clamp(14px,1.35vw,17px);line-height:1.5;margin:clamp(8px,1.3vh,12px) 0 0;}
   .st-fig{margin:clamp(30px,5.5vh,54px) auto;max-width:clamp(240px,44vw,360px);}
-  .st-fig img{width:100%;height:auto;display:block;border-radius:40%;box-shadow:0 12px 30px rgba(0,0,0,.12);}
+  .st-fig img{width:100%;height:auto;display:block;border-radius:clamp(26px,4vw,52px);box-shadow:0 12px 30px rgba(0,0,0,.12);}
   .st-branson{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--ink);text-align:center;font-size:clamp(17px,1.9vw,22px);line-height:1.65;margin:0 0 1.3em;}
   .st-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(11px,1.2vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(30px,5vh,50px);text-align:center;}
   .st-h{font-family:var(--serif);font-weight:700;font-size:clamp(27px,4vw,44px);line-height:1.22;letter-spacing:.01em;color:var(--ink);
@@ -127,7 +127,7 @@
   /* featured masthead — newest note, full-bleed, image bleeds up behind the transparent nav */
   .fn-feature{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
     width:100%;min-height:min(76vh,700px);padding:clamp(40px,7vh,80px) clamp(24px,6vw,64px);
-    border-radius:40%;
+    border-radius:clamp(48px,7vw,110px);
     background:#1a1512 center/cover no-repeat;overflow:hidden;text-decoration:none;cursor:pointer;}
   .fn-feature::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
     background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 46%,rgba(0,0,0,.34) 74%,rgba(0,0,0,.66) 100%);}
@@ -153,8 +153,8 @@
   .fn-list{display:grid;grid-template-columns:repeat(2,1fr);gap:0;width:100%;}
   .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
     overflow:hidden;text-decoration:none;color:#fff;background:#1a1512 center center/cover no-repeat;
-    border-radius:40%;
-    padding:clamp(38px,4.4vw,64px);}
+    border-radius:clamp(36px,5.5vw,76px);
+    padding:clamp(32px,3.8vw,54px);}
   /* squircle corners (CLAUDE.md §5.6) — these carry shadows/backgrounds, so corner-shape, not
      clip-path, which is applied after filter and would cut a shadow off */
   @supports (corner-shape: squircle){
