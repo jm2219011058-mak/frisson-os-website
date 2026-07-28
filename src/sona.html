@@ -113,6 +113,69 @@
   @keyframes sdlD1{from{transform:translate(0,0) scale(1)}to{transform:translate(-26px,18px) scale(1.045)}}
   @keyframes sdlD2{from{transform:translate(0,0) scale(1.025)}to{transform:translate(22px,-16px) scale(1)}}
   @keyframes sdlD3{from{transform:translate(0,0)}to{transform:translate(16px,-14px) scale(1.05)}}
+  /* baked grain tile — bright speckle for black paper (no runtime filters, per §5.5) */
+  .sdl-grain{position:absolute;inset:0;opacity:.18;background-size:240px 240px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23gn)'/></svg>");}
+  #s2.sdl-off .sdl-wash{animation-play-state:paused;}
+  /* Edge melt — two ideas stacked:
+     (a) every fade is sampled off SMOOTHERSTEP 6t^5-15t^4+10t^3 (C2-continuous: its slope
+         never jumps, so no Mach band — a 3/4-stop linear gradient always shows its seams);
+     (b) the boundary is the UNION of edge-anchored ellipses of differing width, height and
+         offset, so the line where black lets go is an irregular curve rather than horizontal,
+         while each contributor stays individually soft. */
+  /* Long and soft on purpose: the melt needs a LOT of distance or the gradient turns steep
+     and you see a line. JS keeps the original clamp(130px,26vh,300px) and only caps it at a
+     third of the artwork, so short bands don't get buried while wide screens stay untouched. */
+  .sdl-stage::before,.sdl-stage::after{content:"";position:absolute;left:0;right:0;z-index:2;pointer-events:none;height:var(--sdl-fade,clamp(130px,26vh,300px));}
+  .sdl-stage::after{height:var(--sdl-fadeb,var(--sdl-fade,clamp(130px,26vh,300px)));}
+  .sdl-stage::before{top:0;background:
+    radial-gradient(ellipse 44% 96% at 11% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 58% 71% at 37% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 34% 100% at 64% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 52% 83% at 90% 0%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    linear-gradient(180deg, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 9%, rgba(6,5,4,.896) 19%, rgba(6,5,4,.725) 28%, rgba(6,5,4,.5) 38%, rgba(6,5,4,.275) 47%, rgba(6,5,4,.104) 57%, rgba(6,5,4,.016) 66%, rgba(6,5,4,0) 76%);}
+  .sdl-stage::after{bottom:0;background:
+    radial-gradient(ellipse 50% 92% at 16% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 36% 100% at 43% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 60% 74% at 69% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    radial-gradient(ellipse 42% 88% at 93% 100%, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 12%, rgba(6,5,4,.896) 25%, rgba(6,5,4,.725) 37%, rgba(6,5,4,.5) 50%, rgba(6,5,4,.275) 62%, rgba(6,5,4,.104) 75%, rgba(6,5,4,.016) 88%, rgba(6,5,4,0) 100%),
+    linear-gradient(0deg, rgba(6,5,4,1) 0%, rgba(6,5,4,.984) 9%, rgba(6,5,4,.896) 19%, rgba(6,5,4,.725) 28%, rgba(6,5,4,.5) 38%, rgba(6,5,4,.275) 47%, rgba(6,5,4,.104) 57%, rgba(6,5,4,.016) 66%, rgba(6,5,4,0) 76%);}
+  #sdlScene{position:relative;z-index:1;display:block;width:100%;height:100%;}
+  /* beads reveal only once the section is on screen — staggered, house curve (动画规范 §5/§8) */
+  #s2 .cal-item{opacity:0;animation:sdlCalIn .6s cubic-bezier(0.25,0.1,0.25,1) forwards;animation-play-state:paused;}
+  #s2.sdl-in .cal-item{animation-play-state:running;}
+  @keyframes sdlCalIn{to{opacity:1}}
+  /* no square flash on tap: outline kills the focus ring, tap-highlight kills the grey box
+     mobile browsers paint over a tapped element's bounding rect. The disc itself is the feedback. */
+  #s2 .node{outline:none;-webkit-tap-highlight-color:transparent;}
+  /* calendar ink — dark green on the glow, exactly like the poster.
+     Sizes are USER UNITS driven by JS (--sdl-*) so the on-screen optical size is a smooth
+     function of the artwork width — no breakpoints, legible at every ratio. */
+  #s2 .num{font-family:var(--sans);font-weight:600;font-size:var(--sdl-num,26px);fill:#1f2817;}
+  #s2 .num-in{font-family:var(--sans);font-weight:700;font-size:var(--sdl-numin,19px);fill:#efe9d8;pointer-events:none;}
+  #s2 .node{cursor:pointer;}
+  #s2 .node .disc{fill:#1f2817;stroke:rgba(233,228,212,.35);stroke-width:1;transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.34,1.4,.5,1),stroke .3s;}
+  #s2 .node:hover .disc,#s2 .node:focus-visible .disc{transform:scale(1.16);stroke:var(--accent);}
+  #s2 .node.on .disc{fill:var(--accent);stroke:var(--accent);}
+  #s2 .node.on .num-in{fill:#12100d;}
+  /* halo pulses ONLY on the active node — everything else stays still */
+  #s2 .halo{transform-box:fill-box;transform-origin:center;fill:var(--accent);opacity:0;pointer-events:none;}
+  #s2 .node.on .halo{animation:sdlPulse 1.9s ease-out infinite;}
+  @keyframes sdlPulse{0%{transform:scale(.5);opacity:.85}70%{transform:scale(2.6);opacity:0}100%{transform:scale(2.6);opacity:0}}
+  #sdlPhotoG{pointer-events:none;}
+  .sdl-ring{fill:none;stroke:rgba(233,228,212,.4);stroke-width:1.5;}
+  /* Copy sits in the artwork's lower-left on wide screens and slides out below it as the
+     screen narrows — driven continuously by --sdl-cappull / --sdl-capw (no breakpoint jump). */
+  .sdl-cap{position:absolute;z-index:3;left:var(--sdl-capx,72px);right:var(--sdl-capx,72px);
+    bottom:var(--sdl-capbottom,24px);max-width:var(--sdl-capw,46ch);pointer-events:none;}
+  /* narrow screens: stacked composition — artwork above, copy in a band of its own below */
+  .sdl-name{display:block;font-family:var(--sans);font-size:clamp(12px,1.3vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(8px,1.4vh,13px);}
+  .sdl-text{margin:0;font-family:var(--serif);font-size:clamp(13px,1.2vw,15.5px);line-height:1.68;color:var(--ink-dim);text-wrap:pretty;}
+  .sdl-text .s2hl{color:#f0d3a8;font-variant-numeric:tabular-nums;letter-spacing:.01em;}
+  @media (prefers-reduced-motion:reduce){
+    .sdl-wash,#s2 .halo{animation:none!important;}
+    #s2 .cal-item{animation:none;opacity:1;}
+  }
   /* ---- #s4 stage shell (restored) ---- */
   #s4{overflow:hidden;padding-left:0;padding-right:0;}
   #s4 .gal-head,#s4 .s4-foot{padding:0 clamp(18px,5vw,64px);}
