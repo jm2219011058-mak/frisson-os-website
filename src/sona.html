@@ -1177,19 +1177,42 @@
        impulse enters the string at a drifting position, so the motion never settles into a
        recognisable loop. Fired from the rAF loop, so it stops dead when the section is
        off-screen — no timer of its own to leak. */
-    var wander={p:0.34}, pulseT=0;
+    /* ============================================================================
+       IDLE MOTION — every knob for "how alive is the string when nobody touches it".
+       Everything here is per-frame-free: GSAP tweens the slow values, the rAF loop only
+       reads them. Raise IDLE.gain for more of everything; the rest shape the character.
+       ============================================================================ */
+    var IDLE = {
+      gain      : 1.0,   /* master multiplier over BOTH the standing waves and the pulses  */
+
+      /* the wandering nudge — a soft impulse entering the string every few seconds */
+      pulseEvery: 2.6,   /* seconds between impulses. Lower = busier                       */
+      pulseAmp  : 2.6,   /* strength of each impulse. This is the "how big a flick" knob   */
+      pulseWidth: 5.0,   /* how many samples it spreads over. Higher = a longer, softer swell */
+      wanderFrom: 0.18,  /* where impulses enter, as a fraction of the string, 0=left tip  */
+      wanderTo  : 0.86,
+      wanderTime: 19,    /* seconds for the entry point to drift end to end                */
+
+      /* the standing waves underneath — amplitudes in user units (viewBox 1200 wide)      */
+      swell     : 1.0,   /* multiplier over the three MODE amplitudes below                */
+      bead      : 0.055  /* how much each bead breathes on its own, as a scale delta       */
+    };
+    var wander={p:IDLE.wanderFrom}, pulseT=0;
     function wanderPulse(){
-      var i=Math.round(2+(N-5)*wander.p);
-      for(var j=i-8;j<=i+8;j++){ if(j>0&&j<N-1) vArr[j]-=0.9*Math.exp(-Math.pow((j-i)/4.2,2)); }
+      var i=Math.round(2+(N-5)*wander.p), amp=IDLE.pulseAmp*IDLE.gain, w=IDLE.pulseWidth;
+      var span=Math.ceil(w*2);
+      for(var j=i-span;j<=i+span;j++){ if(j>0&&j<N-1) vArr[j]-=amp*Math.exp(-Math.pow((j-i)/w,2)); }
     }
+    /* k = how many half-waves fit the string (1 = one slow belly, 3.7 = fine ripple)
+       lo/hi = amplitude range it breathes between · ta = seconds per breath · tp = seconds per phase lap */
     var MODES=[
-      {k:1.0,a:{v:2.0},p:{v:0.0},lo:1.1,hi:3.1,ta:21,tp:70},
-      {k:2.3,a:{v:1.0},p:{v:1.7},lo:0.5,hi:1.7,ta:29,tp:93},
-      {k:3.7,a:{v:0.3},p:{v:3.3},lo:0.12,hi:0.5,ta:41,tp:58}
+      {k:1.0,a:{v:0},p:{v:0.0},lo:2.6,hi:6.4,ta:19,tp:70},
+      {k:2.3,a:{v:0},p:{v:1.7},lo:1.2,hi:3.4,ta:26,tp:93},
+      {k:3.7,a:{v:0},p:{v:3.3},lo:0.4,hi:1.3,ta:38,tp:58}
     ];
-    if(!REDUCE) TW(wander,{p:0.72,duration:23,ease:'tide',repeat:-1,yoyo:true});
+    MODES.forEach(function(m){ m.lo*=IDLE.swell*IDLE.gain; m.hi*=IDLE.swell*IDLE.gain; m.a.v=m.lo; });
+    if(!REDUCE) TW(wander,{p:IDLE.wanderTo,duration:IDLE.wanderTime,ease:'tide',repeat:-1,yoyo:true});
     if(!REDUCE) MODES.forEach(function(m){
-      m.a.v=m.lo;
       TW(m.a,{v:m.hi,duration:m.ta,ease:'breath',repeat:-1,yoyo:true});
       TW(m.p,{v:m.p.v+Math.PI*2,duration:m.tp,ease:'tide',repeat:-1});
     });
@@ -1239,7 +1262,7 @@
       /* Each bead breathes on its own long cycle, offset so the string never pulses in unison —
          that is what reads as alive rather than as a loop. GSAP CustomEase 'breath'. */
       b.br={s:1};
-      if(!REDUCE) TW(b.br,{s:1.028,duration:5.6+k*0.85,ease:'breath',repeat:-1,yoyo:true,delay:k*1.15});
+      if(!REDUCE) TW(b.br,{s:1+IDLE.bead,duration:5.6+k*0.85,ease:'breath',repeat:-1,yoyo:true,delay:k*1.15});
       if(!REDUCE) TW(b.ha,{s:1.2,o:0,duration:3.9,ease:'swell',repeat:-1,delay:k*.62});
       /* the background FX engine follows whichever sense you are looking at */
       /* hover is only ever a hint — it lifts the bead and brings up its colour. Opening the
@@ -1422,7 +1445,7 @@
     function frame(now){
       var dt=Math.min(.05,(now-prev)/1000); prev=now;
       if(!G) miniTick(dt);
-      if(!REDUCE){ pulseT+=dt; if(pulseT>4.6){ pulseT=0; wanderPulse(); } }
+      if(!REDUCE){ pulseT+=dt; if(pulseT>IDLE.pulseEvery){ pulseT=0; wanderPulse(); } }
       step(); render();
       raf=requestAnimationFrame(frame);
     }
