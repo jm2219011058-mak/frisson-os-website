@@ -196,15 +196,33 @@
   /* ---- #s4 stage shell (restored) ---- */
   /* With the kicker, heading and footer gone this section is pure artwork, so it drops the
      usual section padding and sits close to its neighbours instead of floating in dead space. */
-  #s4{overflow:hidden;padding:max(26px,3svh) 0 max(22px,2.6svh);min-height:0;}
+  #s4{overflow:hidden;padding:0;min-height:0;}
   /* The stage follows the viewport's shape and is HEIGHT-capped, so the artwork can never push
      the section past one screen. contain:paint fences the invalidation region for high-DPR. */
-  .s4b-stage{position:relative;flex:0 0 auto;width:min(100%,1180px);margin:0 auto;
-    height:min(62svh,820px);contain:paint;}
-  @media (max-aspect-ratio:1/1){ .s4b-stage{height:min(52svh,560px);} }
-  /* the navy field must not end on a hard rectangle against the page black */
-  .s4b-stage::after{content:"";position:absolute;inset:-1px;z-index:5;pointer-events:none;
-    background:radial-gradient(ellipse 78% 78% at 50% 50%,rgba(0,0,0,0) 46%,rgba(0,0,0,.28) 68%,rgba(0,0,0,.78) 87%,#000 100%);}
+  .s4b-stage{position:relative;flex:0 0 auto;width:100vw;margin-left:calc(50% - 50vw);
+    height:min(82svh,1040px);contain:paint;}
+  @media (max-aspect-ratio:1/1){ .s4b-stage{height:min(68svh,760px);} }
+  /* Edge melt, same construction as #s2 (§ CLAUDE.md): every fade is sampled off SMOOTHERSTEP
+     6t^5-15t^4+10t^3, which is C2 — its slope never jumps, so there is no Mach band the way a
+     3-stop linear gradient always shows one. The boundary is the UNION of edge-anchored
+     ellipses of differing width and offset, so the line where black lets go is an irregular
+     curve rather than a ruler edge, while each contributor stays individually soft. */
+  /* capped against the stage height as well as the viewport, or on a short stage the melt eats
+     the artwork instead of just softening its edge (it was taking the top bead) */
+  .s4b-stage::before,.s4b-stage::after{content:"";position:absolute;left:0;right:0;z-index:5;
+    pointer-events:none;height:min(clamp(120px,22vh,300px), 21%);}
+  .s4b-stage::before{top:0;background:
+    radial-gradient(ellipse 46% 96% at 10% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 58% 72% at 36% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 34% 100% at 63% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 52% 84% at 89% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 9%, rgba(0,0,0,.896) 19%, rgba(0,0,0,.725) 28%, rgba(0,0,0,.5) 38%, rgba(0,0,0,.275) 47%, rgba(0,0,0,.104) 57%, rgba(0,0,0,.016) 66%, rgba(0,0,0,0) 76%);}
+  .s4b-stage::after{bottom:0;background:
+    radial-gradient(ellipse 50% 92% at 15% 100%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 36% 100% at 42% 100%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 60% 74% at 68% 100%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    radial-gradient(ellipse 42% 88% at 92% 100%, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 12%, rgba(0,0,0,.896) 25%, rgba(0,0,0,.725) 37%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.275) 62%, rgba(0,0,0,.104) 75%, rgba(0,0,0,.016) 88%, rgba(0,0,0,0) 100%),
+    linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.984) 9%, rgba(0,0,0,.896) 19%, rgba(0,0,0,.725) 28%, rgba(0,0,0,.5) 38%, rgba(0,0,0,.275) 47%, rgba(0,0,0,.104) 57%, rgba(0,0,0,.016) 66%, rgba(0,0,0,0) 76%);}
   #s4bScene{position:relative;z-index:2;display:block;width:100%;height:100%;background:transparent;
     touch-action:pan-y;-webkit-user-select:none;user-select:none;}
   .s4b-field{position:absolute;inset:0;z-index:0;background:#0a1f3d no-repeat center/100% 100%;
@@ -229,12 +247,11 @@
   .s4b-hand{position:absolute;z-index:4;pointer-events:none;height:auto;}
   .s4b-hand.a{left:0;top:26%;width:auto;height:26%;}
   .s4b-hand.b{right:0;top:14%;width:auto;height:75%;}
-  /* Playfair Display italic, not var(--serif): the loaded Fraunces has no italic axis, so
-     font-style:italic there would be a synthesised oblique. Playfair's italic is already in
-     the type.css payload for the logo, so this costs no extra font weight. */
-  .s4b-quote{position:absolute;z-index:3;left:clamp(18px,4.5%,54px);bottom:clamp(16px,5%,48px);
-    margin:0;max-width:14ch;pointer-events:none;
-    font-family:"Playfair Display",var(--serif);font-style:italic;font-weight:500;
+  /* House typeface. type.css now carries Fraunces' italic axis, so this is a real italic and
+     not a synthesised oblique — no second family needed. */
+  .s4b-quote{position:absolute;z-index:6;left:clamp(20px,5%,72px);bottom:clamp(28px,8%,84px);
+    margin:0;max-width:12ch;pointer-events:none;text-wrap:balance;
+    font-family:var(--serif);font-style:italic;font-weight:600;
     font-size:clamp(24px,4.2vw,54px);line-height:1.02;letter-spacing:-.012em;color:#fff;
     text-shadow:0 2px 26px rgba(2,10,26,.6);}
   @media (max-width:600px){ .s4b-quote{font-size:clamp(21px,7vw,34px);max-width:11ch;} }
@@ -609,7 +626,7 @@
 
         <g id="s4bSparks" pointer-events="none"></g>
       </svg>
-        <p class="s4b-quote">the highest form of<br>spirituality is<br>child-like fun.</p>
+        <p class="s4b-quote">the highest form of spirituality is child-like fun.</p>
         <img class="s4b-hand a" src="assets/sona/s4b-hand-a.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
         <img class="s4b-hand b" src="assets/sona/s4b-hand-b.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
     </div>
@@ -1135,8 +1152,8 @@
        that as nerves. Amplitudes roughly halved, periods stretched — one slow swell rather
        than three fast ripples. Still GSAP CustomEase ('breath' in, 'tide' round). */
     var MODES=[
-      {k:1.0,a:{v:1.4},p:{v:0.0},lo:0.7,hi:2.3,ta:24,tp:78},
-      {k:2.3,a:{v:0.7},p:{v:1.7},lo:0.35,hi:1.2,ta:33,tp:104},
+      {k:1.0,a:{v:2.0},p:{v:0.0},lo:1.1,hi:3.1,ta:21,tp:70},
+      {k:2.3,a:{v:1.0},p:{v:1.7},lo:0.5,hi:1.7,ta:29,tp:93},
       {k:3.7,a:{v:0.3},p:{v:3.3},lo:0.12,hi:0.5,ta:41,tp:58}
     ];
     if(!REDUCE) MODES.forEach(function(m){
@@ -1186,6 +1203,10 @@
       b.g=g; b.vis=g.querySelector('.s4b-v'); b.halo=g.querySelector('.s4b-h');
       b.tint=g.querySelector('.s4b-tint'); b.tn={o:0};
       b.st={s:1}; b.ha={s:.9,o:.1};
+      /* Each bead breathes on its own long cycle, offset so the string never pulses in unison —
+         that is what reads as alive rather than as a loop. GSAP CustomEase 'breath'. */
+      b.br={s:1};
+      if(!REDUCE) TW(b.br,{s:1.028,duration:5.6+k*0.85,ease:'breath',repeat:-1,yoyo:true,delay:k*1.15});
       if(!REDUCE) TW(b.ha,{s:1.2,o:0,duration:3.9,ease:'swell',repeat:-1,delay:k*.62});
       /* the background FX engine follows whichever sense you are looking at */
       /* hover is only ever a hint — it lifts the bead and brings up its colour. Opening the
@@ -1195,7 +1216,8 @@
       g.addEventListener('mouseleave',function(){
         TW(b.st,{s:1,duration:.7,ease:'silk'}); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('pointerdown',function(){ TW(b.st,{s:.975,duration:.28,ease:'silk'}); });
-      g.addEventListener('click',function(){ s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
+      g.addEventListener('click',function(){ if(dragged){ dragged=false; return; }   /* it was a swipe, not a tap */
+        s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
       g.addEventListener('focus',function(){ s4Active=k; TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
       g.addEventListener('blur',function(){ TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBead(k); } });
@@ -1269,6 +1291,7 @@
     /* SWEEP/REPEL halved and the ceilings pulled in, damping raised .985 -> .972 so the string
        settles instead of ringing on. The wave still travels — it just no longer flails. */
     var R_INF=190, SWEEP=.15, REPEL=1.0, MAXY=104, MAXV=12;
+    if(matchMedia('(pointer:coarse)').matches){ R_INF=250; SWEEP=.10; }
     function step(){
       for(var i=1;i<N-1;i++){
         var lap=yArr[i-1]+yArr[i+1]-2*yArr[i];
@@ -1316,7 +1339,7 @@
         var i=b.i;
         var ang=Math.atan2(P[i+1].y-P[i-1].y,P[i+1].x-P[i-1].x)-restAng[i];
         var tr='translate('+P[i].x.toFixed(1)+' '+P[i].y.toFixed(1)+') rotate('+(ang*.26/D).toFixed(2)+')';
-        var vs='scale('+b.st.s.toFixed(4)+')';
+        var vs='scale('+(b.st.s*b.br.s).toFixed(4)+')';
         var hs=b.ha.s.toFixed(3), ho=b.ha.o.toFixed(3);
         var key=tr+'|'+vs+'|'+hs+'|'+ho;
         if(lastBead[bi]===key) return;
@@ -1342,11 +1365,18 @@
       var p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY;
       return p.matrixTransform(ctm);
     }
+    /* Touch: pan-y on the SVG means a vertical swipe still scrolls the page, while a sideways
+       drag is delivered here and ripples the string. A finger carries far more travel per
+       event than a mouse, so its influence radius is widened and its swing damped. */
+    var COARSE=matchMedia('(pointer:coarse)').matches;
+    var dragPx=0, dragged=false;
     svg.addEventListener('pointermove',function(e){
       var p=toSvg(e);
       if(!cur.on){ cur.px=p.x; cur.py=p.y; cur.vx=cur.vy=0; }
+      else if(e.pointerType!=='mouse'){ dragPx+=Math.abs(p.x-cur.x)+Math.abs(p.y-cur.y); if(dragPx>14) dragged=true; }
       cur.x=p.x; cur.y=p.y; cur.on=true;
     },{passive:true});
+    svg.addEventListener('pointerdown',function(e){ if(e.pointerType!=='mouse'){ dragPx=0; dragged=false; var p=toSvg(e); cur.px=cur.x=p.x; cur.py=cur.y=p.y; cur.vx=cur.vy=0; cur.on=true; } },{passive:true});
     svg.addEventListener('pointerleave',function(){ cur.on=false; });
     svg.addEventListener('pointercancel',function(){ cur.on=false; });
     svg.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') cur.on=false; },{passive:true});
