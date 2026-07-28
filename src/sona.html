@@ -177,9 +177,9 @@
     #s2 .cal-item{animation:none;opacity:1;}
   }
   /* ---- #s4 stage shell (restored) ---- */
-  #s4{overflow:hidden;padding-left:0;padding-right:0;}
-  #s4 .gal-head,#s4 .s4-foot{padding:0 clamp(18px,5vw,64px);}
-  #s4 .gal-head{margin:0 0 clamp(6px,1.4vh,16px);}
+  /* With the kicker, heading and footer gone this section is pure artwork, so it drops the
+     usual section padding and sits close to its neighbours instead of floating in dead space. */
+  #s4{overflow:hidden;padding:max(26px,3svh) 0 max(22px,2.6svh);min-height:0;}
   /* The stage follows the viewport's shape and is HEIGHT-capped, so the artwork can never push
      the section past one screen. contain:paint fences the invalidation region for high-DPR. */
   .s4b-stage{position:relative;flex:0 0 auto;width:min(100%,1180px);margin:0 auto;
@@ -201,7 +201,7 @@
   #s4waves{bottom:0;height:58%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%);}
   #s4waves.on{opacity:.22;}
   #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
-  #s4 .gal-head,#s4 .s4b-stage,#s4 .s4-foot{position:relative;z-index:1;}
+  #s4 .s4b-stage{position:relative;z-index:1;}
   /* Same painted texture over the paper. This layer sits on static content, so the overlay
      blend resolves once instead of every frame. */
   .s4b-frost{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.85;
@@ -212,6 +212,15 @@
   .s4b-hand{position:absolute;z-index:4;pointer-events:none;height:auto;}
   .s4b-hand.a{left:0;top:26%;width:auto;height:26%;}
   .s4b-hand.b{right:0;top:14%;width:auto;height:75%;}
+  /* Playfair Display italic, not var(--serif): the loaded Fraunces has no italic axis, so
+     font-style:italic there would be a synthesised oblique. Playfair's italic is already in
+     the type.css payload for the logo, so this costs no extra font weight. */
+  .s4b-quote{position:absolute;z-index:3;left:clamp(18px,4.5%,54px);bottom:clamp(16px,5%,48px);
+    margin:0;max-width:14ch;pointer-events:none;
+    font-family:"Playfair Display",var(--serif);font-style:italic;font-weight:500;
+    font-size:clamp(24px,4.2vw,54px);line-height:1.02;letter-spacing:-.012em;color:#fff;
+    text-shadow:0 2px 26px rgba(2,10,26,.6);}
+  @media (max-width:600px){ .s4b-quote{font-size:clamp(21px,7vw,34px);max-width:11ch;} }
   .s4b-bead{cursor:pointer;}
   .s4b-bead:focus{outline:none;}
   /* the frosted tooth on each bead. overlay is what makes it read as ground glass rather
@@ -230,9 +239,9 @@
 
   /* Circular modal — deliberately small and quiet: it opens AT the bead you clicked rather
      than taking over the screen. A pure circle, so §5.6's seam rule does not apply. */
+  /* no scrim: the page stays lit and interactive; only the disc itself takes the pointer */
   .s4b-ov{position:fixed;inset:0;z-index:130;opacity:0;pointer-events:none;}
-  .s4b-ov.live{pointer-events:auto;}
-  .s4b-scrim{position:absolute;inset:0;background:rgba(6,11,22,.34);}
+  .s4b-ov.live .s4b-disc{pointer-events:auto;}
   .s4b-disc{position:absolute;width:var(--s4b-discw,260px);aspect-ratio:1;border-radius:50%;overflow:hidden;
     transform-origin:center;background:#0a1f3d;box-shadow:0 18px 50px -12px rgba(0,6,22,.7),0 0 0 1px rgba(226,238,248,.18);
     display:grid;place-items:center;will-change:transform,opacity;}
@@ -521,10 +530,6 @@
 
   <!-- 4 · THE MOST EXQUISITE -->
   <section class="section" id="s4">
-    <div class="gal-head reveal">
-      <p class="s4-sub lead">{{3.8}}</p>
-      <h2 class="t2">{{3.9}}</h2>
-    </div>
     <div class="s4b-stage" id="s4bStage">
       <!-- Static layers live OUTSIDE the SVG (§5.5 #1): the SVG re-rasterises whole on every
            frame because the thread and beads move, so the navy field, the baked grain and the
@@ -587,10 +592,10 @@
 
         <g id="s4bSparks" pointer-events="none"></g>
       </svg>
+        <p class="s4b-quote">the highest form of<br>spirituality is<br>child-like fun.</p>
         <img class="s4b-hand a" src="assets/sona/s4b-hand-a.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
         <img class="s4b-hand b" src="assets/sona/s4b-hand-b.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
     </div>
-    <p class="s4-foot reveal">{{3.10}}</p>
   </section>
 
   <!-- 5 · GUIDE -->
@@ -1166,14 +1171,16 @@
       b.st={s:1}; b.ha={s:.9,o:.1};
       if(!REDUCE) TW(b.ha,{s:1.2,o:0,duration:3.9,ease:'swell',repeat:-1,delay:k*.62});
       /* the background FX engine follows whichever sense you are looking at */
-      g.addEventListener('mouseenter',function(){ s4Active=k; showTip(g,b.label);
+      /* hovering a bead IS the interaction: the disc grows straight out of its centre, and
+         letting go of both the bead and the disc closes it again. No tooltip in between. */
+      g.addEventListener('mouseenter',function(){ s4Active=k; keepOpen(); openBead(k);
         TW(b.st,{s:1.055,duration:.55,ease:'pop'}); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
-      g.addEventListener('mouseleave',function(){ hideTip();
+      g.addEventListener('mouseleave',function(){ closeSoon();
         TW(b.st,{s:1,duration:.7,ease:'silk'}); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('pointerdown',function(){ TW(b.st,{s:.975,duration:.28,ease:'silk'}); });
       g.addEventListener('click',function(){ s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
-      g.addEventListener('focus',function(){ s4Active=k; showTip(g,b.label); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
-      g.addEventListener('blur',function(){ hideTip(); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
+      g.addEventListener('focus',function(){ s4Active=k; keepOpen(); openBead(k); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
+      g.addEventListener('blur',function(){ closeSoon(); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBead(k); } });
     });
     function tintPaint(){ BEADS.forEach(function(b){ if(b.tint) b.tint.setAttribute('opacity',b.tn.o.toFixed(3)); }); }
@@ -1354,53 +1361,11 @@
       for(var j=m-7;j<=m+7;j++) vArr[j]-=3.2*Math.exp(-Math.pow((j-m)/4.2,2));
     },900);
 
-    /* ---- tooltip: ONE cubic outline, §5.6 ---- */
-    var tip=document.createElement('div'); tip.className='s4b-tip'; document.body.appendChild(tip);
-    var TAIL=6.5;
-    var HAS_PATH=!!(window.CSS&&CSS.supports&&CSS.supports('clip-path','path("M0 0")'));
-    var TIP_ADJ=HAS_PATH?3.5:0;
-    function pinPath(w,h,t){
-      var R=Math.min(h/2,w/2), k=R*0.68, cx=w/2;                 /* 0.68R, not 0.5523R — §5.6 */
-      var B=Math.min(5.5,(w/2-R)/2||5.5), F=Math.min(5,(w/2-R-B)||5);
-      function x(v){ return v.toFixed(2); } function y(v){ return v.toFixed(2); }
-      return 'M '+x(R)+' 0'+
-        ' L '+x(w-R)+' 0'+
-        ' C '+x(w-R+k)+' 0 '+x(w)+' '+y(R-k)+' '+x(w)+' '+y(R)+
-        ' C '+x(w)+' '+y(R+k)+' '+x(w-R+k)+' '+y(h)+' '+x(w-R)+' '+y(h)+
-        ' L '+x(cx+B+F)+' '+y(h)+
-        ' C '+x(cx+B)+' '+y(h)+' '+x(cx+B)+' '+y(h)+' '+x(cx+B*0.55)+' '+y(h+t*0.45)+
-        ' C '+x(cx+B*0.2)+' '+y(h+t*0.86)+' '+x(cx)+' '+y(h+t)+' '+x(cx)+' '+y(h+t)+
-        ' C '+x(cx)+' '+y(h+t)+' '+x(cx-B*0.2)+' '+y(h+t*0.86)+' '+x(cx-B*0.55)+' '+y(h+t*0.45)+
-        ' C '+x(cx-B)+' '+y(h)+' '+x(cx-B)+' '+y(h)+' '+x(cx-B-F)+' '+y(h)+
-        ' L '+x(R)+' '+y(h)+
-        ' C '+x(R-k)+' '+y(h)+' 0 '+y(R+k)+' 0 '+y(R)+
-        ' C 0 '+y(R-k)+' '+x(R-k)+' 0 '+x(R)+' 0 Z';
-    }
-    var tipKey='';
-    function shapeTip(){
-      if(!HAS_PATH) return;
-      var w=tip.offsetWidth, h=tip.offsetHeight; if(!w||!h) return;
-      var key=w+'x'+h; if(key===tipKey) return;                  /* only on text/resize change */
-      tipKey=key;
-      tip.style.clipPath='path("'+pinPath(w,h-TAIL,TAIL)+'")';
-    }
-    var ts={o:0,y:-12};
-    function paintTip(){ tip.style.opacity=ts.o; tip.style.transform='translate(-50%,calc(-100% + '+ts.y+'px))'; }
-    function showTip(node,text){
-      tip.textContent=text;
-      shapeTip();
-      var r=node.getBoundingClientRect();
-      tip.style.left=(r.left+r.width/2)+'px';
-      tip.style.top=(r.top+TIP_ADJ)+'px';
-      TW(ts,{o:1,y:-16,duration:.4,ease:'glide',onUpdate:paintTip});
-    }
-    function hideTip(){ TW(ts,{o:0,y:-12,duration:.3,ease:'silk',onUpdate:paintTip}); }
-    addEventListener('resize',function(){ tipKey=''; });
 
     /* ---- circular modal: the sense photo, nothing else ---- */
     var ov=document.createElement('div');
     ov.className='s4b-ov'; ov.hidden=true;
-    ov.innerHTML='<div class="s4b-scrim" data-close></div>'+
+    ov.innerHTML=
       '<figure class="s4b-disc" role="dialog" aria-modal="true" aria-labelledby="s4bCapt">'+
         '<img alt="" decoding="async">'+
         '<button class="s4b-x" type="button" aria-label="Close">&#10005;</button>'+
@@ -1411,9 +1376,26 @@
     var os={o:0}, cs={s:.5,o:0};
     function paintOv(){ ov.style.opacity=os.o; }
     function paintDisc(){ ovDisc.style.opacity=cs.o; ovDisc.style.transform='translate(-50%,-50%) scale('+cs.s+')'; }
-    var lastFocus=null, closeBtn=ov.querySelector('.s4b-x');
+    var lastFocus=null, closeBtn=ov.querySelector('.s4b-x'), shutT=0, openK=-1;
+    /* the disc grows over the bead, so the pointer leaves the bead the instant it opens.
+       A short grace window lets it hand over to the disc without a flicker. */
+    function keepOpen(){ if(shutT){ clearTimeout(shutT); shutT=0; } }
+    function closeSoon(){ keepOpen(); shutT=setTimeout(function(){ shutT=0; closeModal(); },140); }
+    ovDisc.addEventListener('mouseenter',keepOpen);
+    ovDisc.addEventListener('mouseleave',closeSoon);
+    /* One word can be far longer than the circle's chord ("TEMPERATURE" was clipping), so the
+       type is fitted to the disc after the label is set rather than trusted to a fixed size. */
+    function fitCaption(W){
+      ovCap.style.fontSize='';
+      var fs=parseFloat(getComputedStyle(ovCap).fontSize)||24, maxH=W*0.6;
+      for(var i=0;i<48;i++){
+        if(ovCap.scrollWidth<=ovCap.clientWidth+1 && ovCap.scrollHeight<=maxH) break;
+        fs*=0.94; ovCap.style.fontSize=fs.toFixed(2)+'px';
+      }
+    }
     function openBead(k){
-      hideTip(); lastFocus=document.activeElement;
+      if(openK===k && !ov.hidden) return;                 /* already showing this one */
+      openK=k; lastFocus=document.activeElement;
       var b=BEADS[k];
       ovImg.src=b.img+(b.img.indexOf('?')<0?'?v=3':''); ovImg.alt=b.label;
       ovCap.textContent=b.label;
@@ -1426,13 +1408,14 @@
       ovDisc.style.left=cx+'px'; ovDisc.style.top=cy+'px';
       closeBtn.style.top=Math.round(W*0.11)+'px';
       ov.hidden=false; ov.classList.add('live');
+      fitCaption(W);
       os.o=0; cs.s=.5; cs.o=0; paintOv(); paintDisc();
       TW(os,{o:1,duration:.35,ease:'glide',onUpdate:paintOv});
       TW(cs,{s:1,o:1,duration:.62,ease:'veil',onUpdate:paintDisc});
-      closeBtn.focus({preventScroll:true});
     }
     function closeModal(){
       if(ov.hidden) return;
+      openK=-1;
       ov.classList.remove('live');
       TW(os,{o:0,duration:.35,ease:'silk',onUpdate:paintOv});
       TW(cs,{s:.72,o:0,duration:.32,ease:'silk',onUpdate:paintDisc});
@@ -1440,7 +1423,6 @@
       if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
     }
     ov.querySelector('.s4b-x').addEventListener('click',closeModal);
-    ov.querySelector('[data-close]').addEventListener('click',closeModal);
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
   })();
 
