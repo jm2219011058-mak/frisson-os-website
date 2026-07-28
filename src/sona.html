@@ -247,7 +247,7 @@
     background-image:url("data:image/webp;base64,UklGRroBAABXRUJQVlA4IK4BAABwEACdASqAAIAAPhUKhEGhBBEABABRLSAZ3KHhAMMEWye//WjfofXwIezbjlfTHcKuJx78aIzHi1NSwRjN8vmoqhpfR5zvJcCcoEAhznyWtc1qS7h7PUXROLprAalqWKs7theNpd5lQlpb9ukt4tc0uvxiWXlzEB55ZlBTprSgOZKWi5gE2Se8He5IgAD+/vo/f/89M/RP1YvbXQ//mCfQbtz5HrlHvDbH3jNJcvbADopuctKzlaRhnGnLaH9J6Bbwtwg7hZGpBaIQslr9sp36QDJR1Pvb9qptPEeVPTmJgsw23H9EBkglzzDWHuoBdRpHEYJwnFQfC10xS/Q8t2tzD0Hkf55svXrdgsGinZ7ZS1cEQdrvWuKU6eYmgAAGTAbKeyChonSqYcYGORfwTBAya+JcfvxPEyy5odzjtbgHhs1LpPUhPQWXLuiZb74BdzDDV5s2Fq4eSzcHG2OM9GY6sdVIbZ3MtlWg1YqqWe8tXh5XEqCzTByIRLrPVMU0x96bucxmMfUPryLYRwMYObd0DcucHgoitg2n9uTQ253NRAxjSxcpVc31zNbwgAAA");}
   /* per-sense effect canvases: above the field, under the string, turned well down */
   .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.34;}
-  .s4lib{position:absolute;left:0;right:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s ease;overflow:hidden;}
+  .s4lib{position:absolute;left:0;right:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s cubic-bezier(0.22,0,0.06,1);overflow:hidden;}
   .s4lib.on{opacity:1;}
   #s4stars{top:0;height:62%;opacity:0;}
   #s4stars.on{opacity:.34;}
@@ -284,14 +284,6 @@
   .s4b-tooth{mix-blend-mode:overlay;opacity:1;pointer-events:none;}
   .s4b-bead:focus-visible .s4b-rim{stroke:#fff;stroke-opacity:.9;stroke-width:2.4;}
 
-  /* tooltip — ONE continuous cubic outline via clip-path:path(), per §5.6. The reference used a
-     capsule plus a rotated 45° square; that seam is exactly what the rule exists to kill. */
-  .s4b-tip{position:fixed;z-index:120;pointer-events:none;left:0;top:0;
-    background:#0d1729;color:#eef3fa;
-    font-family:var(--sans);font-weight:600;font-size:12px;line-height:1;letter-spacing:.06em;
-    padding:9px 14px 15.5px;white-space:nowrap;border-radius:999px;
-    opacity:0;transform:translate(-50%,calc(-100% - 12px));will-change:transform,opacity;}
-  @supports (clip-path: path("M0 0")){ .s4b-tip{border-radius:0;background:#0d1729;} }
 
   /* Circular modal — deliberately small and quiet: it opens AT the bead you clicked rather
      than taking over the screen. A pure circle, so §5.6's seam rule does not apply. */
@@ -1138,6 +1130,7 @@
         t=Math.max(0,Math.min(1,t)); return ((ay*t+by)*t+cy)*t; };
     }
     var EASE={}; for(var q in CURVES) EASE[q]=bezFn.apply(null,CURVES[q]);
+    EASE.none=function(x){ return x; };
     /* mini tween — identical curves when GSAP is missing */
     var jobs=[];
     function miniTo(o,v){
@@ -1203,7 +1196,10 @@
     var breeze={a:IDLE.gustLo, ph:0};
     if(!REDUCE){
       TW(breeze,{a:IDLE.gustHi,duration:IDLE.gustTime,ease:'breath',repeat:-1,yoyo:true});
-      TW(breeze,{ph:Math.PI*2,duration:IDLE.travelTime,ease:'tide',repeat:-1});
+      /* 'none' on purpose: this is a WRAPPING PHASE, not a gesture. Easing it would give the
+         lap zero velocity at both ends (tide starts and ends at 0), so the gust would stall
+         and restart every travelTime seconds. The sine it feeds supplies the curve. */
+      TW(breeze,{ph:Math.PI*2,duration:IDLE.travelTime,ease:'none',repeat:-1});
     }
     /* k = how many half-waves fit the string (1 = one slow belly, 3.7 = fine ripple)
        lo/hi = amplitude range it breathes between · ta = seconds per breath · tp = seconds per phase lap */
@@ -1215,7 +1211,7 @@
     MODES.forEach(function(m){ m.lo*=IDLE.swell*IDLE.gain; m.hi*=IDLE.swell*IDLE.gain; m.a.v=m.lo; });
     if(!REDUCE) MODES.forEach(function(m){
       TW(m.a,{v:m.hi,duration:m.ta,ease:'breath',repeat:-1,yoyo:true});
-      TW(m.p,{v:m.p.v+Math.PI*2,duration:m.tp,ease:'tide',repeat:-1});
+      TW(m.p,{v:m.p.v+Math.PI*2,duration:m.tp,ease:'none',repeat:-1});   /* wrapping phase — see above */
     });
 
     /* ---- beads = the five senses ---- */
