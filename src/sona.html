@@ -176,31 +176,6 @@
     .sdl-wash,#s2 .halo{animation:none!important;}
     #s2 .cal-item{animation:none;opacity:1;}
   }
-  /* section 2 — Apple-style carousel: title top-left, card centred with breathing room */
-  .hgal{flex:0 0 auto;display:flex;gap:clamp(14px,2vw,26px);align-items:center;
-    width:100vw;margin-left:calc(50% - 50vw);        /* full-bleed to the screen edges */
-    overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
-    padding:clamp(20px,4vh,44px) 0;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
-            mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);}
-  .hgal::-webkit-scrollbar{display:none;}
-  .hgal.drag{cursor:grabbing;scroll-snap-type:none;}
-  .card{position:relative;flex:0 0 auto;border-radius:18px;overflow:hidden;scroll-snap-align:center;
-    background:var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.45);}
-  .card img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
-  /* landscape scenario cards (sized by width -> mobile friendly) */
-  /* portrait sense cards — sized by height so the row fits one screen */
-  #s4 .card{height:min(50vh,440px);aspect-ratio:9/16;box-shadow:0 6px 60px rgba(0,0,0,.24);}   /* soft, diffuse — no dark band below the row */
-
-  .card .name{position:absolute;left:18px;bottom:15px;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em;
-    text-shadow:0 2px 14px rgba(0,0,0,.7);pointer-events:none;z-index:2;}
-  .card .label{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 16px;text-align:center;
-    font-size:clamp(13px,1.7vw,16px);color:var(--ink);z-index:2;
-    background:linear-gradient(180deg,transparent,rgba(0,0,0,.7));text-shadow:0 1px 10px rgba(0,0,0,.7);}
-  .plus{position:absolute;right:10px;bottom:4px;z-index:3;border:0;background:transparent;box-shadow:none;cursor:pointer;
-    color:var(--accent);font-family:var(--sans);font-weight:400;font-size:clamp(40px,6vw,52px);line-height:1;padding:8px 12px;transition:transform .3s;}
-  .card.open .plus{transform:rotate(45deg);}          /* + becomes × (desktop) */
-
   /* mobile expand sheet — image slides up, text fills the rest of the screen */
   .sheet{position:fixed;inset:0;z-index:120;background:#000;display:flex;flex-direction:column;
     transform:translateY(100%);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
@@ -212,18 +187,6 @@
   .sheet-close{position:absolute;top:14px;right:16px;z-index:2;width:40px;height:40px;border-radius:50%;
     border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.35);color:#fff;font-size:22px;line-height:1;cursor:pointer;font-family:var(--sans);}
   @media (min-width:721px){ .sheet{display:none!important;} }
-  /* click + -> image darkens, text appears on the image */
-  .card .scrim{position:absolute;inset:0;z-index:1;background:rgba(8,8,10,.9);opacity:0;transition:opacity .55s ease;
-    pointer-events:none;overflow:auto;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;justify-content:flex-start;text-align:left;}
-  .card.open .scrim{opacity:1;pointer-events:auto;}
-  .card .scrim .sn{font-size:clamp(18px,2.4vw,24px);margin:0 0 10px;}
-  .card .scrim .st{font-family:var(--sans);font-size:clamp(12.5px,1.5vw,15px);line-height:1.55;color:var(--ink-dim);margin:0;}
-
-  /* capsule scroll indicator */
-  .capsule{flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;margin-top:clamp(10px,2vh,18px);
-    padding:12px 18px;border-radius:999px;background:rgba(244,236,220,.07);border:1px solid var(--hair);}
-  .capsule i{width:8px;height:8px;border-radius:999px;background:var(--ink-faint);transition:width .35s,background .35s;cursor:pointer;}
-  .capsule i.on{width:30px;background:var(--ink);}
 
 
   /* #s4 sense-effect background layer — dialled to 20%: the per-sense effects are now a faint
@@ -239,40 +202,70 @@
   #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
   #s4 .gal-head,#s4 .s4b-stage,#s4 .s4-foot{position:relative;z-index:1;}
 
-  /* ---- #s4 · bead string ----
-     The five senses as glass beads threaded on a single line, laid out after the reference:
-     one bead held apart up-left, the other four overlapping down a diagonal, sparkles in the
-     gaps, thread running off both edges. Each bead carries its own label.
-     The section background is unchanged — only turned down to 20% (see .s4fx above). */
+  /* ---- #s4 · bead string (laid out after the reference design) ----
+     Five glass beads strung on a thread that ripples as the pointer sweeps past. The stage is
+     container-driven (NOT vw/dvh — that would ignore the section's own layout), every id/class
+     carries the s4b- prefix so nothing collides with the sdl- (#s2) or sln- (cities) components,
+     and the tooltip + modal are appended to <body> like the SLN popups.
+     PERF (§5.5): the reference ran at 25fps because every bead carried live feGaussianBlur
+     filters while translating each frame — an SVG re-rasterises WHOLE when anything inside it
+     moves. Every filter is baked into a gradient here instead, and the frost overlay drops its
+     mix-blend-mode. No runtime filters live inside this SVG. */
   #s4{overflow:hidden;padding-left:0;padding-right:0;}
-  /* the stage is full-bleed, so the copy keeps the section's side gutter on its own */
   #s4 .gal-head,#s4 .s4-foot{padding:0 clamp(18px,5vw,64px);}
   #s4 .gal-head{margin:0 0 clamp(6px,1.4vh,16px);}
-  .s4b-stage{flex:0 0 auto;width:100vw;margin-left:calc(50% - 50vw);}
-  #s4bScene{position:relative;z-index:1;display:block;width:100%;}
-  /* the thread fades in with the section via a class, NOT a GSAP fromTo — a fromTo writes
-     opacity:0 up front, so a stalled ticker leaves the whole string invisible */
-  .s4b-thread{fill:none;stroke:rgba(214,228,240,.42);stroke-width:1.6;stroke-linecap:round;
-    opacity:0;transition:opacity 1.1s ease;}
-  #s4.s4b-in .s4b-thread{opacity:1;}
-  #s4 .s4b-item{opacity:0;animation:sdlCalIn .6s cubic-bezier(0.25,0.1,0.25,1) forwards;animation-play-state:paused;}
-  #s4.s4b-in .s4b-item{animation-play-state:running;}
-  #s4 .node{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;}
-  /* the whole bead lifts on hover — scaling only the sphere would slide the label off it */
-  .s4b-lift{transform-box:fill-box;transform-origin:center;transition:transform .32s cubic-bezier(.34,1.4,.5,1);}
-  #s4 .node:hover .s4b-lift,#s4 .node:focus-visible .s4b-lift{transform:scale(1.07);}
-  .s4b-lay{pointer-events:none;}
-  .s4b-rim{fill:none;stroke:rgba(255,255,255,.22);stroke-width:1;}
-  /* selected bead: a brighter rim, not an outline. An accent stroke round a coloured sphere
-     reads as a highlighter ring. */
-  #s4 .node.on .s4b-rim{stroke:rgba(255,255,255,.62);stroke-width:1.4;}
-  /* Label sits ON the bead. Note --sans resolves to Fraunces on this site, so 700 lands very
-     heavy inside a small circle — 500 with a little tracking keeps it editorial. */
-  .s4b-lb{fill:rgba(20,36,54,.9);font-family:var(--sans);font-weight:500;letter-spacing:.015em;pointer-events:none;}
-  .s4b-spark{fill:rgba(228,240,250,.7);pointer-events:none;}
-  @media (prefers-reduced-motion:reduce){
-    #s4 .s4b-item{animation:none;opacity:1;}
-  }
+  /* square stage, but sized off the SHORT axis so the heading and footer keep their room —
+     the artwork must not push the section past one screen */
+  /* contain:paint fences the invalidation region — on a 2–3× DPR phone this block would
+     otherwise let the compositor consider the whole section dirty every frame. */
+  .s4b-stage{position:relative;flex:0 0 auto;width:min(100%,62svh,820px);margin:0 auto;aspect-ratio:1;contain:paint;}
+  /* the navy field must not end on a hard rectangle against the page black — melt it, the way
+     .sdl-stage does in #s2. A static gradient layer OUTSIDE the SVG, so it costs one composite
+     and adds nothing to the SVG's raster (§5.5 #1). */
+  .s4b-stage::after{content:"";position:absolute;inset:-1px;z-index:4;pointer-events:none;
+    background:radial-gradient(ellipse 78% 78% at 50% 50%,rgba(0,0,0,0) 46%,rgba(0,0,0,.28) 68%,rgba(0,0,0,.78) 87%,#000 100%);}
+  #s4bScene{position:relative;z-index:1;display:block;width:100%;height:100%;background:transparent;
+    touch-action:pan-y;-webkit-user-select:none;user-select:none;}
+  .s4b-field{position:absolute;inset:0;z-index:0;background:#0a1f3d no-repeat center/100% 100%;
+    background-image:url("data:image/webp;base64,UklGRroBAABXRUJQVlA4IK4BAABwEACdASqAAIAAPhUKhEGhBBEABABRLSAZ3KHhAMMEWye//WjfofXwIezbjlfTHcKuJx78aIzHi1NSwRjN8vmoqhpfR5zvJcCcoEAhznyWtc1qS7h7PUXROLprAalqWKs7theNpd5lQlpb9ukt4tc0uvxiWXlzEB55ZlBTprSgOZKWi5gE2Se8He5IgAD+/vo/f/89M/RP1YvbXQ//mCfQbtz5HrlHvDbH3jNJcvbADopuctKzlaRhnGnLaH9J6Bbwtwg7hZGpBaIQslr9sp36QDJR1Pvb9qptPEeVPTmJgsw23H9EBkglzzDWHuoBdRpHEYJwnFQfC10xS/Q8t2tzD0Hkf55svXrdgsGinZ7ZS1cEQdrvWuKU6eYmgAAGTAbKeyChonSqYcYGORfwTBAya+JcfvxPEyy5odzjtbgHhs1LpPUhPQWXLuiZb74BdzDDV5s2Fq4eSzcHG2OM9GY6sdVIbZ3MtlWg1YqqWe8tXh5XEqCzTByIRLrPVMU0x96bucxmMfUPryLYRwMYObd0DcucHgoitg2n9uTQ253NRAxjSxcpVc31zNbwgAAA");}
+  /* baked grain tile, ~400 bytes (§5.5 #2). No mix-blend-mode: plain alpha is the same maths
+     for monochrome speckle and skips a compositing pass. */
+  .s4b-frost{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;background-size:240px 240px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .42 .42 .42 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+  /* percentages mirror the reference's viewBox coords (1200x1200) */
+  .s4b-hand{position:absolute;z-index:3;pointer-events:none;}
+  .s4b-hand.a{left:0;top:19.667%;width:18.333%;height:26.417%;}
+  .s4b-hand.b{left:61.5%;top:14.167%;width:38.5%;height:74.667%;}
+  .s4b-bead{cursor:pointer;}
+  .s4b-bead:focus{outline:none;}
+  .s4b-bead:focus-visible .s4b-rim{stroke:#fff;stroke-opacity:.9;stroke-width:2.4;}
+
+  /* tooltip — ONE continuous cubic outline via clip-path:path(), per §5.6. The reference used a
+     capsule plus a rotated 45° square; that seam is exactly what the rule exists to kill. */
+  .s4b-tip{position:fixed;z-index:120;pointer-events:none;left:0;top:0;
+    background:#0d1729;color:#eef3fa;
+    font-family:var(--sans);font-weight:600;font-size:12px;line-height:1;letter-spacing:.06em;
+    padding:9px 14px 15.5px;white-space:nowrap;border-radius:999px;
+    opacity:0;transform:translate(-50%,calc(-100% - 12px));will-change:transform,opacity;}
+  @supports (clip-path: path("M0 0")){ .s4b-tip{border-radius:0;background:#0d1729;} }
+
+  /* circular modal — a pure circle, so §5.6's seam rule does not apply (it says so explicitly) */
+  .s4b-ov{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:5vh 5vw;opacity:0;pointer-events:none;}
+  .s4b-ov.live{pointer-events:auto;}
+  .s4b-scrim{position:absolute;inset:0;background:rgba(6,11,22,.72);}
+  .s4b-disc{position:relative;width:min(560px,86vw,78vh);aspect-ratio:1;border-radius:50%;overflow:hidden;
+    background:#0a1f3d;box-shadow:0 40px 110px -20px rgba(0,6,22,.75);will-change:transform,opacity;}
+  .s4b-disc img{width:100%;height:100%;object-fit:cover;display:block;}
+  .s4b-disc figcaption{position:absolute;left:0;right:0;bottom:0;padding:56px 10% 34px;text-align:center;
+    font-family:var(--sans);font-weight:600;font-size:clamp(13px,1.5vw,16px);letter-spacing:.16em;text-transform:uppercase;color:#f2f6fb;
+    background:linear-gradient(180deg,rgba(6,14,28,0),rgba(6,14,28,.82));}
+  .s4b-x{position:absolute;top:calc(50% - min(280px,43vw,39vh) + 6px);left:50%;transform:translateX(-50%);
+    width:40px;height:40px;border-radius:50%;border:1px solid rgba(238,243,250,.34);background:rgba(10,20,38,.5);
+    color:#eef3fa;font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;
+    transition:background .3s cubic-bezier(.22,0,.06,1),transform .3s cubic-bezier(.22,0,.06,1);}
+  .s4b-x:hover{background:rgba(20,36,62,.9);transform:translateX(-50%) rotate(90deg);}
+  @media (max-width:600px){ .s4b-x{top:8px;} }
+  @media (prefers-reduced-motion:reduce){ .s4b-x{transition:none;} }
 
   /* 3 · sensing — left-aligned composition (per mockup) */
   /* centered, editorial — image as hero (Apple-style) */
@@ -331,13 +324,9 @@
   /* mobile: tighten spacing so sections (esp. 4) don't feel cramped */
   @media (max-width:720px){
     .section{padding:max(9svh,68px) 18px max(5svh,30px);}
-    /* section 2: narrow portrait card, next card peeks (Apple-style carousel) */
     #s2{justify-content:flex-start;}
-    #s4 .card{height:min(40vh,360px);}
-    .hgal{padding:clamp(12px,3vh,22px) 0;}
     .s4-sub{font-size:clamp(15px,4.2vw,18px);margin-bottom:8px;}
     .s4-foot{margin-top:clamp(8px,2vh,16px);}
-    .capsule{padding:10px 14px;margin-top:clamp(8px,1.6vh,14px);}
     .s5-wrap{transform:none;gap:22px;}
   }
 
@@ -556,31 +545,45 @@
       <h2 class="t2">{{3.9}}</h2>
     </div>
     <div class="s4b-stage" id="s4bStage">
-      <svg id="s4bScene" viewBox="0 0 1500 760" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five senses Sona tunes">
+      <!-- Static layers live OUTSIDE the SVG (§5.5 #1): the SVG re-rasterises whole on every
+           frame because the thread and beads move, so the navy field, the baked grain and the
+           two hand cut-outs must not ride along inside it. This is the cities/.sln-bg pattern. -->
+      <div class="s4b-field" aria-hidden="true"></div>
+      <div class="s4b-frost" aria-hidden="true"></div>
+      <svg id="s4bScene" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five senses Sona tunes">
         <defs>
-          <!-- Beads, painted rather than moulded: a dusty body gradient, a SOFT sheen and a
-               bounce light as separate low-opacity layers. A single hard white dot on a
-               saturated ball is the plastic-button look we are avoiding. -->
-          <radialGradient id="s4bG0" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#e6ecf1"/><stop offset="52%" stop-color="#c3ceda"/><stop offset="86%" stop-color="#93a3b3"/><stop offset="100%" stop-color="#8496a7"/></radialGradient>
-          <radialGradient id="s4bG1" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c3edd5"/><stop offset="52%" stop-color="#63c79b"/><stop offset="86%" stop-color="#2c8a68"/><stop offset="100%" stop-color="#1f7357"/></radialGradient>
-          <radialGradient id="s4bG2" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c2dcf6"/><stop offset="52%" stop-color="#6398d8"/><stop offset="86%" stop-color="#2a5fa4"/><stop offset="100%" stop-color="#1e4c8c"/></radialGradient>
-          <radialGradient id="s4bG3" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c6ecf7"/><stop offset="52%" stop-color="#66c2dd"/><stop offset="86%" stop-color="#2b7f9e"/><stop offset="100%" stop-color="#1f6c8a"/></radialGradient>
-          <radialGradient id="s4bG4" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#d3f2fb"/><stop offset="52%" stop-color="#84d5e9"/><stop offset="86%" stop-color="#3f9ab5"/><stop offset="100%" stop-color="#32869f"/></radialGradient>
-          <!-- shared light: a broad soft sheen up-left, a faint bounce along the lower-right rim -->
-          <radialGradient id="s4bSheen" cx="33%" cy="27%" r="44%">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity=".72"/>
-            <stop offset="42%" stop-color="#ffffff" stop-opacity=".26"/>
-            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-          <radialGradient id="s4bBounce" cx="70%" cy="82%" r="38%">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/>
-            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-          <radialGradient id="s4bCore" cx="30%" cy="24%" r="12%">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/>
-            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          <!-- Every softness below is a GRADIENT, never a feGaussianBlur: the beads translate on
+               every frame, and a filter inside a moving SVG re-rasterises the whole scene (§5.5 #1).
+               This is the single change that takes the reference from 25fps to 60. -->
+          <radialGradient id="s4bGlow"><stop offset="55%" stop-color="#fff" stop-opacity=".34"/><stop offset="78%" stop-color="#fff" stop-opacity=".13"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bCast"><stop offset="52%" stop-color="#000" stop-opacity=".62"/><stop offset="78%" stop-color="#000" stop-opacity=".22"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bSpec"><stop offset="0%" stop-color="#fff" stop-opacity=".97"/><stop offset="52%" stop-color="#fff" stop-opacity=".62"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bSpec2"><stop offset="0%" stop-color="#fff" stop-opacity=".34"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bBloom"><stop offset="0%" stop-color="#fff" stop-opacity=".85"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bSheen" cx="33%" cy="26%" r="72%">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".42"/>
+            <stop offset="46%" stop-color="#fff" stop-opacity=".05"/>
+            <stop offset="100%" stop-color="#000" stop-opacity=".22"/></radialGradient>
+          <radialGradient id="s4bG0" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#fbfbfc"/><stop offset="52%" stop-color="#cbced3"/><stop offset="100%" stop-color="#84888f"/></radialGradient>
+          <radialGradient id="s4bG1" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#b6f2ca"/><stop offset="52%" stop-color="#3fc177"/><stop offset="100%" stop-color="#1a7d45"/></radialGradient>
+          <radialGradient id="s4bG2" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#c6e0ff"/><stop offset="52%" stop-color="#5189ea"/><stop offset="100%" stop-color="#27529f"/></radialGradient>
+          <radialGradient id="s4bG3" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#bcf0f6"/><stop offset="52%" stop-color="#42c4d8"/><stop offset="100%" stop-color="#1f88a1"/></radialGradient>
+          <radialGradient id="s4bG4" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#d2f7fa"/><stop offset="52%" stop-color="#5fd6e7"/><stop offset="100%" stop-color="#2b9bb4"/></radialGradient>
         </defs>
-        <path id="s4bThread" class="s4b-thread"/>
-        <g id="s4bCal"></g>
+
+
+        <!-- rest shape of the thread; the sim displaces samples off this reference curve -->
+        <path id="s4bRest" fill="none" stroke="none"
+          d="M 330 -30 C 300 60, 250 120, 246 187 C 242 252, 206 300, 222 345 C 240 396, 330 440, 430 505 C 522 564, 545 560, 600 592 C 660 630, 720 660, 758 716 C 796 772, 800 820, 810 880 C 822 952, 860 1012, 900 1072 C 926 1110, 946 1165, 956 1230"/>
+        <path id="s4bGlowLine" fill="none" stroke="#cfe0f4" stroke-opacity=".14" stroke-width="5" stroke-linecap="round"/>
+        <path id="s4bThread" fill="none" stroke="#eaf1f9" stroke-opacity=".9" stroke-width="2" stroke-linecap="round"/>
+
+        <g id="s4bBeads"></g>
+
+        <g id="s4bSparks" pointer-events="none"></g>
       </svg>
+        <img class="s4b-hand a" src="assets/sona/s4b-hand-a.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
+        <img class="s4b-hand b" src="assets/sona/s4b-hand-b.webp" alt="" aria-hidden="true" decoding="async" loading="lazy">
     </div>
     <p class="s4-foot reveal">{{3.10}}</p>
   </section>
@@ -696,38 +699,6 @@
     var im=new Image(); im.decoding='async'; im.src=s.img+(s.img.indexOf('?')<0?'?v=3':''); return im;
   });
 
-  // reusable gallery behaviour: end-padding (keep one centered), capsule dots, drag-to-scroll
-  function initGallery(g, cap){
-    var dots=[];
-    if(cap){
-      Array.prototype.forEach.call(g.children,function(_,i){
-        var d=document.createElement('i'); if(i===0) d.className='on';
-        d.addEventListener('click',function(){ var ch=g.children[i]; if(ch) ch.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); });
-        cap.appendChild(d); dots.push(d);
-      });
-    }
-    function padEnds(){
-      var card=g.querySelector('.card'); if(!card) return;
-      var pad=Math.max(0,(g.clientWidth-card.getBoundingClientRect().width)/2);
-      g.style.paddingLeft=g.style.paddingRight=pad+'px';
-    }
-    function syncDots(){
-      if(!dots.length) return;
-      var mid=g.scrollLeft+g.clientWidth/2, best=0, bd=1e9;
-      Array.prototype.forEach.call(g.children,function(ch,i){ var cc=ch.offsetLeft+ch.offsetWidth/2, dd=Math.abs(cc-mid); if(dd<bd){bd=dd;best=i;} });
-      dots.forEach(function(d,i){ d.classList.toggle('on',i===best); });
-    }
-    g.addEventListener('scroll',syncDots,{passive:true});
-    function layout(){ padEnds(); syncDots(); }
-    addEventListener('resize',layout); addEventListener('load',layout); setTimeout(layout,120); setTimeout(layout,600);
-    // drag to scroll (mouse) without stealing button clicks
-    var down=false,sx=0,sl=0,drag=false;
-    g.addEventListener('pointerdown',function(e){ drag=false; if(e.target.closest('.plus')) return; down=true;sx=e.clientX;sl=g.scrollLeft; });
-    g.addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){drag=true;g.classList.add('drag');} g.scrollLeft=sl-dx; });
-    function up(){ down=false; if(drag) setTimeout(function(){ g.classList.remove('drag'); },0); }
-    addEventListener('pointerup',up); addEventListener('pointercancel',up);
-    g.addEventListener('click',function(e){ if(drag){ e.preventDefault(); e.stopPropagation(); drag=false; } },true);
-  }
   // #s2 behaviour — endless auto-scroll (drift) + centred card highlighted; name + full text below follow the centred card
   /* ⑤ wrap sensor data + key technical terms so they glow warm against the dim serif */
   function s2hl(str){
@@ -1069,182 +1040,348 @@
   })();
 
   /* ===== #s4 · BEAD STRING =====
-     The five senses threaded on one line, laid out after the reference illustration: a single
-     bead held apart up-left, then four overlapping down a diagonal, sparkles in the gaps, the
-     thread running off both edges. Each bead carries its own label.
-
-     Geometry is ONE cubic Bezier held in normalised (0-1) coordinates, stamped into a viewBox
-     whose height is derived from the LIVE viewport ratio — so the band is always the same
-     slice of the screen (BAND) and the same curve reads as a steep diagonal on a phone and a
-     shallow one on a desktop. Fixed portrait/landscape presets could not do this: a near-square
-     window fell through to the portrait preset and the band came out taller than the viewport.
-
-     Beads are seated by ARC LENGTH (not by the Bezier parameter, which bunches where the curve
-     is tight), so the overlap stays even. They take no tangent rotation — they are spheres, and
-     a rotating specular reads as a wobble; it would also tip the labels over. */
+     Landed from the bead-string-map reference. Kept verbatim: the restPath geometry, bead
+     coordinates and palette, the wave-equation sim (R_INF/SWEEP/REPEL, damping .985), the three
+     ambient standing-wave MODES and the seven custom eases.
+     Changed for this codebase:
+       · everything prefixed s4b-, tooltip + modal appended to <body> (SLN convention)
+       · stage follows its container, not the viewport
+       · Fraunces via var(--sans) — §4 forbids other families
+       · NO feGaussianBlur anywhere: the reference's 20 live filter regions on translating beads
+         are why it ran at 25fps (§5.5 #1). Every soft edge is a baked gradient instead.
+       · rrAF + CSS pause off-screen (§5.5 #4); path writes deduped against the last string
+       · the modal is a circle holding the sense photo — no rectangular card */
   (function(){
     var NS='http://www.w3.org/2000/svg';
     var stage=document.getElementById('s4bStage'); if(!stage) return;
-    var sec=document.getElementById('s4');
-    var svg=document.getElementById('s4bScene'), cal=document.getElementById('s4bCal'),
-        thread=document.getElementById('s4bThread');
-    function el(n,attrs,parent){var e=document.createElementNS(NS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+    var sec=document.getElementById('s4'), svg=document.getElementById('s4bScene');
+    var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    function $(id){ return document.getElementById(id); }
+    function el(n,a,p){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); if(p)p.appendChild(e); return e; }
 
-    var VBW=1400, BAND=0.56;                 /* band height as a share of the viewport */
-    var CV=[[0.22,-0.04],[0.06,0.24],[0.40,0.48],[0.86,0.99]];   /* normalised control points */
-    /* The reference's rhythm: one bead set apart, then four packed tight enough to overlap.
-       These fractions are the largest that keep every bead fully inside the frame across
-       phone / tablet / laptop / 1080p — the last bead is the one that clips first. */
-    var FR=[0.22,0.43,0.545,0.66,0.775], SP=[0.335,0.60,0.638];
-    var GAP=FR[2]-FR[1];                     /* the packed spacing — drives bead size */
-    /* sparkles are built FIRST so they sit behind the beads: painted on top they landed over
-       the labels, and in the reference they peek out from the bead edges */
-    var ITEMS=SP.map(function(f){ return {node:-1, frac:f}; })
-             .concat(FR.map(function(f,i){ return {node:i, frac:f}; }));
-
-    var N=200, base=new Array(N+1), cum=new Array(N+1);
-    var nodeEls={}, labelEls=[], itemSeq=0;
-    function beadItem(it){
-      var g=el('g',{'class':'s4b-item'},cal);
-      g.style.animationDelay=(0.1+(itemSeq++)*0.08).toFixed(2)+'s';
-      if(it.node>-1){
-        var k=it.node;
-        g.classList.add('node');
-        g.setAttribute('role','button'); g.setAttribute('tabindex','0');
-        g.setAttribute('aria-label',SENSES[k].label);
-        /* four coincident circles, not one: body → bounce → sheen → tiny core highlight.
-           Stacking soft gradient layers is what reads as painted glass; a single hard white
-           dot on a saturated ball reads as a plastic button. */
-        var lift=el('g',{'class':'s4b-lift'},g);
-        el('circle',{'class':'s4b-bead',r:20,fill:'url(#s4bG'+k+')'},lift);
-        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bBounce)'},lift);
-        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bSheen)'},lift);
-        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bCore)'},lift);
-        el('circle',{'class':'s4b-rim',r:20},lift);
-        /* one word per line — every label is 2-3 short words, so this always fits the circle
-           without a measuring pass */
-        var tx=el('text',{'class':'s4b-lb','text-anchor':'middle'},lift), spans=[];
-        SENSES[k].label.split(/\s+/).forEach(function(w){
-          var sp=el('tspan',{x:0},tx); sp.textContent=w; spans.push(sp);
-        });
-        labelEls.push({t:tx,spans:spans});
-        el('circle',{'class':'s4b-hit',r:30,fill:'transparent'},g);
-        g.addEventListener('click',function(){ activate(k); restart(); });
-        g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(k); restart(); } });
-        nodeEls[k]=g;
-      } else {
-        el('path',{'class':'s4b-spark',d:'M0,-15 L3,-3 L15,0 L3,3 L0,15 L-3,3 L-15,0 L-3,-3 Z'},g);
+    /* ---- one set of speed curves for every move (house silk is CURVES.silk) ---- */
+    var CURVES={ silk:[0.22,0,0.06,1], glide:[0.16,0.84,0.24,1], breath:[0.45,0,0.55,1],
+                 tide:[0.50,0,0.50,1], pop:[0.34,1.5,0.32,1], veil:[0.20,0.90,0.24,1], swell:[0.30,0,0.20,1] };
+    var G=window.gsap;
+    if(G&&window.CustomEase){ G.registerPlugin(CustomEase);
+      for(var n in CURVES){ var c=CURVES[n]; if(!G.parseEase(n)) CustomEase.create(n,'M0,0 C'+c[0]+','+c[1]+' '+c[2]+','+c[3]+' 1,1'); } }
+    function bezFn(x1,y1,x2,y2){
+      var cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx, cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+      function fx(t){return ((ax*t+bx)*t+cx)*t;} function dfx(t){return (3*ax*t+2*bx)*t+cx;}
+      return function(x){ var t=x; for(var i=0;i<6;i++){ var e=fx(t)-x; if(Math.abs(e)<1e-5)break; var d=dfx(t); if(Math.abs(d)<1e-6)break; t-=e/d; }
+        t=Math.max(0,Math.min(1,t)); return ((ay*t+by)*t+cy)*t; };
+    }
+    var EASE={}; for(var q in CURVES) EASE[q]=bezFn.apply(null,CURVES[q]);
+    /* mini tween — identical curves when GSAP is missing */
+    var jobs=[];
+    function miniTo(o,v){
+      var duration=v.duration||1, delay=v.delay||0, repeat=v.repeat||0, yoyo=!!v.yoyo, ease=v.ease||'silk', onUpdate=v.onUpdate;
+      var props={}; for(var k in v){ if(['duration','delay','repeat','yoyo','ease','onUpdate','overwrite'].indexOf(k)<0) props[k]=v[k]; }
+      for(var i=jobs.length-1;i>=0;i--){ if(jobs[i].o===o){ for(var kk in props){ if(kk in jobs[i].to){ jobs.splice(i,1); break; } } } }
+      var from={},to={}; for(var k2 in props){ from[k2]=o[k2]; to[k2]=props[k2]; }
+      jobs.push({o:o,from:from,to:to,duration:duration,repeat:repeat,yoyo:yoyo,fn:EASE[ease]||EASE.silk,onUpdate:onUpdate,t:-delay,it:0,rev:false});
+    }
+    function miniTick(dt){
+      for(var i=jobs.length-1;i>=0;i--){
+        var j=jobs[i]; j.t+=dt; if(j.t<0) continue;
+        var u=Math.min(1,j.t/j.duration), e=j.fn(j.rev?1-u:u);
+        for(var k in j.to) j.o[k]=j.from[k]+(j.to[k]-j.from[k])*e;
+        if(j.onUpdate) j.onUpdate();
+        if(u>=1){ if(j.repeat===-1||j.it<j.repeat){ j.it++; j.t=0; if(j.yoyo) j.rev=!j.rev; } else jobs.splice(i,1); }
       }
-      return g;
     }
-    var loopItems=ITEMS.map(beadItem);
-    var itemFrac=ITEMS.map(function(it){ return it.frac; });
+    var TW = G ? function(o,v){ var c={overwrite:'auto'}; for(var k in v) c[k]=v[k]; return G.to(o,c); } : miniTo;
 
-    var lastKey=[], lastThread='', lastR=0, lastFs=0, vbH=800;
-    function bez(cp,u){
-      var v=1-u;
-      return [v*v*v*cp[0][0]+3*v*v*u*cp[1][0]+3*v*u*u*cp[2][0]+u*u*u*cp[3][0],
-              v*v*v*cp[0][1]+3*v*v*u*cp[1][1]+3*v*u*u*cp[2][1]+u*u*u*cp[3][1]];
+    /* ---- the thread ---- */
+    var N=72, RP=$('s4bRest'), TL=RP.getTotalLength();
+    var rest=[],norm=[],restAng=[];
+    for(var i0=0;i0<N;i0++){ var p0=RP.getPointAtLength(TL*i0/(N-1)); rest.push({x:p0.x,y:p0.y}); }
+    for(var i1=0;i1<N;i1++){
+      var a1=rest[Math.max(0,i1-1)], b1=rest[Math.min(N-1,i1+1)];
+      var dx1=b1.x-a1.x, dy1=b1.y-a1.y, l1=Math.hypot(dx1,dy1)||1;
+      norm.push({x:-dy1/l1,y:dx1/l1}); restAng.push(Math.atan2(dy1,dx1));
     }
-    function buildBase(){
-      var cp=CV.map(function(q){ return [q[0]*VBW, q[1]*vbH]; });
-      for(var i=0;i<=N;i++) base[i]=bez(cp,i/N);
+    var yArr=new Float32Array(N), vArr=new Float32Array(N);
+    var env=[]; for(var i2=0;i2<N;i2++) env.push(Math.pow(Math.sin(Math.PI*i2/(N-1)),0.7));
+    /* three standing-wave modes: amplitude breathes, phase drifts — never settles, never repeats */
+    var MODES=[
+      {k:1.0,a:{v:3.2},p:{v:0.0},lo:1.7,hi:5.4,ta:13,tp:44},
+      {k:2.3,a:{v:2.0},p:{v:1.7},lo:0.9,hi:3.3,ta:19,tp:67},
+      {k:3.7,a:{v:1.0},p:{v:3.3},lo:0.4,hi:1.8,ta:25,tp:33}
+    ];
+    if(!REDUCE) MODES.forEach(function(m){
+      m.a.v=m.lo;
+      TW(m.a,{v:m.hi,duration:m.ta,ease:'breath',repeat:-1,yoyo:true});
+      TW(m.p,{v:m.p.v+Math.PI*2,duration:m.tp,ease:'tide',repeat:-1});
+    });
+
+    /* ---- beads = the five senses ---- */
+    var BEADS=[
+      {c:[247,187],r:95,g:'s4bG0',sh:'#4c525c',glow:'#c9cbcf'},
+      {c:[430,505],r:93,g:'s4bG1',sh:'#0d4a2c',glow:'#3fc177'},
+      {c:[600,592],r:92,g:'s4bG2',sh:'#152f68',glow:'#5189ea'},
+      {c:[758,716],r:90,g:'s4bG3',sh:'#0f4f61',glow:'#42c4d8'},
+      {c:[810,880],r:92,g:'s4bG4',sh:'#155d71',glow:'#5fd6e7'}
+    ];
+    BEADS.forEach(function(b,k){ b.label=(SENSES[k]||{}).label||''; b.img=(SENSES[k]||{}).img||''; });
+    var D=Math.PI/180, layer=$('s4bBeads');
+    BEADS.forEach(function(b,k){
+      var best=0,bd=1e9;
+      rest.forEach(function(p,i){ var d=(p.x-b.c[0])*(p.x-b.c[0])+(p.y-b.c[1])*(p.y-b.c[1]); if(d<bd){bd=d;best=i;} });
+      b.i=Math.max(1,Math.min(N-2,best));
+      var R=b.r;
+      var spk=[[4,-8,2.4],[19,4,2.8],[7,18,2.2],[27,25,2.0],[-6,30,2.6],[15,-19,1.8]]
+        .map(function(s){ return '<circle cx="'+s[0]+'" cy="'+s[1]+'" r="'+s[2]+'" fill="'+b.sh+'" opacity=".42"/>'; }).join('');
+      var g=el('g',{'class':'s4b-bead',role:'button',tabindex:'0','aria-label':b.label},layer);
+      g.innerHTML=
+        /* outer glow — a gradient ring, NOT stroke+blur */
+        '<circle r="'+(R+34)+'" fill="url(#s4bGlow)" opacity=".55"/>'+
+        '<g class="s4b-v">'+
+          /* cast shadow — gradient disc offset down-left, NOT a blurred solid */
+          '<circle cx="-15" cy="21" r="'+(R+16)+'" fill="url(#s4bCast)" opacity=".8"/>'+
+          '<circle r="'+R+'" fill="url(#'+b.g+')"/>'+
+          '<circle r="'+R+'" fill="url(#s4bSheen)"/>'+
+          '<path d="'+arc(R-3,118*D,206*D)+'" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="5"/>'+
+          '<ellipse cx="'+(-R*0.34).toFixed(1)+'" cy="'+(-R*0.42).toFixed(1)+'" rx="'+(R*0.4).toFixed(1)+'" ry="'+(R*0.25).toFixed(1)+'" transform="rotate(-26 '+(-R*0.34).toFixed(1)+' '+(-R*0.42).toFixed(1)+')" fill="url(#s4bSpec)"/>'+
+          '<ellipse cx="'+(-R*0.2).toFixed(1)+'" cy="'+(R*0.3).toFixed(1)+'" rx="'+(R*0.26).toFixed(1)+'" ry="'+(R*0.16).toFixed(1)+'" fill="url(#s4bSpec2)"/>'+
+          '<g>'+spk+'</g>'+
+          '<circle class="s4b-rim" r="'+R+'" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1.2"/>'+
+          '<circle class="s4b-h" r="'+(R+4)+'" fill="#fff" opacity="0"/>'+
+        '</g>'+
+        '<circle r="'+(R+16)+'" fill="transparent"/>';
+      b.g=g; b.vis=g.querySelector('.s4b-v'); b.halo=g.querySelector('.s4b-h');
+      b.st={s:1}; b.ha={s:.88,o:.2};
+      if(!REDUCE) TW(b.ha,{s:1.26,o:0,duration:3.9,ease:'swell',repeat:-1,delay:k*.62});
+      /* the background FX engine follows whichever sense you are looking at */
+      g.addEventListener('mouseenter',function(){ s4Active=k; showTip(g,b.label); TW(b.st,{s:1.055,duration:.55,ease:'pop'}); });
+      g.addEventListener('mouseleave',function(){ hideTip(); TW(b.st,{s:1,duration:.7,ease:'silk'}); });
+      g.addEventListener('pointerdown',function(){ TW(b.st,{s:.975,duration:.28,ease:'silk'}); });
+      g.addEventListener('click',function(){ s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
+      g.addEventListener('focus',function(){ s4Active=k; showTip(g,b.label); });
+      g.addEventListener('blur',hideTip);
+      g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBead(k); } });
+    });
+    function arc(R,a0,a1){
+      var x0=R*Math.cos(a0),y0=R*Math.sin(a0),x1=R*Math.cos(a1),y1=R*Math.sin(a1);
+      return 'M '+x0.toFixed(1)+' '+y0.toFixed(1)+' A '+R+' '+R+' 0 0 1 '+x1.toFixed(1)+' '+y1.toFixed(1);
     }
-    function layBeads(){
-      cum[0]=0;
-      for(var j=1;j<=N;j++){ cum[j]=cum[j-1]+Math.hypot(base[j][0]-base[j-1][0],base[j][1]-base[j-1][1]); }
-      var L=cum[N];
-      var d='M'+base[0][0].toFixed(1)+' '+base[0][1].toFixed(1);
-      for(var q=2;q<=N;q+=2) d+='L'+base[q][0].toFixed(1)+' '+base[q][1].toFixed(1);
-      if(d!==lastThread){ lastThread=d; thread.setAttribute('d',d); }
-      loopItems.forEach(function(g,idx){
-        var ts=itemFrac[idx]*L, lo=0, hi=N;
-        while(lo<hi){ var mid=(lo+hi)>>1; if(cum[mid]<ts) lo=mid+1; else hi=mid; }
-        var j1=Math.max(1,lo), t0=cum[j1-1], seg=(cum[j1]-t0)||1e-6, f=(ts-t0)/seg;
-        var x=base[j1-1][0]+(base[j1][0]-base[j1-1][0])*f, y=base[j1-1][1]+(base[j1][1]-base[j1-1][1])*f;
-        var key=((x*4)|0)+','+((y*4)|0);
-        if(lastKey[idx]===key) return;                       /* write dedupe (§5.5) */
-        lastKey[idx]=key;
-        g.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+    var heavy={}; BEADS.forEach(function(b){ heavy[b.i]=1; heavy[b.i-1]=1; heavy[b.i+1]=1; });
+
+    /* ---- sparkles ---- */
+    var STAR='M0,-1 C0.035,-0.33 0.33,-0.035 1,0 C0.33,0.035 0.035,0.33 0,1 C-0.035,0.33 -0.33,0.035 -1,0 C-0.33,-0.035 -0.035,-0.33 0,-1 Z';
+    var sparks=[];
+    var SPARKS=[[404,398,34,0,5.2],[745,547,38,1.1,6.1],[598,662,46,2.3,5.6],[583,706,22,3.1,4.4],
+     [842,802,19,1.7,4.9],[300,118,17,4.0,6.6],[690,640,15,2.8,5.1]];
+    /* phones raster this at 2–3× DPR; the small sparkles read as noise there anyway */
+    if(innerWidth<=720) SPARKS=SPARKS.slice(0,4);
+    SPARKS.forEach(function(s){
+      var x=s[0],yy=s[1],sc=s[2],dl=s[3],du=s[4];
+      var g=el('g',{transform:'translate('+x+' '+yy+')'},$('s4bSparks'));
+      g.innerHTML='<circle r="'+(sc*0.62)+'" fill="url(#s4bBloom)" opacity=".55"/>'+
+        '<path d="'+STAR+'" transform="scale('+sc+')" fill="#fff"/>'+
+        '<path d="'+STAR+'" transform="rotate(45) scale('+(sc*0.4)+')" fill="#fff" opacity=".85"/>';
+      var o={s:.25,o:.15,rot:0};
+      sparks.push({g:g,o:o,x:x,y:yy});
+      if(!REDUCE){
+        TW(o,{s:1,o:1,duration:du*0.42,ease:'glide',repeat:-1,yoyo:true,delay:dl});
+        TW(o,{rot:22,duration:du*1.6,ease:'tide',repeat:-1,yoyo:true,delay:dl});
+      } else { o.s=.8; o.o=.7; }
+    });
+
+    /* ---- pointer sweep → travelling wave ---- */
+    var threadEl=$('s4bThread'), glowEl=$('s4bGlowLine');
+    var P=rest.map(function(p){ return {x:p.x,y:p.y}; });
+    var cur={x:0,y:0,px:0,py:0,on:false,vx:0,vy:0};
+    var R_INF=175, SWEEP=.30, REPEL=1.9, MAXY=220, MAXV=26;
+    function step(){
+      for(var i=1;i<N-1;i++){
+        var lap=yArr[i-1]+yArr[i+1]-2*yArr[i];
+        var a=0.16*lap-0.014*yArr[i];
+        if(heavy[i]) a*=0.5;
+        vArr[i]+=a;
+      }
+      if(cur.on){
+        cur.vx+=((cur.x-cur.px)-cur.vx)*.35; cur.vy+=((cur.y-cur.py)-cur.vy)*.35;
+        cur.px=cur.x; cur.py=cur.y;
+        for(var j=1;j<N-1;j++){
+          var dx=P[j].x-cur.x, dy=P[j].y-cur.y, d=Math.hypot(dx,dy);
+          if(d>R_INF) continue;
+          var f=(1-d/R_INF); f*=f;
+          var md=cur.vx*norm[j].x+cur.vy*norm[j].y;
+          var co=(cur.x-rest[j].x)*norm[j].x+(cur.y-rest[j].y)*norm[j].y;
+          var aa=(Math.max(-70,Math.min(70,md))*SWEEP-Math.tanh(co/45)*REPEL)*f;
+          if(heavy[j]) aa*=0.5;
+          vArr[j]+=aa;
+        }
+      } else { cur.vx*=.8; cur.vy*=.8; }
+      for(var m=1;m<N-1;m++){
+        vArr[m]*=0.985;
+        if(vArr[m]>MAXV) vArr[m]=MAXV; else if(vArr[m]<-MAXV) vArr[m]=-MAXV;
+        yArr[m]+=vArr[m];
+        if(yArr[m]>MAXY) yArr[m]=MAXY; else if(yArr[m]<-MAXY) yArr[m]=-MAXY;
+      }
+      yArr[0]=yArr[N-1]=0;
+    }
+    var lastD='', lastBead=[];
+    function render(){
+      for(var i=0;i<N;i++){
+        var amb=0;
+        for(var m=0;m<MODES.length;m++) amb+=MODES[m].a.v*Math.sin(MODES[m].k*Math.PI*i/(N-1)+MODES[m].p.v);
+        var o=yArr[i]+amb*env[i];
+        P[i].x=rest[i].x+norm[i].x*o; P[i].y=rest[i].y+norm[i].y*o;
+      }
+      var d='M '+P[0].x.toFixed(1)+' '+P[0].y.toFixed(1);
+      for(var j=1;j<N-1;j++){
+        var mx=(P[j].x+P[j+1].x)/2, my=(P[j].y+P[j+1].y)/2;
+        d+=' Q '+P[j].x.toFixed(1)+' '+P[j].y.toFixed(1)+' '+mx.toFixed(1)+' '+my.toFixed(1);
+      }
+      if(d!==lastD){ lastD=d; threadEl.setAttribute('d',d); glowEl.setAttribute('d',d); }   /* §5.5 #4 */
+      BEADS.forEach(function(b,bi){
+        var i=b.i;
+        var ang=Math.atan2(P[i+1].y-P[i-1].y,P[i+1].x-P[i-1].x)-restAng[i];
+        var tr='translate('+P[i].x.toFixed(1)+' '+P[i].y.toFixed(1)+') rotate('+(ang*.55/D).toFixed(2)+')';
+        var vs='scale('+b.st.s.toFixed(4)+')';
+        var hs=b.ha.s.toFixed(3), ho=b.ha.o.toFixed(3);
+        var key=tr+'|'+vs+'|'+hs+'|'+ho;
+        if(lastBead[bi]===key) return;
+        lastBead[bi]=key;
+        b.g.setAttribute('transform',tr);
+        b.vis.setAttribute('transform',vs);
+        b.halo.setAttribute('transform','scale('+hs+')');
+        b.halo.setAttribute('opacity',ho);
       });
-      return L;
+      sparks.forEach(function(s){
+        s.g.setAttribute('opacity',s.o.o.toFixed(3));
+        s.g.setAttribute('transform','translate('+s.x+' '+s.y+') rotate('+s.o.rot.toFixed(2)+') scale('+s.o.s.toFixed(3)+')');
+      });
     }
 
-    var beadCircles=[].slice.call(cal.querySelectorAll('.s4b-bead,.s4b-rim')),
-        beadHits=[].slice.call(cal.querySelectorAll('.s4b-hit')),
-        sparkEls=[].slice.call(cal.querySelectorAll('.s4b-spark'));
-    function applyAll(){
-      var cw=stage.clientWidth||1;
-      var ratio=innerWidth/Math.max(1,innerHeight);
-      vbH=Math.max(430,Math.min(2000, VBW*BAND/ratio));
-      svg.setAttribute('viewBox','0 0 '+VBW+' '+vbH.toFixed(0));
-      buildBase();
-      var L=layBeads();
-      var svgH=cw/(VBW/vbH);
-      svg.style.height=svgH+'px';
-      stage.style.height=svgH+'px';
-
-      /* Bead size comes from the PACKED spacing: a diameter a shade wider than the gap is what
-         makes neighbours overlap the way the reference does. Attributes, not CSS, so the hover
-         transform composes cleanly on top of them. */
-      var kpx=cw/VBW;                                   /* css px per viewBox unit */
-      var beadR=L*GAP*0.58;
-      if(Math.abs(beadR-lastR)>0.5){
-        lastR=beadR;
-        beadCircles.forEach(function(c){ c.setAttribute('r',beadR.toFixed(1)); });
-        beadHits.forEach(function(c){ c.setAttribute('r',(beadR*0.92).toFixed(1)); });
-        sparkEls.forEach(function(sp){ sp.setAttribute('transform','scale('+(beadR/44).toFixed(3)+')'); });
-      }
-      /* floor the label at 12 CSS px — on a phone the proportional size lands under 11px */
-      var fs=Math.max(beadR*0.215, 12/kpx), lh=fs*1.4;
-      if(Math.abs(fs-lastFs)>0.3){
-        lastFs=fs;
-        labelEls.forEach(function(Lb){
-          Lb.t.setAttribute('font-size',fs.toFixed(1));
-          var n=Lb.spans.length;
-          Lb.spans.forEach(function(sp,i){
-            sp.setAttribute('dy',(i===0 ? -(n-1)*0.5*lh+fs*0.34 : lh).toFixed(1));
-          });
-        });
-      }
+    /* pointer → viewBox coords. getScreenCTM forces layout, so the matrix is cached and only
+       invalidated on resize/scroll (§5.5 #4). */
+    var ctm=null;
+    function invalidateCTM(){ ctm=null; }
+    addEventListener('resize',invalidateCTM); addEventListener('scroll',invalidateCTM,{passive:true});
+    function toSvg(e){
+      if(!ctm) ctm=svg.getScreenCTM().inverse();
+      var p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY;
+      return p.matrixTransform(ctm);
     }
+    svg.addEventListener('pointermove',function(e){
+      var p=toSvg(e);
+      if(!cur.on){ cur.px=p.x; cur.py=p.y; cur.vx=cur.vy=0; }
+      cur.x=p.x; cur.y=p.y; cur.on=true;
+    },{passive:true});
+    svg.addEventListener('pointerleave',function(){ cur.on=false; });
+    svg.addEventListener('pointercancel',function(){ cur.on=false; });
+    svg.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') cur.on=false; },{passive:true});
 
-    /* which sense the background effects run — the bead string owns that selection now */
-    var active=-1;
-    function activate(k){
-      if(k===active) return;
-      active=k; s4Active=k;
-      Object.keys(nodeEls).forEach(function(i){ nodeEls[i].classList.toggle('on',+i===k); });
+    /* ---- loop, paused off-screen (§5.5 #4) ---- */
+    var onScreen=false, raf=0, prev=0;
+    function frame(now){
+      var dt=Math.min(.05,(now-prev)/1000); prev=now;
+      if(!G) miniTick(dt);
+      step(); render();
+      raf=requestAnimationFrame(frame);
     }
-    var timer=null;
-    function next(){ activate((active+1)%SENSES.length); }
-    function restart(){ if(timer) clearInterval(timer); timer=setInterval(next,5200); }
-
-    /* entrance is entirely CSS (class -> transition + staggered keyframes): this component owns
-       no timeline, so a stalled ticker can never leave it half-drawn */
-    var entered=false;
-    function enterStage(){ if(entered) return; entered=true; sec.classList.add('s4b-in'); }
-    /* off-screen discipline (5.5): the rotation timer stops when the section leaves */
+    function play(){ if(raf) return; prev=performance.now(); raf=requestAnimationFrame(frame); }
+    function stop(){ if(raf) cancelAnimationFrame(raf); raf=0; }
     if('IntersectionObserver' in window){
       new IntersectionObserver(function(es){
-        var on=es[0].isIntersecting;
-        sec.classList.toggle('s4b-off',!on);
-        if(on){ enterStage(); if(active<0) activate(0); restart(); }
-        else if(timer){ clearInterval(timer); timer=null; }
+        onScreen=es[0].isIntersecting;
+        sec.classList.toggle('s4b-off',!onScreen);
+        invalidateCTM();
+        if(onScreen){ play(); if(G) gsap.globalTimeline.play(); }
+        else { stop(); }
       },{rootMargin:'120px'}).observe(stage);
-    } else { enterStage(); activate(0); restart(); }
+    } else { onScreen=true; play(); }
+    render();
+    /* one gentle pluck once it has been seen */
+    if(!REDUCE) setTimeout(function(){
+      if(!onScreen) return;
+      var m=Math.floor(N*.55);
+      for(var j=m-6;j<=m+6;j++) vArr[j]-=7*Math.exp(-Math.pow((j-m)/3.4,2));
+    },900);
 
-    /* No standing rAF: the layout is a pure function of the viewport, so it runs on resize only.
-       Coalesced with a timer rather than rAF — rAF is the usual choice, but it also means a
-       throttled/stalled ticker silently freezes the layout, and this component has no other
-       reason to depend on the frame loop. */
-    var pend=0;
-    function relayout(){ if(pend) return; pend=setTimeout(function(){ pend=0; applyAll(); },16); }
-    if('ResizeObserver' in window){ new ResizeObserver(relayout).observe(stage); }
-    else { addEventListener('resize',relayout); }
-    addEventListener('orientationchange',relayout);
-    addEventListener('load',relayout);
-    applyAll();
+    /* ---- tooltip: ONE cubic outline, §5.6 ---- */
+    var tip=document.createElement('div'); tip.className='s4b-tip'; document.body.appendChild(tip);
+    var TAIL=6.5;
+    var HAS_PATH=!!(window.CSS&&CSS.supports&&CSS.supports('clip-path','path("M0 0")'));
+    var TIP_ADJ=HAS_PATH?3.5:0;
+    function pinPath(w,h,t){
+      var R=Math.min(h/2,w/2), k=R*0.68, cx=w/2;                 /* 0.68R, not 0.5523R — §5.6 */
+      var B=Math.min(5.5,(w/2-R)/2||5.5), F=Math.min(5,(w/2-R-B)||5);
+      function x(v){ return v.toFixed(2); } function y(v){ return v.toFixed(2); }
+      return 'M '+x(R)+' 0'+
+        ' L '+x(w-R)+' 0'+
+        ' C '+x(w-R+k)+' 0 '+x(w)+' '+y(R-k)+' '+x(w)+' '+y(R)+
+        ' C '+x(w)+' '+y(R+k)+' '+x(w-R+k)+' '+y(h)+' '+x(w-R)+' '+y(h)+
+        ' L '+x(cx+B+F)+' '+y(h)+
+        ' C '+x(cx+B)+' '+y(h)+' '+x(cx+B)+' '+y(h)+' '+x(cx+B*0.55)+' '+y(h+t*0.45)+
+        ' C '+x(cx+B*0.2)+' '+y(h+t*0.86)+' '+x(cx)+' '+y(h+t)+' '+x(cx)+' '+y(h+t)+
+        ' C '+x(cx)+' '+y(h+t)+' '+x(cx-B*0.2)+' '+y(h+t*0.86)+' '+x(cx-B*0.55)+' '+y(h+t*0.45)+
+        ' C '+x(cx-B)+' '+y(h)+' '+x(cx-B)+' '+y(h)+' '+x(cx-B-F)+' '+y(h)+
+        ' L '+x(R)+' '+y(h)+
+        ' C '+x(R-k)+' '+y(h)+' 0 '+y(R+k)+' 0 '+y(R)+
+        ' C 0 '+y(R-k)+' '+x(R-k)+' 0 '+x(R)+' 0 Z';
+    }
+    var tipKey='';
+    function shapeTip(){
+      if(!HAS_PATH) return;
+      var w=tip.offsetWidth, h=tip.offsetHeight; if(!w||!h) return;
+      var key=w+'x'+h; if(key===tipKey) return;                  /* only on text/resize change */
+      tipKey=key;
+      tip.style.clipPath='path("'+pinPath(w,h-TAIL,TAIL)+'")';
+    }
+    var ts={o:0,y:-12};
+    function paintTip(){ tip.style.opacity=ts.o; tip.style.transform='translate(-50%,calc(-100% + '+ts.y+'px))'; }
+    function showTip(node,text){
+      tip.textContent=text;
+      shapeTip();
+      var r=node.getBoundingClientRect();
+      tip.style.left=(r.left+r.width/2)+'px';
+      tip.style.top=(r.top+TIP_ADJ)+'px';
+      TW(ts,{o:1,y:-16,duration:.4,ease:'glide',onUpdate:paintTip});
+    }
+    function hideTip(){ TW(ts,{o:0,y:-12,duration:.3,ease:'silk',onUpdate:paintTip}); }
+    addEventListener('resize',function(){ tipKey=''; });
+
+    /* ---- circular modal: the sense photo, nothing else ---- */
+    var ov=document.createElement('div');
+    ov.className='s4b-ov'; ov.hidden=true;
+    ov.innerHTML='<div class="s4b-scrim" data-close></div>'+
+      '<figure class="s4b-disc" role="dialog" aria-modal="true" aria-labelledby="s4bCapt">'+
+        '<img alt="" decoding="async">'+
+        '<figcaption id="s4bCapt"></figcaption>'+
+      '</figure>'+
+      '<button class="s4b-x" type="button" aria-label="Close">&#10005;</button>';
+    document.body.appendChild(ov);
+    var ovImg=ov.querySelector('img'), ovCap=ov.querySelector('figcaption'), ovDisc=ov.querySelector('.s4b-disc');
+    var os={o:0}, cs={s:.9,o:0};
+    function paintOv(){ ov.style.opacity=os.o; }
+    function paintDisc(){ ovDisc.style.opacity=cs.o; ovDisc.style.transform='scale('+cs.s+')'; }
+    var lastFocus=null;
+    function openBead(k){
+      hideTip(); lastFocus=document.activeElement;
+      var b=BEADS[k];
+      ovImg.src=b.img+(b.img.indexOf('?')<0?'?v=3':''); ovImg.alt=b.label;
+      ovCap.textContent=b.label;
+      ov.hidden=false; ov.classList.add('live');
+      os.o=0; cs.s=.9; cs.o=0; paintOv(); paintDisc();
+      TW(os,{o:1,duration:.45,ease:'glide',onUpdate:paintOv});
+      TW(cs,{s:1,o:1,duration:.75,ease:'veil',onUpdate:paintDisc});
+      ov.querySelector('.s4b-x').focus({preventScroll:true});
+    }
+    function closeModal(){
+      if(ov.hidden) return;
+      ov.classList.remove('live');
+      TW(os,{o:0,duration:.35,ease:'silk',onUpdate:paintOv});
+      TW(cs,{s:.96,o:0,duration:.35,ease:'silk',onUpdate:paintDisc});
+      setTimeout(function(){ ov.hidden=true; },380);
+      if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+    }
+    ov.querySelector('.s4b-x').addEventListener('click',closeModal);
+    ov.querySelector('[data-close]').addEventListener('click',closeModal);
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
   })();
 
   /* ===== #s4 SENSE-EFFECT ENGINE — mode = centred card =====

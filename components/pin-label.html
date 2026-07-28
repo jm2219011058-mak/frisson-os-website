@@ -1,0 +1,132 @@
+<!-- ============================================================
+     FRISSON 浮标（pin label）标准形状 — copy-paste 源
+     规则说明见 CLAUDE.md §5.6
+     2026-07-27 从 cities SLN 浮标产出。任何"指向某个点的小标签"
+     （地图节点、图表标注、tooltip 尖角、气泡）都抄这里，不要重新发明。
+
+     核心：胶囊 + 旋转方块 = 两个独立形状硬拼，接缝处切线突变（G0），
+           所以看着"不丝滑"。正确做法是 **整个轮廓一条 path**，
+           body 与 tail 共用同一条曲线。
+     ============================================================ -->
+
+<!-- ────────────────────────────────────────────────
+     一、为什么用三次贝塞尔（cubic），不用二次（quadratic）
+
+     二次贝塞尔 Q：一个控制点，起终点的切线方向被"同一个点"绑死
+       → 无法独立指定两端的切线，也无法调节曲率分布。
+       够用的场合：只需要一段单调弧（如简单的箭头钩、波浪线）。
+
+     三次贝塞尔 C：两个控制点，两端切线方向 + 长度各自独立
+       → 才能做到「接缝处切线连续（G1）」且「曲率峰值挪到远离接缝的位置」。
+       浮标的圆角与尾巴都需要这两件事，所以必须用三次。
+
+     经验法则：
+       - 只要相邻两段需要"看不出接缝" → 三次（能对齐切线）
+       - 还要求"看不出曲率突变" → 三次 + 控制臂加长（见下面的 k）
+       - 单段装饰性弧线、不与其他段相接 → 二次足够，省字节
+     ──────────────────────────────────────────────── -->
+
+<!-- ────────────────────────────────────────────────
+     二、两个关键常数
+
+     k = 0.68R（不是 0.5523R）
+       0.5523R 是"用贝塞尔精确拟合圆弧"的经典值。但精确的圆 = 曲率在
+       直边与圆角的交界处从 0 跳到 1/R，那一跳眼睛看得见。
+       把控制臂拉长到 0.68R，曲率被推离接缝、峰值移到圆角正中
+       （这就是 squircle / 超椭圆的取舍）。
+       实测接缝处曲率台阶：0.0746 → 0.0337，平滑 2.2 倍。
+
+     tail 的第一个控制点必须落在 body 的底边上
+       → 该点与起点的连线是水平的 = 出发切线水平 = 与底边 G1 相接，
+         不会出现折痕。尾巴收尖则靠第二个控制点向内收。
+     ──────────────────────────────────────────────── -->
+
+<style>
+  /* 兜底：不支持 clip-path:path() 时退回胶囊 + 旋转方块 */
+  .pin-label{position:absolute;transform:translate(-50%,-100%);
+    background:var(--ink);color:#f8f4ee;border:0;
+    font:600 10.5px/1 var(--sans);letter-spacing:.04em;
+    padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;
+    /* 缓动用全站 house silk（动画规范 §6），不要弹性过冲 */
+    transition:transform .35s cubic-bezier(0.25,0.1,0.25,1);}
+  .pin-label::after{content:"";position:absolute;left:50%;bottom:-3.5px;
+    width:7px;height:7px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
+  .pin-label.below{transform:translate(-50%,0);}
+  .pin-label.below::after{bottom:auto;top:-3.5px;}
+  .pin-label:hover{transform:translate(-50%,-100%) scale(1.08);}
+  .pin-label.below:hover{transform:translate(-50%,0) scale(1.08);}
+
+  /* 标准形态：一条 path 裁出 body+tail。
+     注意 clip-path 画不到盒子外面 → 用 padding 给尾巴留出空间。 */
+  @supports (clip-path: path("M0 0")){
+    .pin-label{border-radius:0;padding-bottom:calc(6px + var(--tail,6.5px));}
+    .pin-label.below{padding-bottom:6px;padding-top:calc(6px + var(--tail,6.5px));}
+    .pin-label::after{display:none;}
+  }
+</style>
+
+<script>
+/* 尾巴长度；同时是 CSS 里 --tail 的值 */
+const TAIL = 6.5;
+/* 尖端因为被收进盒子里，定位时要把这段补回去（不支持 path() 时为 0） */
+const HAS_PATH = !!(window.CSS && CSS.supports && CSS.supports('clip-path','path("M0 0")'));
+const TIP_ADJ  = HAS_PATH ? 3.5 : 0;
+
+/* w,h = 盒子尺寸；t = 尾巴长度；below = 尾巴朝上（标签在节点下方） */
+function pinPath(w, h, t, below){
+  const R  = Math.min(h/2, w/2);      // 圆角半径 = 半个高度（胶囊）
+  const k  = R * 0.68;                // ← 关键常数，见上文
+  const cx = w/2;
+  const B  = Math.min(5.5, (w/2 - R)/2 || 5.5);   // 尾根半宽
+  const F  = Math.min(5,   (w/2 - R - B) || 5);   // 尾根到直边的过渡段
+  const y = v => (below ? (h + t - v) : v).toFixed(2);   // below 时整体镜像
+  const x = v => v.toFixed(2);
+  return 'M '+x(R)+' '+y(0)
+    +' L '+x(w-R)+' '+y(0)
+    /* 右上圆角 → 右下圆角：控制臂 k 拉长，曲率远离接缝 */
+    +' C '+x(w-R+k)+' '+y(0)+', '+x(w)+' '+y(R-k)+', '+x(w)+' '+y(R)
+    +' C '+x(w)+' '+y(R+k)+', '+x(w-R+k)+' '+y(h)+', '+x(w-R)+' '+y(h)
+    +' L '+x(cx+B+F)+' '+y(h)
+    /* 尾巴：第一个控制点 y=h（落在底边上）→ 出发切线水平 → 与底边 G1 */
+    +' C '+x(cx+B)+' '+y(h)+', '+x(cx+B*0.5)+' '+y(h+t*0.6)+', '+x(cx)+' '+y(h+t)
+    +' C '+x(cx-B*0.5)+' '+y(h+t*0.6)+', '+x(cx-B)+' '+y(h)+', '+x(cx-B-F)+' '+y(h)
+    +' L '+x(R)+' '+y(h)
+    +' C '+x(R-k)+' '+y(h)+', 0 '+y(R+k)+', 0 '+y(R)
+    +' C 0 '+y(R-k)+', '+x(R-k)+' '+y(0)+', '+x(R)+' '+y(0)+' Z';
+}
+
+/* §5.5：只在字体加载 / resize 时重算，绝不逐帧；尺寸没变就不写 DOM */
+const pinKey = [];
+function shapePins(labels){
+  labels.forEach((el, i) => {
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if(!w || !h) return;
+    const key = w+'x'+h;
+    if(pinKey[i] === key) return;      // ← 写入去重
+    pinKey[i] = key;
+    const below = el.classList.contains('below');
+    const boxH  = h - TAIL;            // 盒子里已经用 padding 给尾巴留了位
+    el.style.setProperty('--tail', TAIL+'px');
+    el.style.clipPath = 'path("'+ pinPath(w, boxH, TAIL, below) +'")';
+  });
+}
+/* 定位时用 TIP_ADJ 把尖端补偿回去，尖端才真正落在目标点上 */
+// el.style.top = (nodeY - TIP_ADJ) + 'px';
+
+document.fonts && document.fonts.ready.then(()=>shapePins(labels));
+addEventListener('resize', ()=>shapePins(labels));
+</script>
+
+<!-- ────────────────────────────────────────────────
+     三、这套思路还能用在站内哪里
+
+     1. cities · SLN 弹窗 / tooltip 的尖角（同一形状，直接复用）
+     2. cities · NEWS 卡的圆形箭头按钮 → 若要做成"从卡片伸出的指向"
+     3. sona  · #s2 时钟环的时刻 tooltip（若将来加悬停说明）
+     4. stories · Field Notes 卡片的分类标签（想做尖角挂牌时）
+     5. 任何 `border-radius` + 伪元素三角拼出来的气泡 —— 只要出现
+        「两个形状硬拼」，就是这套方法的适用场景
+
+     反过来，纯圆角矩形（无尖角、无拼接）不需要这套，
+     border-radius 本身没有接缝问题，别过度工程。
+     ──────────────────────────────────────────────── -->

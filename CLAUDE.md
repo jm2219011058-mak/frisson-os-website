@@ -60,6 +60,18 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 4. **rAF 循环两条纪律**：值没变就不写（写 DOM 前做 delta 判断）；离屏就不跑（IO 挂暂停，参照 `.sln-off` / conch blob 的做法）。
 5. **新增大 section 后跑一次 `/benchmark`** 与 `.gstack/benchmark-reports/baselines/baseline.json` 对比，帧率/体积退化要么修复要么在提交信息里说明原因。
 
+## 5.6 浮标 / 尖角气泡的标准形状（可复制实现见 components/pin-label.html）
+
+> 背景：2026-07-27。SLN 浮标原本是「胶囊 + 旋转 45° 方块」两个形状硬拼，接缝处切线突变，看着就是不丝滑。
+
+- **凡是"指向某个点的标签"**（地图节点、图表标注、tooltip 尖角、气泡），**整个轮廓必须是一条 path**（`clip-path:path()`），body 与 tail 共用同一条曲线，不许用伪元素拼三角。
+- **一律三次贝塞尔（C），不用二次（Q）**：二次只有一个控制点，两端切线被绑死，做不到接缝切线连续；三次的两个控制点可独立指定两端切线方向与长度，才能同时满足「切线连续」和「曲率峰值远离接缝」。单段、不与其他段相接的装饰弧线用二次即可。
+- **圆角控制臂取 `k = 0.68R`，不是教科书的 `0.5523R`**：后者精确拟合圆弧，但曲率在直边/圆角交界处从 0 跳到 1/R，那一跳看得见。拉长到 0.68R 把曲率峰值推到圆角正中（squircle 取舍），实测接缝曲率台阶 0.0746 → 0.0337。
+- **尾巴的第一个控制点必须落在 body 底边上** → 出发切线水平，与底边 G1 相接，不出折痕。
+- `clip-path` 画不出盒子外 → 用 `padding` 给尾巴留空间，定位时再把尖端补偿回去（cities 里是 `TIP_ADJ=3.5`）。
+- **路径只在字体加载 / resize 时重算**，尺寸没变不写 DOM（§5.5 第 4 条）；hover 缓动用 house silk `cubic-bezier(0.25,0.1,0.25,1)`，不用弹性过冲。
+- 纯圆角矩形（无尖角、无拼接）不适用本条，`border-radius` 本身没有接缝问题，别过度工程。
+
 ## 6. 各页关键结构备忘
 
 ### cities.html（最复杂）
@@ -81,6 +93,12 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 ### sona.html
 - `#s-city` 节：kicker（3.2）→ `.city-lead`（3.3 定位句，白、大）→ `.city-body`（3.3b 诗句，柔）。3.4 finale 已删除。
 - 滚动逐词点亮（GSAP ScrollTrigger scrubWords）：现仅剩 `#s-city`；`#s7` 的逐词动画已移除（2026-07-26，老出 bug），改用普通 `.reveal` 淡入。`#s-city` 与 `#s7` 仍**不能加 `content-visibility:auto`**（几何稳定性）。
+- **`#s4`「the most exquisite」= 珠串（`s4b-` 前缀，2026-07-28 从横向轮播重做）**：五种感官串成五颗玻璃珠，鼠标掠过弦起波（72 质点波动方程 + 三组驻波漂移），hover 出浮标，点击出**圆形**弹窗（感官照片 + 标签）。轮播、`initGallery()`、`.hgal/.card/.capsule` 已全部删除。
+  - **分层死规矩（§5.5 第 1 条）**：藏蓝底图、磨砂颗粒、两张手图都在 SVG **外面**的 div/img 层；SVG 里只有弦 + 珠子 + 闪光。**SVG 内不得有任何 `filter`**——参考稿的柔边全部改成径向渐变烘焙（原稿 20 个 feGaussianBlur 挂在每帧移动的珠子上，25fps 的根因）。磨砂层不用 `mix-blend-mode`。
+  - 浮标轮廓走 §5.6 的 `clip-path:path()` 三次贝塞尔（`pinPath()`，`k=0.68R`），**不许**退回胶囊 + 旋转方块。
+  - 浮标与弹窗挂 `document.body`；离屏 `.s4b-off` 停 rAF；`.s4b-stage` 带 `contain:paint`；移动端闪光减到 4 个。
+  - 五种感官的 canvas 特效引擎保留但降到 **20%**（`.s4fx{opacity:.2}`），`centred()` 改读当前 hover 的珠子（`s4Active`）。
+  - 素材：`assets/sona/s4b-hand-a|b.webp`（从参考稿 base64 抽出）；光场底图与噪点仍是内联 data-URI（小、且要平铺）。
 
 ### advocater.html
 - Frisson Fellow 墙 + 表单；原 Magic Conch 大区块已移到 cities（留注释标记）。
