@@ -74,20 +74,24 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
-  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+  .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
     gap:clamp(22px,5vh,44px);background:#fff;
+    /* NB: no `right:auto` here — it unsets inset's right edge and the sheet collapses to
+       shrink-to-fit (it was only as wide as the longest link). */
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
   .menu.open{transform:none;}
-  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:var(--ink);
+  /* explicit dark ink: on the dark-theme pages --ink is a pale cream and vanished on the white sheet */
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:#2b1d12;
     font-family:var(--serif);font-weight:400;font-size:clamp(23px,5.8vw,32px);letter-spacing:.012em;line-height:1.18;
     transform:translateY(12px);transition:opacity .4s ease,transform .55s cubic-bezier(0.25,0.1,0.25,1),color .25s;}
   .menu.open a{transform:none;}
   .menu a:hover,.menu a:active{color:var(--accent);}
   /* the bar sits at z-60, ABOVE the sheet — so while the sheet is open it has to erase itself,
      or its background and hairline float over the menu. Wordmark + close stay on top. */
-  .nav:has(.menu.open){background:transparent;border-color:transparent;}
+  .nav.menu-open{background:transparent;border-color:transparent;}
+  .nav.menu-open .brand{color:#2b1d12;}
+  .nav.menu-open .menu-btn span{background:#2b1d12;}
   .menu-btn.open span{background:#2b1d12;}
-  .nav:has(.menu.open) .brand{color:var(--ink);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
 
@@ -269,8 +273,12 @@
     font-size:clamp(24px,4.2vw,54px);line-height:1.02;letter-spacing:-.012em;color:#fff;
     text-shadow:0 2px 26px rgba(2,10,26,.6);}
   @media (max-width:600px){ .s4b-quote{font-size:clamp(21px,7vw,34px);max-width:11ch;} }
-  .s4b-bead{cursor:pointer;}
+  /* touch-action:none — a finger that lands ON a bead belongs to the string, not to the page
+     scroll. The SVG around it keeps pan-y so the rest of the artwork still scrolls normally.
+     tap-highlight + outline kill the grey box mobile browsers paint over a tapped element. */
+  .s4b-bead{cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent;}
   .s4b-bead:focus{outline:none;}
+  .s4b-bead *{-webkit-tap-highlight-color:transparent;}
   /* the frosted tooth on each bead. overlay is what makes it read as ground glass rather
      than a plastic sphere — plain alpha would only wash the colour toward white. */
   .s4b-tooth{mix-blend-mode:overlay;opacity:1;pointer-events:none;}
@@ -1165,11 +1173,21 @@
     /* Calmed from the reference: the poster could afford a fast shimmer, a page section reads
        that as nerves. Amplitudes roughly halved, periods stretched — one slow swell rather
        than three fast ripples. Still GSAP CustomEase ('breath' in, 'tide' round). */
+    /* A slow wandering nudge on top of the standing waves: every few seconds a very soft
+       impulse enters the string at a drifting position, so the motion never settles into a
+       recognisable loop. Fired from the rAF loop, so it stops dead when the section is
+       off-screen — no timer of its own to leak. */
+    var wander={p:0.34}, pulseT=0;
+    function wanderPulse(){
+      var i=Math.round(2+(N-5)*wander.p);
+      for(var j=i-8;j<=i+8;j++){ if(j>0&&j<N-1) vArr[j]-=0.9*Math.exp(-Math.pow((j-i)/4.2,2)); }
+    }
     var MODES=[
       {k:1.0,a:{v:2.0},p:{v:0.0},lo:1.1,hi:3.1,ta:21,tp:70},
       {k:2.3,a:{v:1.0},p:{v:1.7},lo:0.5,hi:1.7,ta:29,tp:93},
       {k:3.7,a:{v:0.3},p:{v:3.3},lo:0.12,hi:0.5,ta:41,tp:58}
     ];
+    if(!REDUCE) TW(wander,{p:0.72,duration:23,ease:'tide',repeat:-1,yoyo:true});
     if(!REDUCE) MODES.forEach(function(m){
       m.a.v=m.lo;
       TW(m.a,{v:m.hi,duration:m.ta,ease:'breath',repeat:-1,yoyo:true});
@@ -1187,6 +1205,7 @@
       {c:[810,880],r:92,g:'s4bG0',sh:'#4c525c',glow:'#c9cbcf'}
     ];
     BEADS.forEach(function(b,k){ b.label=(SENSES[k]||{}).label||''; b.img=(SENSES[k]||{}).img||''; });
+    var COARSE=matchMedia('(pointer:coarse)').matches;
     var D=Math.PI/180, layer=$('s4bBeads');
     BEADS.forEach(function(b,k){
       var best=0,bd=1e9;
@@ -1226,17 +1245,20 @@
       /* hover is only ever a hint — it lifts the bead and brings up its colour. Opening the
          panel is a deliberate click, so the disc stays put until you dismiss it. */
       g.addEventListener('mouseenter',function(){ s4Active=k;
-        TW(b.st,{s:1.055,duration:.55,ease:'pop'}); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
+        TW(b.st,{s:1.055,duration:.55,ease:'pop'}); tintOn(b); });
       g.addEventListener('mouseleave',function(){
-        TW(b.st,{s:1,duration:.7,ease:'silk'}); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
+        TW(b.st,{s:1,duration:.7,ease:'silk'}); if(!COARSE) tintOff(b); });   /* touch keeps it lit until dismissed */
       g.addEventListener('pointerdown',function(){ TW(b.st,{s:.975,duration:.28,ease:'silk'}); });
       g.addEventListener('click',function(){ if(dragged){ dragged=false; return; }   /* it was a swipe, not a tap */
-        s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
-      g.addEventListener('focus',function(){ s4Active=k; TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
-      g.addEventListener('blur',function(){ TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
+        /* a tap must light the bead itself — on touch there is no mouseenter to do it */
+        s4Active=k; tintOn(b); TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
+      g.addEventListener('focus',function(){ s4Active=k; tintOn(b); });
+      g.addEventListener('blur',function(){ tintOff(b); });
       g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBead(k); } });
     });
-    function tintPaint(){ BEADS.forEach(function(b){ if(b.tint) b.tint.setAttribute('opacity',b.tn.o.toFixed(3)); }); }
+    function tintPaint(){ BEADS.forEach(function(b){ if(b.tint) b.tint.setAttribute('opacity',(b.tinted?b.tn.o:0).toFixed(3)); }); }
+    function tintOn(b){ TW(b.tn,{o:1,duration:.6,ease:'glide',onUpdate:tintPaint}); }
+    function tintOff(b){ TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); }
     /* Hover tint — the bead takes on ITS OWN photo's colours. Sampled at runtime rather than
        hand-picked, so swapping the image in SENSES updates the hover colour with it. */
     function paletteFrom(im){
@@ -1265,6 +1287,7 @@
       st[0].setAttribute('stop-color',rgb(pal[0]));
       st[1].setAttribute('stop-color',rgb(pal[1]));
       st[2].setAttribute('stop-color',rgb(pal[2]));
+      if(BEADS[k]) BEADS[k].tinted=true;      /* only fade one in once it has real colours */
     }
     BEADS.forEach(function(b,k){
       var im=s4Imgs[k]; if(!im) return;
@@ -1382,7 +1405,6 @@
     /* Touch: pan-y on the SVG means a vertical swipe still scrolls the page, while a sideways
        drag is delivered here and ripples the string. A finger carries far more travel per
        event than a mouse, so its influence radius is widened and its swing damped. */
-    var COARSE=matchMedia('(pointer:coarse)').matches;
     var dragPx=0, dragged=false;
     svg.addEventListener('pointermove',function(e){
       var p=toSvg(e);
@@ -1400,6 +1422,7 @@
     function frame(now){
       var dt=Math.min(.05,(now-prev)/1000); prev=now;
       if(!G) miniTick(dt);
+      if(!REDUCE){ pulseT+=dt; if(pulseT>4.6){ pulseT=0; wanderPulse(); } }
       step(); render();
       raf=requestAnimationFrame(frame);
     }
@@ -1471,6 +1494,7 @@
     }
     function closeModal(){
       if(ov.hidden) return;
+      if(COARSE && openK>-1 && BEADS[openK]) tintOff(BEADS[openK]);
       openK=-1;
       ov.classList.remove('live');
       TW(os,{o:0,duration:.35,ease:'silk',onUpdate:paintOv});
@@ -1767,7 +1791,7 @@
   (function(){
     var b=document.getElementById('menuBtn'), m=document.getElementById('menu');
     if(!b||!m) return;
-    b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
+    b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); var nv=b.closest('.nav'); if(nv)nv.classList.toggle('menu-open',o); });
     m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
   })();
 
