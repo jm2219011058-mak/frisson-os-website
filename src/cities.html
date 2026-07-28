@@ -843,10 +843,18 @@
       .sln-fsec .prop-feats{margin-top:clamp(24px,4vh,40px);}
       /* persistent node labels (mobile) */
       .sln-mlabs{position:absolute;inset:0;z-index:4;pointer-events:none;display:block;}
-      .sln-mlab{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:var(--ink);color:#f8f4ee;font:600 10.5px/1 var(--sans);letter-spacing:.04em;padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.4,.5,1);}
+      .sln-mlab{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:var(--ink);color:#f8f4ee;font:600 10.5px/1 var(--sans);letter-spacing:.04em;padding:6px 11px;border-radius:999px;white-space:nowrap;cursor:pointer;transition:transform .35s cubic-bezier(0.25,0.1,0.25,1);}
       .sln-mlab::after{content:"";position:absolute;left:50%;bottom:-3.5px;width:7px;height:7px;background:var(--ink);transform:translateX(-50%) rotate(45deg);}
       .sln-mlab.below{transform:translate(-50%,0);}
       .sln-mlab.below::after{bottom:auto;top:-3.5px;}
+      /* One continuous outline instead of capsule + rotated square: the tail moves INSIDE the box
+         (clip-path can't paint outside it) and JS clips body and tail as a single cubic-Bézier path.
+         The old tail met the flat underside at a hard V — a G0 crease with no transition at all. */
+      @supports (clip-path: path("M0 0")){
+        .sln-mlab{border-radius:0;padding-bottom:calc(6px + var(--sln-tail,6.5px));}
+        .sln-mlab.below{padding-bottom:6px;padding-top:calc(6px + var(--sln-tail,6.5px));}
+        .sln-mlab::after{display:none;}
+      }
       /* portrait: label already visible — hovering its node scales it gently, no second tooltip */
       .sln-mlab:hover,.sln-mlab.zoom{transform:translate(-50%,-100%) scale(1.08);}
       .sln-mlab.below:hover,.sln-mlab.below.zoom{transform:translate(-50%,0) scale(1.08);}
@@ -903,13 +911,16 @@
     (function(){
       const NS='http://www.w3.org/2000/svg';
       const INTERACTIVE=[1,11,25];
-      const TIP={1:'Zahir Sky Atelier',11:'Build with Frisson',25:'Frisson Global Living Network'};
+      const TIP={1:'Zahir Sky Atelier',11:'Build with Frisson',25:'Global Living Network'};
       let MLABS=null;
       const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarse=matchMedia('(pointer: coarse)').matches;
       /* persistent labels now show on every viewport — stub keeps the old gate points true */
       const mlabMQ={matches:true,addEventListener:function(){},addListener:function(){}};
       const HIT=coarse?26:19;
+      /* the one-path label shape needs clip-path:path(); without it we keep capsule + diamond */
+      const HAS_PATH=!!(window.CSS&&CSS.supports&&CSS.supports('clip-path','path("M0 0")'));
+      const TIP_ADJ=HAS_PATH?3.5:0;
 
       const $=id=>document.getElementById('sln-'+id);
       const root=$('root'), svg=$('scene'), stage=$('stage'), guide=$('guide'), deco=$('deco'), cal=$('cal');
@@ -1077,7 +1088,9 @@
           else if(m.id==='globe'){x=lerp(549,962,t);y=lerp(110,100,t);pad=17.5*k+8;}
           else{const p=mpt[m.id];if(!p)return;x=p[0];y=p[1];pad=13*p[2]*k+8;}
           m.el.style.left=(x*k).toFixed(1)+'px';
-          m.el.style.top=((y*k)+(m.below?pad:-pad)).toFixed(1)+'px';
+          /* the tail used to hang 3.5px outside the box; now it lives inside it, so nudge the
+             box back by that much to leave the tip pointing at exactly the same spot */
+          m.el.style.top=((y*k)+(m.below?pad-TIP_ADJ:-pad+TIP_ADJ)).toFixed(1)+'px';
         });
       }
 
@@ -1328,6 +1341,47 @@
         b.addEventListener('click',m.open);
         mlabsWrap.appendChild(b); m.el=b;
       });
+
+      /* ---- label outline: one path, cubic Béziers throughout ----
+         Caps use k = 0.68R rather than the 0.5523R that reproduces a circular arc: the fuller
+         control arms keep curvature LOW where the cap meets the straight edge, so it reads as a
+         continuous corner instead of the curvature step a plain border-radius gives you.
+         The tail leaves the underside with its first control point ON that edge — the tangent is
+         horizontal at the join, so body and tail share one smooth outline (G1, no crease). */
+      const TAIL=6.5;
+      function mlabPath(w,h,t,below){
+        const R=Math.min(h/2,w/2), k=R*0.68, cx=w/2;
+        const B=Math.min(5.5,(w/2-R)/2||5.5), F=Math.min(5,(w/2-R-B)||5);
+        const y=v=>(below?(h+t-v):v).toFixed(2), x=v=>v.toFixed(2);
+        return 'M '+x(R)+' '+y(0)
+          +' L '+x(w-R)+' '+y(0)
+          +' C '+x(w-R+k)+' '+y(0)+', '+x(w)+' '+y(R-k)+', '+x(w)+' '+y(R)
+          +' C '+x(w)+' '+y(R+k)+', '+x(w-R+k)+' '+y(h)+', '+x(w-R)+' '+y(h)
+          +' L '+x(cx+B+F)+' '+y(h)
+          +' C '+x(cx+B)+' '+y(h)+', '+x(cx+B*0.5)+' '+y(h+t*0.6)+', '+x(cx)+' '+y(h+t)
+          +' C '+x(cx-B*0.5)+' '+y(h+t*0.6)+', '+x(cx-B)+' '+y(h)+', '+x(cx-B-F)+' '+y(h)
+          +' L '+x(R)+' '+y(h)
+          +' C '+x(R-k)+' '+y(h)+', 0 '+y(R+k)+', 0 '+y(R)
+          +' C 0 '+y(R-k)+', '+x(R-k)+' '+y(0)+', '+x(R)+' '+y(0)+' Z';
+      }
+      /* label boxes never change with t — reshape on font load / resize only, never per frame (§5.5) */
+      const mlabKey=[];
+      function shapeMlabs(){
+        if(!MLABS) return;
+        MLABS.forEach((m,i)=>{
+          const w=m.el.offsetWidth, h=m.el.offsetHeight;
+          if(!w||!h) return;
+          const key=w+'x'+h;
+          if(mlabKey[i]===key) return;
+          mlabKey[i]=key;
+          const d='path("'+mlabPath(w,h-TAIL,TAIL,!!m.below)+'")';
+          m.el.style.clipPath=d; m.el.style.webkitClipPath=d;
+        });
+        dirty=true;   /* tail tip moved into the box — re-run placeMlabs against the new height */
+      }
+      requestAnimationFrame(shapeMlabs);
+      if(document.fonts&&document.fonts.ready) document.fonts.ready.then(shapeMlabs);
+      addEventListener('resize',shapeMlabs);
       dirty=true;
 
       // caption CTA → expandable blurb (GSAP height morph both ways; CSS fallback)
