@@ -1189,15 +1189,15 @@
       gain      : 1.0,    /* master multiplier over everything below                        */
 
       /* the breeze — continuous, never a kick */
-      breeze    : 4.8,   /* how hard the air pushes. THE knob for "more movement"          */
+      breeze    : 16,   /* how hard the air pushes. THE knob for "more movement"          */
       breezeK   : 1.35,   /* gust wavelength along the string. <1 one broad push, >2 ripples */
-      gustLo    : 0.45,   /* the wind drops to this…                                         */
+      gustLo    : 0.55,   /* the wind drops to this…                                         */
       gustHi    : 1.00,   /* …and rises to this                                              */
-      gustTime  : 11,     /* seconds for one lull-to-gust breath                            */
-      travelTime: 26,     /* seconds for the gust to travel the length of the string        */
+      gustTime  : 4.5,     /* seconds for one lull-to-gust breath                            */
+      travelTime: 6,     /* seconds for the gust to travel the length of the string        */
 
       /* the sway underneath */
-      swell     : 3.8,    /* multiplier over the three MODE amplitudes                      */
+      swell     : 7.5,    /* multiplier over the three MODE amplitudes                      */
       bead      : 0.055   /* how much each bead breathes on its own, as a scale delta       */
     };
     var breeze={a:IDLE.gustLo, ph:0};
@@ -1358,7 +1358,7 @@
     var cur={x:0,y:0,px:0,py:0,on:false,vx:0,vy:0};
     /* SWEEP/REPEL halved and the ceilings pulled in, damping raised .985 -> .972 so the string
        settles instead of ringing on. The wave still travels — it just no longer flails. */
-    var R_INF=190, SWEEP=.15, REPEL=1.0, MAXY=170, MAXV=18;
+    var R_INF=190, SWEEP=.15, REPEL=1.0, MAXY=300, MAXV=34;
     if(matchMedia('(pointer:coarse)').matches){ R_INF=250; SWEEP=.10; }
     function step(){
       /* the breeze: a whole-string force, smooth in space and time, applied every frame.
