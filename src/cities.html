@@ -58,18 +58,19 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
-  /* mobile menu — full-screen white sheet with big editorial links (no pills) */
+  /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
   .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
-    gap:clamp(20px,4.5vh,40px);background:rgba(255,255,255,.88);
-    -webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);
-    z-index:55;transform:none;transition:opacity .3s ease;}
+    gap:clamp(22px,5vh,44px);background:#fff;
+    z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
   .menu.open{transform:none;}
-  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:4px 12px;color:var(--ink);
-    font-weight:700;font-size:clamp(30px,8.5vw,46px);letter-spacing:-.005em;line-height:1.1;
-    transform:translateY(16px);transition:opacity .35s ease,transform .45s cubic-bezier(.34,1.4,.5,1),color .25s;}
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:var(--ink);
+    font-family:var(--serif);font-weight:400;font-size:clamp(23px,5.8vw,32px);letter-spacing:.012em;line-height:1.18;
+    transform:translateY(12px);transition:opacity .4s ease,transform .55s cubic-bezier(0.25,0.1,0.25,1),color .25s;}
   .menu.open a{transform:none;}
   .menu a:hover,.menu a:active{color:var(--accent);}
-  /* while the white sheet is open the nav must read dark, even on the light-nav pages */
+  /* the bar sits at z-60, ABOVE the sheet — so while the sheet is open it has to erase itself,
+     or its background and hairline float over the menu. Wordmark + close stay on top. */
+  .nav:has(.menu.open){background:transparent;border-color:transparent;}
   .menu-btn.open span{background:#2b1d12;}
   .nav:has(.menu.open) .brand{color:var(--ink);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
@@ -764,6 +765,14 @@
       .sln-overlay.show .sln-card{transform:none;opacity:1}
       .sln-card::-webkit-scrollbar{width:6px}
       .sln-card::-webkit-scrollbar-thumb{background:#e0d5c4;border-radius:99px}
+      /* ---- squircle corners on every panel in this section (CLAUDE.md §5.6) ----
+         Big radii show the curvature jump far more than a small pill does, so this is where
+         the superellipse pays off most. corner-shape (not clip-path) because these panels
+         carry box-shadows and clip-path is applied AFTER filter — it would cut the shadow off.
+         Where it isn't supported the plain border-radius stands, so nothing regresses. */
+      @supports (corner-shape: squircle){
+        .sln-card,.sln-cap-panel,.prop-card,.vision,.vision-fig{corner-shape:squircle;}
+      }
       .sln-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;border:1px solid #e8ddcd;background:transparent;color:#9a8b74;font-size:19px;line-height:1;cursor:pointer;transition:.25s;display:grid;place-items:center;}
       .sln-close:hover{background:#f4ece0;color:#5c4f3c;transform:rotate(90deg)}
       .sln-eyebrow{color:var(--accent);font:500 clamp(15px,2.2vw,19px)/1.3 var(--sans);letter-spacing:.06em;margin-bottom:14px}
