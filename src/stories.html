@@ -47,20 +47,24 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
-  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+  .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
     gap:clamp(22px,5vh,44px);background:#fff;
+    /* NB: no `right:auto` here — it unsets inset's right edge and the sheet collapses to
+       shrink-to-fit (it was only as wide as the longest link). */
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
   .menu.open{transform:none;}
-  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:var(--ink);
+  /* explicit dark ink: on the dark-theme pages --ink is a pale cream and vanished on the white sheet */
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:#2b1d12;
     font-family:var(--serif);font-weight:400;font-size:clamp(23px,5.8vw,32px);letter-spacing:.012em;line-height:1.18;
     transform:translateY(12px);transition:opacity .4s ease,transform .55s cubic-bezier(0.25,0.1,0.25,1),color .25s;}
   .menu.open a{transform:none;}
   .menu a:hover,.menu a:active{color:var(--accent);}
   /* the bar sits at z-60, ABOVE the sheet — so while the sheet is open it has to erase itself,
      or its background and hairline float over the menu. Wordmark + close stay on top. */
-  .nav:has(.menu.open){background:transparent;border-color:transparent;}
+  .nav.menu-open{background:transparent;border-color:transparent;}
+  .nav.menu-open .brand{color:#2b1d12;}
+  .nav.menu-open .menu-btn span{background:#2b1d12;}
   .menu-btn.open span{background:#2b1d12;}
-  .nav:has(.menu.open) .brand{color:var(--ink);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
 
@@ -89,7 +93,7 @@
   .st-h-title{font-size:clamp(30px,5vw,54px);text-transform:uppercase;letter-spacing:.015em;}
   .st-sub{font-family:var(--serif);font-style:italic;color:#6b6b6b;font-size:clamp(14px,1.35vw,17px);line-height:1.5;margin:clamp(8px,1.3vh,12px) 0 0;}
   .st-fig{margin:clamp(30px,5.5vh,54px) auto;max-width:clamp(240px,44vw,360px);}
-  .st-fig img{width:100%;height:auto;display:block;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.12);}
+  .st-fig img{width:100%;height:auto;display:block;border-radius:40%;box-shadow:0 12px 30px rgba(0,0,0,.12);}
   .st-branson{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--ink);text-align:center;font-size:clamp(17px,1.9vw,22px);line-height:1.65;margin:0 0 1.3em;}
   .st-eyebrow{font-family:var(--sans);font-weight:500;font-size:clamp(11px,1.2vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 clamp(30px,5vh,50px);text-align:center;}
   .st-h{font-family:var(--serif);font-weight:700;font-size:clamp(27px,4vw,44px);line-height:1.22;letter-spacing:.01em;color:var(--ink);
@@ -123,6 +127,7 @@
   /* featured masthead — newest note, full-bleed, image bleeds up behind the transparent nav */
   .fn-feature{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
     width:100%;min-height:min(76vh,700px);padding:clamp(40px,7vh,80px) clamp(24px,6vw,64px);
+    border-radius:40%;
     background:#1a1512 center/cover no-repeat;overflow:hidden;text-decoration:none;cursor:pointer;}
   .fn-feature::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
     background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 46%,rgba(0,0,0,.34) 74%,rgba(0,0,0,.66) 100%);}
@@ -148,7 +153,13 @@
   .fn-list{display:grid;grid-template-columns:repeat(2,1fr);gap:0;width:100%;}
   .fn-card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:4/3;min-height:280px;
     overflow:hidden;text-decoration:none;color:#fff;background:#1a1512 center center/cover no-repeat;
-    padding:clamp(24px,2.8vw,42px);}
+    border-radius:40%;
+    padding:clamp(38px,4.4vw,64px);}
+  /* squircle corners (CLAUDE.md §5.6) — these carry shadows/backgrounds, so corner-shape, not
+     clip-path, which is applied after filter and would cut a shadow off */
+  @supports (corner-shape: squircle){
+    .fn-feature,.fn-card,.st-fig img{corner-shape:squircle;}
+  }
   .fn-card.fn-ph{background:linear-gradient(150deg,#241b13,#12100e);}
   .fn-card::after{content:"";position:absolute;inset:0;z-index:1;
     background:linear-gradient(180deg,rgba(0,0,0,.12) 0%,rgba(0,0,0,0) 32%,rgba(0,0,0,.2) 56%,rgba(0,0,0,.74) 100%);transition:background .3s;}
@@ -294,7 +305,7 @@
 
   <script>
     (function(){ var b=document.getElementById('menuBtn'), m=document.getElementById('menu'); if(!b||!m) return;
-      b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
+      b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); var nv=b.closest('.nav'); if(nv)nv.classList.toggle('menu-open',o); });
       m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
     })();
     /* Field Notes — archive index → open article → back (Founders-Fund-style) */

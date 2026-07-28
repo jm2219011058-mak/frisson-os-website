@@ -50,20 +50,24 @@
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
-  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+  .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
     gap:clamp(22px,5vh,44px);background:#fff;
+    /* NB: no `right:auto` here — it unsets inset's right edge and the sheet collapses to
+       shrink-to-fit (it was only as wide as the longest link). */
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
   .menu.open{transform:none;}
-  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:var(--ink);
+  /* explicit dark ink: on the dark-theme pages --ink is a pale cream and vanished on the white sheet */
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:#2b1d12;
     font-family:var(--serif);font-weight:400;font-size:clamp(23px,5.8vw,32px);letter-spacing:.012em;line-height:1.18;
     transform:translateY(12px);transition:opacity .4s ease,transform .55s cubic-bezier(0.25,0.1,0.25,1),color .25s;}
   .menu.open a{transform:none;}
   .menu a:hover,.menu a:active{color:var(--accent);}
   /* the bar sits at z-60, ABOVE the sheet — so while the sheet is open it has to erase itself,
      or its background and hairline float over the menu. Wordmark + close stay on top. */
-  .nav:has(.menu.open){background:transparent;border-color:transparent;}
+  .nav.menu-open{background:transparent;border-color:transparent;}
+  .nav.menu-open .brand{color:#2b1d12;}
+  .nav.menu-open .menu-btn span{background:#2b1d12;}
   .menu-btn.open span{background:#2b1d12;}
-  .nav:has(.menu.open) .brand{color:var(--ink);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
 
@@ -643,7 +647,7 @@
   (function(){
     var b=document.getElementById('menuBtn'), m=document.getElementById('menu');
     if(!b||!m) return;
-    b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); b.setAttribute('aria-expanded',o?'true':'false'); });
+    b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); var nv=b.closest('.nav'); if(nv)nv.classList.toggle('menu-open',o); b.setAttribute('aria-expanded',o?'true':'false'); });
     m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); b.setAttribute('aria-expanded','false'); });
   })();
 </script>
