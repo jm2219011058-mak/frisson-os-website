@@ -1187,7 +1187,7 @@
 
       /* the wandering nudge — a soft impulse entering the string every few seconds */
       pulseEvery: 2.6,   /* seconds between impulses. Lower = busier                       */
-      pulseAmp  : 2.6,   /* strength of each impulse. This is the "how big a flick" knob   */
+      pulseAmp  : 6.5,   /* strength of each impulse. This is the "how big a flick" knob   */
       pulseWidth: 5.0,   /* how many samples it spreads over. Higher = a longer, softer swell */
       wanderFrom: 0.18,  /* where impulses enter, as a fraction of the string, 0=left tip  */
       wanderTo  : 0.86,
@@ -1436,6 +1436,33 @@
       cur.x=p.x; cur.y=p.y; cur.on=true;
     },{passive:true});
     svg.addEventListener('pointerdown',function(e){ if(e.pointerType!=='mouse'){ dragPx=0; dragged=false; var p=toSvg(e); cur.px=cur.x=p.x; cur.py=cur.y=p.y; cur.vx=cur.vy=0; cur.on=true; } },{passive:true});
+
+    /* Touch ownership — CSS touch-action is unreliable on SVG <g> (WebKit largely ignores it),
+       so a finger that lands on a bead is claimed here instead: preventDefault on touchstart
+       and touchmove stops the page scrolling, and the string is fed straight from the touch
+       rather than via pointermove, which some browsers stop emitting once the default is
+       cancelled. A finger that lands anywhere ELSE is left alone, so the page still scrolls. */
+    var ownTouch=false;
+    svg.addEventListener('touchstart',function(e){
+      var t=e.target;
+      ownTouch=!!(t&&t.closest&&t.closest('.s4b-bead'));
+      if(!ownTouch) return;
+      e.preventDefault();
+      var p=toSvg(e.touches[0]);
+      dragPx=0; dragged=false;
+      cur.px=cur.x=p.x; cur.py=cur.y=p.y; cur.vx=cur.vy=0; cur.on=true;
+    },{passive:false});
+    svg.addEventListener('touchmove',function(e){
+      if(!ownTouch) return;
+      e.preventDefault();
+      var p=toSvg(e.touches[0]);
+      dragPx+=Math.abs(p.x-cur.x)+Math.abs(p.y-cur.y);
+      if(dragPx>14) dragged=true;
+      cur.x=p.x; cur.y=p.y; cur.on=true;
+    },{passive:false});
+    function endTouch(){ if(!ownTouch) return; ownTouch=false; cur.on=false; }
+    svg.addEventListener('touchend',endTouch,{passive:true});
+    svg.addEventListener('touchcancel',endTouch,{passive:true});
     svg.addEventListener('pointerleave',function(){ cur.on=false; });
     svg.addEventListener('pointercancel',function(){ cur.on=false; });
     svg.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') cur.on=false; },{passive:true});
