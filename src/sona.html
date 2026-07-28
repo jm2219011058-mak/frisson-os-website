@@ -226,15 +226,53 @@
   .capsule i.on{width:30px;background:var(--ink);}
 
 
-  /* #s4 sense-effect background layer (cinematic sound design waves, etc.) */
-  .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  /* #s4 sense-effect background layer — dialled to 20%: the per-sense effects are now a faint
+     residue behind the bead string, not the subject. One knob (.s4fx opacity) covers all three
+     canvases; the Vanta water gets its own because it is a separate DOM layer. */
+  .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.2;}
   .s4lib{position:absolute;left:0;right:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .9s ease;overflow:hidden;}
   .s4lib.on{opacity:1;}
-  #s4stars{top:0;height:62%;}
+  #s4stars{top:0;height:62%;opacity:0;}
+  #s4stars.on{opacity:.2;}
   #s4waves{bottom:0;height:58%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%);}
-  #s4waves.on{pointer-events:auto;opacity:.5;}   /* 3D water at 50% — reacts to mouse + touch, but blends into the scene */
+  #s4waves.on{opacity:.1;}   /* was .5 — 20% of it, and no longer grabs the pointer */
   #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
-  #s4 .gal-head,#s4 .hgal,#s4 .capsule,#s4 .s4-foot{position:relative;z-index:1;}
+  #s4 .gal-head,#s4 .s4b-stage,#s4 .s4-foot{position:relative;z-index:1;}
+
+  /* ---- #s4 · bead string ----
+     The five senses as glass beads threaded on a single line, laid out after the reference:
+     one bead held apart up-left, the other four overlapping down a diagonal, sparkles in the
+     gaps, thread running off both edges. Each bead carries its own label.
+     The section background is unchanged — only turned down to 20% (see .s4fx above). */
+  #s4{overflow:hidden;padding-left:0;padding-right:0;}
+  /* the stage is full-bleed, so the copy keeps the section's side gutter on its own */
+  #s4 .gal-head,#s4 .s4-foot{padding:0 clamp(18px,5vw,64px);}
+  #s4 .gal-head{margin:0 0 clamp(6px,1.4vh,16px);}
+  .s4b-stage{flex:0 0 auto;width:100vw;margin-left:calc(50% - 50vw);}
+  #s4bScene{position:relative;z-index:1;display:block;width:100%;}
+  /* the thread fades in with the section via a class, NOT a GSAP fromTo — a fromTo writes
+     opacity:0 up front, so a stalled ticker leaves the whole string invisible */
+  .s4b-thread{fill:none;stroke:rgba(214,228,240,.42);stroke-width:1.6;stroke-linecap:round;
+    opacity:0;transition:opacity 1.1s ease;}
+  #s4.s4b-in .s4b-thread{opacity:1;}
+  #s4 .s4b-item{opacity:0;animation:sdlCalIn .6s cubic-bezier(0.25,0.1,0.25,1) forwards;animation-play-state:paused;}
+  #s4.s4b-in .s4b-item{animation-play-state:running;}
+  #s4 .node{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;}
+  /* the whole bead lifts on hover — scaling only the sphere would slide the label off it */
+  .s4b-lift{transform-box:fill-box;transform-origin:center;transition:transform .32s cubic-bezier(.34,1.4,.5,1);}
+  #s4 .node:hover .s4b-lift,#s4 .node:focus-visible .s4b-lift{transform:scale(1.07);}
+  .s4b-lay{pointer-events:none;}
+  .s4b-rim{fill:none;stroke:rgba(255,255,255,.22);stroke-width:1;}
+  /* selected bead: a brighter rim, not an outline. An accent stroke round a coloured sphere
+     reads as a highlighter ring. */
+  #s4 .node.on .s4b-rim{stroke:rgba(255,255,255,.62);stroke-width:1.4;}
+  /* Label sits ON the bead. Note --sans resolves to Fraunces on this site, so 700 lands very
+     heavy inside a small circle — 500 with a little tracking keeps it editorial. */
+  .s4b-lb{fill:rgba(20,36,54,.9);font-family:var(--sans);font-weight:500;letter-spacing:.015em;pointer-events:none;}
+  .s4b-spark{fill:rgba(228,240,250,.7);pointer-events:none;}
+  @media (prefers-reduced-motion:reduce){
+    #s4 .s4b-item{animation:none;opacity:1;}
+  }
 
   /* 3 · sensing — left-aligned composition (per mockup) */
   /* centered, editorial — image as hero (Apple-style) */
@@ -517,8 +555,33 @@
       <p class="s4-sub lead">{{3.8}}</p>
       <h2 class="t2">{{3.9}}</h2>
     </div>
-    <div class="hgal" id="gal4"></div>
-    <div class="capsule" id="cap4" aria-hidden="true"></div>
+    <div class="s4b-stage" id="s4bStage">
+      <svg id="s4bScene" viewBox="0 0 1500 760" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five senses Sona tunes">
+        <defs>
+          <!-- Beads, painted rather than moulded: a dusty body gradient, a SOFT sheen and a
+               bounce light as separate low-opacity layers. A single hard white dot on a
+               saturated ball is the plastic-button look we are avoiding. -->
+          <radialGradient id="s4bG0" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#e6ecf1"/><stop offset="52%" stop-color="#c3ceda"/><stop offset="86%" stop-color="#93a3b3"/><stop offset="100%" stop-color="#8496a7"/></radialGradient>
+          <radialGradient id="s4bG1" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c3edd5"/><stop offset="52%" stop-color="#63c79b"/><stop offset="86%" stop-color="#2c8a68"/><stop offset="100%" stop-color="#1f7357"/></radialGradient>
+          <radialGradient id="s4bG2" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c2dcf6"/><stop offset="52%" stop-color="#6398d8"/><stop offset="86%" stop-color="#2a5fa4"/><stop offset="100%" stop-color="#1e4c8c"/></radialGradient>
+          <radialGradient id="s4bG3" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#c6ecf7"/><stop offset="52%" stop-color="#66c2dd"/><stop offset="86%" stop-color="#2b7f9e"/><stop offset="100%" stop-color="#1f6c8a"/></radialGradient>
+          <radialGradient id="s4bG4" cx="36%" cy="32%" r="76%"><stop offset="0%" stop-color="#d3f2fb"/><stop offset="52%" stop-color="#84d5e9"/><stop offset="86%" stop-color="#3f9ab5"/><stop offset="100%" stop-color="#32869f"/></radialGradient>
+          <!-- shared light: a broad soft sheen up-left, a faint bounce along the lower-right rim -->
+          <radialGradient id="s4bSheen" cx="33%" cy="27%" r="44%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".72"/>
+            <stop offset="42%" stop-color="#ffffff" stop-opacity=".26"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bBounce" cx="70%" cy="82%" r="38%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bCore" cx="30%" cy="24%" r="12%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <path id="s4bThread" class="s4b-thread"/>
+        <g id="s4bCal"></g>
+      </svg>
+    </div>
     <p class="s4-foot reveal">{{3.10}}</p>
   </section>
 
@@ -626,12 +689,11 @@
   function closeSheet(){ sheet.classList.remove('open'); document.documentElement.style.overflow=''; }
   document.getElementById('sheetClose').addEventListener('click',closeSheet);
 
-  // build section 4 gallery — labels
-  var gal4=document.getElementById('gal4');
-  SENSES.forEach(function(s){
-    var c=document.createElement('div'); c.className='card';
-    c.innerHTML='<img src="'+s.img+'?v=3" alt="'+s.label+'" loading="lazy" draggable="false"><span class="label">'+s.label+'</span>';
-    gal4.appendChild(c);
+  /* #s4 is a bead string now, not a carousel — the FX engine below reads this instead of
+     "which card is centred". Hidden preloads keep the palette sampler working. */
+  var s4Active=0;
+  var s4Imgs=SENSES.map(function(s){
+    var im=new Image(); im.decoding='async'; im.src=s.img+(s.img.indexOf('?')<0?'?v=3':''); return im;
   });
 
   // reusable gallery behaviour: end-padding (keep one centered), capsule dots, drag-to-scroll
@@ -1006,7 +1068,184 @@
     applyAll(tCur);
   })();
 
-  initGallery(gal4, document.getElementById('cap4'));
+  /* ===== #s4 · BEAD STRING =====
+     The five senses threaded on one line, laid out after the reference illustration: a single
+     bead held apart up-left, then four overlapping down a diagonal, sparkles in the gaps, the
+     thread running off both edges. Each bead carries its own label.
+
+     Geometry is ONE cubic Bezier held in normalised (0-1) coordinates, stamped into a viewBox
+     whose height is derived from the LIVE viewport ratio — so the band is always the same
+     slice of the screen (BAND) and the same curve reads as a steep diagonal on a phone and a
+     shallow one on a desktop. Fixed portrait/landscape presets could not do this: a near-square
+     window fell through to the portrait preset and the band came out taller than the viewport.
+
+     Beads are seated by ARC LENGTH (not by the Bezier parameter, which bunches where the curve
+     is tight), so the overlap stays even. They take no tangent rotation — they are spheres, and
+     a rotating specular reads as a wobble; it would also tip the labels over. */
+  (function(){
+    var NS='http://www.w3.org/2000/svg';
+    var stage=document.getElementById('s4bStage'); if(!stage) return;
+    var sec=document.getElementById('s4');
+    var svg=document.getElementById('s4bScene'), cal=document.getElementById('s4bCal'),
+        thread=document.getElementById('s4bThread');
+    function el(n,attrs,parent){var e=document.createElementNS(NS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+
+    var VBW=1400, BAND=0.56;                 /* band height as a share of the viewport */
+    var CV=[[0.22,-0.04],[0.06,0.24],[0.40,0.48],[0.86,0.99]];   /* normalised control points */
+    /* The reference's rhythm: one bead set apart, then four packed tight enough to overlap.
+       These fractions are the largest that keep every bead fully inside the frame across
+       phone / tablet / laptop / 1080p — the last bead is the one that clips first. */
+    var FR=[0.22,0.43,0.545,0.66,0.775], SP=[0.335,0.60,0.638];
+    var GAP=FR[2]-FR[1];                     /* the packed spacing — drives bead size */
+    /* sparkles are built FIRST so they sit behind the beads: painted on top they landed over
+       the labels, and in the reference they peek out from the bead edges */
+    var ITEMS=SP.map(function(f){ return {node:-1, frac:f}; })
+             .concat(FR.map(function(f,i){ return {node:i, frac:f}; }));
+
+    var N=200, base=new Array(N+1), cum=new Array(N+1);
+    var nodeEls={}, labelEls=[], itemSeq=0;
+    function beadItem(it){
+      var g=el('g',{'class':'s4b-item'},cal);
+      g.style.animationDelay=(0.1+(itemSeq++)*0.08).toFixed(2)+'s';
+      if(it.node>-1){
+        var k=it.node;
+        g.classList.add('node');
+        g.setAttribute('role','button'); g.setAttribute('tabindex','0');
+        g.setAttribute('aria-label',SENSES[k].label);
+        /* four coincident circles, not one: body → bounce → sheen → tiny core highlight.
+           Stacking soft gradient layers is what reads as painted glass; a single hard white
+           dot on a saturated ball reads as a plastic button. */
+        var lift=el('g',{'class':'s4b-lift'},g);
+        el('circle',{'class':'s4b-bead',r:20,fill:'url(#s4bG'+k+')'},lift);
+        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bBounce)'},lift);
+        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bSheen)'},lift);
+        el('circle',{'class':'s4b-bead s4b-lay',r:20,fill:'url(#s4bCore)'},lift);
+        el('circle',{'class':'s4b-rim',r:20},lift);
+        /* one word per line — every label is 2-3 short words, so this always fits the circle
+           without a measuring pass */
+        var tx=el('text',{'class':'s4b-lb','text-anchor':'middle'},lift), spans=[];
+        SENSES[k].label.split(/\s+/).forEach(function(w){
+          var sp=el('tspan',{x:0},tx); sp.textContent=w; spans.push(sp);
+        });
+        labelEls.push({t:tx,spans:spans});
+        el('circle',{'class':'s4b-hit',r:30,fill:'transparent'},g);
+        g.addEventListener('click',function(){ activate(k); restart(); });
+        g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(k); restart(); } });
+        nodeEls[k]=g;
+      } else {
+        el('path',{'class':'s4b-spark',d:'M0,-15 L3,-3 L15,0 L3,3 L0,15 L-3,3 L-15,0 L-3,-3 Z'},g);
+      }
+      return g;
+    }
+    var loopItems=ITEMS.map(beadItem);
+    var itemFrac=ITEMS.map(function(it){ return it.frac; });
+
+    var lastKey=[], lastThread='', lastR=0, lastFs=0, vbH=800;
+    function bez(cp,u){
+      var v=1-u;
+      return [v*v*v*cp[0][0]+3*v*v*u*cp[1][0]+3*v*u*u*cp[2][0]+u*u*u*cp[3][0],
+              v*v*v*cp[0][1]+3*v*v*u*cp[1][1]+3*v*u*u*cp[2][1]+u*u*u*cp[3][1]];
+    }
+    function buildBase(){
+      var cp=CV.map(function(q){ return [q[0]*VBW, q[1]*vbH]; });
+      for(var i=0;i<=N;i++) base[i]=bez(cp,i/N);
+    }
+    function layBeads(){
+      cum[0]=0;
+      for(var j=1;j<=N;j++){ cum[j]=cum[j-1]+Math.hypot(base[j][0]-base[j-1][0],base[j][1]-base[j-1][1]); }
+      var L=cum[N];
+      var d='M'+base[0][0].toFixed(1)+' '+base[0][1].toFixed(1);
+      for(var q=2;q<=N;q+=2) d+='L'+base[q][0].toFixed(1)+' '+base[q][1].toFixed(1);
+      if(d!==lastThread){ lastThread=d; thread.setAttribute('d',d); }
+      loopItems.forEach(function(g,idx){
+        var ts=itemFrac[idx]*L, lo=0, hi=N;
+        while(lo<hi){ var mid=(lo+hi)>>1; if(cum[mid]<ts) lo=mid+1; else hi=mid; }
+        var j1=Math.max(1,lo), t0=cum[j1-1], seg=(cum[j1]-t0)||1e-6, f=(ts-t0)/seg;
+        var x=base[j1-1][0]+(base[j1][0]-base[j1-1][0])*f, y=base[j1-1][1]+(base[j1][1]-base[j1-1][1])*f;
+        var key=((x*4)|0)+','+((y*4)|0);
+        if(lastKey[idx]===key) return;                       /* write dedupe (§5.5) */
+        lastKey[idx]=key;
+        g.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+      });
+      return L;
+    }
+
+    var beadCircles=[].slice.call(cal.querySelectorAll('.s4b-bead,.s4b-rim')),
+        beadHits=[].slice.call(cal.querySelectorAll('.s4b-hit')),
+        sparkEls=[].slice.call(cal.querySelectorAll('.s4b-spark'));
+    function applyAll(){
+      var cw=stage.clientWidth||1;
+      var ratio=innerWidth/Math.max(1,innerHeight);
+      vbH=Math.max(430,Math.min(2000, VBW*BAND/ratio));
+      svg.setAttribute('viewBox','0 0 '+VBW+' '+vbH.toFixed(0));
+      buildBase();
+      var L=layBeads();
+      var svgH=cw/(VBW/vbH);
+      svg.style.height=svgH+'px';
+      stage.style.height=svgH+'px';
+
+      /* Bead size comes from the PACKED spacing: a diameter a shade wider than the gap is what
+         makes neighbours overlap the way the reference does. Attributes, not CSS, so the hover
+         transform composes cleanly on top of them. */
+      var kpx=cw/VBW;                                   /* css px per viewBox unit */
+      var beadR=L*GAP*0.58;
+      if(Math.abs(beadR-lastR)>0.5){
+        lastR=beadR;
+        beadCircles.forEach(function(c){ c.setAttribute('r',beadR.toFixed(1)); });
+        beadHits.forEach(function(c){ c.setAttribute('r',(beadR*0.92).toFixed(1)); });
+        sparkEls.forEach(function(sp){ sp.setAttribute('transform','scale('+(beadR/44).toFixed(3)+')'); });
+      }
+      /* floor the label at 12 CSS px — on a phone the proportional size lands under 11px */
+      var fs=Math.max(beadR*0.215, 12/kpx), lh=fs*1.4;
+      if(Math.abs(fs-lastFs)>0.3){
+        lastFs=fs;
+        labelEls.forEach(function(Lb){
+          Lb.t.setAttribute('font-size',fs.toFixed(1));
+          var n=Lb.spans.length;
+          Lb.spans.forEach(function(sp,i){
+            sp.setAttribute('dy',(i===0 ? -(n-1)*0.5*lh+fs*0.34 : lh).toFixed(1));
+          });
+        });
+      }
+    }
+
+    /* which sense the background effects run — the bead string owns that selection now */
+    var active=-1;
+    function activate(k){
+      if(k===active) return;
+      active=k; s4Active=k;
+      Object.keys(nodeEls).forEach(function(i){ nodeEls[i].classList.toggle('on',+i===k); });
+    }
+    var timer=null;
+    function next(){ activate((active+1)%SENSES.length); }
+    function restart(){ if(timer) clearInterval(timer); timer=setInterval(next,5200); }
+
+    /* entrance is entirely CSS (class -> transition + staggered keyframes): this component owns
+       no timeline, so a stalled ticker can never leave it half-drawn */
+    var entered=false;
+    function enterStage(){ if(entered) return; entered=true; sec.classList.add('s4b-in'); }
+    /* off-screen discipline (5.5): the rotation timer stops when the section leaves */
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        var on=es[0].isIntersecting;
+        sec.classList.toggle('s4b-off',!on);
+        if(on){ enterStage(); if(active<0) activate(0); restart(); }
+        else if(timer){ clearInterval(timer); timer=null; }
+      },{rootMargin:'120px'}).observe(stage);
+    } else { enterStage(); activate(0); restart(); }
+
+    /* No standing rAF: the layout is a pure function of the viewport, so it runs on resize only.
+       Coalesced with a timer rather than rAF — rAF is the usual choice, but it also means a
+       throttled/stalled ticker silently freezes the layout, and this component has no other
+       reason to depend on the frame loop. */
+    var pend=0;
+    function relayout(){ if(pend) return; pend=setTimeout(function(){ pend=0; applyAll(); },16); }
+    if('ResizeObserver' in window){ new ResizeObserver(relayout).observe(stage); }
+    else { addEventListener('resize',relayout); }
+    addEventListener('orientationchange',relayout);
+    addEventListener('load',relayout);
+    applyAll();
+  })();
 
   /* ===== #s4 SENSE-EFFECT ENGINE — mode = centred card =====
        0 cinematic sound design · 4-corner waves + trails
@@ -1014,8 +1253,8 @@
      Runs only while its card is centred AND the section is on-screen (fades out on leave, replays on return).
      Works with mouse AND finger (pointer events). */
   try{ (function(){
-    var sec=document.getElementById('s4'), cv=document.getElementById('s4fx'), glc=document.getElementById('s4gl'), bgc=document.getElementById('s4bg'), g=gal4;
-    if(!sec||!cv||!g) return;
+    var sec=document.getElementById('s4'), cv=document.getElementById('s4fx'), glc=document.getElementById('s4gl'), bgc=document.getElementById('s4bg');
+    if(!sec||!cv) return;
     var ctx=cv.getContext('2d'), bctx=bgc&&bgc.getContext('2d'), dpr=Math.min(2,window.devicePixelRatio||1), W=0,H=0;
     var visible=false, k=0, bgK=0, t0=performance.now(), mode=-1;
     var palCache={}, curPal=[[18,16,15],[18,16,15],[18,16,15],[18,16,15],[18,16,15]], tgtPal=null, blobs=null;
@@ -1055,7 +1294,8 @@
       if(gl){ glc.width=Math.round(W*dpr); glc.height=Math.round(H*dpr); gl.viewport(0,0,glc.width,glc.height); } }
     resize(); addEventListener('resize',resize);
     if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(sec); } else visible=true;
-    function centred(){ var mid=g.scrollLeft+g.clientWidth/2,best=0,bd=1e9,c=g.children; for(var i=0;i<c.length;i++){var cc=c[i].offsetLeft+c[i].offsetWidth/2,d=Math.abs(cc-mid);if(d<bd){bd=d;best=i;}} return best; }
+    /* the bead string owns the selection now — the carousel this used to measure is gone */
+    function centred(){ return s4Active; }
     sec.addEventListener('pointermove',function(e){ var r=sec.getBoundingClientRect(); tmx=(e.clientX-r.left)/Math.max(1,r.width); },{passive:true});   /* mouse + finger */
     function drawSound(t){
       ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='rgba(0,0,0,0.11)'; ctx.fillRect(0,0,W,H);   /* trail fades toward transparent so the image-tinted bg shows through */
@@ -1128,7 +1368,7 @@
     }
     function samplePalette(idx){   /* task #2 · pull a small palette from the centred card's photo */
       var s=SENSES[idx]; if(!s) return null; var key=s.img; if(palCache[key]) return palCache[key];
-      var card=g.children[idx]; if(!card) return null; var im=card.querySelector('img');
+      var im=s4Imgs[idx];
       if(!im||!im.complete||!im.naturalWidth) return null;
       try{
         var c=document.createElement('canvas'); c.width=12; c.height=20; var cc=c.getContext('2d');
