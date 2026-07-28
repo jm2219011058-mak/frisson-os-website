@@ -1171,16 +1171,16 @@
       b.st={s:1}; b.ha={s:.9,o:.1};
       if(!REDUCE) TW(b.ha,{s:1.2,o:0,duration:3.9,ease:'swell',repeat:-1,delay:k*.62});
       /* the background FX engine follows whichever sense you are looking at */
-      /* hovering a bead IS the interaction: the disc grows straight out of its centre, and
-         letting go of both the bead and the disc closes it again. No tooltip in between. */
-      g.addEventListener('mouseenter',function(){ s4Active=k; keepOpen(); openBead(k);
+      /* hover is only ever a hint — it lifts the bead and brings up its colour. Opening the
+         panel is a deliberate click, so the disc stays put until you dismiss it. */
+      g.addEventListener('mouseenter',function(){ s4Active=k;
         TW(b.st,{s:1.055,duration:.55,ease:'pop'}); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
-      g.addEventListener('mouseleave',function(){ closeSoon();
+      g.addEventListener('mouseleave',function(){
         TW(b.st,{s:1,duration:.7,ease:'silk'}); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('pointerdown',function(){ TW(b.st,{s:.975,duration:.28,ease:'silk'}); });
       g.addEventListener('click',function(){ s4Active=k; TW(b.st,{s:1,duration:.6,ease:'pop'}); openBead(k); });
-      g.addEventListener('focus',function(){ s4Active=k; keepOpen(); openBead(k); TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
-      g.addEventListener('blur',function(){ closeSoon(); TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
+      g.addEventListener('focus',function(){ s4Active=k; TW(b.tn,{o:1,duration:.7,ease:'glide',onUpdate:tintPaint}); });
+      g.addEventListener('blur',function(){ TW(b.tn,{o:0,duration:.8,ease:'silk',onUpdate:tintPaint}); });
       g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBead(k); } });
     });
     function tintPaint(){ BEADS.forEach(function(b){ if(b.tint) b.tint.setAttribute('opacity',b.tn.o.toFixed(3)); }); }
@@ -1376,13 +1376,7 @@
     var os={o:0}, cs={s:.5,o:0};
     function paintOv(){ ov.style.opacity=os.o; }
     function paintDisc(){ ovDisc.style.opacity=cs.o; ovDisc.style.transform='translate(-50%,-50%) scale('+cs.s+')'; }
-    var lastFocus=null, closeBtn=ov.querySelector('.s4b-x'), shutT=0, openK=-1;
-    /* the disc grows over the bead, so the pointer leaves the bead the instant it opens.
-       A short grace window lets it hand over to the disc without a flicker. */
-    function keepOpen(){ if(shutT){ clearTimeout(shutT); shutT=0; } }
-    function closeSoon(){ keepOpen(); shutT=setTimeout(function(){ shutT=0; closeModal(); },140); }
-    ovDisc.addEventListener('mouseenter',keepOpen);
-    ovDisc.addEventListener('mouseleave',closeSoon);
+    var lastFocus=null, closeBtn=ov.querySelector('.s4b-x'), openK=-1;
     /* One word can be far longer than the circle's chord ("TEMPERATURE" was clipping), so the
        type is fitted to the disc after the label is set rather than trusted to a fixed size. */
     function fitCaption(W){
@@ -1410,6 +1404,7 @@
       ov.hidden=false; ov.classList.add('live');
       fitCaption(W);
       os.o=0; cs.s=.5; cs.o=0; paintOv(); paintDisc();
+      closeBtn.focus({preventScroll:true});
       TW(os,{o:1,duration:.35,ease:'glide',onUpdate:paintOv});
       TW(cs,{s:1,o:1,duration:.62,ease:'veil',onUpdate:paintDisc});
     }
@@ -1424,6 +1419,13 @@
     }
     ov.querySelector('.s4b-x').addEventListener('click',closeModal);
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
+    /* no scrim to catch the click, so dismiss on any pointer-down outside the disc */
+    document.addEventListener('pointerdown',function(e){
+      if(ov.hidden) return;
+      if(ovDisc.contains(e.target)) return;
+      if(e.target.closest && e.target.closest('.s4b-bead')) return;   /* let a bead switch panels */
+      closeModal();
+    },true);
   })();
 
   /* ===== #s4 SENSE-EFFECT ENGINE — mode = centred card =====
