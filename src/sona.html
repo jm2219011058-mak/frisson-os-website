@@ -192,13 +192,15 @@
   /* #s4 sense-effect background layer — dialled to 20%: the per-sense effects are now a faint
      residue behind the bead string, not the subject. One knob (.s4fx opacity) covers all three
      canvases; the Vanta water gets its own because it is a separate DOM layer. */
-  .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.2;}
-  .s4lib{position:absolute;left:0;right:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .9s ease;overflow:hidden;}
+  /* Turned down, not turned off. .2 over navy paper was invisible in practice — .34 keeps them
+     clearly subordinate to the beads while still reading as a live field. One knob. */
+  .s4fx{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.34;}
+  .s4lib{position:absolute;left:0;right:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s ease;overflow:hidden;}
   .s4lib.on{opacity:1;}
   #s4stars{top:0;height:62%;opacity:0;}
-  #s4stars.on{opacity:.2;}
+  #s4stars.on{opacity:.34;}
   #s4waves{bottom:0;height:58%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%);}
-  #s4waves.on{opacity:.1;}   /* was .5 — 20% of it, and no longer grabs the pointer */
+  #s4waves.on{opacity:.22;}
   #s4waves canvas,#s4stars canvas{display:block!important;width:100%!important;height:100%!important;}
   #s4 .gal-head,#s4 .s4b-stage,#s4 .s4-foot{position:relative;z-index:1;}
 
@@ -218,24 +220,32 @@
      the artwork must not push the section past one screen */
   /* contain:paint fences the invalidation region — on a 2–3× DPR phone this block would
      otherwise let the compositor consider the whole section dirty every frame. */
-  .s4b-stage{position:relative;flex:0 0 auto;width:min(100%,62svh,820px);margin:0 auto;aspect-ratio:1;contain:paint;}
+  /* The stage follows the viewport's shape: a tall block on phones, a wide one on desktop.
+     The SVG keeps its square 1200x1200 viewBox and letterboxes inside (preserveAspectRatio
+     default), while the two hands are CSS-anchored to the LEFT and RIGHT edges so they frame
+     the string at every ratio instead of drifting inward. */
+  .s4b-stage{position:relative;flex:0 0 auto;width:min(100%,1180px);margin:0 auto;
+    height:min(62svh,820px);contain:paint;}
+  @media (max-aspect-ratio:1/1){ .s4b-stage{height:min(52svh,560px);} }
   /* the navy field must not end on a hard rectangle against the page black — melt it, the way
      .sdl-stage does in #s2. A static gradient layer OUTSIDE the SVG, so it costs one composite
      and adds nothing to the SVG's raster (§5.5 #1). */
-  .s4b-stage::after{content:"";position:absolute;inset:-1px;z-index:4;pointer-events:none;
+  .s4b-stage::after{content:"";position:absolute;inset:-1px;z-index:5;pointer-events:none;
     background:radial-gradient(ellipse 78% 78% at 50% 50%,rgba(0,0,0,0) 46%,rgba(0,0,0,.28) 68%,rgba(0,0,0,.78) 87%,#000 100%);}
-  #s4bScene{position:relative;z-index:1;display:block;width:100%;height:100%;background:transparent;
+  #s4bScene{position:relative;z-index:2;display:block;width:100%;height:100%;background:transparent;
     touch-action:pan-y;-webkit-user-select:none;user-select:none;}
   .s4b-field{position:absolute;inset:0;z-index:0;background:#0a1f3d no-repeat center/100% 100%;
     background-image:url("data:image/webp;base64,UklGRroBAABXRUJQVlA4IK4BAABwEACdASqAAIAAPhUKhEGhBBEABABRLSAZ3KHhAMMEWye//WjfofXwIezbjlfTHcKuJx78aIzHi1NSwRjN8vmoqhpfR5zvJcCcoEAhznyWtc1qS7h7PUXROLprAalqWKs7theNpd5lQlpb9ukt4tc0uvxiWXlzEB55ZlBTprSgOZKWi5gE2Se8He5IgAD+/vo/f/89M/RP1YvbXQ//mCfQbtz5HrlHvDbH3jNJcvbADopuctKzlaRhnGnLaH9J6Bbwtwg7hZGpBaIQslr9sp36QDJR1Pvb9qptPEeVPTmJgsw23H9EBkglzzDWHuoBdRpHEYJwnFQfC10xS/Q8t2tzD0Hkf55svXrdgsGinZ7ZS1cEQdrvWuKU6eYmgAAGTAbKeyChonSqYcYGORfwTBAya+JcfvxPEyy5odzjtbgHhs1LpPUhPQWXLuiZb74BdzDDV5s2Fq4eSzcHG2OM9GY6sdVIbZ3MtlWg1YqqWe8tXh5XEqCzTByIRLrPVMU0x96bucxmMfUPryLYRwMYObd0DcucHgoitg2n9uTQ253NRAxjSxcpVc31zNbwgAAA");}
   /* baked grain tile, ~400 bytes (§5.5 #2). No mix-blend-mode: plain alpha is the same maths
      for monochrome speckle and skips a compositing pass. */
-  .s4b-frost{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;background-size:240px 240px;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .42 .42 .42 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+  .s4b-frost{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.17;background-size:240px 240px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .3 .3 .3 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
   /* percentages mirror the reference's viewBox coords (1200x1200) */
-  .s4b-hand{position:absolute;z-index:3;pointer-events:none;}
-  .s4b-hand.a{left:0;top:19.667%;width:18.333%;height:26.417%;}
-  .s4b-hand.b{left:61.5%;top:14.167%;width:38.5%;height:74.667%;}
+  /* anchored to the edges, sized off the stage HEIGHT so they keep their proportions when the
+     stage gets wide — a width-based size would stretch them into smears on desktop */
+  .s4b-hand{position:absolute;z-index:4;pointer-events:none;height:auto;}
+  .s4b-hand.a{left:0;top:26%;width:auto;height:26%;}
+  .s4b-hand.b{right:0;top:14%;width:auto;height:75%;}
   .s4b-bead{cursor:pointer;}
   .s4b-bead:focus{outline:none;}
   .s4b-bead:focus-visible .s4b-rim{stroke:#fff;stroke-opacity:.9;stroke-width:2.4;}
@@ -249,22 +259,24 @@
     opacity:0;transform:translate(-50%,calc(-100% - 12px));will-change:transform,opacity;}
   @supports (clip-path: path("M0 0")){ .s4b-tip{border-radius:0;background:#0d1729;} }
 
-  /* circular modal — a pure circle, so §5.6's seam rule does not apply (it says so explicitly) */
-  .s4b-ov{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:5vh 5vw;opacity:0;pointer-events:none;}
+  /* Circular modal — deliberately small and quiet: it opens AT the bead you clicked rather
+     than taking over the screen. A pure circle, so §5.6's seam rule does not apply. */
+  .s4b-ov{position:fixed;inset:0;z-index:130;opacity:0;pointer-events:none;}
   .s4b-ov.live{pointer-events:auto;}
-  .s4b-scrim{position:absolute;inset:0;background:rgba(6,11,22,.72);}
-  .s4b-disc{position:relative;width:min(560px,86vw,78vh);aspect-ratio:1;border-radius:50%;overflow:hidden;
-    background:#0a1f3d;box-shadow:0 40px 110px -20px rgba(0,6,22,.75);will-change:transform,opacity;}
+  .s4b-scrim{position:absolute;inset:0;background:rgba(6,11,22,.34);}
+  .s4b-disc{position:absolute;width:var(--s4b-discw,260px);aspect-ratio:1;border-radius:50%;overflow:hidden;
+    transform-origin:center;background:#0a1f3d;box-shadow:0 18px 50px -12px rgba(0,6,22,.7),0 0 0 1px rgba(226,238,248,.18);
+    will-change:transform,opacity;}
   .s4b-disc img{width:100%;height:100%;object-fit:cover;display:block;}
-  .s4b-disc figcaption{position:absolute;left:0;right:0;bottom:0;padding:56px 10% 34px;text-align:center;
-    font-family:var(--sans);font-weight:600;font-size:clamp(13px,1.5vw,16px);letter-spacing:.16em;text-transform:uppercase;color:#f2f6fb;
-    background:linear-gradient(180deg,rgba(6,14,28,0),rgba(6,14,28,.82));}
-  .s4b-x{position:absolute;top:calc(50% - min(280px,43vw,39vh) + 6px);left:50%;transform:translateX(-50%);
-    width:40px;height:40px;border-radius:50%;border:1px solid rgba(238,243,250,.34);background:rgba(10,20,38,.5);
-    color:#eef3fa;font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;
+  /* the label has to fit a CIRCLE — it wraps, and the type is sized for the narrow chord */
+  .s4b-disc figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 17% 14px;text-align:center;
+    font-family:var(--sans);font-weight:600;font-size:10px;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;
+    color:#f2f6fb;text-wrap:balance;background:linear-gradient(180deg,rgba(6,14,28,0),rgba(6,14,28,.82));}
+  .s4b-x{position:absolute;width:30px;height:30px;border-radius:50%;
+    border:1px solid rgba(238,243,250,.3);background:rgba(10,20,38,.62);
+    color:#eef3fa;font-size:13px;line-height:1;cursor:pointer;display:grid;place-items:center;
     transition:background .3s cubic-bezier(.22,0,.06,1),transform .3s cubic-bezier(.22,0,.06,1);}
-  .s4b-x:hover{background:rgba(20,36,62,.9);transform:translateX(-50%) rotate(90deg);}
-  @media (max-width:600px){ .s4b-x{top:8px;} }
+  .s4b-x:hover{background:rgba(24,44,74,.92);transform:rotate(90deg);}
   @media (prefers-reduced-motion:reduce){ .s4b-x{transition:none;} }
 
   /* 3 · sensing — left-aligned composition (per mockup) */
@@ -535,11 +547,6 @@
 
   <!-- 4 · THE MOST EXQUISITE -->
   <section class="section" id="s4">
-    <canvas class="s4fx" id="s4bg" aria-hidden="true"></canvas>
-    <canvas class="s4fx" id="s4fx" aria-hidden="true"></canvas>
-    <canvas class="s4fx" id="s4gl" aria-hidden="true"></canvas>
-    <div class="s4lib" id="s4waves" aria-hidden="true"></div>   <!-- temperature · Vanta.WAVES (lower water) -->
-    <div class="s4lib" id="s4stars" aria-hidden="true"></div>   <!-- temperature · tsParticles (upper stars) -->
     <div class="gal-head reveal">
       <p class="s4-sub lead">{{3.8}}</p>
       <h2 class="t2">{{3.9}}</h2>
@@ -550,15 +557,25 @@
            two hand cut-outs must not ride along inside it. This is the cities/.sln-bg pattern. -->
       <div class="s4b-field" aria-hidden="true"></div>
       <div class="s4b-frost" aria-hidden="true"></div>
+      <!-- the per-sense effects play ON the navy paper: above the field, under the string.
+           They were previously siblings of the section, i.e. hidden behind .s4b-field. -->
+      <canvas class="s4fx" id="s4bg" aria-hidden="true"></canvas>
+      <canvas class="s4fx" id="s4fx" aria-hidden="true"></canvas>
+      <canvas class="s4fx" id="s4gl" aria-hidden="true"></canvas>
+      <div class="s4lib" id="s4waves" aria-hidden="true"></div>
+      <div class="s4lib" id="s4stars" aria-hidden="true"></div>
       <svg id="s4bScene" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five senses Sona tunes">
         <defs>
           <!-- Every softness below is a GRADIENT, never a feGaussianBlur: the beads translate on
                every frame, and a filter inside a moving SVG re-rasterises the whole scene (§5.5 #1).
                This is the single change that takes the reference from 25fps to 60. -->
-          <radialGradient id="s4bGlow"><stop offset="55%" stop-color="#fff" stop-opacity=".34"/><stop offset="78%" stop-color="#fff" stop-opacity=".13"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <!-- the reference glow was a STROKE (a ring outside the bead). Filling the disc instead
+               painted a white veil across the whole composition — hence the washed-out look.
+               Transparent until the bead edge (~R/(R+34)=0.73), then a thin falloff. -->
+          <radialGradient id="s4bGlow"><stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="70%" stop-color="#fff" stop-opacity="0"/><stop offset="82%" stop-color="#fff" stop-opacity=".17"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
           <radialGradient id="s4bCast"><stop offset="52%" stop-color="#000" stop-opacity=".62"/><stop offset="78%" stop-color="#000" stop-opacity=".22"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
-          <radialGradient id="s4bSpec"><stop offset="0%" stop-color="#fff" stop-opacity=".97"/><stop offset="52%" stop-color="#fff" stop-opacity=".62"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
-          <radialGradient id="s4bSpec2"><stop offset="0%" stop-color="#fff" stop-opacity=".34"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bSpec"><stop offset="0%" stop-color="#fff" stop-opacity=".95"/><stop offset="34%" stop-color="#fff" stop-opacity=".5"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s4bSpec2"><stop offset="0%" stop-color="#fff" stop-opacity=".26"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
           <radialGradient id="s4bBloom"><stop offset="0%" stop-color="#fff" stop-opacity=".85"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
           <radialGradient id="s4bSheen" cx="33%" cy="26%" r="72%">
             <stop offset="0%" stop-color="#fff" stop-opacity=".42"/>
@@ -1135,15 +1152,15 @@
       var g=el('g',{'class':'s4b-bead',role:'button',tabindex:'0','aria-label':b.label},layer);
       g.innerHTML=
         /* outer glow — a gradient ring, NOT stroke+blur */
-        '<circle r="'+(R+34)+'" fill="url(#s4bGlow)" opacity=".55"/>'+
+        '<circle r="'+(R+26)+'" fill="url(#s4bGlow)" opacity=".6"/>'+
         '<g class="s4b-v">'+
           /* cast shadow — gradient disc offset down-left, NOT a blurred solid */
-          '<circle cx="-15" cy="21" r="'+(R+16)+'" fill="url(#s4bCast)" opacity=".8"/>'+
+          '<circle cx="-15" cy="21" r="'+(R+10)+'" fill="url(#s4bCast)" opacity=".72"/>'+
           '<circle r="'+R+'" fill="url(#'+b.g+')"/>'+
           '<circle r="'+R+'" fill="url(#s4bSheen)"/>'+
-          '<path d="'+arc(R-3,118*D,206*D)+'" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="5"/>'+
-          '<ellipse cx="'+(-R*0.34).toFixed(1)+'" cy="'+(-R*0.42).toFixed(1)+'" rx="'+(R*0.4).toFixed(1)+'" ry="'+(R*0.25).toFixed(1)+'" transform="rotate(-26 '+(-R*0.34).toFixed(1)+' '+(-R*0.42).toFixed(1)+')" fill="url(#s4bSpec)"/>'+
-          '<ellipse cx="'+(-R*0.2).toFixed(1)+'" cy="'+(R*0.3).toFixed(1)+'" rx="'+(R*0.26).toFixed(1)+'" ry="'+(R*0.16).toFixed(1)+'" fill="url(#s4bSpec2)"/>'+
+          '<path d="'+arc(R-3,118*D,206*D)+'" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="4"/>'+
+          '<ellipse cx="'+(-R*0.34).toFixed(1)+'" cy="'+(-R*0.42).toFixed(1)+'" rx="'+(R*0.33).toFixed(1)+'" ry="'+(R*0.19).toFixed(1)+'" transform="rotate(-26 '+(-R*0.34).toFixed(1)+' '+(-R*0.42).toFixed(1)+')" fill="url(#s4bSpec)"/>'+
+          '<ellipse cx="'+(-R*0.2).toFixed(1)+'" cy="'+(R*0.3).toFixed(1)+'" rx="'+(R*0.19).toFixed(1)+'" ry="'+(R*0.11).toFixed(1)+'" fill="url(#s4bSpec2)"/>'+
           '<g>'+spk+'</g>'+
           '<circle class="s4b-rim" r="'+R+'" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1.2"/>'+
           '<circle class="s4b-h" r="'+(R+4)+'" fill="#fff" opacity="0"/>'+
@@ -1356,26 +1373,34 @@
       '<button class="s4b-x" type="button" aria-label="Close">&#10005;</button>';
     document.body.appendChild(ov);
     var ovImg=ov.querySelector('img'), ovCap=ov.querySelector('figcaption'), ovDisc=ov.querySelector('.s4b-disc');
-    var os={o:0}, cs={s:.9,o:0};
+    var os={o:0}, cs={s:.5,o:0};
     function paintOv(){ ov.style.opacity=os.o; }
-    function paintDisc(){ ovDisc.style.opacity=cs.o; ovDisc.style.transform='scale('+cs.s+')'; }
-    var lastFocus=null;
+    function paintDisc(){ ovDisc.style.opacity=cs.o; ovDisc.style.transform='translate(-50%,-50%) scale('+cs.s+')'; }
+    var lastFocus=null, closeBtn=ov.querySelector('.s4b-x');
     function openBead(k){
       hideTip(); lastFocus=document.activeElement;
       var b=BEADS[k];
       ovImg.src=b.img+(b.img.indexOf('?')<0?'?v=3':''); ovImg.alt=b.label;
       ovCap.textContent=b.label;
+      /* the disc grows out of the bead you clicked, clamped so it never leaves the viewport */
+      var r=b.g.getBoundingClientRect();
+      var W=Math.max(200,Math.min(300,Math.min(innerWidth,innerHeight)*0.34));
+      ov.style.setProperty('--s4b-discw',W+'px');
+      var cx=Math.min(Math.max(r.left+r.width/2, W/2+12), innerWidth-W/2-12);
+      var cy=Math.min(Math.max(r.top+r.height/2, W/2+12), innerHeight-W/2-12);
+      ovDisc.style.left=cx+'px'; ovDisc.style.top=cy+'px';
+      closeBtn.style.left=(cx+W*0.36)+'px'; closeBtn.style.top=(cy-W*0.46)+'px';
       ov.hidden=false; ov.classList.add('live');
-      os.o=0; cs.s=.9; cs.o=0; paintOv(); paintDisc();
-      TW(os,{o:1,duration:.45,ease:'glide',onUpdate:paintOv});
-      TW(cs,{s:1,o:1,duration:.75,ease:'veil',onUpdate:paintDisc});
-      ov.querySelector('.s4b-x').focus({preventScroll:true});
+      os.o=0; cs.s=.5; cs.o=0; paintOv(); paintDisc();
+      TW(os,{o:1,duration:.35,ease:'glide',onUpdate:paintOv});
+      TW(cs,{s:1,o:1,duration:.62,ease:'veil',onUpdate:paintDisc});
+      closeBtn.focus({preventScroll:true});
     }
     function closeModal(){
       if(ov.hidden) return;
       ov.classList.remove('live');
       TW(os,{o:0,duration:.35,ease:'silk',onUpdate:paintOv});
-      TW(cs,{s:.96,o:0,duration:.35,ease:'silk',onUpdate:paintDisc});
+      TW(cs,{s:.72,o:0,duration:.32,ease:'silk',onUpdate:paintDisc});
       setTimeout(function(){ ov.hidden=true; },380);
       if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
     }
@@ -1426,7 +1451,8 @@
       gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.clearColor(0,0,0,0);glOK=true;
     }
     initGL();
-    function resize(){ var r=sec.getBoundingClientRect(); W=r.width;H=r.height; cv.width=W*dpr;cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    var fxHost=document.getElementById('s4bStage')||sec;
+    function resize(){ var r=fxHost.getBoundingClientRect(); W=r.width;H=r.height; cv.width=W*dpr;cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
       if(bctx){ bgc.width=Math.round(W); bgc.height=Math.round(H); bctx.setTransform(1,0,0,1,0,0); }   /* soft halos → render at 1× for performance */
       if(gl){ glc.width=Math.round(W*dpr); glc.height=Math.round(H*dpr); gl.viewport(0,0,glc.width,glc.height); } }
     resize(); addEventListener('resize',resize);
