@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="prefetch" href="cities.html">   <!-- warm the next page while the visitor reads the home page -->
+<link rel="prefetch" href="soulful-living-network">   <!-- warm the next page while the visitor reads the home page -->
 <link rel="prefetch" href="assets/city/hero-960.webp" as="image">   <!-- and its hero LCP image -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
@@ -106,6 +106,23 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
+  /* mobile menu — full-screen white sheet with big editorial links (no pills) */
+  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(20px,4.5vh,40px);background:rgba(255,255,255,.88);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);
+    z-index:55;transform:none;transition:opacity .3s ease;}
+  .menu.open{transform:none;}
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:4px 12px;color:var(--ink);
+    font-weight:700;font-size:clamp(30px,8.5vw,46px);letter-spacing:-.005em;line-height:1.1;
+    transform:translateY(16px);transition:opacity .35s ease,transform .45s cubic-bezier(.34,1.4,.5,1),color .25s;}
+  .menu.open a{transform:none;}
+  .menu a:hover,.menu a:active{color:var(--accent);}
+  /* while the white sheet is open the nav must read dark, even on the light-nav pages */
+  .menu-btn.open span{background:#2b1d12;}
+  .nav:has(.menu.open) .brand{color:var(--ink);}
+  .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
+
+
   /* ---- hero ---- */
   #hero #logoFit{will-change:transform;}
   /* small orange dot, top-right of the hero — click to go to the next section */
@@ -172,14 +189,14 @@
   <nav class="nav" id="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a class="sec" href="cities.html">{{nav.cities}}</a>
+      <a class="sec" href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
@@ -229,7 +246,7 @@
       <p>Mars</p>
       <p>And Beyond...</p>
     </div>
-    <a class="cities-cta" href="cities.html"><span class="cta-label">{{nav.cities}}</span> <span class="arw" aria-hidden="true">&rsaquo;</span></a>
+    <a class="cities-cta" href="soulful-living-network"><span class="cta-label">{{nav.cities}}</span> <span class="arw" aria-hidden="true">&rsaquo;</span></a>
     <a class="resume-cta" href="founding-catalysts">Talk to Founder <span class="rc-arw" aria-hidden="true">&rsaquo;</span></a>
   </section>
 
@@ -279,7 +296,7 @@
 
   /* last section · keep scrolling past the bottom → Soulful Living Network */
   (function(){
-    var DEST='cities.html', bottomSince=0, acc=0, fired=false;
+    var DEST='soulful-living-network', bottomSince=0, acc=0, fired=false;
     var COOLDOWN=450;   /* ms to swallow snap/momentum right after landing on the last screen */
     var THRESHOLD=140;  /* accumulated wheel delta needed to trigger */
     function atBottom(){

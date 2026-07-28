@@ -49,12 +49,29 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
+  /* mobile menu — full-screen white sheet with big editorial links (no pills) */
+  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(20px,4.5vh,40px);background:rgba(255,255,255,.88);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);
+    z-index:55;transform:none;transition:opacity .3s ease;}
+  .menu.open{transform:none;}
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:4px 12px;color:var(--ink);
+    font-weight:700;font-size:clamp(30px,8.5vw,46px);letter-spacing:-.005em;line-height:1.1;
+    transform:translateY(16px);transition:opacity .35s ease,transform .45s cubic-bezier(.34,1.4,.5,1),color .25s;}
+  .menu.open a{transform:none;}
+  .menu a:hover,.menu a:active{color:var(--accent);}
+  /* while the white sheet is open the nav must read dark, even on the light-nav pages */
+  .menu-btn.open span{background:#2b1d12;}
+  .nav:has(.menu.open) .brand{color:var(--ink);}
+  .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
+
+
   /* full-bleed hero with centered overlay text (image faded by a scrim for readability) */
   .fc-hero{--fc-scrim:.38;position:relative;width:100%;min-height:100vh;margin-top:0;overflow:hidden;
     display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3ede3;}
   .fc-hero .fc-bg{position:absolute;inset:0;z-index:0;display:block;}
   .fc-hero .fc-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,.81);}
+  .fc-hero .fc-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,.85);}
   .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;
     padding:clamp(216px,32vh,360px) clamp(24px,6vw,40px) clamp(150px,24vh,250px);}
   .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
@@ -322,14 +339,14 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts" class="cur">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
@@ -340,8 +357,8 @@
   <!-- FULL-BLEED HERO — image faded by scrim, centered overlay text -->
   <header class="fc-hero">
     <picture class="fc-bg">
-      <source type="image/webp" srcset="assets/city/advocater-hero-820.webp?v=6 820w, assets/city/advocater-hero.webp?v=6 1122w" sizes="100vw">
-      <img src="assets/city/advocater-hero.jpg?v=6" alt="" width="1122" height="1293" fetchpriority="high" decoding="async">
+      <source type="image/webp" srcset="assets/city/advocater-hero-820.webp?v=7 820w, assets/city/advocater-hero.webp?v=7 735w" sizes="100vw">
+      <img src="assets/city/advocater-hero.jpg?v=7" alt="" width="735" height="511" fetchpriority="high" decoding="async">
     </picture>
     <div class="fc-scrim"></div>
     <div class="fc-inner">

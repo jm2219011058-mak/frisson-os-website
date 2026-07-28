@@ -45,6 +45,23 @@
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
 
+  /* mobile menu — full-screen white sheet with big editorial links (no pills) */
+  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(20px,4.5vh,40px);background:rgba(255,255,255,.88);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);
+    z-index:55;transform:none;transition:opacity .3s ease;}
+  .menu.open{transform:none;}
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:4px 12px;color:var(--ink);
+    font-weight:700;font-size:clamp(30px,8.5vw,46px);letter-spacing:-.005em;line-height:1.1;
+    transform:translateY(16px);transition:opacity .35s ease,transform .45s cubic-bezier(.34,1.4,.5,1),color .25s;}
+  .menu.open a{transform:none;}
+  .menu a:hover,.menu a:active{color:var(--accent);}
+  /* while the white sheet is open the nav must read dark, even on the light-nav pages */
+  .menu-btn.open span{background:#2b1d12;}
+  .nav:has(.menu.open) .brand{color:var(--ink);}
+  .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
+
+
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
 
@@ -87,14 +104,14 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>

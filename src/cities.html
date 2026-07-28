@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>More-Than-Human Cities — FRISSON</title>
+<title>Soulful Living Network — FRISSON</title>
 <meta name="description" content="Conquest of Paradise — a world of your own to forge. FRISSON, more than human cities.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -57,6 +57,23 @@
   .menu.open a:nth-child(5){transition-delay:.28s;}
   @media(min-width:681px){.menu{display:none;}}
   @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
+
+  /* mobile menu — full-screen white sheet with big editorial links (no pills) */
+  .menu{position:fixed;inset:0;top:0;right:auto;margin-top:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(20px,4.5vh,40px);background:rgba(255,255,255,.88);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);
+    z-index:55;transform:none;transition:opacity .3s ease;}
+  .menu.open{transform:none;}
+  .menu a{background:transparent;box-shadow:none;border-radius:0;padding:4px 12px;color:var(--ink);
+    font-weight:700;font-size:clamp(30px,8.5vw,46px);letter-spacing:-.005em;line-height:1.1;
+    transform:translateY(16px);transition:opacity .35s ease,transform .45s cubic-bezier(.34,1.4,.5,1),color .25s;}
+  .menu.open a{transform:none;}
+  .menu a:hover,.menu a:active{color:var(--accent);}
+  /* while the white sheet is open the nav must read dark, even on the light-nav pages */
+  .menu-btn.open span{background:#2b1d12;}
+  .nav:has(.menu.open) .brand{color:var(--ink);}
+  .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
+
 
   /* hero banner */
   .hero{position:relative;width:100%;aspect-ratio:1513/1039;height:auto;overflow:hidden;background:#fff;}   /* full painting, uncropped (matches image proportions) */
@@ -210,7 +227,7 @@
     .wwd-news .nf-done .done-title{color:#fff;}
     .wwd-news .nf-done .done-sub{color:rgba(255,255,255,.82);}
   }
-  .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,35px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
+  .wwd-statement{font-family:var(--serif);font-weight:500;font-size:clamp(26px,2.9vw,39px);line-height:1.28;letter-spacing:-.01em;color:var(--ink);margin:0;text-wrap:balance;max-width:24ch;}
   .wwd-statement b{font-weight:700;color:var(--ink);}
   .wwd-statement + .wwd-statement{margin-top:clamp(14px,2vh,24px);}
   .wwd-sub{font-family:var(--sans);font-weight:400;font-size:clamp(17px,1.9vw,22px);line-height:1.65;letter-spacing:.005em;color:var(--ink-soft);margin:clamp(26px,4vh,42px) 0 0;text-wrap:pretty;max-width:46ch;}
@@ -342,14 +359,14 @@
   <nav class="nav">
     <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
     <div class="links">
-      <a href="cities.html" class="cur">{{nav.cities}}</a>
+      <a href="soulful-living-network" class="cur">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
-      <a href="cities.html">{{nav.cities}}</a>
+      <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
@@ -568,7 +585,7 @@
         </div>
         <div class="wwd-body">
           <p class="wwd-eyebrow" style="margin:0 0 clamp(18px,2.6vh,28px);">WHAT WE DO</p>
-          <p class="wwd-statement">FRISSON is Redefining the Future Value of the Physical World.</p>
+          <p class="wwd-statement">FRISSON is Redefining the Value of the Physical World.</p>
           <p class="wwd-sub">Through Artistic Soulful Spaces and Sona, an AI-native living intelligence, FRISSON transforms real estate from a static ownership asset into a lifelong health and living asset.</p>
           <a class="wwd-entry" href="field-notes#view-3">Read : Human Should Not Simply Reach the Moon <span class="we-arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>
         </div>
@@ -650,7 +667,7 @@
     html[lang="en"] .vision-body p{line-height:1.85;text-align:left;text-wrap:pretty;}
     .vision-body p:last-child{margin-bottom:0;}
     /* Zahir story dialog — Skyswim artwork behind a 78% white scrim, ink text */
-    #vm-grotto{background:linear-gradient(rgba(255,255,255,.8),rgba(255,255,255,.8)),url('assets/city/c4c3f3f5cf278c189554ee232003763e.jpg') center/cover no-repeat #f3ede3;color:var(--ink);}
+    #vm-grotto{background:linear-gradient(rgba(255,255,255,.8),rgba(255,255,255,.8)),url('assets/city/e966c300bf92bf40fa170a267e38f4df.jpg') center/cover no-repeat #f3ede3;color:var(--ink);}
     #vm-grotto .vision-name{color:var(--ink);}
     #vm-grotto .vision-body p{color:rgba(43,29,18,.9);}
     #vm-grotto .vision-x{background:rgba(43,29,18,.1);color:rgba(43,29,18,.75);}
@@ -760,7 +777,7 @@
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
       .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
       /* Build-with-Frisson card (nodes 11/25): collage artwork behind an 82% white scrim */
-      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)),url('assets/city/9805dd0021f4e14d597d1c68e6264115.jpg') center/cover no-repeat #FEFCF8;
+      .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.79),rgba(255,255,255,.79)),url('assets/city/e4e7619e0920cca14d699798e43cb4c9.jpg') center/cover no-repeat #FEFCF8;
         min-height:min(70vh,600px);display:flex;flex-direction:column;justify-content:center;}
       /* Evolve card body — regular weight, roomier leading, one notch up */
       .sln-evolve .sln-m-title{font-weight:700;font-size:clamp(32px,5.4vw,48px);margin-bottom:16px;}
@@ -777,7 +794,7 @@
       .sln-frontier .sln-m-title{font-weight:700;font-size:clamp(42px,7.4vw,62px);}
       .sln-card p.sln-frontier-sub{font-style:italic;font-weight:500;font-size:clamp(15px,1.7vw,18px);color:#57503f;margin:6px 0 0;}
       /* Evolve-with-Frisson card (node 25): space-sail artwork behind an 82% white scrim */
-      .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),url('assets/city/evolve-card-bg3.webp') center/cover no-repeat #FEFCF8;
+      .sln-card.sln-evolve{background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),url('assets/city/06a4f3498513e619fcb7f043a5e81c02.jpg') center/cover no-repeat #FEFCF8;
         background-size:cover;background-position:center;
         min-height:min(88vh,830px);display:flex;flex-direction:column;justify-content:flex-start;
         padding-top:clamp(56px,8.5vh,96px);padding-bottom:clamp(40px,6vh,72px);}
