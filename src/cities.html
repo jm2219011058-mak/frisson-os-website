@@ -791,7 +791,9 @@
       .sln-cta{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--accent);color:#fff;text-decoration:none;font:500 clamp(13px,1.45vw,15px)/1 var(--sans);letter-spacing:.03em;padding:9px 22px;border-radius:999px;transition:background .25s;cursor:pointer;}
       .sln-cta:hover{background:#c96a2f;}
       .sln-cta .sln-arr{font-size:15px;transform:translateY(-1px)}
-      .sln-card.sln-cardfull{padding:0;width:min(980px,96vw);background:#07080c;}
+      /* 100%, not 96vw: the overlay already pads 4vw a side, so a vw-based width overflows
+         its own container (the card sat past the right edge). */
+      .sln-card.sln-cardfull{padding:0;width:min(980px,100%);background:#07080c;}
       /* Build-with-Frisson card (nodes 11/25): collage artwork behind an 82% white scrim */
       .sln-card.sln-build{background:linear-gradient(rgba(255,255,255,.79),rgba(255,255,255,.79)),url('assets/city/e4e7619e0920cca14d699798e43cb4c9.jpg') center/cover no-repeat #FEFCF8;
         min-height:min(70vh,600px);display:flex;flex-direction:column;justify-content:center;}
