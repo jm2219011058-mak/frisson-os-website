@@ -72,6 +72,36 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 - **路径只在字体加载 / resize 时重算**，尺寸没变不写 DOM（§5.5 第 4 条）；hover 缓动用 house silk `cubic-bezier(0.25,0.1,0.25,1)`，不用弹性过冲。
 - 纯圆角矩形（无尖角、无拼接）不适用本条，`border-radius` 本身没有接缝问题，别过度工程。
 
+### 5.6b 大卡片 / 弹窗的超椭圆：用 `corner-shape`，不要 `clip-path`（2026-07-29）
+
+> 背景：SLN 弹窗、`.vision`、`.prop-card`、各配图统一改超椭圆时踩的坑。
+
+- **带阴影的面板一律 `corner-shape: squircle` + `border-radius`，禁止用 `clip-path`。** 渲染顺序是 filter → clip-path，`clip-path` 在阴影**之后**执行，会把 `box-shadow` 整个裁掉。`corner-shape` 是原生属性，阴影/`overflow` 裁剪都自动跟随超椭圆轮廓，零 JS、零 resize 处理，不支持的浏览器退回普通圆角（无回归）。
+- **分界线**：无阴影的小尖角标签 → §5.6 的 `clip-path:path()`；有阴影的大面积卡片/弹窗 → `corner-shape`。
+- **半径必须用等长 `clamp()`，绝不能用百分比。** `border-radius:40%` 是**按各自的轴**解析的（水平半径取宽度的 40%、垂直取高度的 40%），结果是椭圆角不是超椭圆——676×191 的卡上算出来是 270×76，看着是梭形；而且**卡片越高角越圆**，同一个组件在长短文案下长得完全不一样。
+- **半径变大必须同步加内边距**，否则首行/末行文字会撞进曲线；**关闭键要与正文栏右边缘对齐**（`right` 取和 `padding-right` 同一个值），不然它悬在曲线中间很突兀。
+- 当前站内量级（cities）：`.sln-card` `clamp(72px,12vw,180px)`（约卡宽 23%）、`.vision` `clamp(60px,10vw,150px)`、`.prop-card` `clamp(40px,6vw,88px)`、配图 `clamp(40px,6vw,96px)`、Magic Conch 横幅 `clamp(30px,5vw,60px)`。**stories 的 Field Notes 卡是刻意保持直角的，别给它加圆角。**
+
+### 5.6c 容器内的宽度不要用 `vw`（同日，同一个弹窗上踩的第二个坑）
+
+- `.sln-cardfull` 曾写 `width:min(980px,96vw)`，而它的容器 `.sln-overlay` 有 `padding:4vw` → 内容区只有 `92vw`，**96 > 92 必然向右溢出**。改成 `min(980px,100%)`（`100%` 相对容器内容区，天然把 padding 算进去）。
+- **判据：元素在一个有 padding 的容器里时，宽度用 `%` 不用 `vw`。** 这个 bug 在宽屏被 `980px` 上限夹住而看不出来，视口窄于约 1021px 才暴露——所以**改完必须在平板宽度（~834px）复验一次**。
+
+## 5.6d 预览面板会冻结渲染器——别被 `getComputedStyle` 骗了（2026-07-29）
+
+> 这一条不写下来会反复浪费时间：本会话至少三次据此误判。
+
+- Browser 预览面板经常进入**渲染器冻结**状态：DOM 操作正常（`classList` 改得动、`matches()` 正确、`querySelector` 找得到），但**样式不重算**——动态加类之后 `getComputedStyle` 读到的仍是旧值，rAF 不跑，IntersectionObserver 不派发，截图也是黑屏或旧帧。
+- **后果**：会把「CSS 没生效」「`:has()` 不工作」「动画卡顿」这类假象当成真 bug 去改，越改越错。
+- **对照实验**（怀疑时先跑，10 秒定性）：注入一条 `!important` 规则 → 加类 → 读 `getComputedStyle`。**读不到新值 = 渲染器冻结，不是你的 CSS 有问题。**
+  ```js
+  var s=document.createElement('style'); s.textContent='.foo.zztest{color:rgb(1,2,3)!important}';
+  document.head.appendChild(s); el.classList.add('zztest');
+  getComputedStyle(el).color === 'rgb(1, 2, 3)' ? '正常' : '冻结';
+  ```
+- **可信 / 不可信**：页面**加载时**就生效的静态样式、几何尺寸 → 可信；**加载后**由 JS 触发的状态（弹窗打开、菜单展开、hover、滚动动画）→ 不可信，必须让用户在真机上确认。
+- 冻结时不要反复 reload 硬碰——直接改用静态量测 + 结构性论证（如「组件内已无任何媒体查询断点，所以不可能跳变」），并**如实告诉用户哪一项没能实测**。
+
 ## 5.7 改 CSS 的安全规矩（2026-07-28 一天内出了三次事故才立的）
 
 > 背景：`src/*.html` 的内联 `<style>` 很长，而且**跨 section 有措辞重复的注释**（`#s2` 和 `#s4` 都有 `/* baked grain tile */`）。用「从某段注释匹配到某个选择器」这种范围替换，正则会从更早的那一处开始命中，把中间几十行一起吞掉。
