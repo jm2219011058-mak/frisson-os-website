@@ -7,9 +7,11 @@
 <!--
   热成像文字组件（独立 demo，未挂载到任何页面）
   ─────────────────────────────────────────────
-  原理：单四边形 WebGL fragment shader。
-    标量场 v = fbm(域扭曲噪声) + 高斯热核(热源) - 阈值
-    → alpha = smoothstep(v)（场低处透明，露出下层 DOM 文字）
+  原理：单四边形 WebGL fragment shader，热跟着文字描线走。
+    字形蒙版 m：DOM 文字按同字体/同位置烘焙进离屏 canvas，降采样-升采样两级模糊
+                （宽晕 + 贴描线），一次烘焙成纹理，字形是温度场的「燃料」。
+    标量场 v = m(域扭曲采样) × (基底+fbm噪声) × 高斯热核(热源) × 热度 - 阈值
+    → alpha = smoothstep(v)（场低处透明，露出下层 DOM 文字；字母 counter 自然留白洞）
     → 颜色 = 调色带 pal(v)（白→米黄→黄→粉→红→橙→绿→蓝，分段 smoothstep 出色带）
   热源：无指针时自主游走（多正弦叠加，相位线性 §5.9）；指针进入后跟随指针。
 
@@ -78,6 +80,7 @@
     'uniform float u_t;',
     'uniform vec2 u_hot;',
     'uniform float u_amp;',
+    'uniform sampler2D u_txt;',
     'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
     'float vnoise(vec2 p){',
     '  vec2 i=floor(p),f=fract(p);',
@@ -94,11 +97,11 @@
     '  vec3 c=vec3(1.0);',                                      // 白边（白底上隐形，blob 像从纸里洇出来）
     '  c=mix(c,vec3(1.00,0.97,0.68),smoothstep(0.03,0.08,h));', // 米黄
     '  c=mix(c,vec3(1.00,0.90,0.30),smoothstep(0.15,0.21,h));', // 黄
-    '  c=mix(c,vec3(0.97,0.50,0.77),smoothstep(0.30,0.36,h));', // 粉
-    '  c=mix(c,vec3(0.89,0.13,0.18),smoothstep(0.44,0.49,h));', // 红
-    '  c=mix(c,vec3(0.82,0.44,0.10),smoothstep(0.55,0.60,h));', // 焦橙
-    '  c=mix(c,vec3(0.24,0.62,0.34),smoothstep(0.64,0.70,h));', // 绿
-    '  c=mix(c,vec3(0.44,0.70,0.92),smoothstep(0.75,0.82,h));', // 蓝芯
+    '  c=mix(c,vec3(0.97,0.50,0.77),smoothstep(0.36,0.42,h));', // 粉
+    '  c=mix(c,vec3(0.89,0.13,0.18),smoothstep(0.48,0.53,h));', // 红
+    '  c=mix(c,vec3(0.82,0.44,0.10),smoothstep(0.58,0.63,h));', // 焦橙
+    '  c=mix(c,vec3(0.24,0.62,0.34),smoothstep(0.67,0.72,h));', // 绿
+    '  c=mix(c,vec3(0.44,0.70,0.92),smoothstep(0.77,0.84,h));', // 蓝芯
     '  return c;',
     '}',
     'void main(){',
@@ -110,11 +113,14 @@
     '  float w2=fbm(q+vec2(4.7,-t*0.045));',
     '  vec2 wp=q+2.1*vec2(w1-0.47,w2-0.47);',
     '  float n=fbm(wp+vec2(t*0.03,t*0.02));',
-    '  float d=distance(p,u_hot);',
-    '  float env=exp(-d*d*6.5);',                  // 高斯热核
-    '  float v=n*1.30+env*u_amp*1.05-0.97;',
-    '  float a=smoothstep(0.0,0.03,v);',
-    '  float h=clamp(v*1.5,0.0,1.0);',
+    '  vec2 uv=gl_FragCoord.xy/u_res;',
+    '  vec2 wuv=uv+(0.07*vec2(w1-0.47,w2-0.47)*mn)/u_res;', // 扭曲采样：热溢出描线的毛边
+    '  float m=pow(texture2D(u_txt,wuv).r,0.6);',  // gamma 提亮蒙版裙摆：团块能鼓出描线外
+    '  vec2 dv=p-u_hot;',
+    '  float env=max(exp(-(dv.x*dv.x*5.0+dv.y*dv.y*9.0)),0.22);', // 椭圆热核（横向略宽，热沿词延展）
+    '  float v=m*(0.35+0.66*n)*env*u_amp-0.27;',
+    '  float a=smoothstep(0.0,0.04,v);',
+    '  float h=clamp(v*1.25,0.0,1.0);',
     '  h+=0.07*(vnoise(wp*5.0+vec2(t*0.1,0.))-0.5);', // 细颗粒扰动，色带边缘出锯齿状斑驳
     '  vec3 c=pal(h);',
     '  gl_FragColor=vec4(c*a,a);',                 // premultiplied alpha
@@ -144,6 +150,80 @@
   var uT   = gl.getUniformLocation(prog, 'u_t');
   var uHot = gl.getUniformLocation(prog, 'u_hot');
   var uAmp = gl.getUniformLocation(prog, 'u_amp');
+  var uTxt = gl.getUniformLocation(prog, 'u_txt');
+
+  // ── 字形蒙版纹理（描线 = 温度场的燃料）────────────────────
+  var tex = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);   // canvas y 朝下 → GL y 朝上
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.uniform1i(uTxt, 0);
+
+  var word = document.querySelector('.tt-word');
+
+  // 连续对半降采样 steps 次再放大回来 ≈ 半径 2^steps px 的模糊（跨浏览器，不依赖 ctx.filter）
+  function shrink(src, steps){
+    var s = src;
+    for(var i = 0; i < steps; i++){
+      var nw = Math.max(1, Math.round(s.width / 2)), nh = Math.max(1, Math.round(s.height / 2));
+      var d = document.createElement('canvas'); d.width = nw; d.height = nh;
+      d.getContext('2d').drawImage(s, 0, 0, nw, nh);
+      s = d;
+    }
+    return s;
+  }
+
+  // 一次性烘焙：DOM 文字按同字体/同位置画进离屏 canvas，宽晕 + 贴描线两层模糊叠加
+  function bakeText(){
+    var w = cv.width, h = cv.height;
+    if(w < 4 || h < 4) return;
+    var stR = stage.getBoundingClientRect();
+    var r = word.getBoundingClientRect();
+    var cs = getComputedStyle(word);
+    var fs = parseFloat(cs.fontSize) * RES;
+    var lh = parseFloat(cs.lineHeight) * RES;
+    var lines = word.innerText.split('\n').map(function(s){ return s.trim(); }).filter(Boolean);
+
+    var T2 = document.createElement('canvas'); T2.width = w; T2.height = h;
+    var c = T2.getContext('2d');
+    c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#fff';
+    c.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+    if('letterSpacing' in c) c.letterSpacing = ((parseFloat(cs.letterSpacing) || 0) * RES) + 'px';
+    c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+    // 基线按 CSS 行盒算法：内容区(ascent+descent)在行盒里垂直居中，不用 canvas 的 middle（em 框中点，会偏）
+    var mt = c.measureText('HXg');
+    var asc  = mt.fontBoundingBoxAscent  || fs * 0.8;
+    var desc = mt.fontBoundingBoxDescent || fs * 0.2;
+    var half = (lh - (asc + desc)) / 2;
+    var cx  = (r.left + r.width / 2 - stR.left) * RES;
+    var top = (r.top - stR.top) * RES;
+    for(var i = 0; i < lines.length; i++) c.fillText(lines[i], cx, top + lh * i + half + asc);
+
+    // 三层叠加：特宽晕(×4)扩出团块的裙摆、宽晕(×2)、贴描线(×1)；lighter 在描线附近饱和成平台
+    var M = document.createElement('canvas'); M.width = w; M.height = h;
+    var mc = M.getContext('2d');
+    mc.fillStyle = '#000'; mc.fillRect(0, 0, w, h);
+    mc.globalCompositeOperation = 'lighter';
+    var mnp = Math.min(w, h);
+    var sBase = Math.max(2, Math.min(7, Math.round(Math.log(mnp * 0.05) / Math.LN2)));
+    var xl     = shrink(T2, sBase + 2);
+    var wide   = shrink(T2, sBase);
+    var narrow = shrink(T2, 2);
+    // 叠加次数克制：饱和平台只允许出现在描线正上方，字内空腔/行间要留出灰阶
+    var k2;
+    mc.globalAlpha = 1;
+    for(k2 = 0; k2 < 3; k2++) mc.drawImage(xl, 0, 0, w, h);
+    mc.globalAlpha = 0.7; mc.drawImage(wide,   0, 0, w, h);
+    mc.globalAlpha = 0.7; mc.drawImage(narrow, 0, 0, w, h);
+
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, M);
+  }
 
   gl.clearColor(0,0,0,0);
 
@@ -156,9 +236,11 @@
     if(w === cv.width && h === cv.height) return;
     cv.width = w; cv.height = h;
     gl.viewport(0, 0, w, h);
+    bakeText();
   }
   resize();
   window.addEventListener('resize', resize);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(bakeText); // 字体换装后重烘焙
 
   // ── 热源：自主游走 ↔ 指针跟随 ────────────────────────────
   var T = 0, last = 0, raf = 0, running = false;
@@ -171,7 +253,7 @@
     var mn = Math.min(r.width, r.height);
     tx = (e.clientX - r.left - r.width  / 2) / mn;
     ty = (r.height / 2 - (e.clientY - r.top)) / mn;   // GL 的 y 朝上
-    ta = 1.18;
+    ta = 1.1;
     ptr = true;
   });
   stage.addEventListener('pointerleave', function(){ ptr = false; });
@@ -191,9 +273,9 @@
     last = ts; T += dt;
     if(!ptr){
       // 相位全部线性喂给 sin（§5.9：循环相位不缓动，非线性来自波形本身）
-      tx = 0.17 * Math.sin(T * 0.21)        + 0.09 * Math.sin(T * 0.083 + 2.1);
-      ty = 0.13 * Math.sin(T * 0.157 + 1.3) + 0.07 * Math.sin(T * 0.117 + 4.0);
-      ta = 0.72 + 0.24 * Math.sin(T * 0.10 + 0.6);
+      tx = 0.30 * Math.sin(T * 0.21)        + 0.12 * Math.sin(T * 0.083 + 2.1);
+      ty = 0.16 * Math.sin(T * 0.157 + 1.3) + 0.08 * Math.sin(T * 0.117 + 4.0);
+      ta = 0.76 + 0.20 * Math.sin(T * 0.10 + 0.6);
     }
     var k = 1 - Math.exp(-dt * (ptr ? 6 : 1.2));
     hx += (tx - hx) * k; hy += (ty - hy) * k; amp += (ta - amp) * k;
