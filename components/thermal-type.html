@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thermal type — SPACE IS ALIVE</title>
+<!--
+  热成像文字组件（独立 demo，未挂载到任何页面）
+  ─────────────────────────────────────────────
+  原理：单四边形 WebGL fragment shader。
+    标量场 v = fbm(域扭曲噪声) + 高斯热核(热源) - 阈值
+    → alpha = smoothstep(v)（场低处透明，露出下层 DOM 文字）
+    → 颜色 = 调色带 pal(v)（白→米黄→黄→粉→红→橙→绿→蓝，分段 smoothstep 出色带）
+  热源：无指针时自主游走（多正弦叠加，相位线性 §5.9）；指针进入后跟随指针。
+
+  性能（遵守 §5.5）：
+    - 不用 SVG feTurbulence（红线）；噪声在 GPU 上算，canvas 独立成层。
+    - 低分辨率渲染（0.4 × dpr）再放大——热成像本来就该糊，还省 6 倍像素。
+    - IntersectionObserver 离屏停 rAF；prefers-reduced-motion 只画一帧静止。
+  字体：demo 用 Space Mono 占位（参考稿是圆角 mono）；挂进正式页面时再定字体角色。
+-->
+<style>
+  html,body{margin:0;background:#fff;}
+  .tt-stage{
+    position:relative;
+    min-height:100svh;
+    display:grid; place-items:center;
+    overflow:clip;
+    cursor:crosshair;
+  }
+  .tt-word{
+    position:relative; z-index:1;
+    margin:0;
+    font-family:"Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight:400;
+    font-size:clamp(56px, 12vw, 168px);
+    line-height:1.08;
+    letter-spacing:.04em;
+    text-align:center;
+    color:#454545;
+    user-select:none;
+  }
+  .tt-fx{
+    position:absolute; inset:0; z-index:2;
+    width:100%; height:100%;
+    pointer-events:none;
+  }
+  .tt-cap{
+    position:absolute; z-index:3; left:50%; bottom:22px; transform:translateX(-50%);
+    font-family:"Space Mono", ui-monospace, Menlo, monospace;
+    font-size:11px; letter-spacing:.18em; color:#b7b0a8;
+  }
+  @media (hover:none){ .tt-cap{display:none} }
+</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<section class="tt-stage" id="ttStage">
+  <h1 class="tt-word">SPACE<br>IS<br>ALIVE</h1>
+  <canvas class="tt-fx" id="ttFx" aria-hidden="true"></canvas>
+  <p class="tt-cap">MOVE — HEAT FOLLOWS</p>
+</section>
+
+<script>
+(function(){
+  'use strict';
+  var stage = document.getElementById('ttStage');
+  var cv = document.getElementById('ttFx');
+  var gl = cv.getContext('webgl', {alpha:true, antialias:false, premultipliedAlpha:true, depth:false, stencil:false});
+  if(!gl) return; // 无 WebGL：静态文字兜底
+
+  var VERT = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FRAG = [
+    'precision mediump float;',
+    'uniform vec2 u_res;',
+    'uniform float u_t;',
+    'uniform vec2 u_hot;',
+    'uniform float u_amp;',
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+    'float vnoise(vec2 p){',
+    '  vec2 i=floor(p),f=fract(p);',
+    '  vec2 u=f*f*(3.0-2.0*f);',
+    '  return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);',
+    '}',
+    'float fbm(vec2 p){',
+    '  float v=0.0,a=0.5;',
+    '  for(int i=0;i<4;i++){v+=a*vnoise(p);p=p*2.03+vec2(19.7,7.3);a*=0.5;}',
+    '  return v;',
+    '}',
+    // 热成像调色带：色带边界靠窄 smoothstep，故意留出「台阶」感
+    'vec3 pal(float h){',
+    '  vec3 c=vec3(1.0);',                                      // 白边（白底上隐形，blob 像从纸里洇出来）
+    '  c=mix(c,vec3(1.00,0.97,0.68),smoothstep(0.03,0.08,h));', // 米黄
+    '  c=mix(c,vec3(1.00,0.90,0.30),smoothstep(0.15,0.21,h));', // 黄
+    '  c=mix(c,vec3(0.97,0.50,0.77),smoothstep(0.30,0.36,h));', // 粉
+    '  c=mix(c,vec3(0.89,0.13,0.18),smoothstep(0.44,0.49,h));', // 红
+    '  c=mix(c,vec3(0.82,0.44,0.10),smoothstep(0.55,0.60,h));', // 焦橙
+    '  c=mix(c,vec3(0.24,0.62,0.34),smoothstep(0.64,0.70,h));', // 绿
+    '  c=mix(c,vec3(0.44,0.70,0.92),smoothstep(0.75,0.82,h));', // 蓝芯
+    '  return c;',
+    '}',
+    'void main(){',
+    '  float mn=min(u_res.x,u_res.y);',
+    '  vec2 p=(gl_FragCoord.xy-0.5*u_res)/mn;',
+    '  float t=u_t;',
+    '  vec2 q=p*2.2;',
+    '  float w1=fbm(q+vec2(0.0,t*0.055));',        // 域扭曲：让边缘长出「伪足」
+    '  float w2=fbm(q+vec2(4.7,-t*0.045));',
+    '  vec2 wp=q+2.1*vec2(w1-0.47,w2-0.47);',
+    '  float n=fbm(wp+vec2(t*0.03,t*0.02));',
+    '  float d=distance(p,u_hot);',
+    '  float env=exp(-d*d*6.5);',                  // 高斯热核
+    '  float v=n*1.30+env*u_amp*1.05-0.97;',
+    '  float a=smoothstep(0.0,0.03,v);',
+    '  float h=clamp(v*1.5,0.0,1.0);',
+    '  h+=0.07*(vnoise(wp*5.0+vec2(t*0.1,0.))-0.5);', // 细颗粒扰动，色带边缘出锯齿状斑驳
+    '  vec3 c=pal(h);',
+    '  gl_FragColor=vec4(c*a,a);',                 // premultiplied alpha
+    '}'
+  ].join('\n');
+
+  function sh(type, src){
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FRAG));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'a');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes = gl.getUniformLocation(prog, 'u_res');
+  var uT   = gl.getUniformLocation(prog, 'u_t');
+  var uHot = gl.getUniformLocation(prog, 'u_hot');
+  var uAmp = gl.getUniformLocation(prog, 'u_amp');
+
+  gl.clearColor(0,0,0,0);
+
+  // ── 尺寸：低清渲染 + CSS 放大（尺寸没变不写，§5.5）─────────
+  var RES = 0.5 * Math.min(window.devicePixelRatio || 1, 2);
+  function resize(){
+    var r = stage.getBoundingClientRect();
+    var w = Math.max(2, Math.round(r.width  * RES));
+    var h = Math.max(2, Math.round(r.height * RES));
+    if(w === cv.width && h === cv.height) return;
+    cv.width = w; cv.height = h;
+    gl.viewport(0, 0, w, h);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // ── 热源：自主游走 ↔ 指针跟随 ────────────────────────────
+  var T = 0, last = 0, raf = 0, running = false;
+  var hx = 0, hy = 0, amp = 0.75;      // 当前值（缓动逼近目标）
+  var tx = 0, ty = 0, ta = 0.75;      // 目标值
+  var ptr = false;
+
+  stage.addEventListener('pointermove', function(e){
+    var r = stage.getBoundingClientRect();
+    var mn = Math.min(r.width, r.height);
+    tx = (e.clientX - r.left - r.width  / 2) / mn;
+    ty = (r.height / 2 - (e.clientY - r.top)) / mn;   // GL 的 y 朝上
+    ta = 1.18;
+    ptr = true;
+  });
+  stage.addEventListener('pointerleave', function(){ ptr = false; });
+
+  function draw(){
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uT, T);
+    gl.uniform2f(uHot, hx, hy);
+    gl.uniform1f(uAmp, amp);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  function frame(ts){
+    if(!running) return;
+    var dt = Math.min(0.05, (ts - last) / 1000 || 0.016);
+    last = ts; T += dt;
+    if(!ptr){
+      // 相位全部线性喂给 sin（§5.9：循环相位不缓动，非线性来自波形本身）
+      tx = 0.17 * Math.sin(T * 0.21)        + 0.09 * Math.sin(T * 0.083 + 2.1);
+      ty = 0.13 * Math.sin(T * 0.157 + 1.3) + 0.07 * Math.sin(T * 0.117 + 4.0);
+      ta = 0.72 + 0.24 * Math.sin(T * 0.10 + 0.6);
+    }
+    var k = 1 - Math.exp(-dt * (ptr ? 6 : 1.2));
+    hx += (tx - hx) * k; hy += (ty - hy) * k; amp += (ta - amp) * k;
+    draw();
+    raf = requestAnimationFrame(frame);
+  }
+
+  // prefers-reduced-motion：画一帧静止热斑，不起循环
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    T = 7; hx = 0.05; hy = -0.04; amp = 0.9;
+    draw();
+    return;
+  }
+
+  // 离屏停 rAF（§5.5）
+  new IntersectionObserver(function(en){
+    var vis = en[0].isIntersecting;
+    if(vis && !running){
+      running = true; last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }else if(!vis && running){
+      running = false; cancelAnimationFrame(raf);
+    }
+  }).observe(stage);
+})();
+</script>
+</body>
+</html>
