@@ -86,11 +86,11 @@
      so the heat traces whatever the word is set in. */
   /* One scaling currency for the whole hero: the word sets it, everything else rents from it.
      Ratios stay constant at every viewport instead of three clamps drifting apart. */
-  .tt-stage{--tt-word:clamp(58px,16vw,168px);
+  .tt-stage{--tt-word:clamp(96px,18vw,230px);   /* 96px 地板 = 移动端霸屏（375 宽时 SPACE ≈ 87vw） */
     position:relative;min-height:100svh;display:grid;grid-template-rows:minmax(0,1fr) auto;
     place-items:center;overflow:clip;cursor:crosshair;background:#fff;}
   .tt-word{position:relative;z-index:1;grid-row:1;margin:0;font-family:var(--sans);font-weight:700;
-    font-size:var(--tt-word);line-height:1.08;letter-spacing:.04em;text-align:center;
+    font-size:var(--tt-word);line-height:1.05;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
   .tt-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;}
   /* hero claim — a FROZEN composition (§5 亲密性/网格):
@@ -101,7 +101,7 @@
      · cap 44px: it stops GROWING there; grid-row 2 keeps it collision-proof, and the left
        margin stays on the 1180 grid line so wide screens don't push it into the corner. */
   .tt-claim{z-index:3;grid-row:2;justify-self:start;text-align:left;
-    font-size:clamp(20px,3.4vw,44px);
+    font-size:clamp(24px,4.6vw,60px);
     margin:clamp(36px,6vh,64px) clamp(24px,6vw,80px) clamp(36px,6vh,64px)
            max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));}
   .tt-claim .l{display:block;white-space:nowrap;}
