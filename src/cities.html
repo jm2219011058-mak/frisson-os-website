@@ -2211,6 +2211,9 @@
     'uniform vec2 u_hot;',
     'uniform float u_amp;',
     'uniform sampler2D u_txt;',
+    'uniform float u_floor;','uniform float u_base;','uniform float u_noise;',
+    'uniform float u_thr;','uniform float u_hs;','uniform float u_warp;',
+    'uniform float u_gamma;','uniform float u_kx;','uniform float u_ky;',
     'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
     'float vnoise(vec2 p){',
     '  vec2 i=floor(p),f=fract(p);',
@@ -2244,13 +2247,13 @@
     '  vec2 wp=q+2.1*vec2(w1-0.47,w2-0.47);',
     '  float n=fbm(wp+vec2(t*0.03,t*0.02));',
     '  vec2 uv=gl_FragCoord.xy/u_res;',
-    '  vec2 wuv=uv+(0.07*vec2(w1-0.47,w2-0.47)*mn)/u_res;', // 扭曲采样：热溢出描线的毛边
-    '  float m=pow(texture2D(u_txt,wuv).r,0.6);',  // gamma 提亮蒙版裙摆：团块能鼓出描线外
+    '  vec2 wuv=uv+(u_warp*vec2(w1-0.47,w2-0.47)*mn)/u_res;', // 扭曲采样：热溢出描线的毛边
+    '  float m=pow(texture2D(u_txt,wuv).r,u_gamma);',  // gamma 提亮蒙版裙摆：团块能鼓出描线外
     '  vec2 dv=p-u_hot;',
-    '  float env=max(exp(-(dv.x*dv.x*5.0+dv.y*dv.y*9.0)),0.46);', // 椭圆热核（横向略宽，热沿词延展）
-    '  float v=m*(0.35+0.66*n)*env*u_amp-0.27;',
+    '  float env=max(exp(-(dv.x*dv.x*u_kx+dv.y*dv.y*u_ky)),u_floor);', // 椭圆热核（横向略宽，热沿词延展）
+    '  float v=m*(u_base+u_noise*n)*env*u_amp-u_thr;',
     '  float a=smoothstep(0.0,0.04,v);',
-    '  float h=clamp(v*1.25,0.0,1.0);',
+    '  float h=clamp(v*u_hs,0.0,1.0);',
     '  h+=0.07*(vnoise(wp*5.0+vec2(t*0.1,0.))-0.5);', // 细颗粒扰动，色带边缘出锯齿状斑驳
     '  vec3 c=pal(h);',
     '  gl_FragColor=vec4(c*a,a);',                 // premultiplied alpha
@@ -2281,6 +2284,50 @@
   var uHot = gl.getUniformLocation(prog, 'u_hot');
   var uAmp = gl.getUniformLocation(prog, 'u_amp');
   var uTxt = gl.getUniformLocation(prog, 'u_txt');
+  /* —— 全部旋钮（默认值即当前定稿；URL 带 ?tune 或 #tune 出现调参面板实时拉）—— */
+  var TUNE={floor:0.30,base:0.35,noise:0.66,thr:0.27,hs:1.25,warp:0.07,gamma:0.60,kx:5.0,ky:9.0,
+            idleBase:1.0,idleSwing:0.18,breath:0.16,speed:1.0,wx:0.32,wy:0.17,
+            ptrAmp:1.3,lerpIdle:1.9,lerpPtr:6};
+  window.__ttTune = TUNE;
+  var uF =gl.getUniformLocation(prog,'u_floor'), uB =gl.getUniformLocation(prog,'u_base'),
+      uN =gl.getUniformLocation(prog,'u_noise'), uThr=gl.getUniformLocation(prog,'u_thr'),
+      uHs=gl.getUniformLocation(prog,'u_hs'),    uWp =gl.getUniformLocation(prog,'u_warp'),
+      uG =gl.getUniformLocation(prog,'u_gamma'), uKx =gl.getUniformLocation(prog,'u_kx'),
+      uKy=gl.getUniformLocation(prog,'u_ky');
+  if(/[?#&]tune/.test(location.search+location.hash)) (function(){
+    var defs=[
+      ['floor','余温底',0,0.8,0.01],['idleBase','常态热度',0.5,1.6,0.01],['idleSwing','呼吸幅度',0,0.5,0.01],
+      ['breath','呼吸频率',0.02,0.6,0.01],['speed','游走速度',0.2,4,0.05],['wx','游走幅X',0,0.6,0.01],
+      ['wy','游走幅Y',0,0.4,0.01],['ptrAmp','指针热度',0.8,2,0.01],['lerpIdle','追踪·常态',0.3,6,0.1],
+      ['lerpPtr','追踪·指针',1,12,0.1],['thr','点火阈值',0,0.6,0.01],['base','场基底',0,0.8,0.01],
+      ['noise','噪声权重',0,1.2,0.01],['hs','色带斜率',0.6,2,0.01],['warp','毛边扭曲',0,0.2,0.005],
+      ['gamma','蒙版γ',0.3,1.2,0.01],['kx','热核宽X',1,12,0.1],['ky','热核宽Y',1,14,0.1]];
+    var pn=document.createElement('div');
+    pn.style.cssText='position:fixed;top:76px;right:12px;z-index:999;background:rgba(20,16,12,.93);color:#f4ecdc;'+
+      'font:11px/1.5 ui-monospace,Menlo,monospace;padding:12px 14px;border-radius:10px;width:242px;max-height:82vh;overflow:auto;';
+    pn.innerHTML='<div style="font-weight:700;letter-spacing:.08em;margin-bottom:8px">THERMAL TUNER</div>';
+    defs.forEach(function(d){
+      var row=document.createElement('label');
+      row.style.cssText='display:block;margin:6px 0;';
+      row.innerHTML='<span style="display:flex;justify-content:space-between"><span>'+d[1]+' <i style="opacity:.5;font-style:normal">'+d[0]+'</i></span><b data-v>'+TUNE[d[0]]+'</b></span>';
+      var inp=document.createElement('input');
+      inp.type='range'; inp.min=d[2]; inp.max=d[3]; inp.step=d[4]; inp.value=TUNE[d[0]];
+      inp.style.cssText='width:100%;accent-color:#e07b3c;';
+      inp.addEventListener('input',function(){ TUNE[d[0]]=parseFloat(inp.value); row.querySelector('[data-v]').textContent=inp.value; });
+      row.appendChild(inp); pn.appendChild(row);
+    });
+    var btn=document.createElement('button');
+    btn.textContent='复制当前参数';
+    btn.style.cssText='margin-top:8px;width:100%;padding:6px;border:0;border-radius:6px;background:#e07b3c;color:#fff;cursor:pointer;font:inherit;';
+    btn.addEventListener('click',function(){
+      var s=JSON.stringify(TUNE);
+      var pr=(navigator.clipboard&&navigator.clipboard.writeText)?navigator.clipboard.writeText(s):Promise.reject();
+      pr.then(function(){ btn.textContent='已复制 ✓'; setTimeout(function(){btn.textContent='复制当前参数';},1200); },
+              function(){ prompt('当前参数：', s); });
+    });
+    pn.appendChild(btn);
+    document.body.appendChild(pn);
+  })();
 
   // ── 字形蒙版纹理（描线 = 温度场的燃料）────────────────────
   var tex = gl.createTexture();
@@ -2383,7 +2430,7 @@
     var mn = Math.min(r.width, r.height);
     tx = (e.clientX - r.left - r.width  / 2) / mn;
     ty = (r.height / 2 - (e.clientY - r.top)) / mn;   // GL 的 y 朝上
-    ta = 1.3;
+    ta = TUNE.ptrAmp;
     ptr = true;
   });
   stage.addEventListener('pointerleave', function(){ ptr = false; });
@@ -2396,7 +2443,7 @@
     var mn = Math.min(r.width, r.height);
     tx = (t.clientX - r.left - r.width  / 2) / mn;
     ty = (r.height / 2 - (t.clientY - r.top)) / mn;
-    ta = 1.3; ptr = true;
+    ta = TUNE.ptrAmp; ptr = true;
   }
   stage.addEventListener('touchstart', function(e){
     var el = e.target;
@@ -2421,6 +2468,9 @@
     gl.uniform1f(uT, T);
     gl.uniform2f(uHot, hx, hy);
     gl.uniform1f(uAmp, amp);
+    gl.uniform1f(uF,TUNE.floor); gl.uniform1f(uB,TUNE.base); gl.uniform1f(uN,TUNE.noise);
+    gl.uniform1f(uThr,TUNE.thr); gl.uniform1f(uHs,TUNE.hs);  gl.uniform1f(uWp,TUNE.warp);
+    gl.uniform1f(uG,TUNE.gamma); gl.uniform1f(uKx,TUNE.kx);  gl.uniform1f(uKy,TUNE.ky);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
@@ -2430,11 +2480,11 @@
     last = ts; T += dt;
     if(!ptr){
       // 相位全部线性喂给 sin（§5.9：循环相位不缓动，非线性来自波形本身）
-      tx = 0.32 * Math.sin(T * 0.34)        + 0.12 * Math.sin(T * 0.13 + 2.1);
-      ty = 0.17 * Math.sin(T * 0.25 + 1.3)  + 0.08 * Math.sin(T * 0.19 + 4.0);
-      ta = 1.0 + 0.18 * Math.sin(T * 0.16 + 0.6);
+      tx = TUNE.wx * Math.sin(T * 0.34 * TUNE.speed)        + 0.12 * Math.sin(T * 0.13 * TUNE.speed + 2.1);
+      ty = TUNE.wy * Math.sin(T * 0.25 * TUNE.speed + 1.3)  + 0.08 * Math.sin(T * 0.19 * TUNE.speed + 4.0);
+      ta = TUNE.idleBase + TUNE.idleSwing * Math.sin(T * TUNE.breath + 0.6);
     }
-    var k = 1 - Math.exp(-dt * (ptr ? 6 : 1.9));
+    var k = 1 - Math.exp(-dt * (ptr ? TUNE.lerpPtr : TUNE.lerpIdle));
     hx += (tx - hx) * k; hy += (ty - hy) * k; amp += (ta - amp) * k;
     draw();
     raf = requestAnimationFrame(frame);
