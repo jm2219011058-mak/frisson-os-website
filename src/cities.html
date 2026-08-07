@@ -93,23 +93,22 @@
     font-size:var(--tt-word);line-height:1.08;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
   .tt-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;}
-  /* hero claim — three rules make it sit still at every ratio (§5 亲密性/网格):
-     1) IN FLOW, grid row 2 — the centred word owns row 1, so the two can never collide;
-        on short viewports the stage grows past 100svh instead of overlapping. The old
-        absolute bottom-left anchor crashed into ALIVE on short-wide windows.
-     2) LEFT EDGE on the 1180 content grid line (§5 formula), not the canvas edge — on wide
-        screens it aligns with every section below instead of drifting to the far corner.
-     3) TYPE rents from --tt-word (h = 0.30×, body = 0.10×, with legibility floors), so the
-        claim:word ratio is CONSTANT across viewports instead of three clamps drifting apart.
-     z:3 still beats the heat canvas (grid items honour z-index without position). */
+  /* hero claim — a FROZEN composition (§5 亲密性/网格):
+     · line breaks are authored in the markup (.l = nowrap block) — identical 2+3 lines at
+       every viewport; the block scales, it never rewraps.
+     · one size variable for the whole block; the body rents .386em of it, widths are all
+       em-derived, so the poster scales as a unit — nothing inside can drift apart.
+     · cap 44px: it stops GROWING there; grid-row 2 keeps it collision-proof, and the left
+       margin stays on the 1180 grid line so wide screens don't push it into the corner. */
   .tt-claim{z-index:3;grid-row:2;justify-self:start;text-align:left;
+    font-size:clamp(20px,3.4vw,44px);
     margin:clamp(36px,6vh,64px) clamp(24px,6vw,80px) clamp(36px,6vh,64px)
-           max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));
-    max-width:min(620px,calc(100% - 2*clamp(24px,6vw,80px)));}
+           max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));}
+  .tt-claim .l{display:block;white-space:nowrap;}
   .tt-claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
-    font-size:max(19px,calc(var(--tt-word)*.30));line-height:1.12;letter-spacing:.02em;color:var(--ink);}
+    font-size:1em;line-height:1.12;letter-spacing:.02em;color:var(--ink);}
   .tt-claim-p{margin:clamp(10px,1.6vh,16px) 0 0;font-family:var(--serif);font-weight:400;
-    font-size:max(13.5px,calc(var(--tt-word)*.10));line-height:1.55;color:var(--ink-soft);max-width:46ch;}
+    font-size:max(12.5px,.386em);line-height:1.55;color:var(--ink-soft);}
 
   /* act 01 — paper variant of the .act shell */
   /* .act.act--light out-specifies the .act base regardless of source order */
@@ -546,8 +545,10 @@
     <h1 class="tt-word">SPACE<br>IS<br>ALIVE</h1>
     <canvas class="tt-fx" id="ttFx" aria-hidden="true"></canvas>
     <div class="tt-claim">
-      <h2 class="tt-claim-h">Redefining the Value of the Physical World</h2>
-      <p class="tt-claim-p">With Frisson, static Real Estate stands for Soulful Living Spaces that imagine Art, Tech, and Human Emotion.</p>
+      <!-- line breaks are AUTHORED, not computed: each .l is a nowrap block, so the claim
+           renders the identical 2+3 lines at every viewport — it only scales, never rewraps -->
+      <h2 class="tt-claim-h"><span class="l">Redefining the Value</span><span class="l">of the Physical World</span></h2>
+      <p class="tt-claim-p"><span class="l">With Frisson, static Real Estate stands for</span><span class="l">Soulful Living Spaces that imagine</span><span class="l">Art, Tech, and Human Emotion.</span></p>
     </div>
   </header>
 
