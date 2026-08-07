@@ -26,6 +26,9 @@ const IGNORE = new Set([
   'lead', 'center', 'sec', 'hiw', 'moon-hero',
   /* sona #s4 beads: sized and transformed via setAttribute, never via CSS */
   'hit', 's4b-h', 's4b-v', 's4b-tint', 's4b-off',
+  /* cities acts: pure JS visibility signal since the roster dial replaced the ex- washes
+     (its pause runs through GSAP/IO, not animation-play-state) */
+  'act-off',
 ]);
 
 function classesUsed(html) {
