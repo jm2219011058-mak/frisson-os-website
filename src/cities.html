@@ -84,22 +84,32 @@
   /* ---- HERO · thermal type ---- (engine notes live in components/thermal-type.html)
      House face per §4 — the demo's Space Mono is NOT imported; the bake reads computed style,
      so the heat traces whatever the word is set in. */
-  .tt-stage{position:relative;min-height:100svh;display:grid;place-items:center;overflow:clip;cursor:crosshair;background:#fff;}
-  .tt-word{position:relative;z-index:1;margin:0;font-family:var(--sans);font-weight:700;
-    font-size:clamp(58px,16vw,168px);line-height:1.08;letter-spacing:.04em;text-align:center;
+  /* One scaling currency for the whole hero: the word sets it, everything else rents from it.
+     Ratios stay constant at every viewport instead of three clamps drifting apart. */
+  .tt-stage{--tt-word:clamp(58px,16vw,168px);
+    position:relative;min-height:100svh;display:grid;grid-template-rows:minmax(0,1fr) auto;
+    place-items:center;overflow:clip;cursor:crosshair;background:#fff;}
+  .tt-word{position:relative;z-index:1;grid-row:1;margin:0;font-family:var(--sans);font-weight:700;
+    font-size:var(--tt-word);line-height:1.08;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
   .tt-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;}
-  /* hero claim（原 WHAT WE DO 声明前移）——锚定 hero 左下角，两个偏移全用站内既有 token：
-     左线 = 全站栏线 clamp(24px,6vw,80px)（与各 section 左边线同一条），
-     底距 = 间距刻度中档 clamp(36px,6vh,64px)（与节间距同款 token）。
-     只认左下角，不与字堆攀扯——比例拉伸时它钉在角上不飘。
-     z:3 压在热画布上（热蒙版只烧描线，blob 裙摆扫过时保持可读） */
-  .tt-claim{position:absolute;z-index:3;left:clamp(24px,6vw,80px);bottom:clamp(36px,6vh,64px);
-    max-width:min(620px,80vw);text-align:left;}
+  /* hero claim — three rules make it sit still at every ratio (§5 亲密性/网格):
+     1) IN FLOW, grid row 2 — the centred word owns row 1, so the two can never collide;
+        on short viewports the stage grows past 100svh instead of overlapping. The old
+        absolute bottom-left anchor crashed into ALIVE on short-wide windows.
+     2) LEFT EDGE on the 1180 content grid line (§5 formula), not the canvas edge — on wide
+        screens it aligns with every section below instead of drifting to the far corner.
+     3) TYPE rents from --tt-word (h = 0.30×, body = 0.10×, with legibility floors), so the
+        claim:word ratio is CONSTANT across viewports instead of three clamps drifting apart.
+     z:3 still beats the heat canvas (grid items honour z-index without position). */
+  .tt-claim{z-index:3;grid-row:2;justify-self:start;text-align:left;
+    margin:clamp(36px,6vh,64px) clamp(24px,6vw,80px) clamp(36px,6vh,64px)
+           max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));
+    max-width:min(620px,calc(100% - 2*clamp(24px,6vw,80px)));}
   .tt-claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
-    font-size:clamp(24px,3.6vw,52px);line-height:1.12;letter-spacing:.02em;color:var(--ink);}
+    font-size:max(19px,calc(var(--tt-word)*.30));line-height:1.12;letter-spacing:.02em;color:var(--ink);}
   .tt-claim-p{margin:clamp(10px,1.6vh,16px) 0 0;font-family:var(--serif);font-weight:400;
-    font-size:clamp(13.5px,1.35vw,17px);line-height:1.55;color:var(--ink-soft);max-width:46ch;}
+    font-size:max(13.5px,calc(var(--tt-word)*.10));line-height:1.55;color:var(--ink-soft);max-width:46ch;}
 
   /* act 01 — paper variant of the .act shell */
   /* .act.act--light out-specifies the .act base regardless of source order */
