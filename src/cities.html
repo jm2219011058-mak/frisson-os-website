@@ -556,34 +556,33 @@
        hand-drawn cutout window and a button (→ #vm-ring, Magic Conch invitation).
        The seven signatures stay as a small shelf above the poem. -->
   <style>
-  /* ===== ACT 01 · OPEN RING poster — warm field lives inside one big squircle card
-     on the white page (§5.6b), fine baked grain only (§5.5 #2) ===== */
-  .act.act--poster{background:#fff;color:var(--ink);padding:clamp(14px,2.5vw,36px);}
-  /* the poem block is internally left-aligned but sits centred in the card (局部左对齐) */
-  .poster-card{position:relative;width:100%;min-height:calc(100svh - 2*clamp(14px,2.5vw,36px));
+  /* ===== ACT 01 · OPEN RING poster — full-bleed ant-colony speckle field on the white
+     page: the baked canvas carries ALL colour (§5.5 #2), runs edge to edge left/right,
+     and dissolves into the page at top/bottom via its own density envelope. No card. ===== */
+  .act.act--poster{background:#fff;color:var(--ink);padding:0;}
+  /* the poem block is internally left-aligned but sits centred in the field (局部左对齐) */
+  .poster-card{position:relative;width:100%;min-height:100svh;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     gap:clamp(30px,6vh,64px);padding:clamp(48px,8vh,110px) clamp(28px,7vw,90px);
-    overflow:hidden;corner-shape:squircle;border-radius:clamp(36px,5vw,72px);background:#e07b3c;}
+    overflow:hidden;background:transparent;}
   .poster-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-  .poster-wash{position:absolute;inset:0;}
-  /* 70s radial glow — paintWashes tones, static CSS (no JS repaint) */
-  .poster-wash-a{background:
-    radial-gradient(ellipse 90% 72% at 50% 40%, rgba(247,216,88,.92), rgba(247,216,88,0) 68%),
-    radial-gradient(ellipse 120% 95% at 50% 45%, rgba(236,122,53,.85), rgba(236,122,53,0) 80%);}
-  .poster-wash-b{background:
-    radial-gradient(ellipse 140% 120% at 50% 52%, rgba(223,75,44,0) 46%, rgba(223,75,44,.5) 82%, rgba(150,44,26,.72) 100%);}
-  /* baked grain tile — same data-URI recipe as .sln-grainbg (§5.5 #2), filter id pg */
-  .poster-grain{position:absolute;inset:0;opacity:.3;background-size:240px 240px;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='pg'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 .55 .55 0 0'/></filter><rect width='100%25' height='100%25' filter='url(%23pg)'/></svg>");}
+  /* particle-field canvases (2026-08-08, ant-colony reference): .poster-speck is BAKED
+     ONCE (§5.5 #2 — tens of thousands of specks, zero per-frame cost); .poster-live is
+     the small interactive swarm the blob edge and the pointer push around */
+  .poster-speck,.poster-live{position:absolute;inset:0;width:100%;height:100%;}
+  /* while the particle engine runs, the blob is NOT drawn — its shape emerges from the
+     clearing it plows through the swarm. The solid fill stays only for reduced motion.
+     !important: .act.in .ring-fill{opacity:1} sits LATER in the sheet at equal specificity */
+  .act.pcv .ring-fill{opacity:0!important;}
   /* content above the grain so the ring interior reads as a clean cutout */
   .act--poster .sig-row,.poem{position:relative;z-index:1;}
-  .act--poster .sig-row .draw{stroke:#FEFCF8;}
+  .act--poster .sig-row .draw{stroke:rgba(43,29,18,.72);}
   .sig-row--mini{width:min(460px,70%);}
   /* 图2: every line hangs on the same left gridline (§5) */
   .poem{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:clamp(2px,1vh,12px);}
   /* one size, one weight for every line — the hierarchy is carried by the blob, not type scale */
   .poem-line{margin:0;font-family:var(--serif);font-weight:600;
-    font-size:clamp(28px,4vw,52px);line-height:1.12;letter-spacing:.01em;color:#FEFCF8;
+    font-size:clamp(38px,6vw,84px);line-height:1.1;letter-spacing:.01em;color:var(--ink);
     opacity:0;transform:translateY(14px);
     transition:opacity 1s ease var(--d,0s),transform 1s cubic-bezier(0.16,1,0.3,1) var(--d,0s);}
   .act.in .poem-line{opacity:1;transform:none;}
@@ -591,15 +590,23 @@
   .poem-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:0;}
   /* the ring button — hand-drawn cutout window around the wordmark */
   .ring-btn{position:relative;display:grid;place-items:center;width:clamp(230px,29vw,360px);
-    background:transparent;border:0;padding:0;cursor:pointer;margin:clamp(4px,1vh,12px) 0;
+    background:transparent;border:0;padding:0;cursor:pointer;
+    /* asymmetric: the opening pair sits a notch higher, clear of the blob */
+    margin:clamp(20px,3.6vh,48px) 0 clamp(4px,1vh,12px);
     transition:transform .35s cubic-bezier(0.25,0.1,0.25,1);}
   .ring-btn:hover{transform:scale(1.03);}
   .ring-btn:focus-visible{outline:2px solid var(--ink);outline-offset:8px;}
   .ring-svg{display:block;width:100%;height:auto;overflow:visible;grid-area:1/1;}
-  /* the cutout window — white living blob (index-page 灵动圈 algorithm, no stroke),
-     fades in with the poem then keeps drifting */
-  .ring-fill{fill:#FEFCF8;stroke:none;opacity:0;transition:opacity .8s ease .9s;}
+  /* reduced-motion fallback = the reference's dotted BROOD outline; while the particle
+     engine runs (.pcv) this stays hidden and the shape lives in the swarm instead */
+  .ring-fill{fill:none;stroke:rgba(43,29,18,.5);stroke-width:1.5;stroke-dasharray:2 7;
+    stroke-linecap:round;opacity:0;transition:opacity .8s ease .9s;}
   .act.in .ring-fill{opacity:1;}
+  /* the label in the clearing — reference-style bold caps, quiet ink */
+  .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-weight:700;font-size:clamp(12px,1.5vw,16px);letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink);opacity:0;transition:opacity .8s ease 1.05s;pointer-events:none;}
+  .act.in .ring-label{opacity:1;}
   /* ---- the popup (#vm-ring) — light .vision override, #vm-grotto pattern ---- */
   #vm-ring{background:#FEFCF8;color:var(--ink);text-align:center;max-height:86dvh;overflow-y:auto;}
   #vm-ring .vision-x{background:rgba(43,29,18,.08);color:rgba(43,29,18,.72);}
@@ -614,7 +621,7 @@
     margin:0 auto clamp(14px,2vh,24px);max-width:46ch;text-align:left;text-wrap:pretty;}
   .ring-p b{font-weight:700;color:var(--ink);}
   @media(max-width:820px){
-    .poem-line{font-size:clamp(26px,7vw,44px);}
+    .poem-line{font-size:clamp(34px,9.8vw,62px);}
     .ring-btn{width:clamp(200px,52vw,280px);}
     #vm-ring{padding:clamp(34px,6vh,54px) clamp(24px,6vw,44px);border-radius:clamp(40px,9vw,84px);}
   }
@@ -628,9 +635,8 @@
   <section class="act act--poster" id="act-collection" aria-label="Right here is a wonder place to start">
     <div class="poster-card">
       <div class="poster-bg" aria-hidden="true">
-        <div class="poster-wash poster-wash-a"></div>
-        <div class="poster-wash poster-wash-b"></div>
-        <div class="poster-grain"></div>
+        <canvas class="poster-speck" id="pcvBake"></canvas>
+        <canvas class="poster-live" id="pcvLive"></canvas>
       </div>
       <div class="sig-row sig-row--mini" aria-hidden="true">
         <svg viewBox="0 0 120 160"><path class="draw" style="--d:.0s"  d="M20 132 L44 38 L58 112 L84 28 L100 124"/></svg>
@@ -650,6 +656,7 @@
           <svg class="ring-svg" viewBox="0 40 340 260" aria-hidden="true" focusable="false">
             <path class="ring-fill" id="ringFill" d=""/>
           </svg>
+          <span class="ring-label" aria-hidden="true">Magic Conch</span>
         </button>
         <p class="poem-line" aria-hidden="true" style="--d:.3s">Is</p>
         <p class="poem-line" aria-hidden="true" style="--d:.38s">A</p>
@@ -661,13 +668,19 @@
     </div>
   </section>
   <script>
-  /* OPEN RING 灵动圈 — the index-page algorithm verbatim (frisson-logo-animated.js organic
-     harmonics, stretch 1.15, speed ×.85), same family as the conch blob. White blob only,
-     no stroke. Morphs while the act is on-screen and entered; no writes otherwise (§5.5 #4). */
+  /* OPEN RING · particle field (2026-08-08, ant-colony density-map reference).
+     Two canvases (§5.5 discipline): #pcvBake is painted ONCE — tens of thousands of specks
+     whose density forms the warm heart, a crimson edge spray, a white diagonal streak and
+     two corner hairlines — then never touched again. #pcvLive is a small swarm integrated
+     each frame: the blob is NEVER drawn — the ring's harmonic edge (same logo maths as
+     before: HARM, stretch 1.15, speed ×.85) acts as an invisible force that plows grains
+     outward, so the shape reads as a clearing rimmed with jostling white dust. The pointer
+     (mouse or touch) shoves grains the same way. Reduced motion: engine off, the original
+     static white blob frame stays. */
   (function(){
     var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
     var HARM=[{k:2,a:.07,w:.85,p:.5},{k:3,a:.05,w:-.6,p:2.0},{k:5,a:.03,w:1.0,p:.3}];
-    var ST=1.15;                                          /* the logo's locked stretch */
+    var ST=1.15, T0=2.4, SPEED=.85;                       /* the logo's locked constants */
     function ringPath(t){ var N=64,cx=170,cy=170,R0=118,sx=ST,sy=1/ST,pts=[],i,j;
       for(i=0;i<N;i++){ var th=(i/N)*Math.PI*2, rr=1;
         for(j=0;j<HARM.length;j++){var h=HARM[j];rr+=h.a*Math.sin(h.k*th+h.w*t+h.p);}
@@ -678,18 +691,205 @@
         d+=' C '+c1x.toFixed(2)+' '+c1y.toFixed(2)+' '+c2x.toFixed(2)+' '+c2y.toFixed(2)+' '+p2[0].toFixed(2)+' '+p2[1].toFixed(2); }
       return d+' Z';
     }
-    var fl=document.getElementById('ringFill'), act=document.getElementById('act-collection');
+    /* radial edge factor in unit-ellipse space; gentle breath like the conch */
+    function edge(th,t){ var rr=1,j; for(j=0;j<HARM.length;j++){var h=HARM[j];rr+=h.a*Math.sin(h.k*th+h.w*t+h.p);}
+      return rr*(1+.018*Math.sin(t*1.15)); }
+    function gauss(){ return (Math.random()+Math.random()+Math.random()-1.5)/1.5; }
+
+    var act=document.getElementById('act-collection'), fl=document.getElementById('ringFill');
     if(!fl||!act) return;
-    fl.setAttribute('d',ringPath(2.4));                  /* the logo's still-frame t */
-    if(REDUCE) return;                                   /* static frame; CSS reveals everything */
+    fl.setAttribute('d',ringPath(T0));                    /* the logo's still-frame t */
+    if(REDUCE) return;                                    /* static poster, no engine */
+    var card=act.querySelector('.poster-card'), btn=act.querySelector('.ring-btn'),
+        bakeC=document.getElementById('pcvBake'), liveC=document.getElementById('pcvLive');
+    if(!card||!btn||!bakeC||!liveC) return;
+    act.classList.add('pcv');                             /* hides the solid fill */
+
+    var DPR=Math.min(window.devicePixelRatio||1,2), W=0,H=0;
+    var b={cx:0,cy:0,rx:1,ry:1};                          /* blob home, card coords */
+    var mob=matchMedia('(max-width:820px)');
+
+    function syncGeom(){ var cr=card.getBoundingClientRect(), br=btn.getBoundingClientRect(), s=br.width/340;
+      /* viewBox is "0 40 340 260": svg y starts at 40, so path point (170,170) sits 130·s below btn top */
+      b.cx=br.left-cr.left+170*s; b.cy=br.top-cr.top+130*s; b.rx=118*ST*s; b.ry=118/ST*s; }
+
+    /* ---- bake — the poster itself, drawn once. Reference palette, three bold fields:
+       golden heart hugging the blob (BROOD sits inside NURSES), crimson bloom upper-right,
+       indigo mass lower-right; mauve/cream ambient mix; crimson-blue spray on the left and
+       right margins; density dissolves to the white page at top and bottom ---- */
+    var YEL=['#f7d858','#ffcf3f','#ffe98a','#f0b23e'],
+        RED=['#d8412c','#b23033','#8f2b1e','#e06a55'],
+        BLU=['#33418f','#4a5fb0','#232e66','#6b79c9'],
+        PNK=['#e9a8a0','#df8f96','#c86a8a','#e06a55'],
+        VIO=['#7a5ba8','#5b4a9e','#8d6bbf','#4a5fb0'],
+        AMB=['#e9a8a0','#f6ead6','#d8412c','#4a5fb0','#c86a8a','#7a5ba8','#f0b23e','#2b1d12'];
+    function any(a){ return a[(Math.random()*a.length)|0]; }
+    function bake(){
+      var g=bakeC.getContext('2d');
+      g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,bakeC.width,bakeC.height); g.scale(DPR,DPR);
+      var mind=Math.min(W,H), n=Math.min(160000,Math.round(W*H/11));
+      var yR=mind*.46, rR=mind*.38, bR=mind*.55, pR=mind*.50, vR=mind*.34,
+          eR=Math.min(110,mind*.18), fadeY=H*.13;
+      var yCx=b.cx-W*.06, yCy=b.cy-H*.04;
+      for(var i=0;i<n;i++){
+        var x=Math.random()*W, y=Math.random()*H;
+        /* top/bottom dissolve into the white page */
+        var env=1; if(y<fadeY) env=y/fadeY; else if(y>H-fadeY) env=(H-y)/fadeY; env*=env;
+        if(env<=0) continue;
+        /* no hard hole any more: the whole blob disc belongs to REAL particles, and the
+           bake crossfades in over u∈[1.4,2.1] with the same smoothstep the live swarm
+           fades out with — the two populations blend, no static seam */
+        var ux=(x-b.cx)/b.rx, uy=(y-b.cy)/b.ry, u2=ux*ux+uy*uy;
+        var uu=Math.sqrt(u2);
+        if(uu<1.4) continue;
+        var sB=uu>2.1?1:(uu-1.4)/.7; sB*=sB*(3-2*sB);
+        env*=sB;
+        var dx=x-yCx, dyv=y-yCy;
+        var wY=Math.exp(-(dx*dx+dyv*dyv)/(2*yR*yR));     /* golden heart (NURSES) */
+        dx=x-W*.80; dyv=y-H*.16;
+        var wR=Math.exp(-(dx*dx+dyv*dyv)/(2*rR*rR));     /* crimson bloom (CLEANERS) */
+        dx=x-W*.74; dyv=y-H*.88;
+        var wB=Math.exp(-(dx*dx+dyv*dyv)/(2*bR*bR));     /* indigo mass (FORAGERS) */
+        dx=x-W*.30; dyv=y-H*.74;
+        var wP=Math.exp(-(dx*dx+dyv*dyv)/(2*pR*pR));     /* mauve drift, lower-left */
+        dx=x-W*.90; dyv=y-H*.52;
+        var wV=Math.exp(-(dx*dx+dyv*dyv)/(2*vR*vR));     /* violet seam, mid-right */
+        var de=Math.min(x,W-x), wE=de<eR?1-de/eR:0;      /* left/right margin spray only */
+        if(Math.random()>env*(.34+1.5*wY+1.35*wR+1.5*wB+1.0*wP+.9*wV+1.25*wE)) continue;
+        var c,r2=Math.random(), top=Math.max(wY,Math.max(wR,Math.max(wB,Math.max(wP,wV))));
+        if(wE>.3&&r2<.6) c=r2<.3?any(RED):any(BLU);
+        else if(top<.20||r2>.88) c=any(AMB);
+        else if(top===wY) c=any(YEL);
+        else if(top===wR) c=any(RED);
+        else if(top===wB) c=any(BLU);
+        else if(top===wP) c=any(PNK);
+        else c=any(VIO);
+        g.globalAlpha=.55+Math.random()*.45; g.fillStyle=c;
+        /* multi-scale grain (§5.8): mostly fine dust, a few chunky flecks */
+        var s2=Math.random()<.05?2.6+Math.random()*1.3:(Math.random()<.85?1:1.8)+Math.random()*.9;
+        g.fillRect(x,y,s2,s2);
+        /* clumping — a burst of sibling dust around some specks gives the SPRAY feel
+           (uniform randomness alone reads as digital noise, not spray) */
+        if(Math.random()<.13){ var nb=2+(Math.random()*3|0);
+          for(var j2=0;j2<nb;j2++){ g.globalAlpha=.35+Math.random()*.45;
+            g.fillRect(x+gauss()*6,y+gauss()*6,1+Math.random(),1+Math.random()); } }
+      }
+      /* white light ray through the middle, as dust */
+      var sx0=W*.58, sy0=H*.46, ca=Math.cos(-.30), sa=Math.sin(-.30), ns=Math.round(mind*5);
+      for(i=0;i<ns;i++){
+        var tt=Math.random()*2-1, pp=gauss()*mind*.05;
+        var x2=sx0+tt*W*.5*ca-pp*sa, y2=sy0+tt*W*.5*sa+pp*ca;
+        if(x2<0||y2<0||x2>W||y2>H) continue;
+        g.globalAlpha=.3+Math.random()*.6; g.fillStyle=Math.random()<.9?'#ffffff':'#ffe98a';
+        var s3=1+Math.random(); g.fillRect(x2,y2,s3,s3);
+      }
+      /* scattered margin hairlines — the reference's pen slashes, in ink/red/blue/white */
+      var HL=[[.94,.04,42,.60,'#2b1d12'],[.06,.90,38,.55,'#2b1d12'],[.90,.86,46,.9,'#d8412c'],
+              [.12,.10,34,2.2,'#ffffff'],[.50,.965,40,.2,'#2b1d12'],[.965,.5,36,1.35,'#4a5fb0']];
+      g.lineWidth=1;
+      for(i=0;i<HL.length;i++){ var hl=HL[i], hx=hl[0]*W, hy=hl[1]*H, hr=hl[2], hth=hl[3];
+        g.globalAlpha=.5+Math.random()*.2; g.strokeStyle=hl[4];
+        g.beginPath(); g.moveTo(hx-Math.cos(hth)*hr,hy-Math.sin(hth)*hr);
+        g.lineTo(hx+Math.cos(hth)*hr,hy+Math.sin(hth)*hr); g.stroke(); }
+      g.globalAlpha=1;
+    }
+
+    /* ---- live swarm — the ENTIRE blob disc is real particles (72% of the budget):
+       grains spawned inside get plowed to the edge by the field, so the harmonic
+       boundary is a physical wall of real grains, not a static cutout. Their density
+       fades out over u∈[1.4,2.1] with the SAME smoothstep the bake fades in with —
+       fake and real populations crossfade. The rest sprinkles the whole page so the
+       pointer always finds something to shove. ---- */
+    var GROUPS=[], ETAB=new Float32Array(128);
+    var LPAL_RIM=['#f7d858','#f7d858','#ffcf3f','#f0b23e','#ffe98a','#d8412c','#2b1d12'];
+    var LPAL_FLD=['#f7d858','#f0b23e','#d8412c','#4a5fb0','#e9a8a0','#2b1d12'];
+    function mk(x,y,c,s,sp){ return {x:x,y:y,x0:x,y0:y,vx:0,vy:0,c:c,s:s,sp:sp}; }
+    function sample(){
+      var P=[], target=Math.max(1600,Math.min(mob.matches?5000:12000,Math.round(W*H/(mob.matches?180:110))));
+      var nZone=Math.round(target*.72), i=0, guard=0;
+      while(i<nZone&&guard++<nZone*6){
+        var u=Math.sqrt(Math.random())*2.1;              /* area-uniform over the disc */
+        if(u>1.4){ var sB=(u-1.4)/.7; sB*=sB*(3-2*sB); if(Math.random()<sB) continue; }
+        var th=Math.random()*Math.PI*2;
+        P.push(mk(b.cx+Math.cos(th)*b.rx*u, b.cy+Math.sin(th)*b.ry*u,
+                  LPAL_RIM[(Math.random()*LPAL_RIM.length)|0], 1.5+Math.random()*1.7, .004));
+        i++;
+      }
+      for(i=P.length;i<target;i++){ P.push(mk(Math.random()*W, Math.random()*H,
+                  LPAL_FLD[(Math.random()*LPAL_FLD.length)|0], 1.1+Math.random()*1.3, .010)); }
+      var by={}; for(i=0;i<P.length;i++){ (by[P[i].c]=by[P[i].c]||[]).push(P[i]); }
+      GROUPS=Object.keys(by).map(function(k){ return {c:k,list:by[k]}; });
+    }
+
+    /* pointer / touch shove */
+    var px=-1e4,py=-1e4,pvx=0,pvy=0,pOn=false,boost=0,boostT=0;
+    function setP(e){ var r=card.getBoundingClientRect(), nx=e.clientX-r.left, ny=e.clientY-r.top;
+      if(pOn){ pvx=nx-px; pvy=ny-py; } px=nx; py=ny; pOn=true; }
+    card.addEventListener('pointermove',setP,{passive:true});
+    card.addEventListener('pointerdown',setP,{passive:true});
+    card.addEventListener('pointerleave',function(){ pOn=false; },{passive:true});
+    card.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') pOn=false; },{passive:true});
+    btn.addEventListener('pointerenter',function(){ boostT=1; });
+    btn.addEventListener('pointerleave',function(){ boostT=0; });
+
+    /* size — bake + sample only when the box really changed (§5.5 #4) */
+    function fit(force){ var w=card.clientWidth,h=card.clientHeight;
+      if(!force&&w===W&&h===H) return;
+      W=w; H=h;
+      bakeC.width=Math.round(W*DPR); bakeC.height=Math.round(H*DPR);
+      liveC.width=Math.round(W*DPR); liveC.height=Math.round(H*DPR);
+      syncGeom(); bake(); sample();
+    }
+    var rT; addEventListener('resize',function(){ clearTimeout(rT); rT=setTimeout(fit,160); },{passive:true});
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ fit(true); }); /* type reflow moves the button */
+    fit(true);
+
     var on=true;
     if('IntersectionObserver' in window){ on=false;
-      new IntersectionObserver(function(en){on=en[0].isIntersecting;},{rootMargin:'80px'}).observe(act); }
-    var t0=null;
+      new IntersectionObserver(function(en){ on=en[0].isIntersecting; },{rootMargin:'80px'}).observe(act); }
+
+    var ctx=liveC.getContext('2d'), t0=null;
     (function frame(now){
-      if(on&&act.classList.contains('in')){
+      if(on&&act.classList.contains('in')&&W>0){
         if(t0===null) t0=now||0;
-        fl.setAttribute('d',ringPath(2.4+((now||0)-t0)/1000*.85));
+        var t=T0+((now||0)-t0)/1000*SPEED;
+        boost+=(boostT-boost)*.06;
+        /* harmonic edge per frame as a 128-bin lookup table — 12k grains share one table
+           instead of each paying the 3-harmonic trig (§5.5 #4 spirit) */
+        var bAmp=1+.10*boost, ei;
+        for(ei=0;ei<128;ei++) ETAB[ei]=edge(ei*.04908739-3.14159265,t)*bAmp;
+        var PR=110, PR2=PR*PR, k;
+        ctx.setTransform(DPR,0,0,DPR,0,0);
+        ctx.clearRect(0,0,W,H);
+        for(k=0;k<GROUPS.length;k++){
+          var grp=GROUPS[k]; ctx.fillStyle=grp.c;
+          for(var i=0;i<grp.list.length;i++){
+            var p=grp.list[i];
+            /* blob force, unit-ellipse space: interior plows hard, a soft band rides the edge */
+            var ux=(p.x-b.cx)/b.rx, uy=(p.y-b.cy)/b.ry, u=Math.sqrt(ux*ux+uy*uy)||1e-4;
+            if(u<1.6){
+              var e=ETAB[(((Math.atan2(uy,ux)+3.14159265)*20.371832)|0)&127];
+              if(u<e+.30){
+                var f=(e+.30-u)*.032;
+                if(u<e) f=(e-u)*.09+.02;
+                var inv=1/u;
+                p.vx+=ux*inv*f*b.rx; p.vy+=uy*inv*f*b.ry;
+              }
+            }
+            if(pOn){
+              var dx=p.x-px, dy=p.y-py, d2=dx*dx+dy*dy;
+              if(d2<PR2&&d2>.01){
+                var d=Math.sqrt(d2), fall=1-d/PR, fp=fall*fall*2.4/d;
+                p.vx+=dx*fp+pvx*fall*.10; p.vy+=dy*fp+pvy*fall*.10;
+              }
+            }
+            p.vx+=(p.x0-p.x)*p.sp; p.vy+=(p.y0-p.y)*p.sp;
+            p.vx*=.86; p.vy*=.86;
+            p.x+=p.vx; p.y+=p.vy;
+            ctx.fillRect(p.x,p.y,p.s,p.s);
+          }
+        }
+        pvx*=.8; pvy*=.8;
       }
       requestAnimationFrame(frame);
     })(0);
