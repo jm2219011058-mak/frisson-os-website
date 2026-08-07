@@ -2214,6 +2214,7 @@
     'uniform float u_floor;','uniform float u_base;','uniform float u_noise;',
     'uniform float u_thr;','uniform float u_hs;','uniform float u_warp;',
     'uniform float u_gamma;','uniform float u_kx;','uniform float u_ky;',
+    'uniform float u_focus;',
     'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
     'float vnoise(vec2 p){',
     '  vec2 i=floor(p),f=fract(p);',
@@ -2249,6 +2250,7 @@
     '  vec2 uv=gl_FragCoord.xy/u_res;',
     '  vec2 wuv=uv+(u_warp*vec2(w1-0.47,w2-0.47)*mn)/u_res;', // 扭曲采样：热溢出描线的毛边
     '  float m=pow(texture2D(u_txt,wuv).r,u_gamma);',  // gamma 提亮蒙版裙摆：团块能鼓出描线外
+    '  m=clamp((m-u_focus)/(1.0-u_focus),0.0,1.0);',   // 聚焦：切掉裙摆低值再归一化，热收拢贴回描线（0=不聚焦）
     '  vec2 dv=p-u_hot;',
     '  float env=max(exp(-(dv.x*dv.x*u_kx+dv.y*dv.y*u_ky)),u_floor);', // 椭圆热核（横向略宽，热沿词延展）
     '  float v=m*(u_base+u_noise*n)*env*u_amp-u_thr;',
@@ -2286,6 +2288,7 @@
   var uTxt = gl.getUniformLocation(prog, 'u_txt');
   /* —— 全部旋钮（默认值即当前定稿；URL 带 ?tune 或 #tune 出现调参面板实时拉）—— */
   var TUNE={floor:0.30,base:0.35,noise:0.66,thr:0.27,hs:1.25,warp:0.07,gamma:0.60,kx:5.0,ky:9.0,
+            focus:0.0,
             idleBase:1.0,idleSwing:0.18,breath:0.16,speed:1.0,wx:0.32,wy:0.17,
             ptrAmp:1.3,lerpIdle:1.9,lerpPtr:6};
   window.__ttTune = TUNE;
@@ -2293,7 +2296,7 @@
       uN =gl.getUniformLocation(prog,'u_noise'), uThr=gl.getUniformLocation(prog,'u_thr'),
       uHs=gl.getUniformLocation(prog,'u_hs'),    uWp =gl.getUniformLocation(prog,'u_warp'),
       uG =gl.getUniformLocation(prog,'u_gamma'), uKx =gl.getUniformLocation(prog,'u_kx'),
-      uKy=gl.getUniformLocation(prog,'u_ky');
+      uKy=gl.getUniformLocation(prog,'u_ky'), uFo=gl.getUniformLocation(prog,'u_focus');
   if(/[?#&]tune/.test(location.search+location.hash)) (function(){
     var defs=[
       ['floor','余温底',0,0.8,0.01],['idleBase','常态热度',0.5,1.6,0.01],['idleSwing','呼吸幅度',0,0.5,0.01],
@@ -2301,7 +2304,8 @@
       ['wy','游走幅Y',0,0.4,0.01],['ptrAmp','指针热度',0.8,2,0.01],['lerpIdle','追踪·常态',0.3,6,0.1],
       ['lerpPtr','追踪·指针',1,12,0.1],['thr','点火阈值',0,0.6,0.01],['base','场基底',0,0.8,0.01],
       ['noise','噪声权重',0,1.2,0.01],['hs','色带斜率',0.6,2,0.01],['warp','毛边扭曲',0,0.2,0.005],
-      ['gamma','蒙版γ',0.3,1.2,0.01],['kx','热核宽X',1,12,0.1],['ky','热核宽Y',1,14,0.1]];
+      ['gamma','蒙版γ',0.3,1.2,0.01],['focus','聚焦·贴字形',0,0.85,0.01],
+      ['kx','热核宽X',1,12,0.1],['ky','热核宽Y',1,14,0.1]];
     var pn=document.createElement('div');
     pn.style.cssText='position:fixed;top:76px;right:12px;z-index:999;background:rgba(20,16,12,.93);color:#f4ecdc;'+
       'font:11px/1.5 ui-monospace,Menlo,monospace;padding:12px 14px;border-radius:10px;width:242px;max-height:82vh;overflow:auto;';
@@ -2471,6 +2475,7 @@
     gl.uniform1f(uF,TUNE.floor); gl.uniform1f(uB,TUNE.base); gl.uniform1f(uN,TUNE.noise);
     gl.uniform1f(uThr,TUNE.thr); gl.uniform1f(uHs,TUNE.hs);  gl.uniform1f(uWp,TUNE.warp);
     gl.uniform1f(uG,TUNE.gamma); gl.uniform1f(uKx,TUNE.kx);  gl.uniform1f(uKy,TUNE.ky);
+    gl.uniform1f(uFo,TUNE.focus);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
