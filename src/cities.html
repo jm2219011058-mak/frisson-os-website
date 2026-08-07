@@ -89,14 +89,13 @@
     font-size:clamp(58px,16vw,168px);line-height:1.08;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
   .tt-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;}
-  /* hero claim（原 WHAT WE DO 声明前移）——构图绑定，不锚视口：
-     字堆 + 声明作为一个单元被 stage 居中；声明左边线 = 字堆盒左边线（SPACE 起笔处），
-     间距用与字号同源的 vw 刻度 → 任何视口比例下相对关系恒定。
+  /* hero claim（原 WHAT WE DO 声明前移）——锚定 hero 左下角，两个偏移全用站内既有 token：
+     左线 = 全站栏线 clamp(24px,6vw,80px)（与各 section 左边线同一条），
+     底距 = 间距刻度中档 clamp(36px,6vh,64px)（与节间距同款 token）。
+     只认左下角，不与字堆攀扯——比例拉伸时它钉在角上不飘。
      z:3 压在热画布上（热蒙版只烧描线，blob 裙摆扫过时保持可读） */
-  .tt-center{position:relative;display:flex;flex-direction:column;align-items:flex-start;}
-  .tt-center .tt-word{align-self:center;}   /* 声明比字堆宽时（窄屏），字堆仍保持视觉居中 */
-  .tt-claim{position:relative;z-index:3;margin-top:clamp(22px,3.5vw,56px);
-    max-width:min(560px,max(53vw,320px));text-align:left;}   /* 53vw ≈ 字堆盒宽（3.3em × 16vw），左边线随字堆缩放咬合 */
+  .tt-claim{position:absolute;z-index:3;left:clamp(24px,6vw,80px);bottom:clamp(36px,6vh,64px);
+    max-width:min(620px,80vw);text-align:left;}
   .tt-claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
     font-size:clamp(24px,3.6vw,52px);line-height:1.12;letter-spacing:.02em;color:var(--ink);}
   .tt-claim-p{margin:clamp(10px,1.6vh,16px) 0 0;font-family:var(--serif);font-weight:400;
@@ -565,14 +564,12 @@
        Replaces the two-slide painting hero (markup removed; its CSS + slideshow JS stay dormant,
        the JS early-returns on slides.length<2. Restore from git or components/thermal-type.html). -->
   <header class="tt-stage" id="ttStage">
-    <div class="tt-center">
-      <h1 class="tt-word">SPACE<br>IS<br>ALIVE</h1>
-      <div class="tt-claim">
-        <h2 class="tt-claim-h">Redefining the Value of the Physical World</h2>
-        <p class="tt-claim-p">With Frisson, static Real Estate stands for Soulful Living Spaces that imagine Art, Tech, and Human Emotion.</p>
-      </div>
-    </div>
+    <h1 class="tt-word">SPACE<br>IS<br>ALIVE</h1>
     <canvas class="tt-fx" id="ttFx" aria-hidden="true"></canvas>
+    <div class="tt-claim">
+      <h2 class="tt-claim-h">Redefining the Value of the Physical World</h2>
+      <p class="tt-claim-p">With Frisson, static Real Estate stands for Soulful Living Spaces that imagine Art, Tech, and Human Emotion.</p>
+    </div>
   </header>
 
   <!-- ACT 01 · THE COLLECTION — seven signatures, none alike, one shelf.
