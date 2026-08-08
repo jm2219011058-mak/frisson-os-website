@@ -86,9 +86,13 @@
      so the heat traces whatever the word is set in. */
   /* One scaling currency for the whole hero: the word sets it, everything else rents from it.
      Ratios stay constant at every viewport instead of three clamps drifting apart. */
-  .tt-stage{--tt-word:clamp(96px,18vw,230px);   /* 96px 地板 = 移动端霸屏（375 宽时 SPACE ≈ 87vw） */
+  .tt-stage{--tt-word:clamp(96px,min(18vw,18.5svh),230px);
+    /* 双轴预算（house 惯例，同 .hc-big/.hero-title 的 min(vw,vh)）：宽度给霸道，
+       高度封顶保构图——横版矮屏上 18.5svh 接管，字堆+claim 永远装进 100svh 不裁切。
+       96px 地板 = 移动端霸屏（375 宽时 SPACE ≈ 87vw） */
     position:relative;min-height:100svh;display:grid;grid-template-rows:minmax(0,1fr) auto;
-    place-items:center;overflow:clip;cursor:crosshair;background:#fff;}
+    place-items:center;overflow:clip;cursor:crosshair;background:#fff;
+    padding-top:clamp(48px,7svh,84px);}   /* 预算吃紧时字堆顶不钻 fixed nav */
   .tt-word{position:relative;z-index:1;grid-row:1;margin:0;font-family:var(--sans);font-weight:700;
     font-size:var(--tt-word);line-height:1.05;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
@@ -101,7 +105,7 @@
      · cap 44px: it stops GROWING there; grid-row 2 keeps it collision-proof, and the left
        margin stays on the 1180 grid line so wide screens don't push it into the corner. */
   .tt-claim{z-index:3;grid-row:2;justify-self:start;text-align:left;
-    font-size:clamp(24px,4.6vw,60px);
+    font-size:clamp(24px,min(4.6vw,5svh),60px);   /* 同款双轴封顶：横版矮屏由 svh 接管 */
     margin:clamp(36px,6vh,64px) clamp(24px,6vw,80px) clamp(36px,6vh,64px)
            max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));}
   .tt-claim .l{display:block;white-space:nowrap;}
