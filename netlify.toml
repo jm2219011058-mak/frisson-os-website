@@ -119,6 +119,29 @@
   status = 301
   force = true
 
+# Pretty URL: Living World Model lives at /living-world-model, served from livingworldmodel.html.
+[[redirects]]
+  from = "/living-world-model"
+  to = "/livingworldmodel.html"
+  status = 200
+
+[[redirects]]
+  from = "/livingworldmodel"
+  to = "/living-world-model"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/livingworldmodel.html"
+  to = "/living-world-model"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/living-world-model"
+  to = "/zh/livingworldmodel.html"
+  status = 200
+
 # Assets: cache 30 days (updates ride a ?v= bump); revalidate after expiry so same-filename changes still propagate.
 [[headers]]
   for = "/assets/*"

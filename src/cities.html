@@ -261,6 +261,17 @@
   .ed-quote{font-size:clamp(18px,1.95vw,26px);line-height:1.5;margin:0 auto;max-width:46ch;text-align:center;}
   .ed-quote b{font-weight:700;}
   .ed-attr{font-style:italic;color:var(--ink-soft);margin:20px 0 0;font-size:clamp(13.5px,1.35vw,17px);text-align:center;}
+
+  /* The Eye of the Skin City — full-bleed artwork with centred type floating on it */
+  .skin-city{position:relative;width:100%;margin-top:clamp(72px,11vh,140px);}
+  .skin-city picture{display:block;width:100%;}
+  .skin-city img{display:block;width:100%;height:auto;}
+  .sc-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:clamp(24px,6vw,64px);padding-bottom:clamp(120px,22vh,300px);pointer-events:none;}
+  .sc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
+    font-size:clamp(36px,6.4vw,82px);line-height:1.06;color:#000;margin:0 0 clamp(28px,5vh,56px);max-width:18ch;text-wrap:balance;}
+  .sc-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(12.5px,1.35vw,16px);line-height:1.7;
+    color:#4a453d;margin:0;max-width:52ch;text-wrap:pretty;}
   /* watercolor cosmos between the Aleph quote and WHAT WE DO — generous vertical air */
   .mid-fig{max-width:min(900px,calc(100% - 48px));margin:clamp(90px,17vh,220px) auto;border-radius:clamp(40px,6vw,96px);overflow:hidden;}
   .mid-fig img{width:100%;height:auto;display:block;}
@@ -980,6 +991,18 @@
       <blockquote class="ed-quote">{{2.5}}</blockquote>
       <p class="ed-attr">{{2.6}}</p>
       <a class="wwd-entry" href="field-notes#view-3">Read : Human Should Not Simply Reach the Moon <span class="we-arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>
+    </div>
+  </section>
+
+  <!-- THE EYE OF THE SKIN CITY · full-bleed artwork band under the Aleph quote -->
+  <section class="skin-city reveal">
+    <picture>
+      <source type="image/webp" srcset="assets/city/eye-skin-city-820.webp 820w, assets/city/eye-skin-city.webp 1114w" sizes="100vw">
+      <img src="assets/city/eye-skin-city.webp" alt="The Eye of the Skin City" width="1114" height="1412" loading="lazy" decoding="async">
+    </picture>
+    <div class="sc-cap">
+      <h2 class="sc-title">The Eye of the Skin City</h2>
+      <p class="sc-sub">-The tactile sensation of the blue fabric transforms materiality into memory; Biology, Memory, Emotion, Environment, Relationships, and Inner Meaning...</p>
     </div>
   </section>
 
