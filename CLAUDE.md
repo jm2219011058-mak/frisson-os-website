@@ -81,7 +81,7 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 - **带阴影的面板一律 `corner-shape: squircle` + `border-radius`，禁止用 `clip-path`。** 渲染顺序是 filter → clip-path，`clip-path` 在阴影**之后**执行，会把 `box-shadow` 整个裁掉。`corner-shape` 是原生属性，阴影/`overflow` 裁剪都自动跟随超椭圆轮廓，零 JS、零 resize 处理，不支持的浏览器退回普通圆角（无回归）。
 - **分界线**：无阴影的小尖角标签 → §5.6 的 `clip-path:path()`；有阴影的大面积卡片/弹窗 → `corner-shape`。
 - **半径必须用等长 `clamp()`，绝不能用百分比。** `border-radius:40%` 是**按各自的轴**解析的（水平半径取宽度的 40%、垂直取高度的 40%），结果是椭圆角不是超椭圆——676×191 的卡上算出来是 270×76，看着是梭形；而且**卡片越高角越圆**，同一个组件在长短文案下长得完全不一样。
-- **半径变大必须同步加内边距**，否则首行/末行文字会撞进曲线；**关闭键要与正文栏右边缘对齐**（`right` 取和 `padding-right` 同一个值），不然它悬在曲线中间很突兀。
+- **半径变大必须同步加内边距**，否则首行/末行文字会撞进曲线；**关闭键坐在圆角的圆心上**（2026-08-08 用户定版，取代旧的「对齐正文栏右缘」）：`top/right` 各 = 半径 − 按钮半径。做法：把半径抽成 `--vr` 变量（`border-radius:var(--vr)`），关闭键 `top:calc(var(--vr) - 19px); right:calc(var(--vr) - 19px)`——覆盖半径的弹窗只改 `--vr` 一处，叉叉自动跟随（见 cities `.vision-x`）。
 - 当前站内量级（cities）：`.sln-card` `clamp(72px,12vw,180px)`（约卡宽 23%）、`.vision` `clamp(60px,10vw,150px)`、`.prop-card` `clamp(40px,6vw,88px)`、配图 `clamp(40px,6vw,96px)`、Magic Conch 横幅 `clamp(30px,5vw,60px)`。**stories 的 Field Notes 卡是刻意保持直角的，别给它加圆角。**
 
 ### 5.6c 容器内的宽度不要用 `vw`（同日，同一个弹窗上踩的第二个坑）
