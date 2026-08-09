@@ -86,32 +86,30 @@
      so the heat traces whatever the word is set in. */
   /* One scaling currency for the whole hero: the word sets it, everything else rents from it.
      Ratios stay constant at every viewport instead of three clamps drifting apart. */
-  .tt-stage{--tt-word:clamp(96px,min(18vw,18.5svh),230px);
+  .tt-stage{--tt-word:clamp(96px,min(18vw,26svh),230px);
+    /* claim 已独立成夹层 section，hero 只养字堆——svh 预算放宽回 26svh */
     /* 双轴预算（house 惯例，同 .hc-big/.hero-title 的 min(vw,vh)）：宽度给霸道，
        高度封顶保构图——横版矮屏上 18.5svh 接管，字堆+claim 永远装进 100svh 不裁切。
        96px 地板 = 移动端霸屏（375 宽时 SPACE ≈ 87vw） */
-    position:relative;min-height:100svh;display:grid;grid-template-rows:minmax(0,1fr) auto;
+    position:relative;min-height:100svh;display:grid;
     place-items:center;overflow:clip;cursor:crosshair;background:#fff;
     padding-top:clamp(48px,7svh,84px);}   /* 预算吃紧时字堆顶不钻 fixed nav */
-  .tt-word{position:relative;z-index:1;grid-row:1;margin:0;font-family:var(--sans);font-weight:700;
+  .tt-word{position:relative;z-index:1;margin:0;font-family:var(--sans);font-weight:700;
     font-size:var(--tt-word);line-height:1.05;letter-spacing:.04em;text-align:center;
     color:#454545;user-select:none;}
   .tt-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;}
-  /* hero claim — a FROZEN composition (§5 亲密性/网格):
-     · line breaks are authored in the markup (.l = nowrap block) — identical 2+3 lines at
-       every viewport; the block scales, it never rewraps.
-     · one size variable for the whole block; the body rents .386em of it, widths are all
-       em-derived, so the poster scales as a unit — nothing inside can drift apart.
-     · cap 44px: it stops GROWING there; grid-row 2 keeps it collision-proof, and the left
-       margin stays on the 1180 grid line so wide screens don't push it into the corner. */
-  .tt-claim{z-index:3;grid-row:2;justify-self:start;text-align:left;
-    font-size:clamp(24px,min(4.6vw,5svh),60px);   /* 同款双轴封顶：横版矮屏由 svh 接管 */
-    margin:clamp(36px,6vh,64px) clamp(24px,6vw,80px) clamp(36px,6vh,64px)
-           max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));}
-  .tt-claim .l{display:block;white-space:nowrap;}
-  .tt-claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
+  /* ---- INTERLAYER · the claim（夹层声明，hero 首屏看不到它）----
+     冻结构图规矩沿袭：断行手工写死（.l = nowrap block，任何视口恒 2+3 行）、
+     单一缩放货币（副句租 .386em）、双轴封顶、左边线落 1180 网格。
+     入场由 GSAP 分行遮罩揭示（JS 包裹 .li 行，只动 transform，§5.5）。 */
+  .claim-act{background:#fff;padding:clamp(72px,11vh,140px) 0;}   /* 窄夹层：内容高 + 节间大刻度，不占整屏 */
+  .claim-in{font-size:clamp(24px,min(4.6vw,5.4svh),60px);text-align:left;
+    margin:0 clamp(24px,6vw,80px);
+    margin-left:max(clamp(24px,6vw,80px), calc(50% - 590px + clamp(24px,6vw,80px)));}
+  .claim-in .l{display:block;white-space:nowrap;}
+  .claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
     font-size:1em;line-height:1.12;letter-spacing:.02em;color:var(--ink);}
-  .tt-claim-p{margin:clamp(10px,1.6vh,16px) 0 0;font-family:var(--serif);font-weight:400;
+  .claim-p{margin:clamp(12px,2vh,20px) 0 0;font-family:var(--serif);font-weight:400;
     font-size:max(12.5px,.386em);line-height:1.55;color:var(--ink-soft);}
 
   /* act 01 — paper variant of the .act shell */
@@ -548,13 +546,15 @@
   <header class="tt-stage" id="ttStage">
     <h1 class="tt-word">SPACE<br>IS<br>ALIVE</h1>
     <canvas class="tt-fx" id="ttFx" aria-hidden="true"></canvas>
-    <div class="tt-claim">
-      <!-- line breaks are AUTHORED, not computed: each .l is a nowrap block, so the claim
-           renders the identical 2+3 lines at every viewport — it only scales, never rewraps -->
-      <h2 class="tt-claim-h"><span class="l">Redefining the Value</span><span class="l">of the Physical World</span></h2>
-      <p class="tt-claim-p"><span class="l">With Frisson, static Real Estate stands for</span><span class="l">Soulful Living Spaces that imagine</span><span class="l">Art, Tech, and Human Emotion.</span></p>
-    </div>
   </header>
+
+  <!-- INTERLAYER · the claim — hero 首屏只有字堆；往下一划，声明分行升起（GSAP） -->
+  <section class="claim-act" id="claimAct" aria-label="Mission statement">
+    <div class="claim-in">
+      <h2 class="claim-h"><span class="l">Redefining the Value</span><span class="l">of the Physical World</span></h2>
+      <p class="claim-p"><span class="l">With Frisson, static Real Estate becomes</span><span class="l">Soulful Living Spaces imagined through</span><span class="l">Art, Tech, and Human Emotion.</span></p>
+    </div>
+  </section>
 
   <!-- ACT 01 · OPEN RING — poster poem on a warm grain field; the FRISSON ring is a
        hand-drawn cutout window and a button (→ #vm-ring, Magic Conch invitation).
@@ -2476,6 +2476,38 @@
     }
     var io=new IntersectionObserver(pick,{rootMargin:'-45% 0px -45% 0px',threshold:0});
     words.forEach(function(w){ io.observe(w); });
+  })();
+
+  /* INTERLAYER · claim — GSAP 分行遮罩揭示（IO 一次性触发；§5.5：只动 transform，无 rAF 常驻）。
+     无 GSAP / 无 IO / reduced-motion → 保持默认可见的静态排版（渐进增强）。
+     注意：build 给 gsap vendor 加 defer，解析期 window.gsap 未就绪——必须等
+     DOMContentLoaded（defer 脚本保证在其之前执行完），同 slnTrialInit 的教训。 */
+  (function(){
+    function init(){
+      var sec=document.getElementById('claimAct');
+      if(!sec || !window.gsap || !('IntersectionObserver' in window)) return;
+      if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      [].slice.call(sec.querySelectorAll('.l')).forEach(function(l){
+        var inner=document.createElement('span');
+        inner.className='li'; inner.style.display='block';
+        while(l.firstChild) inner.appendChild(l.firstChild);
+        l.appendChild(inner); l.style.overflow='hidden';
+      });
+      var els=sec.querySelectorAll('.li');
+      gsap.set(els,{yPercent:112});
+      var ease='expo.out';
+      try{ if(window.CustomEase){ CustomEase.create('claimSilk','M0,0 C0.16,1 0.3,1 1,1'); ease='claimSilk'; } }catch(e){}
+      var done=false;
+      new IntersectionObserver(function(es,io){
+        es.forEach(function(e){
+          if(e.isIntersecting && !done){ done=true; io.disconnect();
+            gsap.to(els,{yPercent:0,duration:1.15,ease:ease,stagger:0.09,overwrite:'auto'});
+          }
+        });
+      },{threshold:0.35}).observe(sec);
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
   })();
 
   /* HERO · thermal type engine — verbatim from components/thermal-type.html */
