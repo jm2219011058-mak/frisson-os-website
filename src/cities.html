@@ -2478,30 +2478,29 @@
     words.forEach(function(w){ io.observe(w); });
   })();
 
-  /* INTERLAYER · claim — GSAP 分行遮罩揭示（IO 一次性触发；§5.5：只动 transform，无 rAF 常驻）。
-     无 GSAP / 无 IO / reduced-motion → 保持默认可见的静态排版（渐进增强）。
+  /* INTERLAYER · claim — GSAP · 逐词虚化聚焦（SplitText 分词，blur 30px→0 + opacity，
+     stagger 0.07，IO 一次性触发）。blur 不在 §5.5 白名单，但红线管的是持续动画——
+     这是一次性入场手势，播完 clearProps 清掉 filter，零残留合成层。
+     无 GSAP/SplitText / 无 IO / reduced-motion → 静态排版兜底（渐进增强）。
      注意：build 给 gsap vendor 加 defer，解析期 window.gsap 未就绪——必须等
      DOMContentLoaded（defer 脚本保证在其之前执行完），同 slnTrialInit 的教训。 */
   (function(){
     function init(){
       var sec=document.getElementById('claimAct');
-      if(!sec || !window.gsap || !('IntersectionObserver' in window)) return;
+      if(!sec || !window.gsap || !window.SplitText || !('IntersectionObserver' in window)) return;
       if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      [].slice.call(sec.querySelectorAll('.l')).forEach(function(l){
-        var inner=document.createElement('span');
-        inner.className='li'; inner.style.display='block';
-        while(l.firstChild) inner.appendChild(l.firstChild);
-        l.appendChild(inner); l.style.overflow='hidden';
-      });
-      var els=sec.querySelectorAll('.li');
-      gsap.set(els,{yPercent:112});
+      var words;
+      try{ words=new SplitText(sec.querySelectorAll('.l'),{type:'words'}).words; }catch(e){ return; }
+      if(!words || !words.length) return;
+      gsap.set(words,{opacity:0,filter:'blur(30px)'});
       var ease='expo.out';
       try{ if(window.CustomEase){ CustomEase.create('claimSilk','M0,0 C0.16,1 0.3,1 1,1'); ease='claimSilk'; } }catch(e){}
       var done=false;
       new IntersectionObserver(function(es,io){
         es.forEach(function(e){
           if(e.isIntersecting && !done){ done=true; io.disconnect();
-            gsap.to(els,{yPercent:0,duration:1.15,ease:ease,stagger:0.09,overwrite:'auto'});
+            gsap.to(words,{opacity:1,filter:'blur(0px)',duration:0.9,ease:ease,
+              stagger:0.07,overwrite:'auto',clearProps:'filter'});
           }
         });
       },{threshold:0.35}).observe(sec);
