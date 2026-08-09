@@ -110,7 +110,8 @@
   .claim-h{margin:0;font-family:var(--sans);font-weight:700;text-transform:uppercase;
     font-size:1em;line-height:1.12;letter-spacing:.02em;color:var(--ink);}
   .claim-p{margin:clamp(20px,3.5vh,44px) 0 0;font-family:var(--sans);font-weight:700;
-    font-size:max(15px,.62em);line-height:1.3;color:var(--ink);}   /* Orama 量级：近标题级粗体正黑 */
+    font-size:max(15px,.62em);line-height:1.35;color:var(--ink);
+    max-width:30em;}   /* Orama 量级：近标题级粗体正黑；放开锁行自然铺长行（约 58ch），宽度上限随字号缩放 */
 
   /* act 01 — paper variant of the .act shell */
   /* .act.act--light out-specifies the .act base regardless of source order */
@@ -552,7 +553,7 @@
   <section class="claim-act" id="claimAct" aria-label="Mission statement">
     <div class="claim-in">
       <h2 class="claim-h"><span class="l">Redefining the Value</span><span class="l">of the Physical World</span></h2>
-      <p class="claim-p"><span class="l">With Frisson, static Real Estate becomes</span><span class="l">Soulful Living Spaces imagined through</span><span class="l">Art, Tech, and Human Emotion.</span></p>
+      <p class="claim-p">With Frisson, static Real Estate becomes Soulful Living Spaces imagined through Art, Tech, and Human Emotion.</p>
     </div>
   </section>
 
