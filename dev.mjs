@@ -47,7 +47,10 @@ const server = http.createServer((req, res) => {
 
 let timer = null;
 const trigger = (r) => { clearTimeout(timer); timer = setTimeout(() => build(r), 200); };
-for (const d of ['src','i18n','assets']){ try { fs.watch(d, { recursive:true }, (e,f) => trigger(d + '/' + f)); } catch {} }
+// 不监视 i18n/ ：它是 gen-i18n 的生成物，每次构建都会被重写——监视它会
+// 构建触发构建，无限循环（2026-08-09 实锤：dist 被反复清写、预览全 404）。
+// 翻译源的变动由下面 content-inventory.md 的监视覆盖。
+for (const d of ['src','assets']){ try { fs.watch(d, { recursive:true }, (e,f) => trigger(d + '/' + f)); } catch {} }
 for (const f of ['content-inventory.md','gen-i18n.mjs','build.mjs']){ try { fs.watch(f, () => trigger(f)); } catch {} }
 
 build('startup');
