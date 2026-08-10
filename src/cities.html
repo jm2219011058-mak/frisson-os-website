@@ -2782,9 +2782,9 @@
   });
   stage.addEventListener('pointerleave', function(){ ptr = false; });
 
-  // 移动端：手指落在词上 → 这次手势归热场（preventDefault 阻止滚动），落在别处照常滚页。
-  // 取消默认后部分浏览器停发 pointermove，所以直接用 touch 坐标喂热源（同 sona #s4 的教训）。
-  var claim = false;
+  // 移动端：热源跟随手指，但绝不抢滚动（全部 passive、不 preventDefault）。
+  // 曾按「落在词上就 claim 手势」实现——微信翻译会把文字重包一层节点，判定范围失控，
+  // 首屏任何触摸都被 preventDefault，页面直接滑不动（2026-08-10 用户实测）。滚动优先。
   function heatFromTouch(t){
     var r = stage.getBoundingClientRect();
     var mn = Math.min(r.width, r.height);
@@ -2792,19 +2792,9 @@
     ty = (r.height / 2 - (t.clientY - r.top)) / mn;
     ta = TUNE.ptrAmp; ptr = true;
   }
-  stage.addEventListener('touchstart', function(e){
-    var el = e.target;
-    claim = !!(el && el.closest && el.closest('.tt-word'));
-    if(!claim) return;
-    e.preventDefault();
-    heatFromTouch(e.touches[0]);
-  }, {passive:false});
-  stage.addEventListener('touchmove', function(e){
-    if(!claim) return;
-    e.preventDefault();
-    heatFromTouch(e.touches[0]);
-  }, {passive:false});
-  function endT(){ if(claim){ claim = false; ptr = false; } }
+  stage.addEventListener('touchstart', function(e){ heatFromTouch(e.touches[0]); }, {passive:true});
+  stage.addEventListener('touchmove',  function(e){ heatFromTouch(e.touches[0]); }, {passive:true});
+  function endT(){ ptr = false; }
   stage.addEventListener('touchend', endT, {passive:true});
   stage.addEventListener('touchcancel', endT, {passive:true});
 
