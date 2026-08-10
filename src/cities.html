@@ -266,12 +266,12 @@
   .skin-city{position:relative;width:100%;margin-top:clamp(110px,17vh,220px);}
   .skin-city picture{display:block;width:100%;}
   .skin-city img{display:block;width:100%;height:auto;}
-  .sc-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:clamp(24px,6vw,64px);padding-bottom:clamp(170px,30vh,420px);pointer-events:none;}
+  .sc-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    text-align:center;padding:clamp(24px,6vw,64px);padding-top:13%;pointer-events:none;}   /* % of width → tracks the artwork, not the viewport */
   .sc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
-    font-size:clamp(42px,7.4vw,96px);line-height:1.05;color:#000;margin:0 0 clamp(28px,5vh,56px);max-width:18ch;text-wrap:balance;}
-  .sc-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(14px,1.55vw,18px);line-height:1.7;
-    color:#4a453d;margin:0;max-width:52ch;text-wrap:pretty;}
+    font-size:clamp(46px,8.4vw,110px);line-height:1.04;color:#000;margin:0 0 clamp(30px,5.4vh,60px);max-width:18ch;text-wrap:balance;}
+  .sc-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(15px,1.8vw,21px);line-height:1.65;
+    color:#3a352d;margin:0;max-width:52ch;text-wrap:pretty;}
   /* watercolor cosmos between the Aleph quote and WHAT WE DO — generous vertical air */
   .mid-fig{max-width:min(900px,calc(100% - 48px));margin:clamp(90px,17vh,220px) auto;border-radius:clamp(40px,6vw,96px);overflow:hidden;}
   .mid-fig img{width:100%;height:auto;display:block;}
