@@ -119,6 +119,29 @@
   status = 301
   force = true
 
+# Pretty URL: Sensory World lives at /sensory-world, served from sensoryworld.html.
+[[redirects]]
+  from = "/sensory-world"
+  to = "/sensoryworld.html"
+  status = 200
+
+[[redirects]]
+  from = "/sensoryworld"
+  to = "/sensory-world"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sensoryworld.html"
+  to = "/sensory-world"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/sensory-world"
+  to = "/zh/sensoryworld.html"
+  status = 200
+
 # Pretty URL: Living World Model lives at /living-world-model, served from livingworldmodel.html.
 [[redirects]]
   from = "/living-world-model"
