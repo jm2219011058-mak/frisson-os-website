@@ -58,6 +58,11 @@ body{background:var(--bg);color:var(--ink);font-family:var(--serif);overflow-x:c
    same white the next section starts with, so there is no seam at the iframe edge */
 body.embedded{background:transparent;}
 body.embedded .nav{display:none;}
+/* the grain film must dissolve at the iframe's lower edge exactly like the speckle does —
+   a hard 5% noise cut-off was the last visible seam against the host page */
+body.embedded #grain{
+  -webkit-mask-image:linear-gradient(180deg,#000 76%,transparent 96%);
+  mask-image:linear-gradient(180deg,#000 76%,transparent 96%);}
 /* ---------- shared chrome ---------- */
 .eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.15vw,13.5px);letter-spacing:.18em;
   text-transform:uppercase;color:var(--eyebrow);}
@@ -1060,8 +1065,11 @@ function layoutField(){
       t.ty=Math.max(150,Math.min(field.H-150,t.ty));
     });
   }
-  // dimension ghost labels
+  // dimension ghost labels — the top floor is the INSTRUCTION'S real bottom edge,
+  // not a guessed constant (the fixed 158px let RHYTHM ram the headline on wide screens)
   document.querySelectorAll('.dim-label').forEach(el=>el.remove());
+  const fiEl=document.getElementById('field-instruction');
+  const fiFloor=(fiEl?fiEl.getBoundingClientRect().bottom:120)+36;
   DIMS.forEach((dim,d)=>{
     const a=-Math.PI/2 + d*(Math.PI*2/7);
     const lx=field.cx+Math.cos(a)*(field.R+120);
@@ -1069,7 +1077,7 @@ function layoutField(){
     const el=document.createElement('div');
     el.className='dim-label';
     el.style.left=Math.max(72,Math.min(field.W-72,lx))+'px';
-    el.style.top=Math.max(158,Math.min(field.H-190,ly))+'px';
+    el.style.top=Math.max(fiFloor,Math.min(field.H-190,ly))+'px';
     el.innerHTML=dim.key.toUpperCase()+'<small>'+dim.poles[0]+' — '+dim.poles[1]+'</small>';
     document.getElementById('field-wrap').appendChild(el);
   });
