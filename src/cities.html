@@ -262,16 +262,6 @@
   .ed-quote b{font-weight:700;}
   .ed-attr{font-style:italic;color:var(--ink-soft);margin:20px 0 0;font-size:clamp(13.5px,1.35vw,17px);text-align:center;}
 
-  /* The Eye of the Skin City — full-bleed artwork with centred type floating on it */
-  .skin-city{position:relative;width:100%;margin-top:clamp(110px,17vh,220px);}
-  .skin-city picture{display:block;width:100%;}
-  .skin-city img{display:block;width:100%;height:auto;}
-  .sc-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-    text-align:center;padding:clamp(24px,6vw,64px);padding-top:13%;pointer-events:none;}   /* % of width → tracks the artwork, not the viewport */
-  .sc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
-    font-size:clamp(46px,8.4vw,110px);line-height:1.04;color:#000;margin:0 0 clamp(30px,5.4vh,60px);max-width:18ch;text-wrap:balance;}
-  .sc-sub{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(15px,1.8vw,21px);line-height:1.65;
-    color:#3a352d;margin:0;max-width:52ch;text-wrap:pretty;}
   /* watercolor cosmos between the Aleph quote and WHAT WE DO — generous vertical air */
   .mid-fig{max-width:min(900px,calc(100% - 48px));margin:clamp(90px,17vh,220px) auto;border-radius:clamp(40px,6vw,96px);overflow:hidden;}
   .mid-fig img{width:100%;height:auto;display:block;}
@@ -560,6 +550,7 @@
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
+      <a href="sensory-world">{{nav.sensory}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
@@ -567,6 +558,7 @@
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
+      <a href="sensory-world">{{nav.sensory}}</a>
     </div>
     <!--LANGNAV-->
   </nav>
@@ -1310,17 +1302,6 @@
     </div>
   </section>
 
-  <!-- THE EYE OF THE SKIN CITY · full-bleed artwork band under the Aleph quote -->
-  <section class="skin-city reveal">
-    <picture>
-      <source type="image/webp" srcset="assets/city/eye-skin-city-820.webp 820w, assets/city/eye-skin-city.webp 1114w" sizes="100vw">
-      <img src="assets/city/eye-skin-city.webp" alt="The Eye of the Skin City" width="1114" height="1412" loading="lazy" decoding="async">
-    </picture>
-    <div class="sc-cap">
-      <h2 class="sc-title">The Eye of the Skin City</h2>
-      <p class="sc-sub">-The tactile sensation of the blue fabric transforms materiality into memory; Biology, Memory, Emotion, Environment, Relationships, and Inner Meaning...</p>
-    </div>
-  </section>
 
   <!-- TRIAL SLEEP · Magic Conch (moved from Frisson Fellow) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">

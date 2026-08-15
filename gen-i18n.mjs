@@ -29,6 +29,7 @@ const O = {
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Field Notes', 'Field Notes'],
   'nav.lwm': ['Living World Model', 'Living World Model'],
+  'nav.sensory': ['Sensory World Hunting', 'Sensory World Hunting'],
   'cities.hero1': [`Rebuild Respect<br>for the Human`, `重建对人的尊重`],
   'cities.hero2': [`Feel Forward.`, `<b>回应人类情感的居所</b>`],
   'cat.arch': [`The Renaissance Archive`, `文艺复兴档案`],
