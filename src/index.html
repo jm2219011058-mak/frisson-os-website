@@ -133,17 +133,16 @@
   #logoFit{cursor:pointer;}
 
   /* black board — the hero's click target: oversized Fraunces links, white on black */
-  /* right-hand full-height panel — desktop: light-grey frosted scrim, ink type; the logo stays visible */
-  .board{position:fixed;top:0;right:0;bottom:0;left:auto;width:min(620px,66vw);z-index:80;
+  /* full-screen board — desktop: white frosted scrim, ink type */
+  .board{position:fixed;inset:0;z-index:80;
     display:flex;align-items:center;justify-content:center;
-    background:rgba(240,238,235,.88);
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    opacity:0;transform:translateX(26px);transition:opacity .5s ease,transform .6s cubic-bezier(0.25,0.1,0.25,1);}
-  .board.show{opacity:1;transform:none;}
+    background:rgba(255,255,255,.88);
+    -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+    opacity:0;transition:opacity .5s ease;}
+  .board.show{opacity:1;}
   /* mobile keeps the original treatment: full-screen xerox artwork, white type */
   @media(max-width:680px){
-    .board{width:100vw;left:0;
-      background:linear-gradient(rgba(11,10,9,.66),rgba(11,10,9,.66)),url('assets/city/board-bg.webp') center/cover no-repeat #0b0a09;
+    .board{background:linear-gradient(rgba(11,10,9,.66),rgba(11,10,9,.66)),url('assets/city/board-bg.webp') center/cover no-repeat #0b0a09;
       -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
   }
   .board[hidden]{display:none;}
@@ -322,19 +321,19 @@
   /* hero click → black board with the four section links */
   (function(){
     var hero=document.getElementById('hero'), bd=document.getElementById('board'), x=document.getElementById('boardX');
-    if(!hero||!bd||!x) return;
-    function open(){ bd.hidden=false; requestAnimationFrame(function(){ bd.classList.add('show'); }); }
-    function close(){ bd.classList.remove('show'); setTimeout(function(){ bd.hidden=true; },520); }
     var logo=document.getElementById('logoFit');
+    if(!hero||!bd||!x) return;
+    function open(){ openY=scrollY; bd.hidden=false; requestAnimationFrame(function(){ bd.classList.add('show'); }); }
+    function close(){ bd.classList.remove('show'); setTimeout(function(){ bd.hidden=true; },520); }
     if(matchMedia('(hover:hover)').matches && logo){
-      logo.addEventListener('mouseenter',open);      /* desktop: the wordmark itself opens it */
-      logo.addEventListener('click',open);
+      logo.addEventListener('click',open);           /* desktop: click the wordmark to open */
     } else {
       hero.addEventListener('click',open);           /* mobile unchanged: tap anywhere on the hero */
     }
     x.addEventListener('click',function(e){ e.stopPropagation(); close(); });
     bd.addEventListener('click',function(e){ if(e.target===bd) close(); });
-    addEventListener('scroll',function(){ if(!bd.hidden) close(); },{passive:true});
+    var openY=0;
+    addEventListener('scroll',function(){ if(!bd.hidden && Math.abs(scrollY-openY)>40) close(); },{passive:true});
     document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!bd.hidden) close(); });
   })();
 
