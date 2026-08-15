@@ -171,4 +171,7 @@ copyDir('assets', path.join(DIST, 'assets'));
 for (const f of ['robots.txt', 'sitemap.xml']) {
   if (fs.existsSync(f)) { try { fs.copyFileSync(f, path.join(DIST, f)); } catch {} }
 }
+// Sensory Treasure Hunt — standalone single-file page, ships verbatim (no i18n tokens,
+// no langswitcher; real src/ integration is roadmap — prototypes/treasure-hunting-HANDOFF.md §八)
+try { fs.copyFileSync('prototypes/treasure-hunting.html', path.join(DIST, 'treasure-hunting.html')); } catch (e) { console.warn('skip treasure-hunting', e.code); }
 console.log(`Built ${pages.length} page(s) × ${LANGS.length} language(s) → /${DIST}`);

@@ -571,6 +571,25 @@
     <!--LANGNAV-->
   </nav>
 
+  <!-- HUNT HERO (2026-08-16) — the hunt page ITSELF is the hero: its v2 nebula cover
+       opens the site and all five acts play out in place, no second page. Same-origin
+       iframe keeps the prototype single-source (prototypes/treasure-hunting.html);
+       ?embed=1 hides its own nav and forwards wheel deltas up so the page still scrolls. -->
+  <section class="hh" aria-label="Sensory Treasure Hunt">
+    <!-- .html extension is REQUIRED: file:// preview (打开 dist/cities.html) has no clean-URL
+         resolution. #embed rides in the fragment — it survives file://, serve's redirect,
+         and Netlify alike (query strings don't). -->
+    <iframe class="hh-frame" src="treasure-hunting.html#embed" title="Sensory Treasure Hunt"></iframe>
+  </section>
+  <script>
+  addEventListener('message',function(e){
+    if(e.origin!==location.origin) return;
+    var d=e&&e.data;
+    /* instant, not the page's smooth default — wheel ticks must track 1:1 */
+    if(d&&typeof d.thWheel==='number') window.scrollBy({top:d.thWheel,left:0,behavior:'instant'});
+  },{passive:true});
+  </script>
+
   <!-- HERO · thermal type (2026-07-29) — the words are the fuel, heat traces the letterforms.
        Replaces the two-slide painting hero (markup removed; its CSS + slideshow JS stay dormant,
        the JS early-returns on slides.length<2. Restore from git or components/thermal-type.html). -->
@@ -587,6 +606,15 @@
     </div>
   </section>
 
+  <!-- SENSORY TREASURE HUNT — the doorway into the playable hunt. The page itself is
+       prototypes/treasure-hunting.html, shipped VERBATIM to /treasure-hunting by build.mjs
+       (outside the i18n pipeline); mechanics, data contracts and product red lines live in
+       prototypes/treasure-hunting-HANDOFF.md — read it before touching the hunt. -->
+  <style>
+  /* ===== HUNT HERO — the hunt page embedded whole as the opening viewport ===== */
+  .hh{position:relative;height:100svh;background:#fff;}
+  .hh-frame{display:block;width:100%;height:100%;border:0;}
+  </style>
   <!-- ACT 01 · OPEN RING — poster poem on a warm grain field; the FRISSON ring is a
        hand-drawn cutout window and a button (→ #vm-ring, Magic Conch invitation).
        The seven signatures stay as a small shelf above the poem. -->
