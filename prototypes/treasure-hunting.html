@@ -125,7 +125,8 @@ body.embedded #grain{
   width:min(600px,88vw);z-index:5;text-align:left;padding:clamp(20px,3vw,40px);}
 #cover-copy .eyebrow{margin-bottom:var(--sp-sm);}
 #cover-copy h1{font-family:var(--serif);font-weight:600;font-size:clamp(46px,6.4vw,86px);
-  line-height:1;letter-spacing:.01em;color:var(--ink);}
+  line-height:1;letter-spacing:.01em;color:var(--ink);min-height:1em;transition:opacity .35s var(--silk);}
+#cover-copy h1 .hc{display:inline-block;will-change:transform,opacity;}
 #cover-copy .lede{font-size:clamp(16px,1.9vw,20px);line-height:1.75;color:var(--ink-soft);
   margin-top:var(--sp-sm);max-width:46ch;}
 #cover-copy .lede b{font-weight:700;color:var(--ink);}
@@ -139,8 +140,8 @@ body.embedded #grain{
   color:rgba(43,29,18,.62);transform:translate(-50%,-50%);text-transform:uppercase;pointer-events:none;white-space:nowrap;text-align:center;}
 .dim-label small{display:block;letter-spacing:.02em;font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.5vw,17px);
   color:rgba(43,29,18,.54);text-transform:none;margin-top:4px;font-weight:400;}
-.tile{position:absolute;cursor:pointer;transform:translate(-50%,-50%);border-radius:50%;
-  transition:opacity 1.2s var(--silk),filter 1.2s var(--silk);will-change:left,top;}
+.tile{position:absolute;left:0;top:0;cursor:pointer;transform:translate(-50%,-50%);border-radius:50%;
+  transition:opacity 1.2s var(--silk),filter 1.2s var(--silk);will-change:transform;}
 .tile img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 2px 6px rgba(43,29,18,.12),0 8px 22px rgba(43,29,18,.07);
   transition:transform .45s var(--silk),box-shadow .45s var(--silk);}
@@ -150,7 +151,7 @@ body.embedded #grain{
 .tile.faded{opacity:.15;filter:saturate(.35);}
 .tile.ghosted{opacity:.08;filter:saturate(.2);pointer-events:none;}
 .tile.taken{opacity:0;pointer-events:none;transition:opacity .5s;}
-#pin{position:absolute;z-index:70;transform:translate(-50%,-100%);background:var(--ink);color:#f8f4ee;
+#pin{position:absolute;left:0;top:0;z-index:70;transform:translate(-50%,-100%);background:var(--ink);color:#f8f4ee;
   border:0;font:600 12px/1 var(--sans);letter-spacing:.04em;padding:7px 13px;border-radius:999px;
   white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s var(--silk);}
 #pin.on{opacity:1;}
@@ -354,6 +355,8 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
 </head>
 <body>
 <canvas id="washbake" aria-hidden="true"></canvas>
+<script defer src="assets/vendor/gsap/gsap.min.js"></script>
+<script defer src="assets/vendor/gsap/CustomEase.min.js"></script>
 <div id="grain" aria-hidden="true"></div>
 <header class="nav">
   <a class="brand" href="#">FRISS<span class="o">O</span>N</a>
@@ -1231,13 +1234,13 @@ function fieldFrame(ts){
     t.y+=(t.ty-t.y)*0.055;
     t.rx=t.x+Math.sin(ts*0.00042+t.phase)*5;
     t.ry=t.y+Math.cos(ts*0.00037+t.phase*1.3)*5;
-    t.el.style.left=t.rx+'px';
-    t.el.style.top=t.ry+'px';
+    /* transform-only per-frame write — compositor path, no layout (60fps hard rule) */
+    t.el.style.transform='translate3d('+t.rx.toFixed(2)+'px,'+t.ry.toFixed(2)+'px,0) translate(-50%,-50%)';
   });
   if(field.hovering!=null){                        // pin follows its drifting circle
     const t=field.tiles[field.hovering];
-    pinEl.style.left=t.rx+'px';
-    pinEl.style.top=(t.ry-(t.size/2)*1.42-7+PIN_TIP_ADJ)+'px';
+    pinEl.style.transform='translate3d('+t.rx.toFixed(2)+'px,'
+      +(t.ry-(t.size/2)*1.42-7+PIN_TIP_ADJ).toFixed(2)+'px,0) translate(-50%,-100%)';
   }
   drawLines();
   requestAnimationFrame(fieldFrame);
@@ -1302,11 +1305,41 @@ function buildCover(){
 function wakeCluster(i){
   document.querySelectorAll('.cluster').forEach((c,j)=>c.classList.toggle('awake',j===i));
 }
+/* ---- the greeting says hello in ten tongues — GSAP per-character swap (site vendor);
+   graceful fallback to a plain crossfade when GSAP is absent (raw prototypes/ preview) ---- */
+const GREETS=['Hi\u200A!','你好','Hola\u200A!','Bonjour\u200A!','Ciao\u200A!','こんにちは','안녕\u200A!','Olá\u200A!','Hallo\u200A!','Привет\u200A!'];
+let hiIdx=0, hiTimer=null, HI_EASE='expo.out';
+const hiEl=document.querySelector('#cover-copy h1');
+function setGreet(txt){ if(!hiEl)return; hiEl.innerHTML='';
+  [...txt].forEach(ch=>{ const sp=document.createElement('span'); sp.className='hc';
+    sp.textContent=ch; if(ch===' ')sp.style.whiteSpace='pre'; hiEl.appendChild(sp); }); }
+function swapGreet(){
+  if(!hiEl||document.hidden) return;
+  const next=GREETS[(hiIdx=(hiIdx+1)%GREETS.length)];
+  if(window.gsap){
+    if(window.CustomEase&&HI_EASE==='expo.out'){ try{ gsap.registerPlugin(CustomEase);
+      CustomEase.create('hiSilk','M0,0 C0.16,1 0.3,1 1,1'); HI_EASE='hiSilk'; }catch(e){} }
+    gsap.to(hiEl.querySelectorAll('.hc'),{y:-16,opacity:0,duration:.4,stagger:.03,ease:'power2.in',
+      onComplete(){ setGreet(next);
+        gsap.fromTo(hiEl.querySelectorAll('.hc'),{y:20,opacity:0},
+          {y:0,opacity:1,duration:.75,stagger:.045,ease:HI_EASE}); }});
+  } else {
+    hiEl.style.opacity=0;
+    setTimeout(()=>{ setGreet(next); hiEl.style.opacity=1; },280);
+  }
+}
 function startCoverCycle(){
   stopCoverCycle();
   coverTimer=setInterval(()=>{awakeIdx=(awakeIdx+1)%WORLDS.length;wakeCluster(awakeIdx);},3400);
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+    setGreet(GREETS[0]);
+    hiTimer=setInterval(swapGreet,2800);
+  }
 }
-function stopCoverCycle(){if(coverTimer){clearInterval(coverTimer);coverTimer=null;}}
+function stopCoverCycle(){
+  if(coverTimer){clearInterval(coverTimer);coverTimer=null;}
+  if(hiTimer){clearInterval(hiTimer);hiTimer=null;}
+}
 buildCover();
 startCoverCycle();
 window.addEventListener('resize',()=>{ if(document.getElementById('act0').classList.contains('on')) buildCover(); });
@@ -1602,8 +1635,8 @@ mapCv.addEventListener('mousemove',ev=>{
     if(m){
       const rect=mapCv.getBoundingClientRect();
       showPin('SI #'+String(m.w.si).padStart(2,'0')+' — '+m.w.name);
-      pinEl.style.left=(rect.left+m.x)+'px';
-      pinEl.style.top=(rect.top+m.y-mapState.cell*1.7+PIN_TIP_ADJ)+'px';
+      pinEl.style.transform='translate3d('+(rect.left+m.x).toFixed(1)+'px,'
+        +(rect.top+m.y-mapState.cell*1.7+PIN_TIP_ADJ).toFixed(1)+'px,0) translate(-50%,-100%)';
     } else hidePin();
   }
 });
