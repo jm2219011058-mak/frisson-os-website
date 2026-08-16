@@ -200,6 +200,14 @@ body.embedded #grain{
   #lens{transition:opacity .2s ease;}
   #lens.on{transform:translate(-50%,-50%);}
 }
+/* hold-to-claim — the ONE irreversible act gets Emil's deliberate/snap asymmetry:
+   the fill is progress so it runs linear; letting go snaps back instantly */
+#claim-btn{position:relative;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;}
+#claim-btn::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(192,143,53,.95),rgba(185,80,63,.9));
+  clip-path:inset(0 100% 0 0);transition:clip-path .2s cubic-bezier(0.23,1,0.32,1);}
+#claim-btn:active::after{clip-path:inset(0 0 0 0);transition:clip-path 1.2s linear;}
+#claim-btn .cl-label{position:relative;z-index:1;}
 /* the picked card FLIES into its slot — the collection assembles before your eyes
    (spatial consistency: nothing vanishes, everything has a destination) */
 .fly-card{position:fixed;left:0;top:0;z-index:80;pointer-events:none;border-radius:50%;
@@ -502,7 +510,7 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
       <div class="md-name" id="md-name"></div>
       <div class="md-alias" id="md-alias"></div>
       <div class="md-stats" id="md-stats"></div>
-      <div id="map-claim"><button class="plank" id="claim-btn">claim your founding place</button></div>
+      <div id="map-claim"><button class="plank" id="claim-btn"><span class="cl-label">hold to claim your founding place</span></button></div>
       <div class="claim-small">No forms, no email — the invitation itself is the door.</div>
     </div>
     </div>
@@ -1810,7 +1818,20 @@ function updateMapDetail(){
 }
 
 /* ---- act 5: claim + circle ---- */
-document.getElementById('claim-btn').addEventListener('click',()=>{
+const claimBtn=document.getElementById('claim-btn');
+let claimHeld=false,claimDone=false;
+claimBtn.addEventListener('pointerdown',()=>{ claimHeld=true; },{passive:true});
+addEventListener('pointerup',()=>{ claimHeld=false; },{passive:true});
+addEventListener('pointercancel',()=>{ claimHeld=false; },{passive:true});
+claimBtn.addEventListener('transitionend',e=>{
+  if(e.pseudoElement==='::after'&&e.propertyName==='clip-path'&&claimHeld&&!claimDone){
+    claimDone=true; doClaim();
+  }
+});
+claimBtn.addEventListener('click',e=>{           /* keyboard activation (detail 0) commits directly */
+  if(e.detail===0&&!claimDone){ claimDone=true; doClaim(); }
+});
+function doClaim(){
   const w=state.world;
   if(!w)return;
   if(!state.claimedHere){
@@ -1827,7 +1848,7 @@ document.getElementById('claim-btn').addEventListener('click',()=>{
     const pre=document.querySelector('.region-btn[data-region="'+w.region+'"]');
     if(pre)selectRegion(pre);
   },900);
-});
+}
 function selectRegion(btn){
   document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
