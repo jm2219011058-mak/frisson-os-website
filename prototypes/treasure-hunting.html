@@ -122,7 +122,11 @@ body.embedded #grain{
 #cover-copy .lede{font-size:clamp(16px,1.9vw,20px);line-height:1.75;color:var(--ink-soft);
   margin-top:var(--sp-sm);max-width:46ch;}
 #cover-copy .lede b{font-weight:700;color:var(--ink);}
-#cover-copy .cover-cta{margin-top:var(--sp-md);text-align:center;}
+#cover-copy .cover-cta{margin-top:var(--sp-md);text-align:center;
+  transition:opacity .8s var(--silk) .35s,transform .9s var(--silk) .35s;}
+@starting-style{
+  #cover-copy .cover-cta{opacity:0;transform:translateY(12px);}
+}
 /* ---------- act I · the field ---------- */
 #field-wrap{position:absolute;inset:0;}
 #lines{position:absolute;inset:0;width:100%;height:100%;}
@@ -332,6 +336,13 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
   .cvc,.cluster-label{transition:none;}
 }
 
+@media (max-width:1080px){
+  /* narrow stages: the ring flows behind the copy — a paper shield keeps the words
+     readable (layering contract), and only the awake cluster speaks at full voice */
+  #cover-copy{background:radial-gradient(closest-side,rgba(253,251,247,.96),rgba(253,251,247,.7) 62%,rgba(253,251,247,0));}
+  .cluster-label{opacity:.55;}
+  .cluster.awake .cluster-label{opacity:1;}
+}
 @media (max-width:980px){
   #world-grid{grid-template-columns:repeat(2,1fr);}
   #act4-inner{display:block;}
@@ -1057,6 +1068,12 @@ function layoutField(){
     let y=field.cy + (p[1]/maxLen)*field.R*0.86 + (rnd()-0.5)*70;
     t.tx=x; t.ty=y;
   });
+  // geometry contract: the stage floor is the instruction's real bottom, the ceiling is
+  // the slot row's real top — measured, never guessed (§ the dim-label lesson)
+  const fiRect=document.getElementById('field-instruction').getBoundingClientRect();
+  const slRect=document.getElementById('slots').getBoundingClientRect();
+  const fieldTop=(fiRect.height?fiRect.bottom:120);
+  const fieldBot=(slRect.height?slRect.top:field.H-110);
   // relaxation: de-overlap
   const minD=96;
   for(let it=0;it<140;it++){
@@ -1070,8 +1087,9 @@ function layoutField(){
       }
     }
     field.tiles.forEach(t=>{
+      const half=t.size/2, floor=fieldTop+half+14, ceil=fieldBot-half-12;
       t.tx=Math.max(70,Math.min(field.W-70,t.tx));
-      t.ty=Math.max(150,Math.min(field.H-150,t.ty));
+      t.ty=floor>=ceil?(floor+ceil)/2:Math.max(floor,Math.min(ceil,t.ty));
     });
   }
   // dimension ghost labels — the top floor is the INSTRUCTION'S real bottom edge,
@@ -1098,7 +1116,7 @@ function buildField(){
   field.tiles=CARDS.map((card,i)=>{
     const el=document.createElement('div');
     el.className='tile';
-    const size=Math.round((70+srnd()*36)*(window.innerWidth<700?0.78:1)); // varied diameters, museum-wall rhythm
+    const size=Math.round((70+srnd()*36)*(window.innerWidth<700?0.8:1)); // varied diameters; mobile floor ≈56px tap target
     el.style.width=size+'px';el.style.height=size+'px';
     el.innerHTML='<img draggable="false" src="'+CARD_SRC[card.id]+'" alt="">';
     tilesBox.appendChild(el);
@@ -1284,8 +1302,13 @@ function buildCover(){
     const a=-Math.PI/2+wi*(Math.PI*2/WORLDS.length);
     const cl=document.createElement('div');
     cl.className='cluster';
+    /* outward labels need headroom: an above-labelled cluster that would push its label
+       off-screen gets pulled down just enough — the ring keeps an organic irregularity */
+    const above=Math.sin(a)<-0.25;
+    let py=cy+Math.sin(a)*ry;
+    if(above) py=Math.max(py, 12+58+86*M);
     cl.style.left=(cx+Math.cos(a)*rx)+'px';
-    cl.style.top=(cy+Math.sin(a)*ry)+'px';
+    cl.style.top=py+'px';
     const top=CARDS.map(c=>({c,s:sim(w.proto,c.dims)})).sort((p,q)=>q.s-p.s).slice(0,9);
     top.forEach((p,pi)=>{
       const el=document.createElement('div');
@@ -1299,7 +1322,11 @@ function buildCover(){
     });
     const lab=document.createElement('div');
     lab.className='cluster-label';
-    lab.style.left='0px';lab.style.top=(86*M)+'px';
+    /* labels sit OUTWARD (away from the ring's core): upper-half clusters speak above
+       themselves, lower-half below — so no label ever leans into the copy block */
+    lab.style.left='0px';
+    if(above){ lab.style.top=(-86*M)+'px'; lab.style.transform='translate(-50%,-100%)'; }
+    else{ lab.style.top=(86*M)+'px'; }
     lab.innerHTML='<div class="cl-name">SI #'+String(w.si).padStart(2,'0')+' — '+w.name+'</div>'
       +'<div class="cl-alias">'+w.alias+'</div>'
       +'<div class="cl-count">'+w.claimed+' of '+CAPACITY+' claimed</div>';
@@ -1341,7 +1368,10 @@ function startCoverCycle(){
   stopCoverCycle();
   coverTimer=setInterval(()=>{awakeIdx=(awakeIdx+1)%WORLDS.length;wakeCluster(awakeIdx);},3400);
   if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
-    setGreet(GREETS[0]);
+    setGreet(GREETS[hiIdx]);
+    if(window.gsap&&!startCoverCycle._greeted){ startCoverCycle._greeted=true;
+      gsap.from(hiEl.querySelectorAll('.hc'),{y:18,opacity:0,duration:.8,stagger:.05,delay:.2,ease:'expo.out'});
+    }
     hiTimer=setInterval(swapGreet,2800);
   }
 }
