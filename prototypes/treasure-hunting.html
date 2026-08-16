@@ -175,6 +175,37 @@ body.embedded #grain{
   overflow:hidden;transition:border-color .4s var(--silk);}
 .slot img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;}
 .slot.filled{border-color:transparent;box-shadow:0 0 0 1px var(--hair),0 2px 8px rgba(43,29,18,.14);}
+/* ---------- the LENS — a fixed central stage where the hovered card develops LARGE.
+   Lizard-brain contract: one reading position, one big image, one precise line. ---------- */
+#lens{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) scale(.95);
+  z-index:60;width:min(360px,74vw);text-align:center;pointer-events:none;
+  opacity:0;transition:opacity .2s var(--silk),transform .22s cubic-bezier(0.23,1,0.32,1);}
+#lens.on{opacity:1;transform:translate(-50%,-50%) scale(1);}
+#lens .lz-halo{position:absolute;left:50%;top:42%;width:170%;aspect-ratio:1;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(253,251,247,.97),rgba(253,251,247,.78) 55%,rgba(253,251,247,0));
+  z-index:-1;border-radius:50%;}
+#lens .lz-img{width:clamp(220px,30vh,300px);aspect-ratio:1;margin:0 auto;border-radius:50%;overflow:hidden;
+  border:4px solid #fff;box-shadow:0 0 0 1px var(--hair),0 10px 30px rgba(43,29,18,.16),0 30px 70px rgba(43,29,18,.12);}
+#lens .lz-img img{width:100%;height:100%;object-fit:cover;display:block;}
+#lens .lz-cap{font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.3vw,27px);line-height:1.35;
+  color:var(--ink);margin-top:14px;text-wrap:balance;}
+#lens .lz-dims{display:flex;justify-content:center;gap:7px;margin-top:12px;align-items:flex-end;height:24px;}
+#lens .lz-dims i{width:14px;border-radius:3px 3px 1px 1px;background:var(--violet);opacity:.75;display:block;}
+#lens .lz-hint{font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--eyebrow);margin-top:10px;display:none;}
+@media (hover:none){ #lens .lz-hint{display:block;} }
+#lens .lz-body{transition:filter .18s ease,opacity .18s ease;}
+#lens.swap .lz-body{filter:blur(2px);opacity:.7;}   /* Emil: blur bridges the crossfade seam */
+@media (prefers-reduced-motion:reduce){
+  #lens{transition:opacity .2s ease;}
+  #lens.on{transform:translate(-50%,-50%);}
+}
+/* the picked card FLIES into its slot — the collection assembles before your eyes
+   (spatial consistency: nothing vanishes, everything has a destination) */
+.fly-card{position:fixed;left:0;top:0;z-index:80;pointer-events:none;border-radius:50%;
+  transition:transform .55s cubic-bezier(0.77,0,0.175,1);will-change:transform;}
+.fly-card img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
+  border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 8px 24px rgba(43,29,18,.18);}
 /* ---------- act II · the order ---------- */
 #act2 .order-title{font-weight:600;font-size:clamp(28px,3.4vw,42px);color:var(--ink);text-align:center;letter-spacing:.01em;}
 #act2 .order-sub{margin-top:12px;text-align:center;font-weight:500;letter-spacing:.12em;font-size:12px;}
@@ -412,6 +443,15 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
       <div class="fi-sub eyebrow">Take the five that pull you &nbsp;·&nbsp; <span id="take-count">0</span> / 5</div>
     </div>
     <div id="tiles"></div>
+    <div id="lens" aria-hidden="true">
+      <span class="lz-halo" aria-hidden="true"></span>
+      <div class="lz-body">
+        <div class="lz-img"><img alt=""></div>
+        <div class="lz-cap"></div>
+        <div class="lz-dims"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="lz-hint">tap again to take it</div>
+    </div>
     <div id="slots">
       <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
     </div>
@@ -1134,7 +1174,12 @@ function buildField(){
     const t={card,el,size,x:field.cx,y:field.cy,tx:0,ty:0,phase:i*1.37,taken:false,ghost:false};
     el.addEventListener('mouseenter',()=>hoverTile(i,true));
     el.addEventListener('mouseleave',()=>hoverTile(i,false));
-    el.addEventListener('click',()=>pickTile(i));
+    el.addEventListener('click',()=>{
+      if(TOUCH_FIELD&&lensI!==i&&!field.tiles[i].taken&&!field.tiles[i].ghost&&field.picks.length<5){
+        hoverTile(i,true); return;            /* lizard brain: look first, take on the second tap */
+      }
+      pickTile(i);
+    });
     return t;
   });
   // pair similarities for constellation lines
@@ -1159,8 +1204,27 @@ function hoverTile(i,on){
     else if(!t.dimmed && s<0.72) t.el.classList.add('faded');
   });
   field.hovering=on?i:null;
-  if(on) showPin(field.tiles[i].card.cap); else hidePin();
+  if(on) lensShow(i); else lensHide();
 }
+
+/* ---- the lens: fill, crossfade (blur-bridged), show/hide ---- */
+const lensEl=document.getElementById('lens');
+const lensImgEl=lensEl.querySelector('.lz-img img');
+const lensCapEl=lensEl.querySelector('.lz-cap');
+const lensBars=[...lensEl.querySelectorAll('.lz-dims i')];
+let lensI=null,lensSwapT=null;
+function lensFill(i){ const c=CARDS[i];
+  lensImgEl.src=CARD_SRC[c.id]; lensCapEl.textContent=c.cap;
+  lensBars.forEach((b,d)=>{ b.style.height=(4+c.dims[d]*20)+'px'; }); }
+function lensShow(i){
+  if(lensEl.classList.contains('on')&&lensI!==null&&lensI!==i){
+    lensEl.classList.add('swap'); clearTimeout(lensSwapT);
+    lensSwapT=setTimeout(()=>{ lensFill(i); lensEl.classList.remove('swap'); },160);
+  } else lensFill(i);
+  lensI=i; lensEl.classList.add('on');
+}
+function lensHide(){ lensI=null; clearTimeout(lensSwapT); lensEl.classList.remove('on','swap'); }
+const TOUCH_FIELD=matchMedia('(hover:none)').matches;
 
 /* ---- §5.6 pin label: whole outline is ONE path, body+tail share the curve ---- */
 const pinEl=document.createElement('div');pinEl.id='pin';document.body.appendChild(pinEl);
@@ -1211,15 +1275,27 @@ function currentProfile(){
 function pickTile(i){
   const t=field.tiles[i];
   if(t.taken||t.ghost||field.picks.length>=5)return;
-  hidePin();field.hovering=null;
+  lensHide();hidePin();field.hovering=null;
+  const flyRect=t.el.getBoundingClientRect();     /* measure BEFORE it hides */
   t.taken=true;
   t.el.classList.add('taken');
   field.picks.push(t.card.id);
   logEvent('pick',{card:t.card.id,order:field.picks.length});
-  // fill slot
   const slot=document.querySelectorAll('.slot')[field.picks.length-1];
-  slot.innerHTML='<img src="'+CARD_SRC[t.card.id]+'" alt="">';
-  slot.classList.add('filled');
+  const fillSlot=()=>{ slot.innerHTML='<img src="'+CARD_SRC[t.card.id]+'" alt="">'; slot.classList.add('filled'); };
+  if(!RM_FIELD&&flyRect.width){
+    /* the card flies home: centre-to-centre, strong ease-in-out (on-screen A→B) */
+    const sr=slot.getBoundingClientRect();
+    const fly=document.createElement('div'); fly.className='fly-card';
+    fly.style.width=flyRect.width+'px'; fly.style.height=flyRect.height+'px';
+    fly.innerHTML='<img src="'+CARD_SRC[t.card.id]+'" alt="">';
+    fly.style.transform='translate3d('+flyRect.left+'px,'+flyRect.top+'px,0) scale(1)';
+    document.body.appendChild(fly);
+    void fly.offsetWidth;
+    fly.style.transform='translate3d('+(sr.left+sr.width/2-flyRect.width/2)+'px,'
+      +(sr.top+sr.height/2-flyRect.height/2)+'px,0) scale('+(sr.width/flyRect.width)+')';
+    setTimeout(()=>{ fly.remove(); fillSlot(); },560);
+  } else { fillSlot(); }
   document.getElementById('take-count').textContent=field.picks.length;
   // the field learns you: recluster around the evolving profile
   const u=currentProfile();
