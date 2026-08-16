@@ -48,10 +48,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--serif);overflow-x:c
   transition:color .25s var(--silk);}
 #back-key .bk-arw{display:inline-block;font-size:16px;line-height:1;transition:transform .3s var(--silk);}
 #back-key::after{content:"";position:absolute;left:1px;right:1px;bottom:2px;height:1.5px;background:var(--ink);
-  transform:scaleX(0);transform-origin:left center;transition:transform .4s var(--silk);}
+  transform:scaleX(0);transform-origin:left center;transition:transform .3s var(--silk);}
 #back-key:hover{color:var(--ink);}
-#back-key:hover .bk-arw{transform:translateX(-4px);}
-#back-key:hover::after{transform:scaleX(1);}
 #back-key[hidden]{display:none;}
 /* embedded as the cities hero — the host page already has the FRISSON nav, and the
    host's white shows THROUGH us (transparent body): the speckle fade lands on the very
@@ -75,16 +73,11 @@ body.embedded #grain{
   box-shadow:0 7px 0 var(--gold-deep),0 7px 0 3px var(--ink),0 16px 30px rgba(43,29,18,.14);
   -webkit-text-stroke:1.2px var(--ink);
   transition:transform .18s var(--silk),box-shadow .18s var(--silk);}
-/* the plank has a hinge: whichever half the cursor rests on dips first (--tilt −1…1, JS) */
-.plank:hover{transform:translateY(2px) rotate(calc(var(--tilt,0)*1.3deg));
-  box-shadow:0 5px 0 var(--gold-deep),0 5px 0 3px var(--ink),0 10px 20px rgba(43,29,18,.14);}
 .plank:active{transform:translateY(6px) rotate(calc(var(--tilt,0)*1.7deg));box-shadow:0 1px 0 var(--gold-deep),0 1px 0 3px var(--ink);}
 .plank.md{font-size:clamp(17px,1.8vw,21px);padding:16px 40px;}
 .plank.lite{background:#fffdf8;color:var(--ink);-webkit-text-stroke:0;font-weight:600;
   box-shadow:0 7px 0 #e4dbc8,0 7px 0 3px var(--ink),0 16px 30px rgba(43,29,18,.10);}
-.plank.lite:hover{box-shadow:0 5px 0 #e4dbc8,0 5px 0 3px var(--ink),0 10px 20px rgba(43,29,18,.10);}
 .plank.blurple{background:var(--blurple);box-shadow:0 7px 0 #3f4bd8,0 7px 0 3px var(--ink),0 16px 34px rgba(88,101,242,.35);}
-.plank.blurple:hover{box-shadow:0 5px 0 #3f4bd8,0 5px 0 3px var(--ink),0 10px 22px rgba(88,101,242,.35);}
 .plank .arw{margin-left:8px;}
 /* quiet text link, enlarged */
 .cta-quiet{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);
@@ -92,7 +85,6 @@ body.embedded #grain{
   padding:6px 0;transition:color .25s;text-decoration:none;}
 .cta-quiet .arw{font-size:1.15em;line-height:1;transition:transform .3s var(--silk);}
 .cta-quiet:hover{color:var(--brick);}
-.cta-quiet:hover .arw{transform:translateX(4px);}
 /* ---------- acts ---------- */
 .act{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   opacity:0;visibility:hidden;transition:opacity 1.1s var(--silk),visibility 0s linear 1.1s;overflow:hidden;z-index:1;}
@@ -144,9 +136,7 @@ body.embedded #grain{
   transition:opacity 1.2s var(--silk),filter 1.2s var(--silk);will-change:transform;}
 .tile img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 2px 6px rgba(43,29,18,.12),0 8px 22px rgba(43,29,18,.07);
-  transition:transform .45s var(--silk),box-shadow .45s var(--silk);}
-.tile:hover{z-index:30;}
-.tile:hover img{transform:scale(1.42);box-shadow:0 0 0 1px var(--hair),0 6px 14px rgba(43,29,18,.16),0 20px 44px rgba(43,29,18,.13);}
+  transition:transform .3s var(--silk),box-shadow .3s var(--silk);}
 .tile.kin img{transform:scale(1.12);}
 .tile.faded{opacity:.15;filter:saturate(.35);}
 .tile.ghosted{opacity:.08;filter:saturate(.2);pointer-events:none;}
@@ -179,8 +169,6 @@ body.embedded #grain{
 .rank-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-radius:50%;
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 3px 8px rgba(43,29,18,.14),0 12px 30px rgba(43,29,18,.08);pointer-events:none;
   transition:transform .35s var(--silk),box-shadow .35s var(--silk);}
-.rank-card:hover img{transform:translateY(-4px);
-  box-shadow:0 0 0 1px var(--hair),0 7px 14px rgba(43,29,18,.16),0 20px 40px rgba(43,29,18,.12);}
 .rank-card .rc-num{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--eyebrow);text-align:center;margin-bottom:12px;}
 .rank-card:first-child .rc-num{color:var(--brick);}
@@ -238,7 +226,7 @@ body.embedded #grain{
 #map-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;}
 #worldmap{display:block;cursor:pointer;}
 #map-detail{min-height:150px;margin-top:14px;opacity:0;transform:translateY(6px);
-  transition:opacity .7s var(--silk),transform .7s var(--silk);}
+  transition:opacity .45s var(--silk),transform .45s var(--silk);}
 #map-detail.on{opacity:1;transform:none;}
 #map-detail .md-name{font-size:clamp(26px,2.9vw,36px);font-weight:600;letter-spacing:.04em;}
 #map-detail .md-alias{font-style:italic;font-size:16.5px;color:var(--ink-soft);margin-top:5px;}
@@ -259,7 +247,6 @@ body.embedded #grain{
 .region-btn{font:500 14.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
   background:#fff;border:2px solid var(--hair);padding:17px 30px;border-radius:14px 11px 15px 12px/12px 15px 11px 14px;
   cursor:pointer;transition:border-color .3s,color .3s,background .3s,transform .2s var(--silk);}
-.region-btn:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px);}
 .region-btn.sel{border-color:var(--ink);background:var(--blurple);color:#fff;}
 /* the discord moment — blurple bloom behind the card, impossible to miss */
 #invite-wrap{position:relative;margin-top:var(--sp-md);}
@@ -314,6 +301,25 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
 #act2.on .order-sub{transition-delay:.08s;}
 #act2.on #rank-row{transition-delay:.16s;}
 #act2.on .reveal-wrap{transition-delay:.3s;}
+/* hover motion only where hover is REAL — touch fires sticky :hover on tap */
+@media (hover:hover) and (pointer:fine){
+  /* the plank has a hinge: whichever half the cursor rests on dips first (--tilt −1…1, JS) */
+  .plank:hover{transform:translateY(2px) rotate(calc(var(--tilt,0)*1.3deg));
+    box-shadow:0 5px 0 var(--gold-deep),0 5px 0 3px var(--ink),0 10px 20px rgba(43,29,18,.14);}
+  .plank.lite:hover{box-shadow:0 5px 0 #e4dbc8,0 5px 0 3px var(--ink),0 10px 20px rgba(43,29,18,.10);}
+  .plank.blurple:hover{box-shadow:0 5px 0 #3f4bd8,0 5px 0 3px var(--ink),0 10px 22px rgba(88,101,242,.35);}
+  .tile:hover{z-index:30;}
+  .tile:hover img{transform:scale(1.42);box-shadow:0 0 0 1px var(--hair),0 6px 14px rgba(43,29,18,.16),0 20px 44px rgba(43,29,18,.13);}
+  .rank-card:hover img{transform:translateY(-4px);
+    box-shadow:0 0 0 1px var(--hair),0 7px 14px rgba(43,29,18,.16),0 20px 40px rgba(43,29,18,.12);}
+  .region-btn:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px);}
+  #back-key:hover .bk-arw{transform:translateX(-4px);}
+  #back-key:hover::after{transform:scaleX(1);}
+  .cta-quiet:hover .arw{transform:translateX(4px);}
+}
+/* slot fill — feedback the instant a card lands (occasional tier, not retriggered) */
+.slot.filled img{animation:slotIn .24s cubic-bezier(0.23,1,0.32,1);}
+@keyframes slotIn{from{transform:scale(.82);opacity:0;}to{transform:scale(1);opacity:1;}}
 /* house focus ring — keyboard only, brick accent */
 .plank:focus-visible,.region-btn:focus-visible,#back-key:focus-visible,.cta-quiet:focus-visible,
 .restart button:focus-visible{outline:2.5px solid var(--brick);outline-offset:4px;}
@@ -1015,6 +1021,7 @@ const field = {
   running:false,
   W:0,H:0,cx:0,cy:0,R:0,
 };
+const RM_FIELD=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const linesCv=document.getElementById('lines');
 const linesCtx=linesCv.getContext('2d');
 const tilesBox=document.getElementById('tiles');
@@ -1231,8 +1238,8 @@ function fieldFrame(ts){
   field.tiles.forEach(t=>{
     t.x+=(t.tx-t.x)*0.055;
     t.y+=(t.ty-t.y)*0.055;
-    t.rx=t.x+Math.sin(ts*0.00042+t.phase)*5;
-    t.ry=t.y+Math.cos(ts*0.00037+t.phase*1.3)*5;
+    t.rx=t.x+(RM_FIELD?0:Math.sin(ts*0.00042+t.phase)*5);
+    t.ry=t.y+(RM_FIELD?0:Math.cos(ts*0.00037+t.phase*1.3)*5);
     /* transform-only per-frame write — compositor path, no layout (60fps hard rule) */
     t.el.style.transform='translate3d('+t.rx.toFixed(2)+'px,'+t.ry.toFixed(2)+'px,0) translate(-50%,-50%)';
   });
@@ -1321,7 +1328,7 @@ function swapGreet(){
   if(window.gsap){
     if(window.CustomEase&&HI_EASE==='expo.out'){ try{ gsap.registerPlugin(CustomEase);
       CustomEase.create('hiSilk','M0,0 C0.16,1 0.3,1 1,1'); HI_EASE='hiSilk'; }catch(e){} }
-    gsap.to(hiEl.querySelectorAll('.hc'),{y:-16,opacity:0,duration:.4,stagger:.03,ease:'power2.in',
+    gsap.to(hiEl.querySelectorAll('.hc'),{y:-16,opacity:0,duration:.32,stagger:.026,ease:'power3.out',
       onComplete(){ setGreet(next);
         gsap.fromTo(hiEl.querySelectorAll('.hc'),{y:20,opacity:0},
           {y:0,opacity:1,duration:.75,stagger:.045,ease:HI_EASE}); }});
@@ -1467,29 +1474,49 @@ function attachDrag(el){
   el.addEventListener('pointerdown',e=>{
     e.preventDefault();
     const row=document.getElementById('rank-row');
-    const startX=e.clientX,startY=e.clientY;
     el.classList.add('dragging');
-    el.setPointerCapture(e.pointerId);
+    try{ el.setPointerCapture(e.pointerId); }catch(err){} /* pointer may already be gone */
+    /* grab offset + the card's UNtransformed layout origin — re-measured after every
+       reorder so the card never jumps when its slot changes under it */
+    const r0=el.getBoundingClientRect();
+    const offX=e.clientX-r0.left, offY=e.clientY-r0.top;
+    let baseX=r0.left, baseY=r0.top;
+    const rebase=()=>{ const t=el.style.transform; el.style.transform='';
+      const rr=el.getBoundingClientRect(); baseX=rr.left; baseY=rr.top; el.style.transform=t; };
     const move=ev=>{
-      el.style.transform='translate('+(ev.clientX-startX)+'px,'+(ev.clientY-startY)+'px)';
+      el.style.transform='translate('+(ev.clientX-offX-baseX)+'px,'+(ev.clientY-offY-baseY)+'px)';
       const cards=[...row.children].filter(c=>c!==el);
       for(const other of cards){
         const r=other.getBoundingClientRect();
         if(ev.clientX>r.left&&ev.clientX<r.right){
           const mid=r.left+r.width/2;
-          if(ev.clientX<mid) row.insertBefore(el,other);
-          else row.insertBefore(el,other.nextSibling);
+          const ref=ev.clientX<mid?other:other.nextSibling;
+          if(ref===el||(el.nextSibling===ref))break;
+          /* FLIP: siblings glide to their new slots instead of teleporting */
+          const before=new Map(cards.map(c=>[c,c.getBoundingClientRect()]));
+          row.insertBefore(el,ref);
+          rebase();
+          cards.forEach(c=>{ const b=before.get(c), a=c.getBoundingClientRect();
+            const dx=b.left-a.left, dy=b.top-a.top;
+            if(dx||dy){ c.style.transition='none';
+              c.style.transform='translate('+dx+'px,'+dy+'px)';
+              void c.offsetWidth;
+              c.style.transition='transform .22s var(--silk)';
+              c.style.transform=''; } });
           break;
         }
       }
     };
     const up=()=>{
       el.classList.remove('dragging');
-      el.style.transform='';
       el.removeEventListener('pointermove',move);
       el.removeEventListener('pointerup',up);
-      state.order=[...row.children].map(c=>c.dataset.id);
-      renderRankRow();
+      /* settle home on a curve, then rebuild the row (labels renumber) once it lands */
+      el.style.transition='transform .22s var(--silk)';
+      el.style.transform='';
+      setTimeout(()=>{ el.style.transition='';
+        state.order=[...row.children].map(c=>c.dataset.id);
+        renderRankRow(); },240);
     };
     el.addEventListener('pointermove',move);
     el.addEventListener('pointerup',up);
