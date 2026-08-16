@@ -1306,11 +1306,14 @@ function wakeCluster(i){
 }
 /* ---- the greeting says hello in ten tongues — GSAP per-character swap (site vendor);
    graceful fallback to a plain crossfade when GSAP is absent (raw prototypes/ preview) ---- */
-const GREETS=['Hi\u200A!','你好','Hola\u200A!','Bonjour\u200A!','Ciao\u200A!','こんにちは','안녕\u200A!','Olá\u200A!','Hallo\u200A!','Привет\u200A!'];
+const GREETS=['Hi\u200A!','你好','مرحبا','Hola\u200A!','Bonjour\u200A!','Ciao\u200A!','こんにちは','안녕\u200A!','Olá\u200A!','Hallo\u200A!','Привет\u200A!'];
 let hiIdx=0, hiTimer=null, HI_EASE='expo.out';
 const hiEl=document.querySelector('#cover-copy h1');
 function setGreet(txt){ if(!hiEl)return; hiEl.innerHTML='';
-  [...txt].forEach(ch=>{ const sp=document.createElement('span'); sp.className='hc';
+  /* cursive scripts (Arabic) must NOT be split per character — per-glyph spans break
+     letter joining; the whole word becomes one animation unit instead */
+  const units=/[\u0600-\u06FF]/.test(txt)?[txt]:[...txt];
+  units.forEach(ch=>{ const sp=document.createElement('span'); sp.className='hc';
     sp.textContent=ch; if(ch===' ')sp.style.whiteSpace='pre'; hiEl.appendChild(sp); }); }
 function swapGreet(){
   if(!hiEl||document.hidden) return;
