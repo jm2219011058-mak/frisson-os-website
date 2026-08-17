@@ -1514,7 +1514,10 @@
     #vm-grotto .vg-cta{margin-top:clamp(20px,3vh,32px);}
     </style>
     <!-- ===== Soulful Living Nodes — interactive map (integrated component) ===== -->
-    <section class="zres-nodes reveal">
+    <!-- SLN 地图整节暂时隐藏（2026-08-17 用户要求）——恢复 = 删掉 sln-hidden 类。
+         组件、弹窗、脚本全部原样保留；display:none 下 IO 不触发、氛围动画不跑，零成本。 -->
+    <style>.sln-hidden{display:none!important;}</style>
+    <section class="zres-nodes reveal sln-hidden">
     <style>
       .zres-nodes{background:#fff;padding:0;}
       /* intro above the map — heading + one short graf INTRODUCE the canvas, so the gap
