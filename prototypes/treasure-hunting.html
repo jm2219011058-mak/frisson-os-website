@@ -168,7 +168,10 @@ body.embedded #grain{
 }
 #field-instruction{position:absolute;top:calc(var(--sp-lg) - 26px);left:50%;transform:translateX(-50%);
   text-align:center;pointer-events:none;transition:opacity .8s var(--silk);width:100%;}
-#field-instruction .fi-main{font-weight:600;font-size:clamp(30px,3.8vw,50px);color:var(--ink);letter-spacing:.01em;}
+/* the question is the user's poster artwork — a plate, not a headline */
+#field-instruction .fi-poster{display:block;width:min(640px,84vw);margin:0 auto;border-radius:12px;
+  aspect-ratio:16/9;  /* height known BEFORE the file arrives — the field contract measures true */
+  box-shadow:0 0 0 1px rgba(43,29,18,.25),0 10px 30px rgba(43,29,18,.10);}
 #field-instruction .fi-sub{margin-top:12px;}
 #slots{position:absolute;bottom:calc(34px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;}
 .slot{width:64px;height:64px;border-radius:50%;border:1px dashed var(--ghost);background:rgba(255,255,255,.4);
@@ -406,7 +409,7 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
   .cluster-label .cl-alias{display:none;}       /* name only — the ring stays airy */
   .cluster-label{opacity:.55;}
   #field-instruction{padding:0 18px;}
-  #field-instruction .fi-main{font-size:clamp(24px,6.6vw,32px);}
+  #field-instruction .fi-poster{width:80vw;}
   .slot{width:52px;height:52px;}
   #slots{gap:12px;}
   #rank-row{gap:12px;flex-wrap:nowrap;overflow-x:auto;max-width:100vw;padding:0 var(--pagepad) 6px;}
@@ -447,7 +450,8 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
   <div id="field-wrap">
     <canvas id="lines"></canvas>
     <div id="field-instruction">
-      <div class="fi-main">Which sensory identity feels like you?</div>
+      <img class="fi-poster" src="assets/city/hunt-title.webp"
+           alt="Which sensory identity feels like you?" decoding="async">
       <div class="fi-sub eyebrow">Take the five that pull you &nbsp;·&nbsp; <span id="take-count">0</span> / 5</div>
     </div>
     <div id="tiles"></div>
@@ -1131,8 +1135,12 @@ function layoutField(){
   // the slot row's real top — measured, never guessed (§ the dim-label lesson)
   const fiRect=document.getElementById('field-instruction').getBoundingClientRect();
   const slRect=document.getElementById('slots').getBoundingClientRect();
+  /* pre-.on, the enter choreography holds everything 16px low (see the drift rules):
+     harmless slack at the top, but the slots ceiling must be corrected or tiles get
+     parked below the settled slot line */
+  const preOn=!document.getElementById('act1').classList.contains('on');
   const fieldTop=(fiRect.height?fiRect.bottom:120);
-  const fieldBot=(slRect.height?slRect.top:field.H-110);
+  const fieldBot=(slRect.height?slRect.top-(preOn?16:0):field.H-110);
   // relaxation: de-overlap
   const minD=96;
   for(let it=0;it<140;it++){
@@ -1366,6 +1374,11 @@ function fieldFrame(ts){
 }
 
 window.addEventListener('resize',()=>{ if(field.running) layoutField(); });
+/* late poster arrival (cache miss) can still shift the band — remeasure once it lands */
+const fiPoster=document.querySelector('.fi-poster');
+if(fiPoster&&!fiPoster.complete) fiPoster.addEventListener('load',()=>{ if(field.running) layoutField(); },{once:true});
+/* webfonts land after first layout and grow the instruction band — remeasure then too */
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(field.running) layoutField(); });
 /* ==================== FLOW ==================== */
 const ACT_NAMES={act0:'',act1:'I · THE FIELD',act2:'II · THE ORDER',act3:'III · THE READING',act4:'IV · THE MAP',act5:'V · THE CIRCLE'};
 let state={order:[],profile:null,matches:[],world:null,claimedHere:false};
