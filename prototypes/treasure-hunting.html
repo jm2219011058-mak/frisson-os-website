@@ -35,15 +35,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--serif);overflow-x:c
 .nav .brand{font-family:"Playfair Display",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;
   color:var(--ink);text-decoration:none;font-weight:500;}
 .nav .brand .o{color:var(--gold-deep);}
-.act-marker{font-family:var(--sans);font-weight:700;font-size:10px;letter-spacing:.18em;
+.act-marker{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--eyebrow);transition:opacity .8s;}
-.invite-tag{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.14em;
+.invite-tag{font-family:var(--sans);font-weight:500;font-size:13.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--eyebrow);}
 /* back key — quiet text control, top-left under the nav; visible on acts I–IV only
    (the cover needs none, the claimed circle is a commitment). House text-link manners:
    hover darkens, the chevron slides the way it points. */
 #back-key{position:fixed;left:var(--pagepad);top:64px;z-index:60;appearance:none;background:none;border:0;
-  padding:8px 2px;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.16em;
+  padding:8px 2px;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px;
   transition:color .25s var(--silk);}
 #back-key .bk-arw{display:inline-block;font-size:16px;line-height:1;transition:transform .3s var(--silk);}
@@ -62,7 +62,7 @@ body.embedded #grain{
   -webkit-mask-image:linear-gradient(180deg,#000 76%,transparent 96%);
   mask-image:linear-gradient(180deg,#000 76%,transparent 96%);}
 /* ---------- shared chrome ---------- */
-.eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.15vw,13.5px);letter-spacing:.18em;
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:clamp(13.5px,1.4vw,16px);letter-spacing:.18em;
   text-transform:uppercase;color:var(--eyebrow);}
 .eyebrow.acc{color:var(--brick);}
 /* plank buttons — the hand-built wooden sign (Messenger enter-plank energy) */
@@ -112,14 +112,14 @@ body.embedded #grain{
 .cluster.awake .cvc{opacity:1;}
 .cluster-label{position:absolute;transform:translate(-50%,0);text-align:center;white-space:nowrap;
   opacity:.8;transition:opacity 1.3s var(--silk);}
-.cluster-label .cl-name{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,13px);letter-spacing:.18em;
+.cluster-label .cl-name{font-family:var(--sans);font-weight:700;font-size:clamp(13.5px,1.5vw,16px);letter-spacing:.18em;
   text-transform:uppercase;color:var(--ghost);transition:color 1.3s;}
 .cluster-label .cl-alias{font-family:var(--serif);font-style:italic;font-size:clamp(13px,1.5vw,15.5px);color:var(--ghost);
   margin-top:4px;transition:color 1.3s;}
 .cluster.awake .cluster-label{opacity:1;}
 .cluster.awake .cl-name{color:var(--ink);}
 .cluster.awake .cl-alias{color:var(--ink-soft);}
-.cluster .cl-count{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.12em;
+.cluster .cl-count{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.12em;
   color:var(--brick);margin-top:5px;opacity:0;transition:opacity 1.3s var(--silk);}
 .cluster.awake .cl-count{opacity:1;}
 /* copy NESTED INSIDE the ring (Getty plate): the block floats at the ring's core,
@@ -141,12 +141,8 @@ body.embedded #grain{
 /* ---------- act I · the field ---------- */
 #field-wrap{position:absolute;inset:0;}
 #lines{position:absolute;inset:0;width:100%;height:100%;}
-/* the seven axis labels are reference, not decoration — ink-soft, properly sized,
-   they must READ (2026-08-16: ghost grey was illegible against the speck field) */
-.dim-label{position:absolute;font-family:var(--sans);font-weight:700;font-size:clamp(13px,1.4vw,16px);letter-spacing:.18em;
-  color:rgba(43,29,18,.62);transform:translate(-50%,-50%);text-transform:uppercase;pointer-events:none;white-space:nowrap;text-align:center;}
-.dim-label small{display:block;letter-spacing:.02em;font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.5vw,17px);
-  color:rgba(43,29,18,.54);text-transform:none;margin-top:4px;font-weight:400;}
+/* 轴标签已撤（2026-08-18 用户拍板）：卡片是七维混合体、不属于任何单一维度，
+   散落的轴注记读作噪声，且与「凭直觉拾取」的产品前提相悖。秩序改由双环轨道表达。 */
 .tile{position:absolute;left:0;top:0;cursor:pointer;transform:translate(-50%,-50%);border-radius:50%;
   transition:opacity 1.2s var(--silk),filter 1.2s var(--silk);will-change:transform;}
 .tile img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
@@ -157,7 +153,7 @@ body.embedded #grain{
 .tile.ghosted{opacity:.08;filter:saturate(.2);pointer-events:none;}
 .tile.taken{opacity:0;pointer-events:none;transition:opacity .5s;}
 #pin{position:absolute;left:0;top:0;z-index:70;transform:translate(-50%,-100%);background:var(--ink);color:#f8f4ee;
-  border:0;font:600 12px/1 var(--sans);letter-spacing:.04em;padding:7px 13px;border-radius:999px;
+  border:0;font:600 13.5px/1 var(--sans);letter-spacing:.04em;padding:7px 13px;border-radius:999px;
   white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s var(--silk);}
 #pin.on{opacity:1;}
 #pin::after{content:"";position:absolute;left:50%;bottom:-3.5px;width:7px;height:7px;background:var(--ink);
@@ -172,9 +168,11 @@ body.embedded #grain{
 #field-instruction .fi-poster{display:block;width:min(640px,84vw);margin:0 auto;border-radius:12px;
   aspect-ratio:16/9;  /* height known BEFORE the file arrives — the field contract measures true */
   box-shadow:0 0 0 1px rgba(43,29,18,.25),0 10px 30px rgba(43,29,18,.10);}
-#field-instruction .fi-sub{margin-top:12px;}
+#field-instruction .fi-sub{margin-top:14px;
+  font-size:clamp(15px,1.8vw,20px);letter-spacing:.15em;color:var(--ink);}   /* 本幕唯一指示行——醒目档 */
+#field-instruction .fi-sub #take-count{color:var(--brick);}
 #slots{position:absolute;bottom:calc(34px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;}
-.slot{width:64px;height:64px;border-radius:50%;border:1px dashed var(--ghost);background:rgba(255,255,255,.4);
+.slot{width:76px;height:76px;border-radius:50%;border:1.5px dashed var(--ghost);background:rgba(255,255,255,.4);
   overflow:hidden;transition:border-color .4s var(--silk);}
 .slot img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;}
 .slot.filled{border-color:transparent;box-shadow:0 0 0 1px var(--hair),0 2px 8px rgba(43,29,18,.14);}
@@ -194,7 +192,7 @@ body.embedded #grain{
   color:var(--ink);margin-top:14px;text-wrap:balance;}
 #lens .lz-dims{display:flex;justify-content:center;gap:7px;margin-top:12px;align-items:flex-end;height:24px;}
 #lens .lz-dims i{width:14px;border-radius:3px 3px 1px 1px;background:var(--violet);opacity:.75;display:block;}
-#lens .lz-hint{font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.16em;
+#lens .lz-hint{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--eyebrow);margin-top:10px;display:none;}
 @media (hover:none){ #lens .lz-hint{display:block;} }
 #lens .lz-body{transition:filter .18s ease,opacity .18s ease;}
@@ -219,14 +217,14 @@ body.embedded #grain{
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 8px 24px rgba(43,29,18,.18);}
 /* ---------- act II · the order ---------- */
 #act2 .order-title{font-weight:600;font-size:clamp(28px,3.4vw,42px);color:var(--ink);text-align:center;letter-spacing:.01em;}
-#act2 .order-sub{margin-top:12px;text-align:center;font-weight:500;letter-spacing:.12em;font-size:12px;}
+#act2 .order-sub{margin-top:12px;text-align:center;font-weight:500;letter-spacing:.12em;font-size:14.5px;}
 #rank-row{display:flex;gap:clamp(16px,3vw,38px);margin-top:var(--sp-md);align-items:flex-start;}
 .rank-card{width:clamp(112px,12vw,156px);cursor:grab;user-select:none;position:relative;}
 .rank-card.dragging{opacity:.85;cursor:grabbing;z-index:20;}
 .rank-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-radius:50%;
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 3px 8px rgba(43,29,18,.14),0 12px 30px rgba(43,29,18,.08);pointer-events:none;
   transition:transform .35s var(--silk),box-shadow .35s var(--silk);}
-.rank-card .rc-num{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.18em;
+.rank-card .rc-num{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--eyebrow);text-align:center;margin-bottom:12px;}
 .rank-card:first-child .rc-num{color:var(--brick);}
 .rank-card .rc-cap{font-style:italic;font-size:14px;color:var(--ink-soft);text-align:center;margin-top:10px;line-height:1.45;}
@@ -246,7 +244,7 @@ body.embedded #grain{
   box-shadow:0 0 0 1px var(--hair),0 2px 8px rgba(43,29,18,.13);}
 #spectrum{margin:var(--sp-md) auto 0;max-width:580px;opacity:0;transition:opacity 1.6s var(--silk) 3s;}
 .spec-row{display:flex;align-items:center;gap:18px;margin-bottom:16px;}
-.spec-row .sp-l,.spec-row .sp-r{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,13px);letter-spacing:.12em;
+.spec-row .sp-l,.spec-row .sp-r{font-family:var(--sans);font-weight:700;font-size:clamp(13px,1.4vw,15px);letter-spacing:.12em;
   color:var(--eyebrow);width:clamp(86px,10vw,112px);text-transform:uppercase;}
 .spec-row .sp-l{text-align:right;}
 .spec-row .sp-r{text-align:left;}
@@ -288,13 +286,13 @@ body.embedded #grain{
 #map-detail .md-name{font-size:clamp(26px,2.9vw,36px);font-weight:600;letter-spacing:.04em;}
 #map-detail .md-alias{font-style:italic;font-size:16.5px;color:var(--ink-soft);margin-top:5px;}
 #map-detail .md-stats{display:flex;justify-content:flex-start;gap:26px;margin-top:12px;flex-wrap:wrap;
-  font-family:var(--sans);font-weight:500;font-size:13.5px;letter-spacing:.08em;color:var(--ink-soft);}
+  font-family:var(--sans);font-weight:500;font-size:15px;letter-spacing:.08em;color:var(--ink-soft);}
 #map-detail .md-stats b{color:var(--ink);font-weight:700;}
 #map-detail .md-res{color:var(--violet);font-weight:700;}
-#map-detail .md-status{color:var(--brick);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:12px;}
+#map-detail .md-status{color:var(--brick);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13.5px;}
 #map-claim{margin-top:clamp(14px,2.4vh,22px);}
 .map-hint{font-style:italic;font-size:15px;color:var(--eyebrow);margin-top:12px;}
-.claim-small{font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--eyebrow);margin-top:26px;}
+.claim-small{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--eyebrow);margin-top:26px;}
 /* ---------- act V · the circle ---------- */
 #act5{padding:calc(var(--sp-lg) + 20px) var(--pagepad) var(--sp-lg);}
 #act5-inner{max-width:1180px;margin:0 auto;text-align:center;}
@@ -331,15 +329,15 @@ body.embedded #grain{
 .world-cell{background:#fff;border:1px solid var(--hair);border-radius:clamp(18px,2vw,26px);
   padding:clamp(22px,2.6vw,30px) 16px;text-align:center;transition:border-color .3s;}
 .world-cell.mine{border-color:rgba(185,80,63,.55);background:#FBF2EC;}
-.world-cell .wc-si{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.18em;color:var(--eyebrow);text-transform:uppercase;}
+.world-cell .wc-si{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--eyebrow);text-transform:uppercase;}
 .world-cell .wc-name{font-size:clamp(18px,2vw,22px);font-weight:600;letter-spacing:.04em;margin-top:8px;}
-.world-cell .wc-alias{font-style:italic;font-size:13.5px;color:var(--ink-soft);margin-top:4px;}
-.world-cell .wc-count{font-family:var(--sans);font-weight:500;font-size:11.5px;letter-spacing:.08em;color:var(--ink-soft);margin-top:14px;}
-.world-cell .wc-status{font-family:var(--sans);font-weight:700;font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-top:6px;color:var(--eyebrow);}
+.world-cell .wc-alias{font-style:italic;font-size:15px;color:var(--ink-soft);margin-top:4px;}
+.world-cell .wc-count{font-family:var(--sans);font-weight:500;font-size:13.5px;letter-spacing:.08em;color:var(--ink-soft);margin-top:14px;}
+.world-cell .wc-status{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-top:6px;color:var(--eyebrow);}
 .world-cell.mine .wc-status{color:var(--brick);}
 .end-line{font-style:italic;font-size:clamp(15px,1.6vw,17px);color:var(--ink-soft);margin-top:var(--sp-md);}
 .restart{margin-top:var(--sp-sm);}
-.restart button{font-family:var(--sans);font-weight:500;font-size:10px;letter-spacing:.18em;color:var(--ghost);
+.restart button{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.18em;color:var(--ghost);
   background:none;border:none;cursor:pointer;text-transform:uppercase;transition:color .3s;}
 .restart button:hover{color:var(--ink);}
 footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:500;font-size:9px;
@@ -417,8 +415,8 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
   #act4{display:block;overflow-y:auto;padding:calc(100px + var(--sp-sm)) 0 var(--sp-lg);}
   #act4-inner{width:100%;}
   .spec-row{gap:12px;}
-  .spec-row .sp-l,.spec-row .sp-r{width:78px;font-size:10.5px;letter-spacing:.08em;}
-  .region-btn{padding:14px 20px;font-size:13px;}
+  .spec-row .sp-l,.spec-row .sp-r{width:84px;font-size:12.5px;letter-spacing:.06em;}
+  .region-btn{padding:14px 20px;font-size:14px;}
   #back-key{top:56px;}
 }
 </style>
@@ -1121,29 +1119,40 @@ function project(card){
 function layoutField(){
   if(!document.getElementById('field-wrap'))return;
   fieldMetrics();
-  const rnd=mulberry32(20260815);
-  // raw projected positions
-  let raw=CARDS.map(c=>project(c));
+  /* 双环轨道（2026-08-18）：投影角保序、等角距落位——相邻仍是相似（数据逻辑还在），
+     但构图是可读的秩序。均衡的卡在内环、个性鲜明的在外环。零随机项，确定性不变。 */
+  const raw=CARDS.map(c=>project(c));
   const maxLen=Math.max(...raw.map(p=>Math.hypot(p[0],p[1])))||1;
-  field.tiles.forEach((t,i)=>{
-    const p=raw[i];
-    let x=field.cx + (p[0]/maxLen)*field.R + (rnd()-0.5)*70;
-    let y=field.cy + (p[1]/maxLen)*field.R*0.86 + (rnd()-0.5)*70;
-    t.tx=x; t.ty=y;
-  });
-  // geometry contract: the stage floor is the instruction's real bottom, the ceiling is
-  // the slot row's real top — measured, never guessed (§ the dim-label lesson)
+  const order=CARDS.map((c,i)=>({i,
+    len:Math.hypot(raw[i][0],raw[i][1])/maxLen,
+    ang:Math.atan2(raw[i][1],raw[i][0])}));
+  order.sort((a,b)=>a.len-b.len);
+  const inner=order.slice(0,9), outer=order.slice(9);
+  inner.sort((a,b)=>a.ang-b.ang); outer.sort((a,b)=>a.ang-b.ang);
+  /* geometry contract 前置（§ the dim-label lesson 沿袭）：舞台带 = 指示行实测底边 →
+     卡槽行实测顶边；轨道半径向带自适应——环在落位那一刻就整体在带内，
+     秩序不靠事后 clamp/relax 抢救。 */
   const fiRect=document.getElementById('field-instruction').getBoundingClientRect();
   const slRect=document.getElementById('slots').getBoundingClientRect();
-  /* pre-.on, the enter choreography holds everything 16px low (see the drift rules):
-     harmless slack at the top, but the slots ceiling must be corrected or tiles get
-     parked below the settled slot line */
+  /* pre-.on, the enter choreography holds everything 16px low (see the drift rules) */
   const preOn=!document.getElementById('act1').classList.contains('on');
   const fieldTop=(fiRect.height?fiRect.bottom:120);
   const fieldBot=(slRect.height?slRect.top-(preOn?16:0):field.H-110);
-  // relaxation: de-overlap
-  const minD=96;
-  for(let it=0;it<140;it++){
+  const half=field.tiles[0]?field.tiles[0].size/2+8:50;
+  const bandCy=(fieldTop+fieldBot)/2;
+  const ryO=Math.max(88,(fieldBot-fieldTop)/2-half);
+  const rxO=Math.min(field.W/2-half-24, field.R*1.08);
+  const ryI=ryO*0.46, rxI=rxO*0.5;
+  const place=(list,rx,ry,a0)=>{ list.forEach((o,k)=>{
+    const a=a0+k*(Math.PI*2/list.length);
+    field.tiles[o.i].tx=field.cx+Math.cos(a)*rx;
+    field.tiles[o.i].ty=bandCy+Math.sin(a)*ry;
+  });};
+  place(inner, rxI, ryI, -Math.PI/2);
+  place(outer, rxO, ryO, -Math.PI/2+Math.PI/outer.length);
+  /* 轻松弛：桌面等距下是空转，只在窄屏解拥挤；带内 clamp 保底 */
+  const minD=(field.tiles[0]?field.tiles[0].size:84)+8;
+  for(let it=0;it<30;it++){
     for(let i=0;i<field.tiles.length;i++)for(let j=i+1;j<field.tiles.length;j++){
       const a=field.tiles[i],b=field.tiles[j];
       let dx=b.tx-a.tx,dy=b.ty-a.ty;
@@ -1154,36 +1163,19 @@ function layoutField(){
       }
     }
     field.tiles.forEach(t=>{
-      const half=t.size/2, floor=fieldTop+half+14, ceil=fieldBot-half-12;
-      t.tx=Math.max(70,Math.min(field.W-70,t.tx));
+      const h=t.size/2, floor=fieldTop+h+12, ceil=fieldBot-h-10;
+      t.tx=Math.max(h+16,Math.min(field.W-h-16,t.tx));
       t.ty=floor>=ceil?(floor+ceil)/2:Math.max(floor,Math.min(ceil,t.ty));
     });
   }
-  // dimension ghost labels — the top floor is the INSTRUCTION'S real bottom edge,
-  // not a guessed constant (the fixed 158px let RHYTHM ram the headline on wide screens)
-  document.querySelectorAll('.dim-label').forEach(el=>el.remove());
-  const fiEl=document.getElementById('field-instruction');
-  const fiFloor=(fiEl?fiEl.getBoundingClientRect().bottom:120)+36;
-  DIMS.forEach((dim,d)=>{
-    const a=-Math.PI/2 + d*(Math.PI*2/7);
-    const lx=field.cx+Math.cos(a)*(field.R+120);
-    const ly=field.cy+Math.sin(a)*(field.R*0.92+92);
-    const el=document.createElement('div');
-    el.className='dim-label';
-    el.style.left=Math.max(72,Math.min(field.W-72,lx))+'px';
-    el.style.top=Math.max(fiFloor,Math.min(field.H-190,ly))+'px';
-    el.innerHTML=dim.key.toUpperCase()+'<small>'+dim.poles[0]+' — '+dim.poles[1]+'</small>';
-    document.getElementById('field-wrap').appendChild(el);
-  });
 }
 
 function buildField(){
   tilesBox.innerHTML='';
-  const srnd=mulberry32(77);
   field.tiles=CARDS.map((card,i)=>{
     const el=document.createElement('div');
     el.className='tile';
-    const size=Math.round((70+srnd()*36)*(window.innerWidth<700?0.8:1)); // varied diameters; mobile floor ≈56px tap target
+    const size=Math.round(84*(window.innerWidth<700?0.8:1)); // 统一卡径（2026-08-18 秩序改造）；移动端 ≈67px 触径
     el.style.width=size+'px';el.style.height=size+'px';
     el.innerHTML='<img draggable="false" src="'+CARD_SRC[card.id]+'" alt="">';
     tilesBox.appendChild(el);
