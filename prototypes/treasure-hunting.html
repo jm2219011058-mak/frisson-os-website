@@ -296,7 +296,7 @@ body.embedded #grain{
 #map-detail .md-res{color:var(--violet);font-weight:700;}
 #map-detail .md-status{color:var(--brick);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13.5px;}
 #map-claim{margin-top:clamp(14px,2.4vh,22px);}
-.map-hint{font-style:italic;font-size:15px;color:var(--eyebrow);margin-top:12px;}
+.map-hint{font-style:italic;font-size:15px;color:var(--eyebrow);margin-top:clamp(14px,2vh,24px);}   /* 指引行随账本收进 head：说明贴对象、先读后触（§5 亲密性） */
 .claim-small{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--eyebrow);margin-top:26px;}
 /* ---------- act V · the circle ---------- */
 #act5{padding:calc(var(--sp-lg) + 20px) var(--pagepad) var(--sp-lg);}
@@ -509,10 +509,10 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
         <div class="lg-row"><span class="lg-trio" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="lg-txt">Filmmakers, artists, musicians &mdash; their shared emotion, built as homes. <b>One hundred founders</b> each.</span></div>
       </div>
+      <div class="map-hint" id="map-hint">Eight pixels wear a different colour. Those are open for founding — touch one.</div>
     </div>
     <div class="map-body">
     <div id="map-scroll"><canvas id="worldmap"></canvas></div>
-    <div class="map-hint" id="map-hint">Eight pixels wear a different colour. Those are open for founding — touch one.</div>
     <div id="map-detail">
       <div class="md-name" id="md-name"></div>
       <div class="md-alias" id="md-alias"></div>
