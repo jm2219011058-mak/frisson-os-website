@@ -1077,11 +1077,48 @@ const MOTIFS = {
   },
 };
 
-function renderCard(card){
+/* ---- 喷墨噪点重制 v2（2026-08-18 出样）：矢量母版重采样为墨点点画 ----
+   站内既有语言（ACT 01 蚁群噪点 / 羊皮纸底）的图卡化：暖纸底 + 母版低透垫底保形 +
+   亮度驱动密度的确定性墨点（暗密亮疏）+ 稀疏大颗粒蚁群层 + 圆构图羽化。
+   全部由 mulberry32(id+'_v2') 派生——零随机项，逐像素可复现（技术红线 5）。 */
+function stippleCard(src,rnd){
+  const out=document.createElement('canvas');out.width=CW;out.height=CH;
+  const ctx=out.getContext('2d');
+  const px=src.getContext('2d').getImageData(0,0,CW,CH).data;
+  ctx.fillStyle='#F6F0E2';ctx.fillRect(0,0,CW,CH);
+  ctx.globalAlpha=0.35;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
+  const cx=CW/2,cy=CH/2,R=CW*0.52;
+  for(let i=0;i<32000;i++){
+    const x=rnd()*CW,y=rnd()*CH;
+    const d=Math.hypot(x-cx,y-cy);
+    if(d>R&&rnd()<(d-R)/(CW*0.16))continue;
+    const j=((y|0)*CW+(x|0))*4;
+    const r=px[j],g=px[j+1],b=px[j+2];
+    const lum=(r*0.299+g*0.587+b*0.114)/255;
+    if(rnd()<Math.pow(lum,1.35)*0.8)continue;   /* 暗密亮疏，亮部仍留 20% 纸纹点 */
+    const s=0.8+rnd()*1.6, k=0.8+rnd()*0.2;
+    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+(0.55+rnd()*0.35).toFixed(2)+')';
+    ctx.fillRect(x-s/2,y-s/2,s,s);   /* 小方点：站内噪点形态，且比 arc 快 */
+  }
+  for(let i=0;i<220;i++){
+    const x=rnd()*CW,y=rnd()*CH;
+    const j=((y|0)*CW+(x|0))*4;
+    ctx.fillStyle='rgba('+(px[j]*0.7|0)+','+(px[j+1]*0.7|0)+','+(px[j+2]*0.7|0)+',0.5)';
+    ctx.fillRect(x,y,2.6,2.6);
+  }
+  grain(ctx,rnd,700);
+  vignette(ctx);
+  return out;
+}
+const CARD_STYLE='v1';   /* 出样期默认 v1；定稿把这里改 'v2' 一处切换全部 25 张 */
+function renderCard(card,style){
   const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;
   const ctx=cv.getContext('2d');
   const rnd=mulberry32(seedFrom(card.id));
   (MOTIFS[card.motif]||MOTIFS.horizon)(ctx,card.pal,rnd);
+  if((style||CARD_STYLE)==='v2'){
+    return stippleCard(cv,mulberry32(seedFrom(card.id+'_v2'))).toDataURL('image/jpeg',0.85);
+  }
   grain(ctx,rnd,850);
   vignette(ctx);
   return cv.toDataURL('image/jpeg',0.82);
