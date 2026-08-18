@@ -220,6 +220,7 @@ body.embedded #grain{
 #act2 .order-sub{margin-top:12px;text-align:center;font-weight:500;letter-spacing:.12em;font-size:14.5px;}
 #rank-row{display:flex;gap:clamp(16px,3vw,38px);margin-top:var(--sp-md);align-items:flex-start;}
 .rank-card{width:clamp(112px,12vw,156px);cursor:grab;user-select:none;position:relative;}
+@media(hover:hover){.rank-card{touch-action:none;}}   /* 指针设备：拖拽不与滚动抢手势 */
 .rank-card.dragging{opacity:.85;cursor:grabbing;z-index:20;}
 .rank-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-radius:50%;
   border:3px solid #fff;box-shadow:0 0 0 1px var(--hair),0 3px 8px rgba(43,29,18,.14),0 12px 30px rgba(43,29,18,.08);pointer-events:none;
@@ -1081,7 +1082,7 @@ const MOTIFS = {
    站内既有语言（ACT 01 蚁群噪点 / 羊皮纸底）的图卡化：暖纸底 + 母版低透垫底保形 +
    亮度驱动密度的确定性墨点（暗密亮疏）+ 稀疏大颗粒蚁群层 + 圆构图羽化。
    全部由 mulberry32(id+'_v2') 派生——零随机项，逐像素可复现（技术红线 5）。 */
-const STIPPLE={dots:45000,ghost:0.08,dotMin:0.8,dotSpread:1.8,lumSkip:0.85,lumCurve:1.2,inkAlpha:0.55,ants:220,jitter:4.5,edgeBoost:0.9};
+const STIPPLE={dots:55000,ghost:0.54,dotMin:1.1,dotSpread:1.8,lumSkip:0.85,lumCurve:1.25,inkAlpha:0.6,ants:610,jitter:2.4,edgeBoost:0.55};   /* 2026-08-18 用户 #cardtune 实调定稿 */
 window.__cardTune=STIPPLE;   /* #cardtune 调参屏实时改（控制台也可直改） */
 function stippleCard(src,rnd){
   const out=document.createElement('canvas');out.width=CW;out.height=CH;
@@ -1091,6 +1092,17 @@ function stippleCard(src,rnd){
   ctx.globalAlpha=STIPPLE.ghost;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
   const cx=CW/2,cy=CH/2,R=CW*0.52;
   const P=(x,y)=>{ x=x<0?0:x>CW-1?CW-1:x|0; y=y<0?0:y>CH-1?CH-1:y|0; return (y*CW+x)*4; };
+  /* 性能：55k 墨点逐个 fillStyle+fillRect 需秒级——改 ImageData 直写 alpha 混合，
+     一次 putImageData（实测单卡秒级→毫秒级；25 张加载期烘焙才可行） */
+  const base=ctx.getImageData(0,0,CW,CH), B=base.data;
+  const blend=(x,y,s,r,g,b,al)=>{
+    const x0=Math.max(0,(x-s/2)|0), x1=Math.min(CW-1,(x+s/2)|0);
+    const y0=Math.max(0,(y-s/2)|0), y1=Math.min(CH-1,(y+s/2)|0);
+    for(let yy=y0;yy<=y1;yy++){ let o=(yy*CW+x0)*4;
+      for(let xx=x0;xx<=x1;xx++){
+        B[o]+=(r-B[o])*al; B[o+1]+=(g-B[o+1])*al; B[o+2]+=(b-B[o+2])*al; o+=4;
+      } }
+  };
   for(let i=0;i<STIPPLE.dots;i++){
     const x=rnd()*CW,y=rnd()*CH;
     const d=Math.hypot(x-cx,y-cy);
@@ -1108,20 +1120,19 @@ function stippleCard(src,rnd){
     if(rnd()>keep)continue;
     const s=(STIPPLE.dotMin+rnd()*STIPPLE.dotSpread)*(1+grad*1.5);
     const k=0.78+rnd()*0.22;
-    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+Math.min(0.95,STIPPLE.inkAlpha+rnd()*0.35+grad*0.3).toFixed(2)+')';
-    ctx.fillRect(x-s/2,y-s/2,s,s);
+    blend(x,y,s,r*k,g*k,b*k,Math.min(0.95,STIPPLE.inkAlpha+rnd()*0.35+grad*0.3));
   }
   for(let i=0;i<STIPPLE.ants;i++){
     const x=rnd()*CW,y=rnd()*CH;
-    const j=((y|0)*CW+(x|0))*4;
-    ctx.fillStyle='rgba('+(px[j]*0.7|0)+','+(px[j+1]*0.7|0)+','+(px[j+2]*0.7|0)+',0.5)';
-    ctx.fillRect(x,y,2.6,2.6);
+    const j=P(x,y);
+    blend(x,y,2.6,px[j]*0.7,px[j+1]*0.7,px[j+2]*0.7,0.5);
   }
+  ctx.putImageData(base,0,0);
   grain(ctx,rnd,700);
   vignette(ctx);
   return out;
 }
-const CARD_STYLE='v1';   /* 出样期默认 v1；定稿把这里改 'v2' 一处切换全部 25 张 */
+const CARD_STYLE='v2';   /* 2026-08-18 定稿实装：25 张全量喷墨噪点 */
 function renderCard(card,style){
   const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;
   const ctx=cv.getContext('2d');
@@ -1135,7 +1146,23 @@ function renderCard(card,style){
   return cv.toDataURL('image/jpeg',0.82);
 }
 const CARD_SRC={};
-CARDS.forEach(c=>{CARD_SRC[c.id]=renderCard(c);});
+/* v2 烘焙有量级成本（55k 墨点 × 25 张）：解析期零阻塞——空闲分片预烘（封面
+   停留时间 >> 烘焙总时长），buildField 前 ensureCards() 兜底补齐缺卡。 */
+let bakeQueue=[...CARDS];
+function bakeSome(dl){
+  while(bakeQueue.length){
+    const c=bakeQueue[0];
+    if(!CARD_SRC[c.id]) CARD_SRC[c.id]=renderCard(c);
+    bakeQueue.shift();
+    if(dl&&dl.timeRemaining&&dl.timeRemaining()>8) continue;
+    break;
+  }
+  if(bakeQueue.length){
+    if(window.requestIdleCallback) requestIdleCallback(bakeSome); else setTimeout(bakeSome,16);
+  }
+}
+bakeSome();
+function ensureCards(){ bakeQueue.forEach(c=>{ if(!CARD_SRC[c.id]) CARD_SRC[c.id]=renderCard(c); }); bakeQueue=[]; }
 /* ---- CARD TUNER（#cardtune）：六张样卡实时重渲 + 八旋钮 + 复制参数 + 应用全场 ---- */
 if(/[?#&]cardtune/.test(location.search+location.hash))(function(){
   const ids=['embers','greenhouse','courtyard','noon-sea','window','blossom'];
@@ -1278,6 +1305,7 @@ function layoutField(){
 }
 
 function buildField(){
+  ensureCards();   /* 空闲预烘未完成时兜底补齐 */
   tilesBox.innerHTML='';
   field.tiles=CARDS.map((card,i)=>{
     const el=document.createElement('div');
@@ -1711,6 +1739,7 @@ function attachDrag(el){
   el.addEventListener('pointerdown',e=>{
     e.preventDefault();
     const row=document.getElementById('rank-row');
+    if(row.dataset.settling)return;          /* 落位動画中不接新拖拽——防 DOM 重建撕裂 */
     el.classList.add('dragging');
     try{ el.setPointerCapture(e.pointerId); }catch(err){} /* pointer may already be gone */
     /* grab offset + the card's UNtransformed layout origin — re-measured after every
@@ -1733,6 +1762,8 @@ function attachDrag(el){
           const before=new Map(cards.map(c=>[c,c.getBoundingClientRect()]));
           row.insertBefore(el,ref);
           rebase();
+          /* 立刻用新基准重放当前指针位置——否则要等下一次 pointermove，闪跳一帧 */
+          el.style.transform='translate('+(ev.clientX-offX-baseX)+'px,'+(ev.clientY-offY-baseY)+'px)';
           cards.forEach(c=>{ const b=before.get(c), a=c.getBoundingClientRect();
             const dx=b.left-a.left, dy=b.top-a.top;
             if(dx||dy){ c.style.transition='none';
@@ -1748,15 +1779,19 @@ function attachDrag(el){
       el.classList.remove('dragging');
       el.removeEventListener('pointermove',move);
       el.removeEventListener('pointerup',up);
+      el.removeEventListener('pointercancel',up);
+      row.dataset.settling='1';               /* 240ms 落位窗口 */
       /* settle home on a curve, then rebuild the row (labels renumber) once it lands */
       el.style.transition='transform .22s var(--silk)';
       el.style.transform='';
       setTimeout(()=>{ el.style.transition='';
         state.order=[...row.children].map(c=>c.dataset.id);
+        delete row.dataset.settling;
         renderRankRow(); },240);
     };
     el.addEventListener('pointermove',move);
     el.addEventListener('pointerup',up);
+    el.addEventListener('pointercancel',up);   /* 触摸滚动/手势打断也要收尾——否则卡死在 dragging 态 */
   });
 }
 
