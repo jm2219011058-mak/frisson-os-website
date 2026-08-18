@@ -266,8 +266,8 @@ body.embedded #grain{
 .map-body{min-width:0;}
 .map-title{font-size:clamp(30px,3.6vw,46px);font-weight:600;margin-top:14px;line-height:1.18;text-wrap:balance;letter-spacing:.01em;}
 /* the ledger — the paragraph broken into three stamped facts (no wall of words) */
-.map-ledger{margin-top:var(--sp-md);display:flex;flex-direction:row;flex-wrap:wrap;gap:clamp(18px,3vw,44px);max-width:none;}
-.map-ledger .lg-row{flex:1 1 260px;}
+.map-ledger{margin-top:var(--sp-md);display:flex;flex-direction:row;gap:clamp(18px,3vw,44px);max-width:none;}
+.map-ledger .lg-row{flex:1 1 0;min-width:0;}   /* 等宽三栏：2+1 参差换行是『散』的元凶，三条事实必须同排同宽 */
 @media(max-width:900px){ .map-ledger{flex-direction:column;gap:18px;max-width:40ch;} .map-ledger .lg-row{flex:none;} }
 .lg-row{display:flex;align-items:flex-start;gap:15px;}
 .lg-txt{font-size:clamp(14.5px,1.5vw,16.5px);line-height:1.65;color:var(--ink-soft);}
