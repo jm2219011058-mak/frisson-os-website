@@ -1081,26 +1081,28 @@ const MOTIFS = {
    站内既有语言（ACT 01 蚁群噪点 / 羊皮纸底）的图卡化：暖纸底 + 母版低透垫底保形 +
    亮度驱动密度的确定性墨点（暗密亮疏）+ 稀疏大颗粒蚁群层 + 圆构图羽化。
    全部由 mulberry32(id+'_v2') 派生——零随机项，逐像素可复现（技术红线 5）。 */
+const STIPPLE={dots:32000,ghost:0.35,dotMin:0.8,dotSpread:1.6,lumSkip:0.8,lumCurve:1.35,inkAlpha:0.55,ants:220};
+window.__cardTune=STIPPLE;   /* #cardtune 调参屏实时改（控制台也可直改） */
 function stippleCard(src,rnd){
   const out=document.createElement('canvas');out.width=CW;out.height=CH;
   const ctx=out.getContext('2d');
   const px=src.getContext('2d').getImageData(0,0,CW,CH).data;
   ctx.fillStyle='#F6F0E2';ctx.fillRect(0,0,CW,CH);
-  ctx.globalAlpha=0.35;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
+  ctx.globalAlpha=STIPPLE.ghost;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
   const cx=CW/2,cy=CH/2,R=CW*0.52;
-  for(let i=0;i<32000;i++){
+  for(let i=0;i<STIPPLE.dots;i++){
     const x=rnd()*CW,y=rnd()*CH;
     const d=Math.hypot(x-cx,y-cy);
     if(d>R&&rnd()<(d-R)/(CW*0.16))continue;
     const j=((y|0)*CW+(x|0))*4;
     const r=px[j],g=px[j+1],b=px[j+2];
     const lum=(r*0.299+g*0.587+b*0.114)/255;
-    if(rnd()<Math.pow(lum,1.35)*0.8)continue;   /* 暗密亮疏，亮部仍留 20% 纸纹点 */
-    const s=0.8+rnd()*1.6, k=0.8+rnd()*0.2;
-    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+(0.55+rnd()*0.35).toFixed(2)+')';
+    if(rnd()<Math.pow(lum,STIPPLE.lumCurve)*STIPPLE.lumSkip)continue;   /* 暗密亮疏 */
+    const s=STIPPLE.dotMin+rnd()*STIPPLE.dotSpread, k=0.8+rnd()*0.2;
+    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+(STIPPLE.inkAlpha+rnd()*0.35).toFixed(2)+')';
     ctx.fillRect(x-s/2,y-s/2,s,s);   /* 小方点：站内噪点形态，且比 arc 快 */
   }
-  for(let i=0;i<220;i++){
+  for(let i=0;i<STIPPLE.ants;i++){
     const x=rnd()*CW,y=rnd()*CH;
     const j=((y|0)*CW+(x|0))*4;
     ctx.fillStyle='rgba('+(px[j]*0.7|0)+','+(px[j+1]*0.7|0)+','+(px[j+2]*0.7|0)+',0.5)';
@@ -1125,6 +1127,60 @@ function renderCard(card,style){
 }
 const CARD_SRC={};
 CARDS.forEach(c=>{CARD_SRC[c.id]=renderCard(c);});
+/* ---- CARD TUNER（#cardtune）：六张样卡实时重渲 + 八旋钮 + 复制参数 + 应用全场 ---- */
+if(/[?#&]cardtune/.test(location.search+location.hash))(function(){
+  const ids=['embers','greenhouse','courtyard','noon-sea','window','blossom'];
+  const picks=ids.map(id=>CARDS.find(c=>c.id===id)).filter(Boolean);
+  let i=0; while(picks.length<6&&i<CARDS.length){ if(!picks.includes(CARDS[i]))picks.push(CARDS[i]); i+=4; }
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:9998;background:#F6F0E2;display:flex;align-items:center;justify-content:center;gap:40px;padding:40px;';
+  const grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:repeat(3,minmax(140px,200px));gap:26px;';
+  const imgs=picks.map(c=>{
+    const wrap=document.createElement('div');
+    wrap.style.cssText='text-align:center;font:700 12px/1.8 sans-serif;color:#2b1d12;letter-spacing:.06em;';
+    const img=new Image();
+    img.style.cssText='width:100%;border-radius:50%;display:block;box-shadow:0 0 0 3px #fff,0 4px 14px rgba(43,29,18,.18);';
+    wrap.appendChild(img); wrap.append(c.id); grid.appendChild(wrap);
+    return {img,c};
+  });
+  let pending=0;
+  function rerender(){
+    clearTimeout(pending);
+    pending=setTimeout(()=>{ imgs.forEach(o=>{ o.img.src=renderCard(o.c,'v2'); }); },110);
+  }
+  const pn=document.createElement('div');
+  pn.style.cssText='width:250px;background:rgba(20,16,12,.93);color:#f4ecdc;font:11.5px/1.5 ui-monospace,Menlo,monospace;padding:14px 16px;border-radius:10px;max-height:86vh;overflow:auto;flex:0 0 auto;';
+  pn.innerHTML='<div style="font-weight:700;letter-spacing:.08em;margin-bottom:8px">CARD TUNER</div>';
+  [['dots','墨点密度',4000,60000,500],['ghost','垫底浓度',0,0.8,0.01],
+   ['dotMin','点径下限',0.4,2.4,0.05],['dotSpread','点径跨度',0.2,4,0.05],
+   ['lumSkip','亮部疏密',0.3,1,0.01],['lumCurve','明暗对比',0.6,2.6,0.05],
+   ['inkAlpha','墨浓度',0.2,0.65,0.01],['ants','蚁群颗粒',0,800,10]
+  ].forEach(d=>{
+    const row=document.createElement('label');
+    row.style.cssText='display:block;margin:7px 0;';
+    row.innerHTML='<span style="display:flex;justify-content:space-between"><span>'+d[1]+' <i style="opacity:.5;font-style:normal">'+d[0]+'</i></span><b data-v>'+STIPPLE[d[0]]+'</b></span>';
+    const inp=document.createElement('input');
+    inp.type='range';inp.min=d[2];inp.max=d[3];inp.step=d[4];inp.value=STIPPLE[d[0]];
+    inp.style.cssText='width:100%;accent-color:#B9503F;';
+    inp.addEventListener('input',()=>{ STIPPLE[d[0]]=parseFloat(inp.value); row.querySelector('[data-v]').textContent=inp.value; rerender(); });
+    row.appendChild(inp); pn.appendChild(row);
+  });
+  const mkBtn=(txt,bg)=>{ const b=document.createElement('button');
+    b.textContent=txt; b.style.cssText='margin-top:8px;width:100%;padding:7px;border:0;border-radius:6px;background:'+bg+';color:#fff;cursor:pointer;font:inherit;'; pn.appendChild(b); return b; };
+  mkBtn('复制当前参数','#B9503F').addEventListener('click',function(){
+    const s=JSON.stringify(STIPPLE); const self=this;
+    (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(s):Promise.reject()).then(
+      ()=>{ self.textContent='已复制 ✓'; setTimeout(()=>self.textContent='复制当前参数',1200); },
+      ()=>{ prompt('参数：',s); });
+  });
+  mkBtn('应用到全场并进入选卡','#6E74C4').addEventListener('click',()=>{
+    CARDS.forEach(c=>{CARD_SRC[c.id]=renderCard(c,'v2');});
+    ov.remove(); resetField(); showAct('act1');
+  });
+  ov.appendChild(grid); ov.appendChild(pn); document.body.appendChild(ov);
+  rerender();
+})();
 const LAND={"cols":48,"rows":17,"latTop":74,"latBot":-56,"pts":[2,0,3,0,9,0,11,0,12,0,13,0,14,0,17,0,18,0,19,0,20,0,27,0,33,0,34,0,35,0,36,0,37,0,38,0,39,0,40,0,41,0,42,0,43,0,44,0,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9,1,10,1,11,1,17,1,25,1,27,1,28,1,29,1,30,1,31,1,32,1,33,1,34,1,35,1,36,1,37,1,38,1,39,1,40,1,41,1,42,1,43,1,44,1,45,1,46,1,47,1,7,2,8,2,9,2,10,2,11,2,12,2,13,2,14,2,15,2,23,2,27,2,28,2,29,2,30,2,31,2,32,2,33,2,34,2,35,2,36,2,37,2,38,2,39,2,40,2,41,2,45,2,7,3,8,3,9,3,10,3,11,3,12,3,13,3,14,3,24,3,25,3,26,3,27,3,28,3,29,3,30,3,31,3,32,3,33,3,34,3,35,3,36,3,37,3,38,3,39,3,40,3,41,3,42,3,7,4,8,4,9,4,10,4,11,4,12,4,13,4,23,4,28,4,29,4,30,4,31,4,32,4,33,4,34,4,35,4,36,4,37,4,38,4,39,4,8,5,9,5,10,5,11,5,12,5,23,5,24,5,25,5,29,5,30,5,31,5,32,5,33,5,34,5,35,5,36,5,37,5,38,5,39,5,41,5,10,6,22,6,23,6,24,6,25,6,26,6,27,6,28,6,29,6,30,6,31,6,33,6,34,6,35,6,36,6,37,6,38,6,39,6,11,7,22,7,23,7,24,7,25,7,26,7,27,7,28,7,30,7,34,7,37,7,13,8,14,8,15,8,22,8,23,8,24,8,25,8,26,8,27,8,28,8,29,8,30,8,13,9,14,9,15,9,16,9,25,9,26,9,27,9,28,9,29,9,37,9,39,9,13,10,14,10,15,10,16,10,17,10,18,10,26,10,27,10,28,10,42,10,43,10,14,11,15,11,16,11,17,11,18,11,26,11,27,11,28,11,30,11,41,11,15,12,16,12,17,12,18,12,26,12,27,12,28,12,39,12,40,12,41,12,42,12,43,12,14,13,15,13,16,13,26,13,27,13,39,13,40,13,41,13,42,13,43,13,14,14,15,14,43,14,14,15,46,15,14,16]};
 /* ==================== FIELD ==================== */
 const field = {
