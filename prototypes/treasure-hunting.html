@@ -1081,7 +1081,7 @@ const MOTIFS = {
    站内既有语言（ACT 01 蚁群噪点 / 羊皮纸底）的图卡化：暖纸底 + 母版低透垫底保形 +
    亮度驱动密度的确定性墨点（暗密亮疏）+ 稀疏大颗粒蚁群层 + 圆构图羽化。
    全部由 mulberry32(id+'_v2') 派生——零随机项，逐像素可复现（技术红线 5）。 */
-const STIPPLE={dots:32000,ghost:0.35,dotMin:0.8,dotSpread:1.6,lumSkip:0.8,lumCurve:1.35,inkAlpha:0.55,ants:220};
+const STIPPLE={dots:45000,ghost:0.08,dotMin:0.8,dotSpread:1.8,lumSkip:0.85,lumCurve:1.2,inkAlpha:0.55,ants:220,jitter:4.5,edgeBoost:0.9};
 window.__cardTune=STIPPLE;   /* #cardtune 调参屏实时改（控制台也可直改） */
 function stippleCard(src,rnd){
   const out=document.createElement('canvas');out.width=CW;out.height=CH;
@@ -1090,17 +1090,26 @@ function stippleCard(src,rnd){
   ctx.fillStyle='#F6F0E2';ctx.fillRect(0,0,CW,CH);
   ctx.globalAlpha=STIPPLE.ghost;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
   const cx=CW/2,cy=CH/2,R=CW*0.52;
+  const P=(x,y)=>{ x=x<0?0:x>CW-1?CW-1:x|0; y=y<0?0:y>CH-1?CH-1:y|0; return (y*CW+x)*4; };
   for(let i=0;i<STIPPLE.dots;i++){
     const x=rnd()*CW,y=rnd()*CH;
     const d=Math.hypot(x-cx,y-cy);
     if(d>R&&rnd()<(d-R)/(CW*0.16))continue;
-    const j=((y|0)*CW+(x|0))*4;
+    /* 取样位移：颜色从抖动偏移处取——区域边界互相渗入，噪点长在图形的边上 */
+    const jx=x+(rnd()-0.5)*2*STIPPLE.jitter, jy=y+(rnd()-0.5)*2*STIPPLE.jitter;
+    const j=P(jx,jy);
     const r=px[j],g=px[j+1],b=px[j+2];
     const lum=(r*0.299+g*0.587+b*0.114)/255;
-    if(rnd()<Math.pow(lum,STIPPLE.lumCurve)*STIPPLE.lumSkip)continue;   /* 暗密亮疏 */
-    const s=STIPPLE.dotMin+rnd()*STIPPLE.dotSpread, k=0.8+rnd()*0.2;
-    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+(STIPPLE.inkAlpha+rnd()*0.35).toFixed(2)+')';
-    ctx.fillRect(x-s/2,y-s/2,s,s);   /* 小方点：站内噪点形态，且比 arc 快 */
+    /* 局部反差 = 边缘强度：边上聚墨（更密更大更浓），平场透纸 */
+    const j2=P(jx+3,jy), j3=P(jx,jy+3);
+    const grad=(Math.abs(px[j2]-r)+Math.abs(px[j2+1]-g)+Math.abs(px[j2+2]-b)
+               +Math.abs(px[j3]-r)+Math.abs(px[j3+1]-g)+Math.abs(px[j3+2]-b))/765;
+    const keep=(1-Math.pow(lum,STIPPLE.lumCurve)*STIPPLE.lumSkip)+grad*STIPPLE.edgeBoost;
+    if(rnd()>keep)continue;
+    const s=(STIPPLE.dotMin+rnd()*STIPPLE.dotSpread)*(1+grad*1.5);
+    const k=0.78+rnd()*0.22;
+    ctx.fillStyle='rgba('+(r*k|0)+','+(g*k|0)+','+(b*k|0)+','+Math.min(0.95,STIPPLE.inkAlpha+rnd()*0.35+grad*0.3).toFixed(2)+')';
+    ctx.fillRect(x-s/2,y-s/2,s,s);
   }
   for(let i=0;i<STIPPLE.ants;i++){
     const x=rnd()*CW,y=rnd()*CH;
@@ -1155,7 +1164,8 @@ if(/[?#&]cardtune/.test(location.search+location.hash))(function(){
   [['dots','墨点密度',4000,60000,500],['ghost','垫底浓度',0,0.8,0.01],
    ['dotMin','点径下限',0.4,2.4,0.05],['dotSpread','点径跨度',0.2,4,0.05],
    ['lumSkip','亮部疏密',0.3,1,0.01],['lumCurve','明暗对比',0.6,2.6,0.05],
-   ['inkAlpha','墨浓度',0.2,0.65,0.01],['ants','蚁群颗粒',0,800,10]
+   ['inkAlpha','墨浓度',0.2,0.65,0.01],['ants','蚁群颗粒',0,800,10],
+   ['jitter','边缘散射',0,10,0.1],['edgeBoost','边缘聚墨',0,2,0.05]
   ].forEach(d=>{
     const row=document.createElement('label');
     row.style.cssText='display:block;margin:7px 0;';
