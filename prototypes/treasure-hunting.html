@@ -1513,7 +1513,7 @@ if(fiPoster&&!fiPoster.complete) fiPoster.addEventListener('load',()=>{ if(field
 /* webfonts land after first layout and grow the instruction band — remeasure then too */
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(field.running) layoutField(); });
 /* ==================== FLOW ==================== */
-const ACT_NAMES={act0:'',act1:'I · THE FIELD',act2:'II · THE ORDER',act3:'III · THE READING',act4:'IV · THE MAP',act5:'V · THE CIRCLE'};
+const ACT_NAMES={act0:'',act1:'I · THE FIELD',act2:'II · THE ORDER',act3:'III · THE READING',act4:'IV · THE MAP',act5:''};   /* 终幕与封面同权：猎程已结束，不挂路标 */
 let state={order:[],profile:null,matches:[],world:null,claimedHere:false};
 /* world coordinates for the pixel map — [lat, lon] */
 const GEO={1:[64.15,-21.94],2:[43.11,12.39],3:[35.01,135.77],4:[37.74,-25.67],5:[26.61,37.92],6:[45.44,12.34],7:[37.39,-5.99],8:[5.97,80.43]};
@@ -1921,6 +1921,18 @@ function drawMap(){
     g.addColorStop(1,'rgba(110,116,196,0)');
     ctx.fillStyle=g;ctx.beginPath();ctx.arc(m.x,m.y,rad,0,7);ctx.fill();
   });
+  /* 共鸣光晕半径（最大 10.7 格）远超画布呼吸垫，在画布缘被切成直线——正是这张
+     地图立誓不要的边界。像素落笔前先把已画内容向四边溶解：destination-out 线性
+     渐变吃掉光晕的边缘，蓝雾在纸里消散而不是撞墙。 */
+  ctx.globalCompositeOperation='destination-out';
+  const fy=mapState.h*0.16, fx=mapState.w*0.05;
+  [[0,0,0,fy],[0,mapState.h,0,mapState.h-fy],[0,0,fx,0],[mapState.w,0,mapState.w-fx,0]]
+    .forEach(([x0,y0,x1,y1])=>{
+      const eg=ctx.createLinearGradient(x0,y0,x1,y1);
+      eg.addColorStop(0,'rgba(0,0,0,1)');eg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=eg;ctx.fillRect(0,0,mapState.w,mapState.h);
+    });
+  ctx.globalCompositeOperation='source-over';
   /* 陆地像素（2026-08-18 融入背景改造）：暖赭贴近纸底羊皮色；逐像素确定性微差
      （(c*7+r*13)%9，零随机项）；画幅左右缘 7% 内羽化——地图没有边界，从纸里长出来。
      悬停凸起：以指针为中心的高斯尺度场（sigma=1.9cell），所有像素一视同仁——
