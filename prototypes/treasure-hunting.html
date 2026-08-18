@@ -258,7 +258,7 @@ body.embedded #grain{
 /* ---------- act IV · the map — a world of superellipse pixels; you choose, we never assign ---------- */
 /* the plate is asymmetric (no centred three-stack): the words live in a left column,
    the world fills the rest; on narrow screens the map keeps CHUNKY pixels and pans */
-#act4-inner{width:min(1180px,96vw);text-align:left;padding:clamp(44px,7vh,80px) var(--pagepad) 64px;
+#act4-inner{width:min(1180px,96vw);text-align:left;padding:clamp(84px,12vh,128px) var(--pagepad) 64px;   /* 顶部让开 fixed BACK 键 */
   margin:0 auto;display:block;}   /* 单列（2026-08-18 大气构图）：账本压顶部横条，地图满宽铺开 */
 .map-head{margin-bottom:clamp(24px,4vh,44px);}
 .map-head{min-width:0;}
@@ -1825,17 +1825,18 @@ function buildMap(){
      窄屏保底 12px 像素、#map-scroll 内平移（chunky 底线沿袭） */
   const cell=window.innerWidth<700?Math.max(availW/LAND.cols,12):availW/LAND.cols;
   const cssW=cell*LAND.cols;
-  const cssH=cell*LAND.rows;
+  const padY=cell*4;               /* 上下呼吸垫：光晕有衰减空间，顶排不再贴缘成线 */
+  const cssH=cell*LAND.rows+padY*2;
   const dpr=Math.min(2,window.devicePixelRatio||1);
   mapCv.width=Math.round(cssW*dpr);mapCv.height=Math.round(cssH*dpr);
   mapCv.style.width=cssW+'px';mapCv.style.height=cssH+'px';
-  Object.assign(mapState,{w:cssW,h:cssH,cell,dpr});
+  Object.assign(mapState,{w:cssW,h:cssH,cell,dpr,padY});
   // sites snap to the grid — every pixel of this world is the same size; theirs just wear a colour
   mapState.markers=WORLDS.map(w=>{
     const [lat,lon]=GEO[w.si];
     const c=Math.round((lon+180)/360*LAND.cols-0.5);
     const r=Math.round((LAND.latTop-lat)/(LAND.latTop-LAND.latBot)*LAND.rows-0.5);
-    return {w,c,r,x:(c+0.5)*cell,y:(r+0.5)*cell};
+    return {w,c,r,x:(c+0.5)*cell,y:(r+0.5)*cell+padY};
   });
   mapState.siteKeys=new Set(mapState.markers.map(m=>m.c+'_'+m.r));
   if(cssW>availW+2) scroller.scrollLeft=(cssW-availW)*0.40;  /* open on the Atlantic band */
@@ -1878,10 +1879,12 @@ function drawMap(){
   for(let i=0;i<LAND.pts.length;i+=2){
     const c=LAND.pts[i], r=LAND.pts[i+1];
     if(mapState.siteKeys.has(c+'_'+r))continue;
-    const px=(c+0.5)*cell, py=(r+0.5)*cell;
+    const px=(c+0.5)*cell, py=(r+0.5)*cell+mapState.padY;
     let a=0.115+((c*7+r*13)%9)/9*0.055;
     const ex=Math.min(px,mapState.w-px)/(mapState.w*0.07);
     if(ex<1)a*=Math.max(0,ex);
+    const ey=Math.min(py,mapState.h-py)/(mapState.h*0.13);   /* 垂直羽化：顶/底排溶进纸底，无分界线 */
+    if(ey<1)a*=Math.max(0,ey);
     const dx=px-hx,dy=py-hy,k=Math.exp(-(dx*dx+dy*dy)/s2);
     ctx.fillStyle='rgba(96,74,50,'+a.toFixed(3)+')';
     ctx.save();ctx.translate(px,py);if(k>0.02)ctx.scale(1+AMP*k,1+AMP*k);ctx.fill(SQ);ctx.restore();
