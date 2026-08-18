@@ -678,18 +678,19 @@ function vGrad(ctx,stops,x0,y0,x1,y1){
   stops.forEach(s=>g.addColorStop(s[0],s[1]));
   return g;
 }
-function grain(ctx,rnd,amount){
-  const n=amount||900;
+function grain(ctx,rnd,amount,W,H){
+  const n=amount||900; W=W||CW; H=H||CH;
   for(let i=0;i<n;i++){
     const a=rnd()*0.055;
     ctx.fillStyle=rnd()>0.5?`rgba(255,255,255,${a})`:`rgba(30,25,20,${a})`;
-    ctx.fillRect(rnd()*CW,rnd()*CH,1.4,1.4);
+    ctx.fillRect(rnd()*W,rnd()*H,1.4,1.4);
   }
 }
-function vignette(ctx){
-  const g=ctx.createRadialGradient(CW/2,CH/2,CH*0.25,CW/2,CH/2,CH*0.75);
+function vignette(ctx,W,H){
+  W=W||CW; H=H||CH;
+  const g=ctx.createRadialGradient(W/2,H/2,H*0.25,W/2,H/2,H*0.75);
   g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(30,25,18,0.10)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
 }
 function softDisc(ctx,x,y,r,color,alpha){
   const g=ctx.createRadialGradient(x,y,0,x,y,r);
@@ -1085,28 +1086,32 @@ const MOTIFS = {
 const STIPPLE={dots:55000,ghost:0.54,dotMin:1.1,dotSpread:1.8,lumSkip:0.85,lumCurve:1.25,inkAlpha:0.6,ants:610,jitter:2.4,edgeBoost:0.55};   /* 2026-08-18 用户 #cardtune 实调定稿 */
 window.__cardTune=STIPPLE;   /* #cardtune 调参屏实时改（控制台也可直改） */
 function stippleCard(src,rnd){
-  const out=document.createElement('canvas');out.width=CW;out.height=CH;
+  /* 尺寸跟 src 走：高清烘焙（镜头 2×）时点数/蚁群/颗粒按面积等比放大，
+     单点尺寸不变——感知密度与 320 版完全一致，只是不再被硬放大成马赛克 */
+  const W=src.width,H=src.height,SF=(W*H)/(CW*CH);
+  const out=document.createElement('canvas');out.width=W;out.height=H;
   const ctx=out.getContext('2d');
-  const px=src.getContext('2d').getImageData(0,0,CW,CH).data;
-  ctx.fillStyle='#F6F0E2';ctx.fillRect(0,0,CW,CH);
+  const px=src.getContext('2d').getImageData(0,0,W,H).data;
+  ctx.fillStyle='#F6F0E2';ctx.fillRect(0,0,W,H);
   ctx.globalAlpha=STIPPLE.ghost;ctx.drawImage(src,0,0);ctx.globalAlpha=1;   /* 母版扛构图与色彩，墨点扛质感 */
-  const cx=CW/2,cy=CH/2,R=CW*0.52;
-  const P=(x,y)=>{ x=x<0?0:x>CW-1?CW-1:x|0; y=y<0?0:y>CH-1?CH-1:y|0; return (y*CW+x)*4; };
+  const cx=W/2,cy=H/2,R=W*0.52;
+  const P=(x,y)=>{ x=x<0?0:x>W-1?W-1:x|0; y=y<0?0:y>H-1?H-1:y|0; return (y*W+x)*4; };
   /* 性能：55k 墨点逐个 fillStyle+fillRect 需秒级——改 ImageData 直写 alpha 混合，
      一次 putImageData（实测单卡秒级→毫秒级；25 张加载期烘焙才可行） */
-  const base=ctx.getImageData(0,0,CW,CH), B=base.data;
+  const base=ctx.getImageData(0,0,W,H), B=base.data;
   const blend=(x,y,s,r,g,b,al)=>{
-    const x0=Math.max(0,(x-s/2)|0), x1=Math.min(CW-1,(x+s/2)|0);
-    const y0=Math.max(0,(y-s/2)|0), y1=Math.min(CH-1,(y+s/2)|0);
-    for(let yy=y0;yy<=y1;yy++){ let o=(yy*CW+x0)*4;
+    const x0=Math.max(0,(x-s/2)|0), x1=Math.min(W-1,(x+s/2)|0);
+    const y0=Math.max(0,(y-s/2)|0), y1=Math.min(H-1,(y+s/2)|0);
+    for(let yy=y0;yy<=y1;yy++){ let o=(yy*W+x0)*4;
       for(let xx=x0;xx<=x1;xx++){
         B[o]+=(r-B[o])*al; B[o+1]+=(g-B[o+1])*al; B[o+2]+=(b-B[o+2])*al; o+=4;
       } }
   };
-  for(let i=0;i<STIPPLE.dots;i++){
-    const x=rnd()*CW,y=rnd()*CH;
+  const nDots=Math.round(STIPPLE.dots*SF);
+  for(let i=0;i<nDots;i++){
+    const x=rnd()*W,y=rnd()*H;
     const d=Math.hypot(x-cx,y-cy);
-    if(d>R&&rnd()<(d-R)/(CW*0.16))continue;
+    if(d>R&&rnd()<(d-R)/(W*0.16))continue;
     /* 取样位移：颜色从抖动偏移处取——区域边界互相渗入，噪点长在图形的边上 */
     const jx=x+(rnd()-0.5)*2*STIPPLE.jitter, jy=y+(rnd()-0.5)*2*STIPPLE.jitter;
     const j=P(jx,jy);
@@ -1122,22 +1127,26 @@ function stippleCard(src,rnd){
     const k=0.78+rnd()*0.22;
     blend(x,y,s,r*k,g*k,b*k,Math.min(0.95,STIPPLE.inkAlpha+rnd()*0.35+grad*0.3));
   }
-  for(let i=0;i<STIPPLE.ants;i++){
-    const x=rnd()*CW,y=rnd()*CH;
+  const nAnts=Math.round(STIPPLE.ants*SF);
+  for(let i=0;i<nAnts;i++){
+    const x=rnd()*W,y=rnd()*H;
     const j=P(x,y);
     blend(x,y,2.6,px[j]*0.7,px[j+1]*0.7,px[j+2]*0.7,0.5);
   }
   ctx.putImageData(base,0,0);
-  grain(ctx,rnd,700);
-  vignette(ctx);
+  grain(ctx,rnd,Math.round(700*SF),W,H);
+  vignette(ctx,W,H);
   return out;
 }
 const CARD_STYLE='v2';   /* 2026-08-18 定稿实装：25 张全量喷墨噪点 */
-function renderCard(card,style){
-  const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;
+function renderCard(card,style,S){
+  S=S||1;
+  const cv=document.createElement('canvas');cv.width=CW*S;cv.height=CH*S;
   const ctx=cv.getContext('2d');
+  if(S!==1)ctx.scale(S,S);   /* 母版按 320 逻辑坐标绘制，高清画布上仍矢量级锐利 */
   const rnd=mulberry32(seedFrom(card.id));
   (MOTIFS[card.motif]||MOTIFS.horizon)(ctx,card.pal,rnd);
+  if(S!==1)ctx.setTransform(1,0,0,1,0,0);
   if((style||CARD_STYLE)==='v2'){
     return stippleCard(cv,mulberry32(seedFrom(card.id+'_v2'))).toDataURL('image/jpeg',0.85);
   }
@@ -1362,8 +1371,19 @@ const lensImgEl=lensEl.querySelector('.lz-img img');
 const lensCapEl=lensEl.querySelector('.lz-cap');
 const lensBars=[...lensEl.querySelectorAll('.lz-dims i')];
 let lensI=null,lensSwapT=null;
+/* 放大镜高清位图：320 母版硬放大到 ~600 设备像素会把墨点摊成马赛克——密度旋钮
+   管的是烘焙分辨率下的点数，救不了放大倍率。按需烘 2× 版（点数按面积等比，
+   感知密度与小图一致），烘完镜头若还停在这张就热替换；同一张只烘一次。 */
+const CARD_HI={},HI_S=2,hiPending={};
+function hiBake(c,i){
+  if(CARD_HI[c.id]||hiPending[c.id])return; hiPending[c.id]=1;
+  setTimeout(()=>{ CARD_HI[c.id]=renderCard(c,'v2',HI_S); delete hiPending[c.id];
+    if(lensI===i&&lensEl.classList.contains('on')) lensImgEl.src=CARD_HI[c.id];
+  },30);
+}
 function lensFill(i){ const c=CARDS[i];
-  lensImgEl.src=CARD_SRC[c.id]; lensCapEl.textContent=c.cap;
+  lensImgEl.src=CARD_HI[c.id]||CARD_SRC[c.id]; lensCapEl.textContent=c.cap;
+  hiBake(c,i);
   lensBars.forEach((b,d)=>{ b.style.height=(4+c.dims[d]*20)+'px'; }); }
 function lensShow(i){
   if(lensEl.classList.contains('on')&&lensI!==null&&lensI!==i){
