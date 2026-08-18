@@ -1146,13 +1146,19 @@ function renderCard(card,style){
   return cv.toDataURL('image/jpeg',0.82);
 }
 const CARD_SRC={};
-/* v2 烘焙有量级成本（55k 墨点 × 25 张）：解析期零阻塞——空闲分片预烘（封面
-   停留时间 >> 烘焙总时长），buildField 前 ensureCards() 兜底补齐缺卡。 */
-let bakeQueue=[...CARDS];
+/* 三段式烘焙（2026-08-18 修封面破图回归）：
+   ① v1 快速打底（毫秒级）——任何构建时刻 CARD_SRC 都有图，永不 src=undefined；
+   ② 空闲逐张换装 v2（55k 墨点有量级成本，解析期零阻塞）；
+   ③ 换好即热替换 DOM 里带 data-card 的 img（封面在加载即构建，靠这条渐进上色）。
+   buildField 前 ensureCards() 兜底同步补齐。 */
+CARDS.forEach(c=>{CARD_SRC[c.id]=renderCard(c,'v1');});
+function swapImgs(id){ document.querySelectorAll('img[data-card="'+id+'"]').forEach(im=>{ im.src=CARD_SRC[id]; }); }
+let bakeQueue=(CARD_STYLE==='v2')?[...CARDS]:[];
 function bakeSome(dl){
   while(bakeQueue.length){
     const c=bakeQueue[0];
-    if(!CARD_SRC[c.id]) CARD_SRC[c.id]=renderCard(c);
+    CARD_SRC[c.id]=renderCard(c,'v2');
+    swapImgs(c.id);
     bakeQueue.shift();
     if(dl&&dl.timeRemaining&&dl.timeRemaining()>8) continue;
     break;
@@ -1162,7 +1168,7 @@ function bakeSome(dl){
   }
 }
 bakeSome();
-function ensureCards(){ bakeQueue.forEach(c=>{ if(!CARD_SRC[c.id]) CARD_SRC[c.id]=renderCard(c); }); bakeQueue=[]; }
+function ensureCards(){ bakeQueue.forEach(c=>{ CARD_SRC[c.id]=renderCard(c,'v2'); swapImgs(c.id); }); bakeQueue=[]; }
 /* ---- CARD TUNER（#cardtune）：六张样卡实时重渲 + 八旋钮 + 复制参数 + 应用全场 ---- */
 if(/[?#&]cardtune/.test(location.search+location.hash))(function(){
   const ids=['embers','greenhouse','courtyard','noon-sea','window','blossom'];
@@ -1552,7 +1558,7 @@ function buildCover(){
       const ra=rnd()*Math.PI*2, rr=Math.pow(rnd(),0.6)*74*M;
       el.style.width=d+'px';el.style.height=d+'px';
       el.style.left=Math.cos(ra)*rr+'px';el.style.top=Math.sin(ra)*rr*0.85+'px';
-      el.innerHTML='<img src="'+CARD_SRC[p.c.id]+'" alt="">';
+      el.innerHTML='<img data-card="'+p.c.id+'" src="'+CARD_SRC[p.c.id]+'" alt="">';
       cl.appendChild(el);
     });
     const lab=document.createElement('div');
@@ -1567,6 +1573,16 @@ function buildCover(){
       +'<div class="cl-count">'+w.claimed+' of '+CAPACITY+' claimed</div>';
     cl.appendChild(lab);
     box.appendChild(cl);
+  });
+  /* horizontal guard, same contract as the vertical one above: no label may be
+     guillotined by the viewport edge — shift just enough, the ring stays organic */
+  const edgePad=10;
+  box.querySelectorAll('.cluster-label').forEach(lab=>{
+    const r=lab.getBoundingClientRect();
+    let dx=0;
+    if(r.left<edgePad) dx=edgePad-r.left;
+    else if(r.right>W-edgePad) dx=(W-edgePad)-r.right;
+    if(dx) lab.style.marginLeft=dx+'px';
   });
   wakeCluster(awakeIdx);
 }
