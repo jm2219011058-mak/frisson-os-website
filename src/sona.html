@@ -75,7 +75,8 @@
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
   .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
-    gap:clamp(22px,5vh,44px);background:#fff;
+    gap:clamp(22px,5vh,44px);background:rgba(255,255,255,.86);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
     /* NB: no `right:auto` here — it unsets inset's right edge and the sheet collapses to
        shrink-to-fit (it was only as wide as the longest link). */
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
