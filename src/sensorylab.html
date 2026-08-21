@@ -19,7 +19,6 @@
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.12);
-    --eyebrow:#8c837a;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -114,8 +113,8 @@
     transition:opacity .46s cubic-bezier(0.7,0,0.84,0);}
   .swl-stage.dissolving .swl-dust{opacity:1;transition:opacity .32s cubic-bezier(0.16,1,0.3,1);}
   /* status line — sits tight under the title because it belongs to it (§5 proximity) */
-  /* --eyebrow is the house grey for eyebrows on WHITE; this one sits on the plate, where
-     the cloud runs saturated, so it takes the darker ink-soft token to hold its contrast */
+  /* §5's eyebrow grey (#8c837a) is specified for white grounds; this one sits on the plate,
+     where the cloud runs saturated, so it takes the darker ink-soft token to hold contrast */
   .swl-soon{position:relative;font-family:var(--sans);font-weight:700;text-transform:uppercase;
     font-size:clamp(10px,.95vw,12px);letter-spacing:.18em;color:var(--ink-soft);
     margin:clamp(14px,2vh,24px) 0 0;}
@@ -124,16 +123,14 @@
      ACT 2 — the three layers, as one ledger
      They used to be a 2-col row followed by two centred stacks, so nothing lined
      up and there was no rule saying which was which. Now every layer is the same
-     entry — rule, index, name on one rail, specimen on the other — and the rails
-     alternate. The artworks are never cropped: each is a finished composition
+     entry — rule, name on one rail, specimen on the other — and the rails alternate.
+     Nothing numbers or captions them: the hairlines carry the structure on their own.
+     The artworks are never cropped: each is a finished composition
      (a framed HUD, a contact sheet), so they are sized by shared HEIGHT and keep
      their own widths, which is what gives the column its rhythm.
      =========================================================================== */
   .swl-layers{background:#fff;padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) clamp(96px,14vh,170px);}
   .swl-layers-in{max-width:1180px;margin:0 auto;}
-  .swl-eyebrow{font-family:var(--sans);font-weight:700;text-transform:uppercase;
-    font-size:clamp(11px,1vw,12px);letter-spacing:.18em;color:var(--eyebrow);
-    margin:0 0 clamp(36px,6vh,64px);}
 
   .swl-layer{display:grid;grid-template-columns:1fr 1fr;align-items:center;
     gap:clamp(24px,5vw,72px);
@@ -141,9 +138,6 @@
   .swl-layer:last-of-type{border-bottom:1px solid var(--hair);}
   .swl-layer--flip .swl-layer-txt{order:2;}
 
-  .swl-idx{display:block;font-family:var(--sans);font-weight:700;
-    font-size:clamp(11px,1vw,12px);letter-spacing:.18em;color:var(--eyebrow);
-    margin:0 0 clamp(14px,2vh,24px);}
   .swl-name{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
     font-size:clamp(30px,4.4vw,62px);line-height:1.06;letter-spacing:-.014em;text-wrap:balance;}
 
@@ -217,11 +211,8 @@
 
   <section class="swl-layers">
     <div class="swl-layers-in">
-      <p class="swl-eyebrow reveal" data-scroll data-scroll-class="in">Three Layers</p>
-
       <article class="swl-layer reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
-          <span class="swl-idx">01</span>
           <h2 class="swl-name">Human Layer</h2>
         </div>
         <figure class="swl-fig" data-scroll data-scroll-css-progress>
@@ -231,7 +222,6 @@
 
       <article class="swl-layer swl-layer--flip reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
-          <span class="swl-idx">02</span>
           <h2 class="swl-name">Outlier Layer</h2>
         </div>
         <figure class="swl-fig" data-scroll data-scroll-css-progress>
@@ -241,7 +231,6 @@
 
       <article class="swl-layer reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
-          <span class="swl-idx">03</span>
           <h2 class="swl-name">Adaptive Layer</h2>
         </div>
         <figure class="swl-fig swl-fig--tall" data-scroll data-scroll-css-progress>
