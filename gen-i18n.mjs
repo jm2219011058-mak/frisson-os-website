@@ -28,6 +28,7 @@ const O = {
   'nav.advocater': ['Stealth Founders', 'Stealth Founders'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Field Notes', 'Field Notes'],
+  'nav.lab': ['Sensory World Lab', 'Sensory World Lab'],
   'nav.lwm': ['Living World Model', 'Living World Model'],
   'nav.sensory': ['Sensory World Hunting', 'Sensory World Hunting'],
   'cities.hero1': [`Rebuild Respect<br>for the Human`, `重建对人的尊重`],
