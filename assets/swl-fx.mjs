@@ -119,18 +119,21 @@ function inkPoints(el, target) {
   let ink = 0;
   for (let p = 3; p < data.length; p += 4) if (data[p] > 96) ink++;
   if (!ink) return null;
-  const step = Math.max(1, Math.round(Math.sqrt(ink / target)));
+  const stepF = Math.max(1, Math.sqrt(ink / target));
+  const step = Math.max(1, Math.floor(stepF));
+  const keep = (step * step) / (stepF * stepF);      // <= 1, trims the rounding surplus
 
   const xs = [], ys = [];
   for (let y = 0; y < h; y += step) {
     for (let x = 0; x < w; x += step) {
       if (data[(y * w + x) * 4 + 3] <= 96) continue;
+      if (keep < 1 && Math.random() > keep) continue;
       /* jitter inside the cell so the swarm never shows the sampling grid */
-      xs.push(x + (Math.random() - 0.5) * step);
-      ys.push(y + (Math.random() - 0.5) * step);
+      xs.push(x + (Math.random() - 0.5) * stepF);
+      ys.push(y + (Math.random() - 0.5) * stepF);
     }
   }
-  return { xs, ys, box: tr, step };
+  return { xs, ys, box: tr, step: stepF };
 }
 
 /** shared per-field physics state in flat arrays */
@@ -257,7 +260,6 @@ async function bootHero() {
       x[i] = nx; y[i] = ny;
       const p = parts[i]; p.x = nx; p.y = ny;
     }
-    container.update();
   }
 
   if (REDUCE) { app.render(); }
@@ -446,7 +448,6 @@ async function bootLayers() {
       x[i] = nx; y[i] = ny;
       const p = parts[i]; p.x = nx; p.y = ny + off;
     }
-    container.update();
   }
 
   let ready = false, building = false;
@@ -458,24 +459,31 @@ async function bootLayers() {
      parked and invisible with no further threshold crossing to correct it. */
   function apply() {
     const r = section.getBoundingClientRect();
-    const onScreen = r.bottom > -innerHeight * 0.25 && r.top < innerHeight * 1.25;
+    const onScreen = r.bottom > 0 && r.top < innerHeight;
     if (!onScreen) { app.ticker.stop(); canvas.style.opacity = '0'; return; }
     canvas.style.opacity = '1';
     if (REDUCE) app.render(); else app.ticker.start();
   }
 
+  /* The entry is only a TRIGGER — never the source of truth. Entries can arrive stale
+     (the first build awaits image decode) or out of order during a fast scroll, and
+     acting on one leaves the field parked and invisible with no further threshold
+     crossing to correct it. apply() always re-reads the rect instead. */
   new IntersectionObserver(async es => {
-    if (!es[es.length - 1].isIntersecting) { app.ticker.stop(); canvas.style.opacity = '0'; return; }
-    if (!ready) {
-      if (building) return;
+    if (es[es.length - 1].isIntersecting && !ready && !building) {
       building = true;
-      await Promise.all(figs.map(decoded));
-      ready = build();
+      try {
+        await Promise.all(figs.map(decoded));
+        ready = build();
+      } catch (e) { /* leave the plates bare rather than half-built */ }
       building = false;
-      if (!ready) return;
     }
     apply();
-  }, { rootMargin: '25% 0px' }).observe(section);
+  }, { rootMargin: '200px 0px' }).observe(section);
+
+  /* apply() is strict about what counts as on screen, so it needs a signal that keeps
+     arriving — the observer only speaks on threshold crossings */
+  addEventListener('scroll', () => { if (ready) apply(); }, { passive: true });
 
   let rt = 0;
   addEventListener('resize', () => {
