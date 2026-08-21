@@ -14,6 +14,7 @@
 <link rel="preload" as="image" href="assets/advocater/trial-bg.jpg">
 <script defer src="assets/vendor/gsap/gsap.min.js"></script>
 <script defer src="assets/vendor/gsap/CustomEase.min.js"></script>
+<script defer src="assets/vendor/locomotive/locomotive-scroll.min.js"></script>
 <style>
   :root{
     --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.16);
@@ -71,23 +72,52 @@
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
 
-  /* hero — 4×2 portrait mosaic (edge to edge, ~16:11 overall), then the copy on plain white below */
+  /* hero — 4×2 portrait mosaic (edge to edge, ~16:11 overall), then the copy on black below */
   .fc-hero{position:relative;width:100%;margin-top:0;background:#000;}
   .sf-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;
     gap:clamp(6px,1vw,14px);width:100%;aspect-ratio:16/11;
     margin-top:clamp(64px,9vh,88px);}   /* clears the fixed nav; flush left & right */
-  .sf-grid img{width:100%;height:100%;object-fit:cover;display:block;background:#111;}
-  .fc-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;text-align:center;background:#000;
-    padding:clamp(64px,10vh,120px) clamp(24px,6vw,40px) clamp(90px,14vh,160px);}
-  .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:.012em;
-    font-size:clamp(27px,5vw,60px);line-height:1.03;color:#fff;margin:0 0 clamp(22px,3.4vh,34px);}
-  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(15.5px,1.8vw,20.5px);line-height:1.42;
-    color:#fff;margin:0;}
+  /* Each tile is its own window; the photo is oversized inside it and drifts as you scroll.
+     Locomotive writes --progress on the CELL (untransformed, so its metrics stay honest) and
+     the drift is a plain CSS transform on the PHOTO, expressed as a % of the photo's own
+     height — so the tile can never open a gap at any viewport. §5.5: transform only, and
+     Locomotive already de-dupes the --progress write and parks the rAF when off screen. */
+  .sf-cell{position:relative;overflow:hidden;background:#111;}
+  /* drift = ±6% of a 118%-tall photo = ±7.1% of the tile, inside the 9% of slack on each side */
+  .sf-cell img{position:absolute;left:0;top:-9%;width:100%;height:118%;object-fit:cover;display:block;
+    transform:translate3d(0,calc((var(--progress,.5) - .5) * -12%),0);}
+
+  /* ---- opening conviction — the first thing you meet under the mosaic ---- */
+  .fc-conviction{position:relative;z-index:2;background:#000;
+    padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) 0;}
+  .fcc-inner{max-width:1180px;margin:0 auto;}
+  .fcc-lead{font-family:var(--serif);font-weight:400;color:#fff;margin:0;max-width:26ch;
+    font-size:clamp(23px,3.2vw,46px);line-height:1.2;letter-spacing:-.004em;text-wrap:balance;}
+  .fcc-body{margin-top:clamp(36px,6vh,64px);max-width:62ch;}
+  .fcc-p{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.55vw,17.5px);line-height:1.68;
+    color:rgba(255,255,255,.8);margin:0 0 1.15em;text-wrap:pretty;}
+  .fcc-p:last-child{margin-bottom:0;}
+
+  /* ---- Founding Catalyst — left/right: the name holds the left rail, the copy runs right ---- */
+  .fc-inner{position:relative;z-index:2;background:#000;text-align:left;
+    padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) clamp(90px,14vh,160px);}
+  .fc-grid{max-width:1180px;margin:0 auto;display:grid;align-items:start;
+    grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px);
+    border-top:1px solid rgba(255,255,255,.18);padding-top:clamp(36px,6vh,64px);}
+  .fc-head{position:sticky;top:clamp(100px,17vh,180px);}
+  .fc-title{font-family:var(--serif);font-weight:700;text-transform:uppercase;letter-spacing:-.005em;
+    font-size:clamp(36px,6.2vw,84px);line-height:1.02;color:#fff;margin:0 0 clamp(16px,2.4vh,28px);}
+  .fc-lead{font-family:var(--serif);font-weight:400;font-size:clamp(18px,2.1vw,30px);line-height:1.28;
+    color:rgba(255,255,255,.92);margin:0;max-width:19ch;text-wrap:pretty;}
   /* CTA sits directly under the title block, above the manifesto */
   #join{text-align:center;margin:clamp(30px,4.6vh,54px) auto clamp(44px,7vh,82px);}
-  /* the four paragraphs read as ONE column: narrower measure, hairline top rule, one shared rhythm */
-  .fc-body{max-width:58ch;margin:0 auto;border-top:1px solid rgba(255,255,255,.22);
-    padding-top:clamp(26px,4vh,44px);}
+  .fc-body{max-width:64ch;margin:0;}
+  /* one column below the split: title, lead, then the copy — sticky off, it has nowhere to go */
+  @media (max-width:900px){
+    .fc-grid{grid-template-columns:minmax(0,1fr);row-gap:clamp(26px,4.5vh,42px);}
+    .fc-head{position:static;}
+    .fc-lead{max-width:30ch;}
+  }
   .fc-strong{font-family:var(--serif);font-weight:700;font-size:clamp(17px,1.9vw,20.5px);line-height:1.5;
     color:#fff;margin:0 0 1.15em;}
   .fc-p{font-family:var(--serif);font-weight:400;font-size:clamp(14.5px,1.5vw,16.5px);line-height:1.7;
@@ -340,9 +370,18 @@
   .site-foot a{color:rgba(255,255,255,.85);text-decoration:none;margin:0 10px;}
   .site-foot a:hover{color:var(--accent);}
 
+  /* ---- Locomotive Scroll v5 / Lenis (MIT) — only the rules we actually need.
+     Deliberately NOT shipping upstream's `.lenis-smooth iframe{pointer-events:none}`:
+     the cal.com booking iframe lives in the contact layer and has to stay clickable. ---- */
+  html.lenis,html.lenis body{height:auto;}
+  html.lenis{scroll-behavior:auto;}                 /* Lenis owns the easing; native smooth fights it */
+  .lenis.lenis-stopped{overflow:clip;}
+  .lenis [data-lenis-prevent]{overscroll-behavior:contain;}
+
   .reveal{opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s ease;}
   .reveal.in{opacity:1;transform:none;}
-  @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} html{scroll-behavior:auto;} }
+  @media (prefers-reduced-motion:reduce){ .reveal{transition:none;opacity:1;transform:none;} html{scroll-behavior:auto;}
+    .sf-cell img{transform:none;} }
 </style>
 <!--HREFLANG-->
 </head>
@@ -370,27 +409,42 @@
     <!--LANGNAV-->
   </nav>
 
-  <!-- FULL-BLEED HERO — image faded by scrim, centered overlay text -->
+  <!-- FULL-BLEED HERO — 4×2 portrait mosaic, each tile drifting on its own scroll progress -->
   <header class="fc-hero">
     <div class="sf-grid" aria-hidden="true">
-      <img src="assets/city/sf-1.webp" alt="" fetchpriority="high" decoding="async">
-      <img src="assets/city/sf-2.webp" alt="" decoding="async">
-      <img src="assets/city/sf-3.webp" alt="" decoding="async">
-      <img src="assets/city/sf-4.webp" alt="" decoding="async">
-      <img src="assets/city/sf-5.webp" alt="" loading="lazy" decoding="async">
-      <img src="assets/city/sf-6.webp" alt="" loading="lazy" decoding="async">
-      <img src="assets/city/sf-7.webp" alt="" loading="lazy" decoding="async">
-      <img src="assets/city/sf-8.webp" alt="" loading="lazy" decoding="async">
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-1.webp" alt="" fetchpriority="high" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-2.webp" alt="" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-3.webp" alt="" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-4.webp" alt="" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-5.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-6.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-7.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-8.webp" alt="" loading="lazy" decoding="async"></div>
     </div>
-    <div class="fc-inner">
-      <h1 class="fc-title">Founding Catalyst</h1>
-      <p class="fc-lead">A circle of creators shaping the future of living.</p>
 
-      <div class="fc-body reveal">
-        <p class="fc-p">Frisson continues to attract people from architecture, art, cinematic world building, bioengineering, sensory research, and frontier technology, because the boundaries they are each exploring are converging around a shared ambition: <span class="fc-rrh">Rebuild Respect for the Human.</span></p>
-        <p class="fc-p">Film and art shape emotion, memory, and a sense of world; architecture translates imagination into inhabitable reality; biology and sensory research begin with the body and the mechanisms of life, examining how light, sound, air, materials, and rhythm influence perception, emotion, and long-term states of being.</p>
-        <p class="fc-p">This circle brings together world builders who have shaped global film, animation, and immersive environments; artists whose work has entered international cultural contexts across New York, Paris, Milan, Florence, and Lisbon; cross-disciplinary practitioners working across biomedical engineering, human perception, sound, and spatial storytelling; and creators with backgrounds in synthetic biology, life sciences, and frontier technology. It also carries experience connected to living networks reaching 1.65 billion annual visits and more than $10 billion in scale.</p>
-        <p class="fc-p">Frisson’s pull lies in bringing these once-separate capabilities into a shared system of living: allowing worldbuilding to enter reality, perception to become spatial language, biology to inform design, and technology to respond more sensitively to the body and the rhythms of life — ultimately shaping a future of living that holds greater respect for human complexity, sensitivity, and lived experience.</p>
+    <!-- opening conviction -->
+    <section class="fc-conviction">
+      <div class="fcc-inner">
+        <p class="fcc-lead reveal" data-scroll data-scroll-class="in">We hold this conviction: every leap in how life is experienced begins with the relentless imagination of different possibilities.</p>
+        <div class="fcc-body reveal" data-scroll data-scroll-class="in">
+          <p class="fcc-p">Human life is a complex system woven from biology, memory, emotion, environment, relationship, and inner meaning &mdash; far richer than any single dimension could capture. It is our respect for this complexity that gives the world Frisson creates its purpose.</p>
+          <p class="fcc-p">We are the people shaping the future of living. With that power already in hand, the question is no longer &ldquo;can we create&rdquo; &mdash; but &ldquo;what do we choose to create.&rdquo;</p>
+        </div>
+      </div>
+    </section>
+    <div class="fc-inner">
+      <div class="fc-grid">
+        <div class="fc-head">
+          <h1 class="fc-title reveal" data-scroll data-scroll-class="in">Founding Catalyst</h1>
+          <p class="fc-lead reveal" data-scroll data-scroll-class="in">A circle of creators shaping the future of living.</p>
+        </div>
+
+        <div class="fc-body reveal" data-scroll data-scroll-class="in">
+          <p class="fc-p">Frisson continues to attract people from architecture, art, cinematic world building, bioengineering, sensory research, and frontier technology, because the boundaries they are each exploring are converging around a shared ambition: <span class="fc-rrh">Rebuild Respect for the Human.</span></p>
+          <p class="fc-p">Film and art shape emotion, memory, and a sense of world; architecture translates imagination into inhabitable reality; biology and sensory research begin with the body and the mechanisms of life, examining how light, sound, air, materials, and rhythm influence perception, emotion, and long-term states of being.</p>
+          <p class="fc-p">This circle brings together world builders who have shaped global film, animation, and immersive environments; artists whose work has entered international cultural contexts across New York, Paris, Milan, Florence, and Lisbon; cross-disciplinary practitioners working across biomedical engineering, human perception, sound, and spatial storytelling; and creators with backgrounds in synthetic biology, life sciences, and frontier technology. It also carries experience connected to living networks reaching 1.65 billion annual visits and more than $10 billion in scale.</p>
+          <p class="fc-p">Frisson’s pull lies in bringing these once-separate capabilities into a shared system of living: allowing worldbuilding to enter reality, perception to become spatial language, biology to inform design, and technology to respond more sensitively to the body and the rhythms of life — ultimately shaping a future of living that holds greater respect for human complexity, sensitivity, and lived experience.</p>
+        </div>
       </div>
     </div>
 
@@ -400,7 +454,7 @@
         <img src="assets/city/fc-red.webp" alt="" width="1054" height="1492" loading="lazy" decoding="async">
       </picture>
       <div class="fcr-cap">
-        <h2 class="fcr-title">Creating<br>Something<br>New</h2>
+        <h2 class="fcr-title reveal" data-scroll data-scroll-class="in">Creating<br>Something<br>New</h2>
         <div id="join">
           <button type="button" class="join-cta reveal in" id="fcOpen" aria-haspopup="dialog" aria-controls="fcFull">Talk to Founders <span class="jc-arw" aria-hidden="true">&rsaquo;</span></button>
         </div>
@@ -413,7 +467,7 @@
   </header>
 
   <!-- SEEK WONDER · full-screen layer — the original contact + Book-a-call composition, opened by the hero CTA -->
-  <div class="fc-full" id="fcFull" role="dialog" aria-modal="true" aria-label="Contact Frisson" hidden>
+  <div class="fc-full" id="fcFull" role="dialog" aria-modal="true" aria-label="Contact Frisson" data-lenis-prevent hidden>
     <button type="button" class="fcf-close" id="fcfClose" aria-label="Close">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
     </button>
@@ -481,10 +535,32 @@
     requestAnimationFrame(frame);
   })();
 
-  /* reveal on enter */
+  /* Locomotive Scroll v5 (MIT) — lerped native scroll, and its own in-view engine drives the
+     reveals: every [data-scroll][data-scroll-class="in"] gets `.in` once, which is what the
+     .reveal transition already keys off. Without data-scroll-repeat the class is never removed,
+     so nothing re-animates on the way back up. The mosaic tiles carry data-scroll-css-progress
+     and the drift is pure CSS (see .sf-cell img). Lenis leaves touch scrolling native. */
   (function(){
-    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0.12});
-    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+    function revealAll(){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+    function boot(){
+      /* reduced motion, or the bundle failed to load: show everything, keep native scroll */
+      if(REDUCE || !window.LocomotiveScroll){ revealAll(); return; }
+      try{
+        window.__loco = new LocomotiveScroll({
+          lenisOptions:{
+            duration:1.05,
+            /* expo-out: a real A→B move, so it gets an ease (§5.9). No overshoot. */
+            easing:function(t){ return t===1?1:1-Math.pow(2,-9*t); },
+            smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.6, syncTouch:false
+          },
+          triggerRootMargin:'0px 0px -12% 0px',   /* a block reveals once it is 12% into view */
+          rafRootMargin:'120% 0% 120% 0%'         /* progress rAF parks well before/after screen */
+        });
+        /* #contact can open the contact layer before we got here — don't steal its scroll back */
+        if(document.documentElement.classList.contains('fcf-open')) window.__loco.stop();
+      }catch(e){ revealAll(); }
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
   })();
 
   /* tier 1 & 2: click CTA -> collapse the intro, show only that tier's copy + form */
@@ -525,6 +601,7 @@
     function show(){
       if(isOpen) return; isOpen=true; lastFocus=document.activeElement;
       layer.hidden=false; layer.scrollTop=0; document.documentElement.classList.add('fcf-open');
+      if(window.__loco) window.__loco.stop();   /* Lenis must let go, or the wheel scrolls the page behind */
       if(window.__frissonMountCal) window.__frissonMountCal();
       if(window.gsap && !REDUCE){
         gsap.fromTo(layer,{opacity:0},{opacity:1,duration:.4,ease:'power2.out',clearProps:'opacity'});
@@ -538,6 +615,7 @@
       function done(){
         if(finished) return; finished=true;
         layer.hidden=true; document.documentElement.classList.remove('fcf-open');
+        if(window.__loco) window.__loco.start();
         if(window.gsap) gsap.set([layer].concat([].slice.call(parts())),{clearProps:'opacity,transform'});
         if(lastFocus) try{lastFocus.focus({preventScroll:true});}catch(e){}
       }
