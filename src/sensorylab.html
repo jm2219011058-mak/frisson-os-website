@@ -156,19 +156,13 @@
     border-radius:clamp(16px,2.4vw,36px);corner-shape:squircle;
     transform:translate3d(0,calc((var(--progress,.5) - .5) * -26px),0);}
 
-  /* --- plate 3 breaks the ledger: name over a full-bleed sheet, stacked ---------
-     It is a contact sheet — sixteen frames — so it is the one plate whose PORTRAIT
-     height is the point: it runs edge to edge at its own ratio and is never cropped,
-     which on a wide screen makes it a wall you scroll down through. No object-fit
-     here on purpose — a cover crop would throw away the rows, and a contain box would
-     letterbox, which would also put the particle field around the BOX rather than
-     around the artwork, since the field measures the element's rect.
-     Square corners, because a rounded corner on a full-bleed element only reveals
-     the page behind it. */
-  .swl-layer--wide{display:block;padding-bottom:0;}
-  .swl-layer--wide .swl-fig{display:block;margin:clamp(30px,5vh,56px) 0 0 calc(50% - 50vw);width:100vw;}
-  .swl-layer--wide .swl-fig img{width:100vw;max-width:none;max-height:none;height:auto;
-    border-radius:0;corner-shape:normal;}
+  /* --- plate 3 is the portrait one: same ledger, standing up --------------------
+     It keeps every rule the other two follow — same rail, same alternation, same
+     squircle, same scroll drift. The ONLY difference is that it is not capped to the
+     landscape plates' shared height: it fills its column instead, so its 720x1280
+     proportion is what you read. Still never cropped — no object-fit, so nothing is
+     thrown away and the particle field keeps measuring the artwork itself. */
+  .swl-layer--tall .swl-fig img{width:100%;height:auto;max-height:none;}
 
   @media(max-width:760px){
     .swl-layer{grid-template-columns:1fr;gap:clamp(22px,4vh,34px);
@@ -250,7 +244,7 @@
         </figure>
       </article>
 
-      <article class="swl-layer swl-layer--wide reveal" data-scroll data-scroll-class="in">
+      <article class="swl-layer swl-layer--tall reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
           <h2 class="swl-name">Adaptive Layer</h2>
         </div>
