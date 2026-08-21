@@ -25,7 +25,7 @@ for (const line of md.split('\n')) {
 const O = {
   'nav.cities': ['Soulful Living Network', 'Soulful Living Network'],
   'nav.sona': ['Sona AI', 'Sona AI'],
-  'nav.advocater': ['Stealth Founders', 'Stealth Founders'],
+  'nav.advocater': ['Founding Catalyst', 'Founding Catalyst'],
   'nav.ownership': ['Beyond Ownership', 'Beyond Ownership'],
   'nav.stories': ['Field Notes', 'Field Notes'],
   'nav.lab': ['Sensory World Lab', 'Sensory World Lab'],
