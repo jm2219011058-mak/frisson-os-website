@@ -21,7 +21,7 @@
 import { Application, ParticleContainer, Particle, Texture } from './vendor/pixi/pixi-particles.min.mjs';
 
 const REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
-const FX = (window.__swlFx = { hero: null, layers: null, note: [] });
+const FX = (window.__swlFx = { hero: null, layers: null });
 const TAU = Math.PI * 2;
 
 /* sin() is called a few hundred thousand times a frame; a power-of-two LUT turns
@@ -36,7 +36,24 @@ const lsin = a => SIN[((a * LUT_SCALE) | 0) & LUT_MASK];
 const CORES = navigator.hardwareConcurrency || 4;
 const MOBILE = matchMedia('(max-width:760px)').matches || !matchMedia('(hover:hover)').matches;
 const BUDGET = MOBILE ? 12000 : (CORES <= 4 ? 26000 : 46000);
-const FIELD_BUDGET = MOBILE ? 5000 : (CORES <= 4 ? 11000 : 18000);
+const FIELD_BUDGET = MOBILE ? 18000 : (CORES <= 4 ? 34000 : 62000);
+
+/* Black at rest; the crimson only arrives where the pointer is. Quantising the ramp to
+   24 steps means a mote's tint is rewritten only when it crosses a step — a few hundred
+   writes a frame instead of one per particle (§5.5: don't write a value that hasn't
+   changed). The curve is squared so the swarm holds its ink until the cursor is close,
+   then blooms quickly. */
+const TINT_STEPS = 24;
+const TINT_LUT = new Uint32Array(TINT_STEPS);
+{
+  const A = [0x0b, 0x0a, 0x09], B = [0xe8, 0x2f, 0x63];
+  for (let i = 0; i < TINT_STEPS; i++) {
+    const t = i / (TINT_STEPS - 1), e = t * t;
+    TINT_LUT[i] = (Math.round(A[0] + (B[0] - A[0]) * e) << 16)
+                | (Math.round(A[1] + (B[1] - A[1]) * e) << 8)
+                |  Math.round(A[2] + (B[2] - A[2]) * e);
+  }
+}
 
 /** soft round dot, white so per-particle tint does the colouring */
 function dotTexture(size) {
@@ -124,6 +141,7 @@ function makeField(n) {
     x: new Float32Array(n), y: new Float32Array(n),
     vx: new Float32Array(n), vy: new Float32Array(n),
     ph: new Float32Array(n), am: new Float32Array(n), sp: new Float32Array(n),
+    tj: new Float32Array(n), ti: new Uint8Array(n),
     parts: new Array(n),
   };
 }
@@ -149,10 +167,6 @@ async function bootHero() {
   const tex = dotTexture(MOBILE ? 12 : 16);
   let container = null, F = null, built = false;
 
-  /* deep ink with a little life in it — mostly black, a few particles carrying the
-     plate's crimson, so the swarm reads as pigment rather than a flat silhouette */
-  const TINTS = [0x0b0a09, 0x0b0a09, 0x0b0a09, 0x140f10, 0x1d0d12, 0x3a0f1c, 0x5c1226];
-
   function build() {
     const pts = inkPoints(title, BUDGET);
     if (!pts) return false;
@@ -160,7 +174,8 @@ async function bootHero() {
 
     const n = pts.xs.length;
     F = makeField(n);
-    container = new ParticleContainer({ dynamicProperties: { position: true } });
+    /* colour joins position as dynamic: the swarm is black until the pointer nears it */
+    container = new ParticleContainer({ dynamicProperties: { position: true, color: true } });
 
     /* the title box in hero-local space — the canvas covers the whole hero */
     const hr = host.getBoundingClientRect();
@@ -176,11 +191,13 @@ async function bootHero() {
       F.ph[i] = Math.random() * TAU;
       F.am[i] = 0.9 + Math.random() * 2.6;          // idle wander, px
       F.sp[i] = 0.55 + Math.random() * 0.85;        // per-particle drift rate
+      F.tj[i] = 0.78 + Math.random() * 0.46;        // bloom threshold jitter
+      F.ti[i] = 0;                                  // current tint step
       const s = (dia + Math.random() * diaVar) / tex.width;
       const p = new Particle({
         texture: tex, x: px, y: py, anchorX: 0.5, anchorY: 0.5,
         scaleX: s, scaleY: s,
-        tint: TINTS[(Math.random() * TINTS.length) | 0],
+        tint: TINT_LUT[0],
         alpha: 0.84 + Math.random() * 0.16,
       });
       F.parts[i] = p;
@@ -192,7 +209,7 @@ async function bootHero() {
     return true;
   }
 
-  if (!build()) { FX.note.push('hero: build() false'); return; }
+  if (!build()) return;
 
   /* pointer, in hero-local space; -1e5 parks it far away so nothing is pushed */
   let px = -1e5, py = -1e5, pxT = -1e5, pyT = -1e5;
@@ -213,7 +230,7 @@ async function bootHero() {
     /* the pointer itself is eased so a fast flick doesn't snap the whole swarm */
     px += (pxT - px) * 0.22; py += (pyT - py) * 0.22;
 
-    const { n, hx, hy, x, y, vx, vy, ph, am, sp, parts } = F;
+    const { n, hx, hy, x, y, vx, vy, ph, am, sp, tj, ti, parts } = F;
     for (let i = 0; i < n; i++) {
       const a = ph[i], r = sp[i], m = am[i];
       let tx = hx[i] + lsin(a + t * r) * m;
@@ -221,12 +238,17 @@ async function bootHero() {
 
       const dx = tx - px, dy = ty - py;
       const d2 = dx * dx + dy * dy;
+      let step = 0;
       if (d2 < R2) {
         const d = Math.sqrt(d2) || 0.0001;
         const f = 1 - d / R;
         const push = f * f * FORCE;          // quadratic falloff: a soft-edged parting
         tx += (dx / d) * push; ty += (dy / d) * push;
+        /* one falloff, two effects: where the swarm parts, it also warms to crimson */
+        step = (f * tj[i] * (TINT_STEPS - 1)) | 0;
+        if (step < 0) step = 0; else if (step > TINT_STEPS - 1) step = TINT_STEPS - 1;
       }
+      if (step !== ti[i]) { ti[i] = step; parts[i].tint = TINT_LUT[step]; }
 
       const nvx = (vx[i] + (tx - x[i]) * K) * DAMP;
       const nvy = (vy[i] + (ty - y[i]) * K) * DAMP;
@@ -262,9 +284,9 @@ async function bootHero() {
 async function bootLayers() {
   const section = document.querySelector('.swl-layers');
   const canvas = document.getElementById('swlLayersFx');
-  if (!section || !canvas) { FX.note.push('layers: no node'); return; }
+  if (!section || !canvas) return;
   const figs = [...section.querySelectorAll('.swl-fig img')];
-  if (!figs.length) { FX.note.push('layers: no figs'); return; }
+  if (!figs.length) return;
 
   const app = new Application();
   await app.init({
@@ -307,7 +329,6 @@ async function bootLayers() {
         pal: paletteOf(img),
       });
     }
-    FX.note.push('layers: plates=' + plates.length);
     if (!plates.length) return false;
 
     const per = Math.floor(FIELD_BUDGET / plates.length);
@@ -351,7 +372,6 @@ async function bootLayers() {
         placed++;
       }
     }
-    FX.note.push('layers: pts=' + pts.length);
     if (!pts.length) return false;
 
     const n = pts.length;
@@ -376,7 +396,12 @@ async function bootLayers() {
     return true;
   }
 
-  if (!build()) { FX.note.push('layers: build() false'); return; }
+  const decoded = img => (img.complete && img.naturalWidth)
+    ? Promise.resolve()
+    : new Promise(res => {
+        img.addEventListener('load', res, { once: true });
+        img.addEventListener('error', res, { once: true });
+      });
 
   let pxT = -1e5, pyT = -1e5, px = -1e5, py = -1e5;
   const R = MOBILE ? 120 : 200, R2 = R * R, FORCE = MOBILE ? 34 : 58;
@@ -424,19 +449,41 @@ async function bootLayers() {
     container.update();
   }
 
-  if (REDUCE) { app.render(); }
-  else {
-    app.ticker.add(frame);
-    new IntersectionObserver(es => {
-      if (es[0].isIntersecting) { canvas.style.opacity = '1'; app.ticker.start(); }
-      else { app.ticker.stop(); canvas.style.opacity = '0'; }
-    }, { rootMargin: '15% 0px' }).observe(section);
+  let ready = false, building = false;
+  if (!REDUCE) app.ticker.add(frame);
+
+  /* Visibility is applied from the CURRENT rect, never from the entry that opened this
+     callback. The first build awaits image decode, and a scroll during that await delivers
+     an "exited" entry that would otherwise be the last word — leaving the field built,
+     parked and invisible with no further threshold crossing to correct it. */
+  function apply() {
+    const r = section.getBoundingClientRect();
+    const onScreen = r.bottom > -innerHeight * 0.25 && r.top < innerHeight * 1.25;
+    if (!onScreen) { app.ticker.stop(); canvas.style.opacity = '0'; return; }
+    canvas.style.opacity = '1';
+    if (REDUCE) app.render(); else app.ticker.start();
   }
+
+  new IntersectionObserver(async es => {
+    if (!es[es.length - 1].isIntersecting) { app.ticker.stop(); canvas.style.opacity = '0'; return; }
+    if (!ready) {
+      if (building) return;
+      building = true;
+      await Promise.all(figs.map(decoded));
+      ready = build();
+      building = false;
+      if (!ready) return;
+    }
+    apply();
+  }, { rootMargin: '25% 0px' }).observe(section);
 
   let rt = 0;
   addEventListener('resize', () => {
     clearTimeout(rt);
-    rt = setTimeout(() => { app.renderer.resize(innerWidth, innerHeight); build(); if (REDUCE) app.render(); }, 200);
+    rt = setTimeout(() => {
+      app.renderer.resize(innerWidth, innerHeight);
+      if (ready) { ready = build(); if (REDUCE) app.render(); }
+    }, 200);
   }, { passive: true });
 }
 
@@ -446,6 +493,6 @@ function whenReady(fn) {
   else addEventListener('load', fn, { once: true });
 }
 
-bootHero().catch(e => { FX.note.push('hero threw: ' + e.message); /* no WebGL: .swl-fx-on
-  is never set and the printed title simply stays visible */ });
-whenReady(() => { bootLayers().catch(e => { FX.note.push('layers threw: ' + e.message); }); });
+/* no WebGL / no context: .swl-fx-on is never set and the printed title simply stays visible */
+bootHero().catch(() => {});
+whenReady(() => { bootLayers().catch(() => {}); });

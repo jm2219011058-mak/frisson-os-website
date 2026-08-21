@@ -18,7 +18,7 @@
 <script defer src="assets/vendor/locomotive/locomotive-scroll.min.js"></script>
 <style>
   :root{
-    --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.12);
+    --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -140,8 +140,7 @@
 
   .swl-layer{display:grid;grid-template-columns:1fr 1fr;align-items:center;
     gap:clamp(24px,5vw,72px);
-    padding:clamp(36px,6vh,64px) 0;border-top:1px solid var(--hair);}
-  .swl-layer:last-of-type{border-bottom:1px solid var(--hair);}
+    padding:clamp(52px,9vh,104px) 0;}
   .swl-layer--flip .swl-layer-txt{order:2;}
 
   .swl-name{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
@@ -158,13 +157,17 @@
     transform:translate3d(0,calc((var(--progress,.5) - .5) * -26px),0);}
 
   /* --- plate 3 breaks the ledger: name over a full-bleed sheet, stacked ---------
-     It is a contact sheet — a wall of frames — so it is the one plate that gains from
-     running edge to edge and being cropped to a band. Square corners, because a rounded
-     corner on a full-bleed element only shows the page behind it. */
-  .swl-layer--wide{display:block;border-bottom:0;padding-bottom:0;}
+     It is a contact sheet — sixteen frames — so it is the one plate whose PORTRAIT
+     height is the point: it runs edge to edge at its own ratio and is never cropped,
+     which on a wide screen makes it a wall you scroll down through. No object-fit
+     here on purpose — a cover crop would throw away the rows, and a contain box would
+     letterbox, which would also put the particle field around the BOX rather than
+     around the artwork, since the field measures the element's rect.
+     Square corners, because a rounded corner on a full-bleed element only reveals
+     the page behind it. */
+  .swl-layer--wide{display:block;padding-bottom:0;}
   .swl-layer--wide .swl-fig{display:block;margin:clamp(30px,5vh,56px) 0 0 calc(50% - 50vw);width:100vw;}
-  .swl-layer--wide .swl-fig img{width:100vw;max-width:none;max-height:none;
-    height:clamp(360px,76svh,880px);object-fit:cover;object-position:center;
+  .swl-layer--wide .swl-fig img{width:100vw;max-width:none;max-height:none;height:auto;
     border-radius:0;corner-shape:normal;}
 
   @media(max-width:760px){
@@ -173,7 +176,6 @@
     .swl-layer--flip .swl-layer-txt{order:0;}       /* one rail on mobile: name always leads */
     .swl-name{font-size:clamp(30px,8.4vw,44px);}
     .swl-fig{--fh:clamp(240px,38vh,380px);}
-    .swl-layer--wide .swl-fig img{height:clamp(300px,62svh,560px);}
   }
 
   @media (prefers-reduced-motion:reduce){
