@@ -66,12 +66,8 @@
   @media (min-resolution:1.5dppx){ .swl-grain{background-size:128px 128px;} }
 
   /* nav — transparent, sits over the artwork */
-  .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,5vw,64px);background:transparent;transition:background .3s,border-color .3s;
-    border-bottom:1px solid transparent;}
-  /* past the hero it firms up into the house bar so it never floats over bare copy */
-  .nav.scrolled{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-    border-bottom-color:var(--hair);}
+  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:transparent;}
   .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
   .nav .brand .o{color:var(--accent);}
   .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
@@ -96,32 +92,33 @@
   .menu a:hover,.menu a:active{color:var(--accent);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
-  /* the title block — centred on the plate, drifting against it as you scroll */
-  .swl-cap{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;
+  /* ---------------------------------------------------------------------------
+     The title is PARTICLES, not text that becomes particles.
+     There is no crossfade here any more because there is no handover: the swarm is
+     the only state. The <h1> still ships — screen readers read it, CSS clamp still
+     decides the type size, and the rasteriser measures it to place the particles —
+     but it stops being painted the moment the field is live. If WebGL is missing,
+     `.swl-fx-on` is never set and the printed title just stays.
+     --------------------------------------------------------------------------- */
+  .swl-cap{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
     text-align:center;padding:clamp(92px,12vh,144px) clamp(16px,3vw,40px);
     transform:translate3d(0,calc(var(--progress,0) * -6%),0);}
   .swl-stage{position:relative;display:inline-block;}
-  .swl-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;cursor:default;
-    font-size:clamp(64px,min(21vw,24vh),300px);line-height:1.14;letter-spacing:-.02em;
-    /* coming back: ease-OUT, the ink arrives fast then settles */
-    transition:opacity .52s cubic-bezier(0.16,1,0.3,1);}
-  /* Leaving: ease-IN. The printed word holds its weight for a beat and only then lets go,
-     which is the same shape the particles use to launch (displacement runs as lt²), so the
-     ink and the dust hand over on one curve instead of the old 120ms cut. Both halves are
-     A→B gestures, so both are eased — §5.9 reserves linear for looping phase, not this. */
-  .swl-stage.dissolving .swl-title{opacity:0;transition:opacity .38s cubic-bezier(0.7,0,0.84,0);}
-  /* dust canvas — positioned from the title's own box each build (§5.5: rAF only while it moves).
-     Incoming eases OUT and outgoing eases IN — mirrored against the title above, so the pair
-     crosses with their sum near 1 and the swap never dips through a flat spot. */
-  .swl-dust{position:absolute;left:0;top:0;pointer-events:none;opacity:0;
-    transition:opacity .46s cubic-bezier(0.7,0,0.84,0);}
-  .swl-stage.dissolving .swl-dust{opacity:1;transition:opacity .32s cubic-bezier(0.16,1,0.3,1);}
-  /* status line — sits tight under the title because it belongs to it (§5 proximity) */
-  /* §5's eyebrow grey (#8c837a) is specified for white grounds; this one sits on the plate,
+  .swl-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
+    font-size:clamp(64px,min(21vw,24vh),300px);line-height:1.14;letter-spacing:-.02em;}
+  .swl-stage.swl-fx-on .swl-title{opacity:0;}
+  /* the swarm's canvas covers the whole hero so particles can be pushed well past the
+     letterforms without meeting a clipping edge */
+  .swl-fx{position:absolute;inset:0;z-index:2;pointer-events:none;display:block;width:100%;height:100%;}
+  /* status line — anchored low in the hero rather than under the title, so it reads as a
+     standing marker on the plate instead of a subtitle. It sits outside .swl-cap so the
+     parallax on the title block doesn't drag it off its own baseline.
+     §5's eyebrow grey (#8c837a) is specified for white grounds; this one sits on the plate,
      where the cloud runs saturated, so it takes the darker ink-soft token to hold contrast */
-  .swl-soon{position:relative;font-family:var(--sans);font-weight:700;text-transform:uppercase;
-    font-size:clamp(10px,.95vw,12px);letter-spacing:.18em;color:var(--ink-soft);
-    margin:clamp(14px,2vh,24px) 0 0;}
+  .swl-soon{position:absolute;left:0;right:0;bottom:clamp(30px,7vh,74px);z-index:3;
+    text-align:center;margin:0;
+    font-family:var(--sans);font-weight:700;text-transform:uppercase;
+    font-size:clamp(10px,.95vw,12px);letter-spacing:.18em;color:var(--ink-soft);}
 
   /* ===========================================================================
      ACT 2 — the three layers, as one ledger
@@ -129,12 +126,17 @@
      up and there was no rule saying which was which. Now every layer is the same
      entry — rule, name on one rail, specimen on the other — and the rails alternate.
      Nothing numbers or captions them: the hairlines carry the structure on their own.
-     The artworks are never cropped: each is a finished composition
-     (a framed HUD, a contact sheet), so they are sized by shared HEIGHT and keep
-     their own widths, which is what gives the column its rhythm.
+     Plates 1 and 2 are never cropped (each is a finished composition), so they are
+     sized by shared HEIGHT and keep their own widths. Plate 3 breaks the grid.
      =========================================================================== */
-  .swl-layers{background:#fff;padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) clamp(96px,14vh,170px);}
-  .swl-layers-in{max-width:1180px;margin:0 auto;}
+  .swl-layers{position:relative;background:#fff;
+    padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) clamp(96px,14vh,170px);}
+  /* the field is viewport-fixed and the particles live in section space; one rect read a
+     frame converts between them, which keeps the framebuffer at one screen instead of the
+     ~1900px-tall section (§5.5) */
+  .swl-layersfx{position:fixed;inset:0;z-index:1;pointer-events:none;display:block;
+    opacity:0;transition:opacity .6s ease;}
+  .swl-layers-in{position:relative;z-index:2;max-width:1180px;margin:0 auto;}
 
   .swl-layer{display:grid;grid-template-columns:1fr 1fr;align-items:center;
     gap:clamp(24px,5vw,72px);
@@ -154,7 +156,16 @@
     max-height:var(--fh,clamp(260px,42vh,470px));
     border-radius:clamp(16px,2.4vw,36px);corner-shape:squircle;
     transform:translate3d(0,calc((var(--progress,.5) - .5) * -26px),0);}
-  .swl-fig--tall{--fh:clamp(340px,56vh,600px);}
+
+  /* --- plate 3 breaks the ledger: name over a full-bleed sheet, stacked ---------
+     It is a contact sheet — a wall of frames — so it is the one plate that gains from
+     running edge to edge and being cropped to a band. Square corners, because a rounded
+     corner on a full-bleed element only shows the page behind it. */
+  .swl-layer--wide{display:block;border-bottom:0;padding-bottom:0;}
+  .swl-layer--wide .swl-fig{display:block;margin:clamp(30px,5vh,56px) 0 0 calc(50% - 50vw);width:100vw;}
+  .swl-layer--wide .swl-fig img{width:100vw;max-width:none;max-height:none;
+    height:clamp(360px,76svh,880px);object-fit:cover;object-position:center;
+    border-radius:0;corner-shape:normal;}
 
   @media(max-width:760px){
     .swl-layer{grid-template-columns:1fr;gap:clamp(22px,4vh,34px);
@@ -162,7 +173,7 @@
     .swl-layer--flip .swl-layer-txt{order:0;}       /* one rail on mobile: name always leads */
     .swl-name{font-size:clamp(30px,8.4vw,44px);}
     .swl-fig{--fh:clamp(240px,38vh,380px);}
-    .swl-fig--tall{--fh:clamp(320px,48vh,460px);}
+    .swl-layer--wide .swl-fig img{height:clamp(300px,62svh,560px);}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -183,22 +194,24 @@
       <div class="swl-grain" aria-hidden="true"></div>
     </div>
 
+    <canvas class="swl-fx" id="swlHeroFx" aria-hidden="true"></canvas>
+
     <nav class="nav">
       <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
       <div class="links">
         <a href="soulful-living-network">{{nav.cities}}</a>
         <a href="sona.html">{{nav.sona}}</a>
         <a href="founding-catalysts">{{nav.advocater}}</a>
-        <a href="sensory-lab" class="cur">{{nav.lab}}</a>
         <a href="field-notes">{{nav.stories}}</a>
+        <a href="sensory-lab" class="cur">{{nav.lab}}</a>
       </div>
       <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
       <div class="menu" id="menu">
         <a href="soulful-living-network">{{nav.cities}}</a>
         <a href="sona.html">{{nav.sona}}</a>
         <a href="founding-catalysts">{{nav.advocater}}</a>
-        <a href="sensory-lab">{{nav.lab}}</a>
         <a href="field-notes">{{nav.stories}}</a>
+        <a href="sensory-lab">{{nav.lab}}</a>
       </div>
       <!--LANGNAV-->
     </nav>
@@ -206,15 +219,17 @@
     <div class="swl-cap">
       <div class="swl-stage" id="swlStage">
         <h1 class="swl-title" id="swlTitle">Sensory<br>World<br>Lab</h1>
-        <canvas class="swl-dust" id="swlDust" aria-hidden="true"></canvas>
-        <p class="swl-soon">Launching Soon</p>
       </div>
     </div>
+
+    <p class="swl-soon">Launching Soon</p>
   </section>
 
 
   <section class="swl-layers">
+    <canvas class="swl-layersfx" id="swlLayersFx" aria-hidden="true"></canvas>
     <div class="swl-layers-in">
+
       <article class="swl-layer reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
           <h2 class="swl-name">Human Layer</h2>
@@ -233,154 +248,21 @@
         </figure>
       </article>
 
-      <article class="swl-layer reveal" data-scroll data-scroll-class="in">
+      <article class="swl-layer swl-layer--wide reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
           <h2 class="swl-name">Adaptive Layer</h2>
         </div>
-        <figure class="swl-fig swl-fig--tall" data-scroll data-scroll-css-progress>
+        <figure class="swl-fig" data-scroll data-scroll-css-progress>
           <img src="assets/city/layer-adaptive.webp" alt="" width="720" height="1280" loading="lazy" decoding="async">
         </figure>
       </article>
+
     </div>
   </section>
 
+  <script type="module" src="assets/swl-fx.mjs"></script>
   <script>
   var REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
-
-  /* the bar is fixed — firm it up once the artwork has scrolled past */
-  (function(){
-    var nav=document.querySelector('.nav'), hero=document.querySelector('.swl');
-    if(!nav||!hero) return;
-    function upd(){ nav.classList.toggle('scrolled', scrollY > hero.offsetHeight - 90); }
-    addEventListener('scroll',upd,{passive:true}); addEventListener('resize',upd); upd();
-  })();
-
-  /* hover -> the words break into fine pink dust and drift away; leaving pulls them home.
-     §5.5: one canvas, rAF only while particles move, reduced-motion opts out entirely. */
-  (function(){
-    var stage=document.getElementById('swlStage'), title=document.getElementById('swlTitle'), cv=document.getElementById('swlDust');
-    if(!stage||!title||!cv) return;
-    if(REDUCE) return;
-    var ctx=cv.getContext('2d'), DPR=Math.min(devicePixelRatio||1,2);
-    var P=[], W=0,H=0, PAD=0, DRIFT=90, raf=0, mode='idle', t0=0, built=false, wipe=0;
-    var TINTS=['#e82f63','#ff5c86','#d4174a','#ff8fb0','#c2143f'];
-
-    /* Rasterise the title by asking the DOM where each of its glyphs actually sits.
-       Re-typesetting the words into a scaled offscreen canvas — what this did before —
-       cannot line up with the rendered text, for three independent reasons:
-         · the scaled font-size lands on a different instance of Fraunces' 9..144 opsz
-           axis than the DOM uses, so the glyph widths differ;
-         · letter-spacing is a computed PX value, so copying it onto a canvas drawn at
-           0.54x applied roughly double the tracking it should have;
-         · the line breaks were hard-coded to three lines, so any viewport that set the
-           text differently drew dust for a layout that wasn't on screen.
-       Per-character Range rects remove all three at once: every position, break and
-       tracking decision comes from the same layout the user is looking at. */
-    function build(){
-      var tr=title.getBoundingClientRect(), sr=stage.getBoundingClientRect();
-      if(!tr.width||!tr.height) return false;
-      var cs=getComputedStyle(title);
-
-      /* pad the canvas so drifting dust fades out in open air instead of being
-         clipped at a hard rectangle edge; DRIFT is then sized to land inside it */
-      PAD=Math.round(Math.min(200,Math.max(70,tr.height*0.36)));
-      DRIFT=PAD*0.55;
-      W=Math.ceil(tr.width)+PAD*2; H=Math.ceil(tr.height)+PAD*2;
-      cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
-      cv.style.width=W+'px'; cv.style.height=H+'px';
-      cv.style.left=(tr.left-sr.left-PAD)+'px';
-      cv.style.top =(tr.top -sr.top -PAD)+'px';
-      ctx.setTransform(DPR,0,0,DPR,0,0);
-
-      var ow=Math.ceil(tr.width), oh=Math.ceil(tr.height);
-      var oc=document.createElement('canvas'); oc.width=ow; oc.height=oh;
-      var o=oc.getContext('2d',{willReadFrequently:true});
-      /* identical family, weight and PX size as the DOM -> identical opsz instance + metrics */
-      o.font=cs.fontStyle+' '+cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
-      o.fillStyle='#000'; o.textAlign='left'; o.textBaseline='alphabetic';
-      try{ o.letterSpacing='0px'; }catch(e){}   /* every x comes from the DOM, not from canvas advances */
-
-      var fm=o.measureText('Hxg');
-      var asc=fm.fontBoundingBoxAscent, desc=fm.fontBoundingBoxDescent;
-      if(!(asc>0)){ asc=parseFloat(cs.fontSize)*0.8; desc=parseFloat(cs.fontSize)*0.2; }
-
-      var rng=document.createRange(), drew=0;
-      var walk=document.createTreeWalker(title,NodeFilter.SHOW_TEXT,null), node;
-      while(node=walk.nextNode()){
-        var s=node.nodeValue;
-        for(var i=0;i<s.length;i++){
-          var ch=s.charAt(i);
-          if(ch===' '||ch==='\n'||ch==='\t'||ch==='\r') continue;
-          try{ rng.setStart(node,i); rng.setEnd(node,i+1); }catch(e){ continue; }
-          var r=rng.getBoundingClientRect();
-          if(!r.width||!r.height) continue;
-          /* CSS parks half the leading above the content box; recover the baseline from
-             the rect whether it came back as the content area or the whole line box */
-          var base=(r.top-tr.top)+(r.height-(asc+desc))/2+asc;
-          o.fillText(ch, r.left-tr.left, base);
-          drew++;
-        }
-      }
-      if(!drew) return false;
-
-      var d; try{ d=o.getImageData(0,0,ow,oh).data; }catch(e){ return false; }
-      P.length=0;
-      var step=Math.max(1,Math.round(ow/300)), cx=ow/2, cy=oh/2;
-      for(var y=0;y<oh;y+=step)for(var x=0;x<ow;x+=step){
-        if(d[(y*ow+x)*4+3]<110) continue;
-        var ang=Math.atan2(y-cy,x-cx)+(Math.random()-.5)*1.1, sp=.5+Math.random()*1.9;
-        P.push({hx:x+PAD,hy:y+PAD,x:x+PAD,y:y+PAD,
-                vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp-.35,
-                s:Math.max(.9,step*(.46+Math.random()*.44)), a:1, d:Math.random()*.5,
-                life:1.5+Math.random()*1.4, c:TINTS[(x+y)%TINTS.length]});
-      }
-      built=P.length>0; return built;
-    }
-
-    function tick(ts){
-      if(!t0) t0=ts;
-      var el=(ts-t0)/1000, alive=false;
-      ctx.clearRect(0,0,W,H);
-      for(var i=0;i<P.length;i++){
-        var p=P[i];
-        if(mode==='out'){
-          var lt=(el-p.d)/p.life; if(lt<0)lt=0; if(lt<1)alive=true; else lt=1;
-          /* displacement and fade share one curve: a mote thins out in step with how far
-             it has been thrown, instead of the old linear 1-lt ramp that emptied the word
-             at a constant rate no matter what the motion was doing */
-          var e=lt*lt;
-          p.x=p.hx+p.vx*e*DRIFT; p.y=p.hy+p.vy*e*DRIFT; p.a=1-e;
-        }else{
-          p.x+=(p.hx-p.x)*.075; p.y+=(p.hy-p.y)*.075; p.a+=(1-p.a)*.07;
-          if(Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)>.5||p.a<.97) alive=true;
-        }
-        if(p.a>.012){ ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); }
-      }
-      ctx.globalAlpha=1;
-      if(alive){ raf=requestAnimationFrame(tick); return; }
-      /* the reassembled word is still painted here; clearing it now would cut the fade
-         short, so hold the last frame and wipe once the CSS transition has run out */
-      if(mode==='back'){ stage.classList.remove('dissolving');
-        clearTimeout(wipe); wipe=setTimeout(function(){ ctx.clearRect(0,0,W,H); },520); }
-      mode='idle'; raf=0;
-    }
-    function start(m){ if(mode===m) return; mode=m; t0=0; cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); }
-    function out(){ if(!built && !build()) return; clearTimeout(wipe); stage.classList.add('dissolving');
-      for(var i=0;i<P.length;i++){ var p=P[i]; p.x=p.hx; p.y=p.hy; p.a=1; } start('out'); }
-    function back(){ if(!built) return; start('back'); }
-
-    if(matchMedia('(hover:hover)').matches){
-      title.addEventListener('mouseenter',out);
-      stage.addEventListener('mouseleave',back);
-    }else{
-      title.addEventListener('click',function(){ mode==='out'?back():out(); });
-    }
-    /* the canvas is measured against live rects, so any relayout invalidates it */
-    addEventListener('resize',function(){ built=false;
-      if(mode!=='idle'){ cancelAnimationFrame(raf); mode='idle'; raf=0; stage.classList.remove('dissolving'); ctx.clearRect(0,0,W,H); } });
-    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ built=false; });
-    window.__swlRebuild=function(){ built=false; return build(); };
-  })();
 
   (function(){ var b=document.getElementById('menuBtn'), m=document.getElementById('menu'); if(!b||!m) return;
     b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); b.setAttribute('aria-expanded',o?'true':'false'); });
