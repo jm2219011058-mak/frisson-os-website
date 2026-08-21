@@ -110,18 +110,9 @@ body.embedded #grain{
   opacity:.5;transition:opacity 1.3s var(--silk);}
 .cvc img{width:100%;height:100%;object-fit:cover;display:block;}
 .cluster.awake .cvc{opacity:1;}
-.cluster-label{position:absolute;transform:translate(-50%,0);text-align:center;white-space:nowrap;
-  opacity:.8;transition:opacity 1.3s var(--silk);}
-.cluster-label .cl-name{font-family:var(--sans);font-weight:700;font-size:clamp(13.5px,1.5vw,16px);letter-spacing:.18em;
-  text-transform:uppercase;color:var(--ghost);transition:color 1.3s;}
-.cluster-label .cl-alias{font-family:var(--serif);font-style:italic;font-size:clamp(13px,1.5vw,15.5px);color:var(--ghost);
-  margin-top:4px;transition:color 1.3s;}
-.cluster.awake .cluster-label{opacity:1;}
-.cluster.awake .cl-name{color:var(--ink);}
-.cluster.awake .cl-alias{color:var(--ink-soft);}
-.cluster .cl-count{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.12em;
-  color:var(--brick);margin-top:5px;opacity:0;transition:opacity 1.3s var(--silk);}
-.cluster.awake .cl-count{opacity:1;}
+/* the cover names nothing: the ring is pictures only, and the awake cluster is told
+   apart by light alone (.5 → 1 opacity). No SI number, alias or claimed count here —
+   those belong to the acts, where a world has been chosen. */
 /* copy NESTED INSIDE the ring (Getty plate): the block floats at the ring's core,
    text ragged-right, the plank alone on the centre axis */
 #cover-copy{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
@@ -389,15 +380,13 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
     transition:none;transform:translate(-50%,0);opacity:1;}
   .map-head,.map-body,#act5-inner,#act2 .order-title,#act2 .order-sub,#act2 #rank-row,#act2 .reveal-wrap{transform:none;}
   .act{transition:opacity .01s;}
-  .cvc,.cluster-label{transition:none;}
+  .cvc{transition:none;}
 }
 
 @media (max-width:1080px){
   /* narrow stages: the ring flows behind the copy — a paper shield keeps the words
-     readable (layering contract), and only the awake cluster speaks at full voice */
+     readable (layering contract) */
   #cover-copy{background:radial-gradient(closest-side,rgba(253,251,247,.96),rgba(253,251,247,.7) 62%,rgba(253,251,247,0));}
-  .cluster-label{opacity:.55;}
-  .cluster.awake .cluster-label{opacity:1;}
 }
 @media (max-width:980px){
   #world-grid{grid-template-columns:repeat(2,1fr);}
@@ -409,8 +398,6 @@ footer-note{display:block;text-align:center;font-family:var(--sans);font-weight:
   #cover-copy{top:44%;width:90vw;padding:16px;}
   #cover-copy h1{font-size:clamp(48px,13vw,64px);}
   #cover-copy .lede{font-size:15.5px;line-height:1.7;}
-  .cluster-label .cl-alias{display:none;}       /* name only — the ring stays airy */
-  .cluster-label{opacity:.55;}
   #field-instruction{padding:0 18px;}
   #field-instruction .fi-poster{width:80vw;}
   .slot{width:52px;height:52px;}
@@ -1553,9 +1540,13 @@ function buildCover(){
   box.innerHTML='';
   const W=window.innerWidth,H=window.innerHeight;
   /* symmetric Getty ring — copy and plank live INSIDE it. ry is capped so the LOWEST
-     cluster plus its label (≈86·M + two lines) still lands inside the viewport:
-     nothing may be guillotined by the fold / iframe edge */
+     cluster's dot cloud (≈94·M below its centre, see DOT_REACH) still lands inside the
+     viewport: nothing may be guillotined by the fold / iframe edge */
   const M=W<700?0.68:1;
+  /* how far a cluster's dots reach from its centre, at M=1: the scatter radius flattened
+     vertically (74·0.85) plus half the largest disc ((20+30+12)/2). Keep in step with the
+     `rr` and `d` formulas below — this is what both viewport guards are measured against. */
+  const DOT_REACH=74*0.85+31;
   const cx=W*0.5, cy=H*0.44;
   const rx=Math.min(W*0.42,660), ry=Math.min(H*0.33,340);
   const rnd=mulberry32(4114);
@@ -1563,11 +1554,13 @@ function buildCover(){
     const a=-Math.PI/2+wi*(Math.PI*2/WORLDS.length);
     const cl=document.createElement('div');
     cl.className='cluster';
-    /* outward labels need headroom: an above-labelled cluster that would push its label
-       off-screen gets pulled down just enough — the ring keeps an organic irregularity */
+    /* nav clearance: a top-of-ring cluster gets pulled down just far enough that its own
+       dots clear the fixed FRISSON bar (58px) — in embed mode that bar belongs to the host
+       page but sits in exactly the same band. Pulled per-cluster, so the ring keeps an
+       organic irregularity instead of flattening into an arc. */
     const above=Math.sin(a)<-0.25;
     let py=cy+Math.sin(a)*ry;
-    if(above) py=Math.max(py, 12+58+86*M);
+    if(above) py=Math.max(py, 12+58+DOT_REACH*M);
     cl.style.left=(cx+Math.cos(a)*rx)+'px';
     cl.style.top=py+'px';
     const top=CARDS.map(c=>({c,s:sim(w.proto,c.dims)})).sort((p,q)=>q.s-p.s).slice(0,9);
@@ -1581,28 +1574,7 @@ function buildCover(){
       el.innerHTML='<img data-card="'+p.c.id+'" src="'+CARD_SRC[p.c.id]+'" alt="">';
       cl.appendChild(el);
     });
-    const lab=document.createElement('div');
-    lab.className='cluster-label';
-    /* labels sit OUTWARD (away from the ring's core): upper-half clusters speak above
-       themselves, lower-half below — so no label ever leans into the copy block */
-    lab.style.left='0px';
-    if(above){ lab.style.top=(-86*M)+'px'; lab.style.transform='translate(-50%,-100%)'; }
-    else{ lab.style.top=(86*M)+'px'; }
-    lab.innerHTML='<div class="cl-name">SI #'+String(w.si).padStart(2,'0')+' — '+w.name+'</div>'
-      +'<div class="cl-alias">'+w.alias+'</div>'
-      +'<div class="cl-count">'+w.claimed+' of '+CAPACITY+' claimed</div>';
-    cl.appendChild(lab);
     box.appendChild(cl);
-  });
-  /* horizontal guard, same contract as the vertical one above: no label may be
-     guillotined by the viewport edge — shift just enough, the ring stays organic */
-  const edgePad=10;
-  box.querySelectorAll('.cluster-label').forEach(lab=>{
-    const r=lab.getBoundingClientRect();
-    let dx=0;
-    if(r.left<edgePad) dx=edgePad-r.left;
-    else if(r.right>W-edgePad) dx=(W-edgePad)-r.right;
-    if(dx) lab.style.marginLeft=dx+'px';
   });
   wakeCluster(awakeIdx);
 }
