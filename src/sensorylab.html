@@ -51,17 +51,10 @@
   .menu a:hover,.menu a:active{color:var(--accent);}
   .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
 
+  .swl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:0;}
   /* the title — as large as the canvas allows, centred over the artwork */
   .swl-cap{position:relative;z-index:2;min-height:100svh;display:flex;align-items:center;justify-content:center;
     text-align:center;padding:clamp(56px,8vh,92px) clamp(16px,3vw,40px);}
-  .swl-stage{position:relative;display:inline-block;}
-  .swl-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;cursor:default;
-    font-size:clamp(64px,min(21vw,24vh),300px);line-height:1.14;letter-spacing:-.02em;
-    transition:opacity .3s ease;}
-  .swl-stage.dissolving .swl-title{opacity:0;transition:opacity .12s ease;}
-  /* dust canvas sits exactly over the words (§5.5: one layer, rAF only while it moves) */
-  .swl-dust{position:absolute;left:0;top:0;pointer-events:none;opacity:0;}
-  .swl-stage.dissolving .swl-dust{opacity:1;}
 
   /* statement below the artwork — iridescent plate behind ink type */
   .swl-say{position:relative;overflow:hidden;background:#fff;
@@ -129,12 +122,7 @@
       <!--LANGNAV-->
     </nav>
 
-    <div class="swl-cap">
-      <div class="swl-stage" id="swlStage">
-        <h1 class="swl-title" id="swlTitle">Sensory World<br>Lab</h1>
-        <canvas class="swl-dust" id="swlDust" aria-hidden="true"></canvas>
-      </div>
-    </div>
+    <h1 class="swl-sr">Sensory World Lab</h1>
   </section>
 
   <div class="swl-seam" aria-hidden="true"><canvas id="swlSeam"></canvas></div>
@@ -162,98 +150,6 @@
     (function(){ var b=document.getElementById('menuBtn'), m=document.getElementById('menu'); if(!b||!m) return;
       b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
       m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
-    })();
-
-    /* hover → the words break into fine pink dust and drift away; leaving pulls them home.
-       §5.5: one canvas, rAF only while particles move, reduced-motion opts out entirely. */
-    (function(){
-      var stage=document.getElementById('swlStage'), title=document.getElementById('swlTitle'), cv=document.getElementById('swlDust');
-      if(!stage||!title||!cv) return;
-      if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-      var ctx=cv.getContext('2d'), DPR=Math.min(devicePixelRatio||1,2);
-      var P=[], W=0,H=0, raf=0, mode='idle', t0=0, built=false;
-      var TINTS=['#e82f63','#ff5c86','#d4174a','#ff8fb0','#c2143f'];
-
-      function build(){
-        var r=title.getBoundingClientRect();
-        W=Math.ceil(r.width); H=Math.ceil(r.height);
-        if(!W||!H) return false;
-        cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
-        ctx.setTransform(DPR,0,0,DPR,0,0);
-
-        var scale=Math.min(1,540/W);                    /* sample small, draw big */
-        var oc=document.createElement('canvas');
-        oc.width=Math.max(1,Math.round(W*scale)); oc.height=Math.max(1,Math.round(H*scale));
-        var o=oc.getContext('2d'), cs=getComputedStyle(title);
-        var fs=parseFloat(cs.fontSize)*scale, lh=parseFloat(cs.lineHeight)*scale;
-        try{ o.letterSpacing=cs.letterSpacing; }catch(e){}
-        o.fillStyle='#000'; o.textAlign='center'; o.textBaseline='middle';
-        o.font=cs.fontWeight+' '+fs+'px '+cs.fontFamily;
-        var lines=['Sensory','World','Lab'], total=lines.length*lh;
-        for(var i=0;i<lines.length;i++) o.fillText(lines[i], oc.width/2, (oc.height-total)/2 + lh*(i+0.5));
-
-        var d; try{ d=o.getImageData(0,0,oc.width,oc.height).data; }catch(e){ return false; }
-        P.length=0;
-        var step=Math.max(1,Math.round(oc.width/300));   /* ~fine grain, bounded count */
-        var inv=1/scale, cx=W/2, cy=H/2;
-        for(var y=0;y<oc.height;y+=step)for(var x=0;x<oc.width;x+=step){
-          if(d[(y*oc.width+x)*4+3]<110) continue;
-          var px=x*inv, py=y*inv;
-          var ang=Math.atan2(py-cy,px-cx)+(Math.random()-.5)*1.1;
-          var sp=.5+Math.random()*1.9;
-          P.push({hx:px,hy:py,x:px,y:py,
-                  vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp-.35,
-                  s:inv*(.72+Math.random()*.7), a:1,
-                  d:Math.random()*.5, life:1.5+Math.random()*1.4,
-                  c:TINTS[(x+y)%TINTS.length]});
-        }
-        built=true; return P.length>0;
-      }
-
-      function tick(ts){
-        if(!t0) t0=ts;
-        var el=(ts-t0)/1000, alive=false;
-        ctx.clearRect(0,0,W,H);
-        for(var i=0;i<P.length;i++){
-          var p=P[i];
-          if(mode==='out'){
-            var lt=(el-p.d)/p.life; if(lt<0)lt=0; if(lt<1)alive=true; else lt=1;
-            var e=lt*lt;
-            p.x=p.hx+p.vx*e*64; p.y=p.hy+p.vy*e*64;
-            p.a=1-lt;
-          }else{
-            p.x+=(p.hx-p.x)*.075; p.y+=(p.hy-p.y)*.075; p.a+=(1-p.a)*.07;
-            if(Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)>.5||p.a<.97) alive=true;
-          }
-          if(p.a>.012){ ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); }
-        }
-        ctx.globalAlpha=1;
-        if(alive){ raf=requestAnimationFrame(tick); return; }
-        if(mode==='back'){ stage.classList.remove('dissolving'); ctx.clearRect(0,0,W,H); }
-        mode='idle'; raf=0;
-      }
-
-      function start(m){
-        if(mode===m) return;
-        mode=m; t0=0; cancelAnimationFrame(raf);
-        raf=requestAnimationFrame(tick);
-      }
-      function out(){
-        if(!built && !build()) return;
-        stage.classList.add('dissolving');
-        for(var i=0;i<P.length;i++){ var p=P[i]; p.x=p.hx; p.y=p.hy; p.a=1; }
-        start('out');
-      }
-      function back(){ if(!built) return; start('back'); }
-
-      if(matchMedia('(hover:hover)').matches){
-        title.addEventListener('mouseenter',out);
-        stage.addEventListener('mouseleave',back);
-      }else{
-        title.addEventListener('click',function(){ mode==='out'?back():out(); });
-      }
-      addEventListener('resize',function(){ built=false; if(mode!=='idle'){ cancelAnimationFrame(raf); mode='idle'; stage.classList.remove('dissolving'); } });
-      if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ built=false; });
     })();
 
     /* seam grains — a live drift the pointer can part; springs pull each grain home.
