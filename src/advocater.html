@@ -99,7 +99,7 @@
   .fcr-bg{display:block;width:100%;}
   .fcr-bg img{display:block;width:100%;height:100%;object-fit:cover;}
   .fcr-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:clamp(24px,6vw,64px);}
+    text-align:center;padding:clamp(24px,6vw,64px) clamp(24px,6vw,64px) clamp(90px,14vh,170px);}
   .fcr-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
     font-size:clamp(58px,15.5vw,230px);line-height:1.16;letter-spacing:-.015em;}
   .fc-red #join{margin:clamp(56px,10vh,130px) 0 0;text-align:center;}
@@ -335,7 +335,7 @@
   .fc-full .fc-book{width:100%;margin-left:auto;margin-right:auto;}
 
   /* footer */
-  .site-foot{position:relative;z-index:2;align-self:stretch;background:#c8402c;color:rgba(255,255,255,.72);text-align:center;padding:30px clamp(24px,6vw,40px);
+  .site-foot{position:relative;z-index:3;align-self:stretch;background:transparent;margin-top:calc(-1 * clamp(70px,11vh,130px));color:rgba(255,255,255,.78);text-align:center;padding:30px clamp(24px,6vw,40px);
     font-family:var(--sans);font-size:13px;letter-spacing:.04em;border-top:1px solid rgba(43,29,18,.08);}
   .site-foot a{color:rgba(255,255,255,.85);text-decoration:none;margin:0 10px;}
   .site-foot a:hover{color:var(--accent);}
@@ -359,6 +359,7 @@
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts" class="cur">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
+      <a href="sensory-lab">{{nav.lab}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
     <div class="menu" id="menu">
@@ -366,6 +367,7 @@
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
       <a href="field-notes">{{nav.stories}}</a>
+      <a href="sensory-lab">{{nav.lab}}</a>
     </div>
     <!--LANGNAV-->
   </nav>

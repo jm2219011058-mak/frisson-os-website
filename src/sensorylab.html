@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sensory World Lab — FRISSON</title>
+<meta name="description" content="Sensory World Lab — Frisson's laboratory of sensory identity.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/type.css">
+<style>
+  :root{
+    --bg:#ffffff;--ink:#2b1d12;--ink-soft:#5b4a3b;--accent:#e07b3c;--hair:rgba(43,29,18,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;}
+  body{overflow-x:clip;background:#f7f5f3;color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
+
+  /* the artwork runs the full viewport — the nav floats on top of it */
+  .swl{position:relative;width:100%;min-height:100svh;overflow:hidden;background:#f7f5f3;}
+  .swl-bg{position:absolute;inset:0;z-index:0;display:block;}
+  .swl-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+
+  /* nav — transparent, sits over the artwork */
+  .nav{position:absolute;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);background:transparent;}
+  .nav .brand{font-family:"Playfair Display","Noto Serif SC",serif;font-size:clamp(18px,2.4vw,24px);letter-spacing:.14em;color:var(--ink);text-decoration:none;font-weight:500;}
+  .nav .brand .o{color:var(--accent);}
+  .nav .links{display:flex;gap:clamp(18px,3vw,46px);}
+  .nav .links a{font-family:var(--sans);font-size:clamp(12px,1.1vw,15px);letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .25s;white-space:nowrap;}
+  .nav .links a:hover,.nav .links a.cur{color:var(--accent);}
+  .menu-btn{display:none;flex-direction:column;justify-content:center;gap:6px;width:36px;height:36px;background:transparent;border:0;cursor:pointer;padding:0;}
+  .menu-btn span{display:block;width:24px;height:2px;background:#2b1d12;border-radius:2px;transition:transform .3s;}
+  .menu-btn.open span:nth-child(1){transform:translateY(4px) rotate(45deg);}
+  .menu-btn.open span:nth-child(2){transform:translateY(-4px) rotate(-45deg);}
+  @media(min-width:681px){.menu{display:none;}}
+  @media (max-width:680px){ .nav .links{display:none;} .menu-btn{display:flex;} }
+
+  /* mobile menu — house pattern: full-screen paper sheet, quiet editorial links */
+  .menu{display:flex;position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(22px,5vh,44px);background:#fff;z-index:55;
+    opacity:0;pointer-events:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
+  .menu.open{opacity:1;pointer-events:auto;}
+  .menu a{color:#2b1d12;text-decoration:none;
+    font-family:var(--serif);font-weight:400;font-size:clamp(23px,5.8vw,32px);letter-spacing:.012em;line-height:1.18;
+    opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .55s cubic-bezier(0.25,0.1,0.25,1),color .25s;}
+  .menu.open a{opacity:1;transform:none;}
+  .menu a:hover,.menu a:active{color:var(--accent);}
+  .nav .brand,.nav .menu-btn{position:relative;z-index:60;}
+
+  /* the title — as large as the canvas allows, centred over the artwork */
+  .swl-cap{position:relative;z-index:2;min-height:100svh;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:clamp(56px,8vh,92px) clamp(16px,3vw,40px);}
+  .swl-stage{position:relative;display:inline-block;}
+  .swl-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;cursor:default;
+    font-size:clamp(64px,min(21vw,24vh),300px);line-height:1.14;letter-spacing:-.02em;
+    transition:opacity .3s ease;}
+  .swl-stage.dissolving .swl-title{opacity:0;transition:opacity .12s ease;}
+  /* dust canvas sits exactly over the words (§5.5: one layer, rAF only while it moves) */
+  .swl-dust{position:absolute;left:0;top:0;pointer-events:none;opacity:0;}
+  .swl-stage.dissolving .swl-dust{opacity:1;}
+
+  /* statement below the artwork — iridescent plate behind ink type */
+  .swl-say{position:relative;overflow:hidden;background:#fff;
+    padding:clamp(150px,25vh,320px) clamp(24px,6vw,72px) clamp(130px,20vh,250px);}
+  /* the seam between the two plates — a drift of coloured grains, densest mid-band.
+     Painted once (no rAF): §5.5 prefers baked grain over a running loop. */
+  .swl-seam{position:relative;height:clamp(110px,17vh,230px);overflow:hidden;
+    background:linear-gradient(180deg,#fafcfb 0%,#fdfeff 55%,#ffffff 100%);}   /* edge colours sampled from the two plates */
+  .swl-seam canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .swl-say-bg{position:absolute;inset:0;z-index:0;display:block;}   /* NB: <picture> is inline — without display:block the box collapses to 0×0 and the img overflows at natural size */
+  .swl-say-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+  /* a white veil knocks the plate back so the ink type sits comfortably on it */
+  .swl-say-bg::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.34);pointer-events:none;}
+  /* dust layer that scatters the plate's own colours on hover (§5.5: one canvas, rAF only while alive) */
+  .swl-say-dust{position:absolute;inset:0;z-index:1;pointer-events:none;}
+  .swl-say-in{position:relative;z-index:2;max-width:1180px;margin:0 auto;text-align:center;}
+  .swl-say-h,.swl-say-p{text-shadow:0 1px 22px rgba(255,255,255,.85), 0 0 4px rgba(255,255,255,.7);}
+
+  /* the three layers — plain white, one big name per line */
+  .swl-layers{background:#fff;padding:clamp(110px,18vh,230px) clamp(24px,6vw,72px);}
+  .swl-layers-in{max-width:1180px;margin:0 auto;
+    display:flex;flex-direction:column;gap:clamp(48px,9vh,120px);}
+  .swl-layer{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
+    font-size:clamp(30px,5.2vw,76px);line-height:1.1;letter-spacing:-.012em;text-align:center;}
+  /* a layer that carries an image: name left, artwork right */
+  .swl-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,5vw,72px);}
+  .swl-row .swl-layer{text-align:left;}
+  .swl-row-fig{margin:0;}
+  .swl-row-fig img{display:block;width:100%;height:auto;}
+  @media(max-width:760px){
+    .swl-row{grid-template-columns:1fr;gap:clamp(22px,4vh,36px);}
+    .swl-row .swl-layer{text-align:center;}
+  }
+  .swl-say-h{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
+    font-size:clamp(30px,5.2vw,76px);line-height:1.1;letter-spacing:-.012em;text-wrap:balance;}
+  .swl-say-p{font-family:var(--serif);font-weight:400;color:#0b0a09;margin:0 auto;max-width:62ch;
+    font-size:clamp(15px,1.7vw,20px);line-height:1.7;text-wrap:pretty;}
+</style>
+</head>
+<body>
+
+  <section class="swl">
+    <picture class="swl-bg">
+      <source type="image/webp" srcset="assets/city/swl-bg-820.webp 820w, assets/city/swl-bg.webp 750w" sizes="100vw">
+      <img src="assets/city/swl-bg.webp" alt="" width="750" height="1059" fetchpriority="high" decoding="async">
+    </picture>
+
+    <nav class="nav">
+      <a class="brand" href="index.html">FRISS<span class="o">O</span>N</a>
+      <div class="links">
+        <a href="soulful-living-network">{{nav.cities}}</a>
+        <a href="sona.html">{{nav.sona}}</a>
+        <a href="founding-catalysts">{{nav.advocater}}</a>
+        <a href="field-notes">{{nav.stories}}</a>
+        <a href="sensory-lab" class="cur">{{nav.lab}}</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+      <div class="menu" id="menu">
+        <a href="soulful-living-network">{{nav.cities}}</a>
+        <a href="sona.html">{{nav.sona}}</a>
+        <a href="founding-catalysts">{{nav.advocater}}</a>
+        <a href="field-notes">{{nav.stories}}</a>
+        <a href="sensory-lab">{{nav.lab}}</a>
+      </div>
+      <!--LANGNAV-->
+    </nav>
+
+    <div class="swl-cap">
+      <div class="swl-stage" id="swlStage">
+        <h1 class="swl-title" id="swlTitle">Sensory World<br>Lab</h1>
+        <canvas class="swl-dust" id="swlDust" aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <div class="swl-seam" aria-hidden="true"><canvas id="swlSeam"></canvas></div>
+
+  <section class="swl-say" id="swlSay">
+    <picture class="swl-say-bg">
+      <source type="image/webp" srcset="assets/city/swl-say-bg-1200.webp?v=2 1200w, assets/city/swl-say-bg.webp?v=2 736w" sizes="100vw">
+      <img src="assets/city/swl-say-bg.webp?v=2" alt="" width="736" height="1103" loading="lazy" decoding="async">
+    </picture>
+    <canvas class="swl-say-dust" id="swlSayDust" aria-hidden="true"></canvas>
+    <div class="swl-say-in">
+      <h2 class="swl-say-h">Frisson Sensory Lab merges space, sensing, biology, and human perception into a single system to understand and shape the way people experience the physical</h2>
+    </div>
+  </section>
+
+  <section class="swl-layers">
+    <div class="swl-layers-in">
+      <div class="swl-row">
+        <h2 class="swl-layer">Human Layer</h2>
+        <figure class="swl-row-fig"><img src="assets/city/layer-human.webp" alt="" width="1170" height="1463" loading="lazy" decoding="async"></figure>
+      </div>
+      <h2 class="swl-layer">Outlier Layer</h2>
+      <h2 class="swl-layer">Adaptive Layer</h2>
+    </div>
+  </section>
+
+  <script>
+    (function(){ var b=document.getElementById('menuBtn'), m=document.getElementById('menu'); if(!b||!m) return;
+      b.addEventListener('click',function(){ var o=m.classList.toggle('open'); b.classList.toggle('open',o); });
+      m.addEventListener('click',function(){ m.classList.remove('open'); b.classList.remove('open'); });
+    })();
+
+    /* hover → the words break into fine pink dust and drift away; leaving pulls them home.
+       §5.5: one canvas, rAF only while particles move, reduced-motion opts out entirely. */
+    (function(){
+      var stage=document.getElementById('swlStage'), title=document.getElementById('swlTitle'), cv=document.getElementById('swlDust');
+      if(!stage||!title||!cv) return;
+      if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+      var ctx=cv.getContext('2d'), DPR=Math.min(devicePixelRatio||1,2);
+      var P=[], W=0,H=0, raf=0, mode='idle', t0=0, built=false;
+      var TINTS=['#e82f63','#ff5c86','#d4174a','#ff8fb0','#c2143f'];
+
+      function build(){
+        var r=title.getBoundingClientRect();
+        W=Math.ceil(r.width); H=Math.ceil(r.height);
+        if(!W||!H) return false;
+        cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+        ctx.setTransform(DPR,0,0,DPR,0,0);
+
+        var scale=Math.min(1,540/W);                    /* sample small, draw big */
+        var oc=document.createElement('canvas');
+        oc.width=Math.max(1,Math.round(W*scale)); oc.height=Math.max(1,Math.round(H*scale));
+        var o=oc.getContext('2d'), cs=getComputedStyle(title);
+        var fs=parseFloat(cs.fontSize)*scale, lh=parseFloat(cs.lineHeight)*scale;
+        try{ o.letterSpacing=cs.letterSpacing; }catch(e){}
+        o.fillStyle='#000'; o.textAlign='center'; o.textBaseline='middle';
+        o.font=cs.fontWeight+' '+fs+'px '+cs.fontFamily;
+        var lines=['Sensory','World','Lab'], total=lines.length*lh;
+        for(var i=0;i<lines.length;i++) o.fillText(lines[i], oc.width/2, (oc.height-total)/2 + lh*(i+0.5));
+
+        var d; try{ d=o.getImageData(0,0,oc.width,oc.height).data; }catch(e){ return false; }
+        P.length=0;
+        var step=Math.max(1,Math.round(oc.width/300));   /* ~fine grain, bounded count */
+        var inv=1/scale, cx=W/2, cy=H/2;
+        for(var y=0;y<oc.height;y+=step)for(var x=0;x<oc.width;x+=step){
+          if(d[(y*oc.width+x)*4+3]<110) continue;
+          var px=x*inv, py=y*inv;
+          var ang=Math.atan2(py-cy,px-cx)+(Math.random()-.5)*1.1;
+          var sp=.5+Math.random()*1.9;
+          P.push({hx:px,hy:py,x:px,y:py,
+                  vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp-.35,
+                  s:inv*(.72+Math.random()*.7), a:1,
+                  d:Math.random()*.5, life:1.5+Math.random()*1.4,
+                  c:TINTS[(x+y)%TINTS.length]});
+        }
+        built=true; return P.length>0;
+      }
+
+      function tick(ts){
+        if(!t0) t0=ts;
+        var el=(ts-t0)/1000, alive=false;
+        ctx.clearRect(0,0,W,H);
+        for(var i=0;i<P.length;i++){
+          var p=P[i];
+          if(mode==='out'){
+            var lt=(el-p.d)/p.life; if(lt<0)lt=0; if(lt<1)alive=true; else lt=1;
+            var e=lt*lt;
+            p.x=p.hx+p.vx*e*64; p.y=p.hy+p.vy*e*64;
+            p.a=1-lt;
+          }else{
+            p.x+=(p.hx-p.x)*.075; p.y+=(p.hy-p.y)*.075; p.a+=(1-p.a)*.07;
+            if(Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)>.5||p.a<.97) alive=true;
+          }
+          if(p.a>.012){ ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); }
+        }
+        ctx.globalAlpha=1;
+        if(alive){ raf=requestAnimationFrame(tick); return; }
+        if(mode==='back'){ stage.classList.remove('dissolving'); ctx.clearRect(0,0,W,H); }
+        mode='idle'; raf=0;
+      }
+
+      function start(m){
+        if(mode===m) return;
+        mode=m; t0=0; cancelAnimationFrame(raf);
+        raf=requestAnimationFrame(tick);
+      }
+      function out(){
+        if(!built && !build()) return;
+        stage.classList.add('dissolving');
+        for(var i=0;i<P.length;i++){ var p=P[i]; p.x=p.hx; p.y=p.hy; p.a=1; }
+        start('out');
+      }
+      function back(){ if(!built) return; start('back'); }
+
+      if(matchMedia('(hover:hover)').matches){
+        title.addEventListener('mouseenter',out);
+        stage.addEventListener('mouseleave',back);
+      }else{
+        title.addEventListener('click',function(){ mode==='out'?back():out(); });
+      }
+      addEventListener('resize',function(){ built=false; if(mode!=='idle'){ cancelAnimationFrame(raf); mode='idle'; stage.classList.remove('dissolving'); } });
+      if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ built=false; });
+    })();
+
+    /* seam grains — a live drift the pointer can part; springs pull each grain home.
+       §5.5: rAF only while something is still moving, and never while offscreen. */
+    (function(){
+      var cv=document.getElementById('swlSeam'); if(!cv) return;
+      var host=cv.parentNode, ctx=cv.getContext('2d'), DPR=Math.min(devicePixelRatio||1,2);
+      var TINTS=['#ffc9dd','#f7b7cf','#bcd4ff','#d8caff','#b9e8f5','#ffe1ec','#ffffff'];
+      var P=[], W=0,H=0, raf=0, on=true, mx=-9e3,my=-9e3, live=false;
+      var REDUCE=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      function build(){
+        var r=host.getBoundingClientRect(); W=Math.ceil(r.width); H=Math.ceil(r.height);
+        if(!W||!H) return;
+        cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+        P.length=0;
+        var n=Math.round(W*H/140);
+        for(var i=0;i<n;i++){
+          var x=Math.random()*W, y=Math.random()*H, bell=Math.sin((y/H)*Math.PI);
+          if(Math.random()>bell*0.95) continue;
+          P.push({hx:x,hy:y,x:x,y:y,vx:0,vy:0,
+                  s:0.5+Math.random()*1.3,
+                  a:(0.04+Math.random()*0.30)*bell,
+                  c:TINTS[(Math.random()*TINTS.length)|0]});
+        }
+        draw();
+      }
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        for(var i=0;i<P.length;i++){ var p=P[i]; ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); }
+        ctx.globalAlpha=1;
+      }
+      function tick(){
+        var moving=false, R=110, R2=R*R;
+        for(var i=0;i<P.length;i++){
+          var p=P[i], dx=p.x-mx, dy=p.y-my, d2=dx*dx+dy*dy;
+          if(d2<R2){                                   /* part the grains around the pointer */
+            var d=Math.sqrt(d2)||1, f=(1-d/R)*2.4;
+            p.vx+=dx/d*f; p.vy+=dy/d*f;
+          }
+          p.vx+=(p.hx-p.x)*0.022; p.vy+=(p.hy-p.y)*0.022;   /* spring home */
+          p.vx*=0.90; p.vy*=0.90;
+          p.x+=p.vx; p.y+=p.vy;
+          if(Math.abs(p.vx)+Math.abs(p.vy)>0.03||Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)>0.4) moving=true;
+        }
+        draw();
+        if(moving||live) raf=requestAnimationFrame(tick); else raf=0;
+      }
+      function wake(){ if(!raf&&on&&!REDUCE) raf=requestAnimationFrame(tick); }
+
+      build();
+      var t=0; addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(build,180); });
+      if(!REDUCE){
+        host.addEventListener('pointermove',function(e){
+          var r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top; live=true; wake();
+        },{passive:true});
+        host.addEventListener('pointerleave',function(){ mx=my=-9e3; live=false; wake(); },{passive:true});
+        var io=new IntersectionObserver(function(es){ on=es[0].isIntersecting; if(!on){ cancelAnimationFrame(raf); raf=0; } });
+        io.observe(host);
+      }
+    })();
+
+    /* the iridescent plate throws off coloured grains wherever the pointer moves.
+       §5.5: one canvas, rAF sleeps when nothing is alive / the section is offscreen. */
+    (function(){
+      var sec=document.getElementById('swlSay'), cv=document.getElementById('swlSayDust');
+      if(!sec||!cv) return;
+      if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+      if(!matchMedia('(hover:hover)').matches) return;
+      var ctx=cv.getContext('2d'), DPR=Math.min(devicePixelRatio||1,1.5), W=0,H=0, raf=0, on=false;
+      var TINTS=['#ff4fa3','#8f6bff','#4fd8ff','#ffb3d9','#c9a6ff','#9fe9ff','#ffffff'];
+      var G=[];
+      function size(){ W=sec.clientWidth; H=sec.clientHeight; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); }
+      size(); addEventListener('resize',size);
+      function spawn(x,y,n){
+        for(var i=0;i<n;i++){
+          var a=Math.random()*Math.PI*2, sp=.25+Math.random()*1.5;
+          G.push({x:x+(Math.random()-.5)*26, y:y+(Math.random()-.5)*26,
+                  vx:Math.cos(a)*sp, vy:Math.sin(a)*sp-.18,
+                  s:.8+Math.random()*1.9, a:.55+Math.random()*.45,
+                  f:.006+Math.random()*.012, c:TINTS[(Math.random()*TINTS.length)|0]});
+        }
+        if(!raf) raf=requestAnimationFrame(tick);
+      }
+      function tick(){
+        ctx.clearRect(0,0,W,H);
+        for(var i=G.length-1;i>=0;i--){
+          var p=G[i];
+          p.x+=p.vx; p.y+=p.vy; p.vx*=.985; p.vy*=.985; p.a-=p.f;
+          if(p.a<=.01){ G.splice(i,1); continue; }
+          ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s);
+        }
+        ctx.globalAlpha=1;
+        raf = G.length ? requestAnimationFrame(tick) : 0;
+      }
+      sec.addEventListener('pointermove',function(e){
+        if(!on) return;
+        var r=sec.getBoundingClientRect();
+        spawn(e.clientX-r.left, e.clientY-r.top, 5);
+      },{passive:true});
+      var io=new IntersectionObserver(function(es){ on=es[0].isIntersecting; if(!on){ G.length=0; cancelAnimationFrame(raf); raf=0; ctx.clearRect(0,0,W,H); } });
+      io.observe(sec);
+    })();
+  </script>
+</body>
+</html>
