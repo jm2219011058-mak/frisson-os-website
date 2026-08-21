@@ -42,7 +42,8 @@
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (house pattern) */
   .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
-    gap:clamp(22px,5vh,44px);background:#fff;
+    gap:clamp(22px,5vh,44px);background:rgba(255,255,255,.86);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
   .menu.open{transform:none;}
   .menu a{background:transparent;box-shadow:none;border-radius:0;padding:6px 14px;color:#2b1d12;
@@ -82,16 +83,16 @@
       <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
-      <a href="field-notes">{{nav.stories}}</a>
       <a href="sensory-lab">{{nav.lab}}</a>
+      <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     <div class="menu" id="menu">
       <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
-      <a href="field-notes">{{nav.stories}}</a>
       <a href="sensory-lab">{{nav.lab}}</a>
+      <a href="field-notes">{{nav.stories}}</a>
     </div>
     <!--LANGNAV-->
   </nav>

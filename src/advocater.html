@@ -52,7 +52,8 @@
 
   /* mobile menu — full-screen paper sheet, quiet editorial links (no pills, no weight) */
   .menu{position:fixed;inset:0;margin:0;flex-direction:column;align-items:center;justify-content:center;
-    gap:clamp(22px,5vh,44px);background:#fff;
+    gap:clamp(22px,5vh,44px);background:rgba(255,255,255,.86);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
     /* NB: no `right:auto` here — it unsets inset's right edge and the sheet collapses to
        shrink-to-fit (it was only as wide as the longest link). */
     z-index:55;transform:none;transition:opacity .32s cubic-bezier(0.25,0.1,0.25,1);}
@@ -124,10 +125,17 @@
     color:rgba(255,255,255,.88);margin:0 0 1.15em;text-wrap:pretty;}
   .fc-p:last-child{margin-bottom:0;}
 
+  /* black → red seam: grains of the banner's own red thinning up into the dark.
+     Painted once (no rAF) — §5.5 prefers baked grain over a running loop. */
+  .fc-seam{position:relative;height:clamp(90px,14vh,190px);overflow:hidden;
+    background:linear-gradient(180deg,#000 0%,#3a120c 62%,#8f2a1d 88%,#dd4432 100%);}
+  .fc-seam canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+
   /* red banner — full-bleed artwork, oversized black display type, CTA underneath */
-  .fc-red{position:relative;width:100%;overflow:hidden;margin-top:clamp(56px,9vh,110px);background:#c8402c;}
+  .fc-red{position:relative;width:100%;overflow:hidden;margin-top:0;background:#c8402c;}
   .fcr-bg{display:block;width:100%;}
-  .fcr-bg img{display:block;width:100%;height:100%;object-fit:cover;}
+  .fcr-bg img{display:block;width:100%;height:100%;object-fit:cover;
+    transform:scale(1.09);transform-origin:center;}   /* crops the plate's aged paper border out of frame */
   .fcr-cap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:clamp(24px,6vw,64px) clamp(24px,6vw,64px) clamp(90px,14vh,170px);}
   .fcr-title{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
@@ -397,16 +405,16 @@
       <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts" class="cur">{{nav.advocater}}</a>
-      <a href="field-notes">{{nav.stories}}</a>
       <a href="sensory-lab">{{nav.lab}}</a>
+      <a href="field-notes">{{nav.stories}}</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
     <div class="menu" id="menu">
       <a href="soulful-living-network">{{nav.cities}}</a>
       <a href="sona.html">{{nav.sona}}</a>
       <a href="founding-catalysts">{{nav.advocater}}</a>
-      <a href="field-notes">{{nav.stories}}</a>
       <a href="sensory-lab">{{nav.lab}}</a>
+      <a href="field-notes">{{nav.stories}}</a>
     </div>
     <!--LANGNAV-->
   </nav>
@@ -416,7 +424,7 @@
     <div class="sf-grid" aria-hidden="true">
       <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-1.webp" alt="" fetchpriority="high" decoding="async"></div>
       <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-2.webp" alt="" decoding="async"></div>
-      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-3.webp?v=2" alt="" decoding="async"></div>
+      <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-3.webp?v=3" alt="" decoding="async"></div>
       <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-4.webp" alt="" decoding="async"></div>
       <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-5.webp" alt="" loading="lazy" decoding="async"></div>
       <div class="sf-cell" data-scroll data-scroll-css-progress><img src="assets/city/sf-6.webp" alt="" loading="lazy" decoding="async"></div>
@@ -449,6 +457,8 @@
         </div>
       </div>
     </div>
+
+    <div class="fc-seam" aria-hidden="true"><canvas id="fcSeam"></canvas></div>
 
     <section class="fc-red">
       <picture class="fcr-bg">
