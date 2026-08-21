@@ -20,7 +20,8 @@
   body{overflow-x:clip;background:#f7f5f3;color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
   /* the artwork runs the full viewport — the nav floats on top of it */
-  .swl{position:relative;width:100%;min-height:100svh;overflow:hidden;background:#f7f5f3;}
+  /* the plate is portrait — the section takes its native ratio so nothing gets cropped */
+  .swl{position:relative;width:100%;aspect-ratio:1040/1512;min-height:100svh;overflow:hidden;background:#f7f5f3;}
   .swl-bg{position:absolute;inset:0;z-index:0;display:block;}
   .swl-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 
@@ -60,8 +61,8 @@
   .swl-dust{position:absolute;left:0;top:0;pointer-events:none;opacity:0;}
   .swl-stage.dissolving .swl-dust{opacity:1;}
   /* the title — as large as the canvas allows, centred over the artwork */
-  .swl-cap{position:relative;z-index:2;min-height:100svh;display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:clamp(56px,8vh,92px) clamp(16px,3vw,40px);}
+  .swl-cap{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:clamp(56px,8vh,92px) clamp(16px,3vw,40px);}   /* centres on the plate itself, not the viewport */
 
 
   /* the three layers — plain white, one big name per line */
@@ -133,7 +134,10 @@
         <h2 class="swl-layer">Outlier Layer</h2>
         <figure class="swl-stack-fig"><img src="assets/city/layer-outlier.webp" alt="" width="573" height="528" loading="lazy" decoding="async"></figure>
       </div>
-      <h2 class="swl-layer">Adaptive Layer</h2>
+      <div class="swl-stack">
+        <h2 class="swl-layer">Adaptive Layer</h2>
+        <figure class="swl-stack-fig"><img src="assets/city/layer-adaptive.webp" alt="" loading="lazy" decoding="async"></figure>
+      </div>
     </div>
   </section>
 
