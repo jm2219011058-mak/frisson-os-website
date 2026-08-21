@@ -84,6 +84,25 @@
   status = 301
   force = true
 
+# Pretty URL: the booking layer lives at /talk-to-founders, served from advocater.html,
+# which opens the contact/calendar layer on load. This is the shareable address for the
+# calendar — a plain path, so it survives being pasted into email (fragments often don't).
+[[redirects]]
+  from = "/talk-to-founders"
+  to = "/advocater.html"
+  status = 200
+
+[[redirects]]
+  from = "/book-a-call"
+  to = "/talk-to-founders"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/zh/talk-to-founders"
+  to = "/zh/advocater.html"
+  status = 200
+
 # Pretty URL: Soulful Living Network lives at /soulful-living-network, served from cities.html.
 [[redirects]]
   from = "/soulful-living-network"

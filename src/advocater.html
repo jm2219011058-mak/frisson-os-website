@@ -360,6 +360,15 @@
     background:rgba(250,246,239,.42);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);}
   .fc-full[hidden]{display:none;}
   html.fcf-open{overflow:hidden;}
+  /* Entered directly at /talk-to-founders (the email link): the page behind sits at scroll 0,
+     i.e. the founder-portrait mosaic, and a 42% scrim over faces makes the calendar unreadable.
+     Opened from the CTA there IS a composition worth showing through (the flat coral plate), so
+     that path keeps the translucent scrim above — only the direct entry takes a solid ground. */
+  .fc-full--solo{background:#faf6ef;-webkit-backdrop-filter:none;backdrop-filter:none;}
+  /* the column is taller than the viewport at every size, so centring it just clips both ends.
+     Read it top-down instead, with enough head clearance for the fixed close button. */
+  .fc-full--solo .fcf-inner{justify-content:flex-start;padding-top:clamp(72px,10vh,96px);}
+  .fc-full--solo .book-title{text-shadow:none;}
   .fcf-close{position:fixed;top:clamp(16px,3vh,28px);right:clamp(16px,3vw,32px);z-index:5;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(43,29,18,.22);background:transparent;color:var(--ink);cursor:pointer;transition:color .25s,border-color .25s,transform .35s;}
   .fcf-close svg{width:15px;height:15px;}
   .fcf-close:hover{color:var(--accent);border-color:var(--accent);transform:rotate(90deg);}
@@ -640,8 +649,23 @@
     openBtn.addEventListener('click',show);
     closeBtn.addEventListener('click',hide);
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide(); });
-    /* deep link: /founding-catalysts#contact opens the layer directly (used by SLN popups) */
-    if(location.hash==='#contact') setTimeout(show,150);
+    /* deep links — three ways in, all landing on this same layer:
+       · #contact           — used by the SLN popups on cities
+       · /talk-to-founders  — pretty URL, 200-rewritten to this page by netlify.toml.
+                              This is the one that goes in emails: a bare path with no
+                              fragment, so link trackers and mail clients can't strip it.
+       · #book              — hash alias, for when only a fragment can be appended.
+       The direct forms also take a solid ground and a top-aligned column (.fc-full--solo):
+       entered that way the page behind sits at scroll 0 — the portrait mosaic — and a 42%
+       scrim over faces makes the calendar unreadable. */
+    var fcPath = /^\/(zh\/)?talk-to-founders\/?$/.test(location.pathname);
+    var fcDirect = fcPath || location.hash==='#book';
+    if(fcDirect || location.hash==='#contact'){
+      setTimeout(function(){
+        if(fcDirect) layer.classList.add('fc-full--solo');
+        show();
+      },150);
+    }
   })();
 
   /* Netlify forms — AJAX submit (select by class; the data-netlify attr is stripped at deploy) */

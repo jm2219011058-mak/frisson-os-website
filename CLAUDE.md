@@ -170,6 +170,8 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 ### advocater.html
 - Frisson Fellow 墙 + 表单；原 Magic Conch 大区块已移到 cities（留注释标记）。
 - **Book a Call（`.fc-book#book`，在 hero 内、报名表单 `#joinForm` 之后）**：初始 `hidden`，与表单一起随「Seek Wonder, Bring Vision ›」按钮展开；cal.com inline embed **懒加载**——首次展开时才调 `window.__frissonMountCal()` 挂载（隐藏容器内挂载会量错尺寸，勿改回页面加载即挂载）。calLink **`frisson-os/15min`**，命名空间 `frisson`，品牌色已注入（cssVarsPerTheme）。换链接只改 `calLink` 一处；embed 脚本在页面底部 footer 前。
+- **预约页的对外链接 = `https://frisson-os.com/talk-to-founders`（2026-08-21）**：netlify.toml 200 改写到 advocater.html，页面 JS 认出这个路径后自动打开 `#fcFull` 弹层。**发邮件/对外投放就用这条**——纯路径无 fragment，邮件客户端和链接追踪器不会把它吃掉；`/book-a-call` 301 到它。另有两个 hash 入口：`#contact`（cities 的 SLN 弹窗在用）与 `#book`（只能加片段时的备用）。
+  - 路径/`#book` 进来会给弹层加 `.fc-full--solo`：**换成实心米色底 + 顶部对齐**。原因：直接进来时页面停在 scroll 0，背后是创始人肖像拼贴，42% 半透明罩在人脸上会让日历没法看；从 CTA 点开时背后是平坦的珊瑚色版面，值得透，所以那条路径保持原样不要动。
 
 ### about.html
 - 节顺序：Collecting Dreams（含 The Renaissance Archive 四卡）→ Beyond the Canvas → **The Future of AI Begins in the Physical World — with How We Live** → Not a Fantasy。
