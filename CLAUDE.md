@@ -103,6 +103,8 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
   ```
 - **可信 / 不可信**：页面**加载时**就生效的静态样式、几何尺寸 → 可信；**加载后**由 JS 触发的状态（弹窗打开、菜单展开、hover、滚动动画）→ 不可信，必须让用户在真机上确认。
 - 冻结时不要反复 reload 硬碰——直接改用静态量测 + 结构性论证（如「组件内已无任何媒体查询断点，所以不可能跳变」），并**如实告诉用户哪一项没能实测**。
+- **第二种形态：帧循环停摆**（2026-08-21 在 sensory lab 上反复踩）。样式重算正常、`getBoundingClientRect` 正常，但 **rAF 不跑 / IntersectionObserver 不派发 / 截图一片空白**——此时懒加载图片也永远不 load（近视口判定依赖渲染）。**诱因**：`resize_window` 设自定义尺寸、或用 `scrollTo` 做大跨度跳转。**自查**：跑一下 rAF 计数；`requestAnimationFrame` 连 3 帧都跑不到就是停摆。**恢复**：`preview_stop` + `preview_start` 开一个全新 tab（reload 没用），之后用**真实输入滚动**（`computer scroll`）代替 `scrollTo`。
+- **判 fps 之前先测 baseline**：把所有 ticker 停掉再量一次，如果 baseline 也只有 1fps，那是面板停摆，不是你的代码——本会话就有一次差点据此误判 62k 粒子「跑不动」。
 
 ## 5.7 改 CSS 的安全规矩（2026-07-28 一天内出了三次事故才立的）
 
@@ -178,11 +180,18 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 
 ### sensorylab.html（Sensory World Lab，/sensory-lab）
 - 结构：hero `.swl`（100svh 一屏，**不要**改回 `aspect-ratio`——曾按 1040/1512 撑到 1861px，标题掉到首屏外）→ `.swl-layers` 三层账本。
-- **hero 标题的粉尘特效**：`build()` **逐字符**用 `Range.getBoundingClientRect()` 取位置，再用与 DOM **同一 px 字号**画进离屏 canvas。**不许改回"缩放离屏 canvas 重新排版"**——那样必然错位：缩放后的字号落在 Fraunces `opsz 9..144` 的另一个实例上、`letter-spacing` 是 px 值不跟着缩放、换行还被写死成三行。基线用 `(r.height-(asc+desc))/2+asc` 还原半行距，两种 rect 语义都对。
-- 黑标题 ↔ 粉尘之间是**镜像非线性交叉淡入**（出场 ease-in `cubic-bezier(.7,0,.84,0)`、入场 ease-out `cubic-bezier(.16,1,.3,1)`），两者之和不塌陷；粒子 alpha 与位移共用 `e=lt²` 一条曲线。回程要等 CSS 淡出跑完再 `clearRect`（`wipe` 定时器），**别改回立即清屏**。
+- **标题本身就是粒子**（`assets/swl-fx.mjs`，PixiJS 8 `ParticleContainer`，vendored in `assets/vendor/pixi/` 已 tree-shake 到 510KB/121KB br）。**不要再做「文字↔粒子」的交叉淡入**——那是两个状态互相迁就，怎么调都不丝滑；现在只有一个状态。`<h1>` 仍在 DOM（读屏器、CSS clamp 定字号、逐字符测量），只是 `.swl-fx-on` 之后不再绘制；**WebGL 不可用时该 class 不会加上，印刷标题原样保留**。
+- **粒子取点仍然逐字符用 `Range.getBoundingClientRect()`**，字号用 DOM 的原始 px。**不许改回"缩放离屏 canvas 重新排版"**——缩放后的字号落在 Fraunces `opsz 9..144` 的另一个实例上、`letter-spacing` 是 px 值不跟着缩放、换行还会被写死。基线 `(r.height-(asc+desc))/2+asc`，两种 rect 语义都对。
+- **默认黑，指针靠近才泛红**：同一条 falloff 同时驱动「分开」与「变色」；tint 是 dynamic property，所以色阶量化成 24 级、**只在跨级时才写**（§5.5 第 4 条）。
+- **三条性能红线（都是实测踩出来的）**：
+  1. **绝不要每帧调 `container.update()`**。它只置 `_childrenDirty`，而 pipe 把它读作「静态 buffer 也重传一遍」；dynamic 属性本来每帧就会传。删掉它：**6fps → 60fps**。
+  2. 取点步长用**分数 stride + keep 概率**。`Math.round()` 在 `ink/target < 2.25` 时塌成 1，桌面宽度下 46000 的预算实际生成了 80398 颗。
+  3. **IntersectionObserver 的回调只能当「触发器」，判可见性必须另有持续信号**。本页 `.swl-layers` 的顶边静止时正好贴着视口底边，observer 一开始就认为 intersecting，往下滚不再跨阈值 → 只会回调**一次**；早期代码用更严格的 rect 判断否掉了那唯一一次，粒子场永远建不起来。现在 observer 只管 build，显隐交给 passive `scroll` 复算。
+- 实测（1280×820、DPR 2）：hero 45,905 颗 60fps（指针搅动中）；三张图 61,998 颗 60fps；hero 场在图区可见时已 parked。
 - **背景质感**：`node bake-swl-texture.mjs` 烘焙。原图只有 1040×1512、满屏要 2.5× 放大，所以把分辨率不足**烤成材质**——喷雾粒子按云雾自身的 mask 做**带通**（密度峰值在边缘而非实心core，实心core本来就该实心）、外圈用模糊 mask 抛洒尘点、全幅叠纸纹与多尺度颗粒。CSS 那层 `.swl-grain` 贴图**放在视差 sheet 内部**：混合只光栅化一次然后整层平移，不会每帧重算满屏 overlay。
 - **视差锚点**：Locomotive 的 `--progress` 在文档顶部是 **0**（不是 .5），所以公式写成 `var(--progress,0) * n%`，落地即为设计稿构图。sheet 最多只能位移自身高度的 10/120=8.33%，现取 7%。
-- 三层配图**一律不裁**（各自是完整构图：HUD 框、contact sheet），靠统一 `max-height` 取得等高节奏；`--fh` 控制，portrait 那张用 `.swl-fig--tall`。
+- 三层配图**一律不裁**。前两张（HUD 框、热成像手）靠统一 `max-height`（`--fh`）取得等高节奏；第三张 contact sheet 走 `.swl-layer--wide`：**满宽出血 + 保持 720/1280 原比例**，所以它很高，是要滚着看的一面墙——**不要给它 `object-fit`**，cover 会切掉整排格子，contain 会留白且让粒子场围着**盒子**而不是画面（场是按元素 rect 取的）。
+- 三张图周围有**有机粒子场**：密度沿边缘向外按 `pow(1-d/range, 2.1)` 衰减，再乘一条角向 ripple 免得变成均匀描边；每颗的 tint 取自**离它最近的那块画面**的像素，所以是各自的颜料在往纸上散。**节与节之间没有分割线**（靠交替左右轨 + 这层雾就够了，别再加回 hairline）。
 
 ### stories.html（Field Notes）
 - **排序死规则：顶部 masthead（`.fn-feature`）永远是日期最新的文章；其余按日期倒序放进 `.fn-list` 网格（左上最新）。** 每加一篇新文章：新文章占 feature，原 feature 降为网格第一张卡（记得给它补 `data-cat`）。
