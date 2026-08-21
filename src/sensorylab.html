@@ -125,9 +125,9 @@
      They used to be a 2-col row followed by two centred stacks, so nothing lined
      up and there was no rule saying which was which. Now every layer is the same
      entry — rule, name on one rail, specimen on the other — and the rails alternate.
-     Nothing numbers or captions them: the hairlines carry the structure on their own.
-     Plates 1 and 2 are never cropped (each is a finished composition), so they are
-     sized by shared HEIGHT and keep their own widths. Plate 3 breaks the grid.
+     Nothing numbers or captions them, and there are no rules between them: the
+     alternating rails and the particle haze off each plate carry the structure.
+     All three plates share a WIDTH and keep their own heights — see .swl-fig below.
      =========================================================================== */
   .swl-layers{position:relative;background:#fff;
     padding:clamp(72px,11vh,140px) clamp(24px,6vw,72px) clamp(96px,14vh,170px);}
@@ -150,26 +150,23 @@
      (which carries no transform of its own, so its metrics stay honest) and the drift is
      a plain CSS transform on the photo — §5.5, transform only, de-duped and parked
      off-screen by Locomotive. No crop window here: these plates must stay whole. */
+  /* Every plate is the SAME WIDTH — its column — and keeps its own height. That is the
+     whole sizing rule, and it is why the three read as one system: the left and right
+     edges line up down the page, and the differing heights (square, landscape, the tall
+     portrait contact sheet) are what gives the column its rhythm. Matching heights
+     instead would have made the widths ragged, which is the edge you actually notice.
+     Never cropped: no object-fit anywhere, so nothing is thrown away and the particle
+     field keeps measuring the artwork itself rather than a letterboxed box. */
   .swl-fig{margin:0;display:flex;justify-content:center;}
-  .swl-fig img{display:block;width:auto;max-width:100%;height:auto;
-    max-height:var(--fh,clamp(260px,42vh,470px));
+  .swl-fig img{display:block;width:100%;height:auto;
     border-radius:clamp(16px,2.4vw,36px);corner-shape:squircle;
     transform:translate3d(0,calc((var(--progress,.5) - .5) * -26px),0);}
-
-  /* --- plate 3 is the portrait one: same ledger, standing up --------------------
-     It keeps every rule the other two follow — same rail, same alternation, same
-     squircle, same scroll drift. The ONLY difference is that it is not capped to the
-     landscape plates' shared height: it fills its column instead, so its 720x1280
-     proportion is what you read. Still never cropped — no object-fit, so nothing is
-     thrown away and the particle field keeps measuring the artwork itself. */
-  .swl-layer--tall .swl-fig img{width:100%;height:auto;max-height:none;}
 
   @media(max-width:760px){
     .swl-layer{grid-template-columns:1fr;gap:clamp(22px,4vh,34px);
       padding:clamp(32px,5vh,48px) 0;}
     .swl-layer--flip .swl-layer-txt{order:0;}       /* one rail on mobile: name always leads */
     .swl-name{font-size:clamp(30px,8.4vw,44px);}
-    .swl-fig{--fh:clamp(240px,38vh,380px);}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -244,7 +241,7 @@
         </figure>
       </article>
 
-      <article class="swl-layer swl-layer--tall reveal" data-scroll data-scroll-class="in">
+      <article class="swl-layer reveal" data-scroll data-scroll-class="in">
         <div class="swl-layer-txt">
           <h2 class="swl-name">Adaptive Layer</h2>
         </div>
