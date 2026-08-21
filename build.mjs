@@ -137,6 +137,11 @@ for (const page of pages) {
       // Broad match so JS-built paths like  img:"assets/..."  are rewritten too.
       out = out.replace(/(["'])assets\//g, '$1../assets/');
       out = out.replace(/url\(assets\//g, 'url(../assets/');
+      // A srcset holds SEVERAL comma-separated urls; the quote-anchored rule above only
+      // reaches the first one, so every later candidate stayed root-relative and 404'd
+      // under /zh/. Fix the rest in place (entries already carrying ../ don't re-match).
+      out = out.replace(/((?:image)?srcset)="([^"]*)"/gi,
+        (m, attr, val) => attr + '="' + val.replace(/(^|,\s*)assets\//g, '$1../assets/') + '"');
     }
     // Rewrite <img> raster tags → <picture> with a WebP srcset so the browser picks a device-appropriate size.
     // Non-WebP browsers fall back to the original file. Done after the zh path rewrite so prefixes are correct.

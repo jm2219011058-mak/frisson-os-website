@@ -174,6 +174,14 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 ### about.html
 - 节顺序：Collecting Dreams（含 The Renaissance Archive 四卡）→ Beyond the Canvas → **The Future of AI Begins in the Physical World — with How We Live** → Not a Fantasy。
 
+### sensorylab.html（Sensory World Lab，/sensory-lab）
+- 结构：hero `.swl`（100svh 一屏，**不要**改回 `aspect-ratio`——曾按 1040/1512 撑到 1861px，标题掉到首屏外）→ `.swl-layers` 三层账本。
+- **hero 标题的粉尘特效**：`build()` **逐字符**用 `Range.getBoundingClientRect()` 取位置，再用与 DOM **同一 px 字号**画进离屏 canvas。**不许改回"缩放离屏 canvas 重新排版"**——那样必然错位：缩放后的字号落在 Fraunces `opsz 9..144` 的另一个实例上、`letter-spacing` 是 px 值不跟着缩放、换行还被写死成三行。基线用 `(r.height-(asc+desc))/2+asc` 还原半行距，两种 rect 语义都对。
+- 黑标题 ↔ 粉尘之间是**镜像非线性交叉淡入**（出场 ease-in `cubic-bezier(.7,0,.84,0)`、入场 ease-out `cubic-bezier(.16,1,.3,1)`），两者之和不塌陷；粒子 alpha 与位移共用 `e=lt²` 一条曲线。回程要等 CSS 淡出跑完再 `clearRect`（`wipe` 定时器），**别改回立即清屏**。
+- **背景质感**：`node bake-swl-texture.mjs` 烘焙。原图只有 1040×1512、满屏要 2.5× 放大，所以把分辨率不足**烤成材质**——喷雾粒子按云雾自身的 mask 做**带通**（密度峰值在边缘而非实心core，实心core本来就该实心）、外圈用模糊 mask 抛洒尘点、全幅叠纸纹与多尺度颗粒。CSS 那层 `.swl-grain` 贴图**放在视差 sheet 内部**：混合只光栅化一次然后整层平移，不会每帧重算满屏 overlay。
+- **视差锚点**：Locomotive 的 `--progress` 在文档顶部是 **0**（不是 .5），所以公式写成 `var(--progress,0) * n%`，落地即为设计稿构图。sheet 最多只能位移自身高度的 10/120=8.33%，现取 7%。
+- 三层配图**一律不裁**（各自是完整构图：HUD 框、contact sheet），靠统一 `max-height` 取得等高节奏；`--fh` 控制，portrait 那张用 `.swl-fig--tall`。
+
 ### stories.html（Field Notes）
 - **排序死规则：顶部 masthead（`.fn-feature`）永远是日期最新的文章；其余按日期倒序放进 `.fn-list` 网格（左上最新）。** 每加一篇新文章：新文章占 feature，原 feature 降为网格第一张卡（记得给它补 `data-cat`）。
 - 一篇文章 = 三处同一个 `data-view` 编号：列表卡/feature、`.fn-hero`（文章头图）、`.story`（正文）。图片一图两用（卡片背景 + 文章 hero），放 `assets/city/fn-*.webp`。
@@ -213,5 +221,6 @@ content-inventory.md（母版表格） → node gen-i18n.mjs → i18n/en.json + 
 node build.mjs        # 构建全站 → dist/
 node gen-i18n.mjs     # 从 content-inventory.md 重新生成 i18n json（会覆盖手改！先同步 md）
 node check-css.mjs    # 删过 CSS 后必跑：找「markup 用了但没有规则」的 class（见 §5.7）
+node bake-swl-texture.mjs  # 重烘 Sensory World Lab 的质感底图 + 颗粒贴图（确定性，可重复）
 npx serve dist        # 本地起服务预览（可选）
 ```
