@@ -76,7 +76,7 @@
   .fc-hero{position:relative;width:100%;margin-top:0;background:#000;}
   .sf-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;
     gap:clamp(6px,1vw,14px);width:100%;aspect-ratio:16/11;
-    margin-top:0;}   /* flush on all four edges — the transparent fixed nav floats over the tiles */
+    margin-top:clamp(64px,9vh,88px);}   /* clears the fixed nav; flush left & right */
   /* Each tile is its own window; the photo is oversized inside it and drifts as you scroll.
      Locomotive writes --progress on the CELL (untransformed, so its metrics stay honest) and
      the drift is a plain CSS transform on the PHOTO, expressed as a % of the photo's own
