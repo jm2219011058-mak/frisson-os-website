@@ -70,8 +70,6 @@
   .swl-say-bg::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.34);pointer-events:none;}
   /* dust layer that scatters the plate's own colours on hover (§5.5: one canvas, rAF only while alive) */
   .swl-say-dust{position:absolute;inset:0;z-index:1;pointer-events:none;}
-  .swl-say-in{position:relative;z-index:2;max-width:1180px;margin:0 auto;text-align:center;}
-  .swl-say-h,.swl-say-p{text-shadow:0 1px 22px rgba(255,255,255,.85), 0 0 4px rgba(255,255,255,.7);}
 
   /* the three layers — plain white, one big name per line */
   .swl-layers{background:#fff;padding:clamp(110px,18vh,230px) clamp(24px,6vw,72px);}
@@ -88,10 +86,6 @@
     .swl-row{grid-template-columns:1fr;gap:clamp(22px,4vh,36px);}
     .swl-row .swl-layer{text-align:center;}
   }
-  .swl-say-h{font-family:var(--serif);font-weight:700;color:#0b0a09;margin:0;
-    font-size:clamp(30px,5.2vw,76px);line-height:1.1;letter-spacing:-.012em;text-wrap:balance;}
-  .swl-say-p{font-family:var(--serif);font-weight:400;color:#0b0a09;margin:0 auto;max-width:62ch;
-    font-size:clamp(15px,1.7vw,20px);line-height:1.7;text-wrap:pretty;}
 </style>
 </head>
 <body>
