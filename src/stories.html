@@ -182,6 +182,9 @@
      to a centre crop, so this hero keeps the plate's own ratio (must sit after .fn-hero —
      its background shorthand would otherwise win the cascade) */
   .fn-hero--wide{height:auto;aspect-ratio:1672/941;}
+  /* on a phone the exception stops paying: a full-width plate is only ~210px tall, which
+     reads as a stray strip next to every other entry's band — so it crops here like the rest */
+  @media(max-width:640px){ .fn-hero--wide{height:var(--fnhero);aspect-ratio:auto;} }
   .fn-hero[hidden]{display:none;}
   /* ‹ chevron — its own row above the title, sharing the story column so it lands on the
      same left grid line as the headline rather than floating out in the gutter */
