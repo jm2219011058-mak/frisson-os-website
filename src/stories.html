@@ -176,29 +176,26 @@
   @media(max-width:900px){ .fn-list{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:560px){ .fn-list{grid-template-columns:1fr;} .fn-card{aspect-ratio:16/10;} }
   /* article view — full-bleed hero image on top (Founders-Fund style), then long-form story */
-  .fn-article{position:relative;--fnhero:min(34vh,340px);}   /* the opener is a band, not a plate — it crops */
+  .fn-article{position:relative;--fnhero:min(52vh,520px);}   /* the opener is a band, not a plate — it crops */
   .fn-hero{width:100vw;margin:0 0 0 calc(50% - 50vw);height:var(--fnhero);background:#1a1512 center center/cover no-repeat;}
   /* one exception to the cropped band: the four-portrait plate loses a person at each end
      to a centre crop, so this hero keeps the plate's own ratio (must sit after .fn-hero —
      its background shorthand would otherwise win the cascade) */
   .fn-hero--wide{height:auto;aspect-ratio:1672/941;}
   .fn-hero[hidden]{display:none;}
-  /* ‹ chevron — absolutely placed in the left gutter, vertically aligned to the big title */
-  .fn-backwrap{position:absolute;z-index:5;top:calc(var(--fnhero) + clamp(66px,10vh,116px));
-    left:max(14px, calc(50% - 380px - clamp(14px,3.4vw,56px)));padding:0;margin:0;}
-  .fn-back{display:inline-flex;align-items:center;justify-content:center;width:clamp(42px,4.4vw,54px);height:clamp(42px,4.4vw,54px);
+  /* ‹ chevron — its own row above the title, sharing the story column so it lands on the
+     same left grid line as the headline rather than floating out in the gutter */
+  .fn-backwrap{max-width:760px;margin:0 auto;padding:clamp(20px,3.4vh,34px) clamp(24px,6vw,40px) 0;}
+  .fn-back{display:inline-flex;align-items:center;justify-content:flex-start;width:clamp(42px,4.4vw,54px);height:clamp(42px,4.4vw,54px);
     background:transparent;border:0;padding:0;cursor:pointer;color:var(--accent);
     filter:drop-shadow(0 0 8px rgba(224,123,60,.26));transition:filter .25s,transform .2s;}
   .fn-back:hover{filter:drop-shadow(0 0 15px rgba(224,123,60,.6));transform:translateX(-3px);}
   .fn-back svg{width:clamp(26px,2.8vw,34px);height:clamp(26px,2.8vw,34px);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   /* article title — oversized editorial headline (Field Notes only), pulled up close to the hero */
-  .fn-article .story{padding-top:clamp(34px,5.5vh,66px);}
+  .fn-article .story{padding-top:clamp(12px,2.2vh,22px);}   /* the chevron row already carries the space */
   .fn-article .st-h-title{font-size:clamp(38px,7.6vw,86px);line-height:1;letter-spacing:.005em;margin:0 0 clamp(18px,3vh,30px);}
-  @media(max-width:900px){ .fn-backwrap{top:calc(var(--fnhero) + clamp(48px,7vh,80px));left:14px;} }
-  /* narrow screens: chevron leaves the gutter (it would sit on the title) and takes its own row above it */
   @media(max-width:640px){
-    .fn-backwrap{position:static;padding:clamp(18px,3vh,26px) clamp(24px,6vw,40px) 0;}
-    .fn-article .story{padding-top:clamp(10px,2vh,20px);}
+    .fn-backwrap{padding-top:clamp(18px,3vh,26px);}
   }
 
   /* footer — light, generous space above (matches Founding Catalysts) */
