@@ -176,14 +176,12 @@
   @media(max-width:900px){ .fn-list{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:560px){ .fn-list{grid-template-columns:1fr;} .fn-card{aspect-ratio:16/10;} }
   /* article view — full-bleed hero image on top (Founders-Fund style), then long-form story */
-  .fn-article{position:relative;--fnhero:min(52vh,520px);}
-  .fn-hero{width:100vw;margin-left:calc(50% - 50vw);height:var(--fnhero);background:#1a1512 center center/cover no-repeat;}
-  /* a row-of-portraits hero: below the plate's own width, the band takes the plate's ratio
-     instead of a fixed height, so the people at both ends stay in frame (must sit after
-     .fn-hero — its background shorthand would otherwise win the cascade) */
-  @media(max-width:1000px){
-    .fn-hero--wide{height:auto;aspect-ratio:1672/941;}
-  }
+  .fn-article{position:relative;--fnhero:min(34vh,340px);}   /* the opener is a band, not a plate — it crops */
+  .fn-hero{width:100vw;margin:0 0 0 calc(50% - 50vw);height:var(--fnhero);background:#1a1512 center center/cover no-repeat;}
+  /* one exception to the cropped band: the four-portrait plate loses a person at each end
+     to a centre crop, so this hero keeps the plate's own ratio (must sit after .fn-hero —
+     its background shorthand would otherwise win the cascade) */
+  .fn-hero--wide{height:auto;aspect-ratio:1672/941;}
   .fn-hero[hidden]{display:none;}
   /* ‹ chevron — absolutely placed in the left gutter, vertically aligned to the big title */
   .fn-backwrap{position:absolute;z-index:5;top:calc(var(--fnhero) + clamp(66px,10vh,116px));
@@ -269,13 +267,13 @@
             <span class="fn-cmeta">Field Note · August 11, 2026</span>
           </span>
         </a>
-        <a class="fn-card" href="#" data-view="4" data-cat="diary" style="background-image:url('assets/city/fn-e.webp?v=2')">
+        <a class="fn-card" href="#" data-view="4" data-cat="diary" style="background-image:url('assets/city/fn-e.webp?v=4')">
           <span class="fn-cbody">
             <span class="fn-ctitle">A Founder&rsquo;s Journal on Creativity, Space, and Human Meaning<span class="fn-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></span>
             <span class="fn-cmeta">Field Note · August 2, 2026</span>
           </span>
         </a>
-        <a class="fn-card" href="#" data-view="3" data-cat="diary" style="background-image:url('assets/city/fn-d.webp?v=2')">
+        <a class="fn-card" href="#" data-view="3" data-cat="diary" style="background-image:url('assets/city/fn-d.webp?v=3')">
           <span class="fn-cbody">
             <span class="fn-ctitle">Human Should Not Simply Reach the Moon<span class="fn-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></span>
             <span class="fn-cmeta">Field Note · July 25, 2026</span>
@@ -287,13 +285,13 @@
             <span class="fn-cmeta">Field Note · July 23, 2026</span>
           </span>
         </a>
-        <a class="fn-card" href="#" data-view="1" data-cat="diary" style="background-image:url('assets/city/fn-b.webp?v=5')">
+        <a class="fn-card" href="#" data-view="1" data-cat="diary" style="background-image:url('assets/city/fn-b.webp?v=6')">
           <span class="fn-cbody">
             <span class="fn-ctitle">Competing Against Luck<span class="fn-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></span>
             <span class="fn-cmeta">Field Note · July 19, 2026</span>
           </span>
         </a>
-        <a class="fn-card" href="#" data-view="2" data-cat="essay" style="background-image:url('assets/city/fn-c.webp?v=3')">
+        <a class="fn-card" href="#" data-view="2" data-cat="essay" style="background-image:url('assets/city/fn-c.webp?v=4')">
           <span class="fn-cbody">
             <span class="fn-ctitle">The Future of AI Begins with How We Live<span class="fn-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></span>
             <span class="fn-cmeta">Essay · July 18, 2026</span>
@@ -305,13 +303,13 @@
     <!-- ARTICLE (opened from the index) -->
     <section class="fn-article" id="fnArticle" hidden>
       <figure class="fn-hero" data-view="0" hidden style="background-image:url('assets/city/fn-a.webp?v=2')"></figure>
-      <figure class="fn-hero" data-view="1" hidden style="background-image:url('assets/city/fn-b.webp?v=5')"></figure>
-      <figure class="fn-hero" data-view="2" hidden style="background-image:url('assets/city/fn-c.webp?v=3')"></figure>
-      <figure class="fn-hero" data-view="3" hidden style="background-image:url('assets/city/fn-d.webp?v=2')"></figure>
-      <figure class="fn-hero" data-view="4" hidden style="background-image:url('assets/city/fn-e.webp?v=2')"></figure>
+      <figure class="fn-hero" data-view="1" hidden style="background-image:url('assets/city/fn-b.webp?v=6')"></figure>
+      <figure class="fn-hero" data-view="2" hidden style="background-image:url('assets/city/fn-c.webp?v=4')"></figure>
+      <figure class="fn-hero" data-view="3" hidden style="background-image:url('assets/city/fn-d.webp?v=3')"></figure>
+      <figure class="fn-hero" data-view="4" hidden style="background-image:url('assets/city/fn-e.webp?v=4')"></figure>
       <figure class="fn-hero" data-view="5" hidden style="background-image:url('assets/city/fn-f.webp?v=3')"></figure>
       <figure class="fn-hero" data-view="6" hidden style="background-image:url('assets/city/fn-g.webp?v=4')"></figure>
-      <figure class="fn-hero fn-hero--wide" data-view="7" hidden style="background-image:url('assets/city/fn-h.webp?v=2')"></figure>
+      <figure class="fn-hero" data-view="7" hidden style="background-image:url('assets/city/fn-h.webp?v=2')"></figure>
       <figure class="fn-hero fn-hero--wide" data-view="8" hidden style="background-image:url('assets/city/fn-i.webp')"></figure>
       <div class="fn-backwrap"><button class="fn-back" id="fnBack" type="button" aria-label="Back to Field Notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
       <article class="story" data-view="0" hidden>{{stories.diary2}}</article>
