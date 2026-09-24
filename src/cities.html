@@ -342,14 +342,35 @@
   .clg-frost{position:absolute;left:22%;top:0;width:72%;height:96%;pointer-events:none;
     background:url("assets/sona/s4b-frost.webp") repeat;background-size:400px 400px;
     mix-blend-mode:overlay;opacity:.55;}
-  /* the sentence sits on the site's 1180 content grid, not on the 1280 canvas edge
-     (page-margin rule, §5): grid-left within this wider wrap = 50% - 590px + margin */
-  .clg-line{position:absolute;left:max(clamp(24px,6vw,72px),calc(50% - 590px + clamp(24px,6vw,72px)));top:57%;margin:0;max-width:30ch;text-align:left;
-    font-family:var(--serif);font-weight:400;font-size:clamp(13.5px,1.5vw,17px);line-height:1.9;
-    letter-spacing:.04em;color:var(--ink-soft);text-wrap:pretty;
-    opacity:0;transform:translateY(12px);transition:opacity 1.1s ease .8s,transform 1.1s cubic-bezier(0.16,1,0.3,1) .8s;}
-  .act.in .clg-line{opacity:1;transform:none;}
-  .clg-line b{font-weight:700;color:var(--ink);}
+  /* ACT 02b · THE PRINCIPLE — the collage states it in pictures, this states it in words.
+     A sibling of .clg-wrap, so the section's own flex gap is the ONE spacing between them
+     (§5: no stacked padding+margin). The 1280 canvas is full-bleed but the type is not —
+     width + page padding put its left edge on the same 1180 grid line the old caption used
+     (50% - 590px + margin), which is also where the horizon's diamond sits. */
+  .prn{width:min(1180px,100%);padding:0 clamp(24px,6vw,72px);}
+  .prn-eyebrow{margin:0 0 clamp(14px,2vh,24px);font-family:var(--sans);font-weight:700;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8c837a;}
+  .prn-list{list-style:none;counter-reset:prn;margin:0;padding:clamp(36px,6vh,64px) 0 0;
+    border-top:1px solid rgba(43,29,18,.3);}
+  /* numerals are a counter, not typed markup — renumbering can't drift out of sync */
+  .prn-item{counter-increment:prn;display:grid;
+    grid-template-columns:clamp(46px,5.4vw,86px) minmax(0,1fr);align-items:start;}
+  .prn-item + .prn-item{margin-top:clamp(36px,6vh,64px);}
+  .prn-item::before{content:counter(prn,decimal-leading-zero);font-family:var(--sans);
+    font-weight:400;font-size:clamp(11px,1.05vw,13px);line-height:1.5;letter-spacing:.06em;
+    color:#8c837a;font-variant-numeric:tabular-nums;}
+  /* measure runs long on purpose — each item is two lines, not running body copy, and a
+     52ch column left the right half of the 1180 grid dead next to the closing line */
+  .prn-t{margin:0;max-width:62ch;font-family:var(--serif);font-weight:400;
+    font-size:clamp(15px,1.75vw,21px);line-height:1.55;color:var(--ink);text-wrap:pretty;}
+  .prn-close{margin:clamp(36px,6vh,64px) 0 0;padding:clamp(36px,6vh,64px) 0 0;
+    border-top:1px solid rgba(43,29,18,.3);
+    font-family:var(--sans);font-weight:700;font-size:clamp(26px,3.6vw,52px);line-height:1.14;
+    letter-spacing:.004em;color:var(--ink);text-wrap:balance;}
+  /* one reveal per row, riding the section's .in like every other element here */
+  .prn-row{opacity:0;transform:translateY(12px);
+    transition:opacity 1.1s ease var(--pd,.8s),transform 1.1s cubic-bezier(0.16,1,0.3,1) var(--pd,.8s);}
+  .act.in .prn-row{opacity:1;transform:none;}
   /* ACT 02b · diffusion-edge canvases UNDER the whole cluster (§5.5: #clgBake painted
      once per fit, #clgLive a small per-frame swarm). DOM-order stacking, no z-index —
      figs, rule and frost all paint above; f2/f3's multiply tints the spray beneath them,
@@ -376,12 +397,15 @@
     .f3{left:6%;top:18vw;width:38%;}  .f4{left:42%;top:0;width:18%;}
     .f5{left:68%;top:42vw;width:30%;aspect-ratio:1;}
     .clg-frost{left:0;width:100%;}
-    /* horizontal band, in flow directly under the cluster; sides on the 24px page margin */
-    .clg-line{position:static;margin:clamp(18px,4vw,30px) clamp(24px,6vw,72px) 0;
-      max-width:none;font-size:15.5px;line-height:1.8;}
+    /* the list keeps its two-column shape — only the numeral gutter and the type shrink;
+       nothing stacks, so a number never floats away from the line it belongs to (§5) */
+    .prn-item{grid-template-columns:34px minmax(0,1fr);}
+    .prn-item + .prn-item{margin-top:clamp(26px,5vh,40px);}
+    .prn-t{font-size:15.5px;line-height:1.62;max-width:none;}
+    .prn-close{font-size:clamp(24px,7vw,34px);}
   }
   @media(prefers-reduced-motion:reduce){
-    .act .rst-ring,.act .rst-p,.act .act-line,.act .clg-line{transition:none;opacity:1;transform:none;}
+    .act .rst-ring,.act .rst-p,.act .act-line,.act .prn-row{transition:none;opacity:1;transform:none;}
     .act .clg-fig{transition:none;transform:none;}
     .act .clg-speck,.act .clg-live{transition:none;opacity:1;}
     .act.in .clg-fig{transform:none;}
@@ -979,8 +1003,17 @@
       <span class="clg-rule" aria-hidden="true"></span>
       <div class="clg-frost" aria-hidden="true"></div>
     </div>
-    <p class="clg-line">Unique aesthetic language translates into <b>soulful spaces</b>
-      that shape how people <b>feel, heal, create, and live</b>.</p>
+    </div>
+
+    <div class="prn">
+      <p class="prn-eyebrow prn-row" style="--pd:.8s">The Principle</p>
+      <ol class="prn-list">
+        <li class="prn-item prn-row" style="--pd:.95s"><p class="prn-t">Redefine living space on the human scale: starting from people&rsquo;s paths of movement and five-sense experience, translate sight, hearing, smell, touch and the light environment.</p></li>
+        <li class="prn-item prn-row" style="--pd:1.05s"><p class="prn-t">Product value comes simultaneously from restoration, aesthetics, entertainment, social life and everyday living.</p></li>
+        <li class="prn-item prn-row" style="--pd:1.15s"><p class="prn-t">Progressively establish standards for material sourcing, environmental performance, durability, maintenance and life cycle.</p></li>
+        <li class="prn-item prn-row" style="--pd:1.25s"><p class="prn-t">Design-engineer the maximum &ldquo;space investment to parasympathetic nervous settlement&rdquo; ratio.</p></li>
+      </ol>
+      <p class="prn-close prn-row" style="--pd:1.4s">Rebuild respect for the human.</p>
     </div>
   </section>
 
